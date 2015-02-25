@@ -1,0 +1,32 @@
+.slider{
+    display: block;
+    position: relative;
+    height: 7px;
+    width: 100%;
+    background-color: #DADADA;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+.slider .slidebar, .slider .bufbar{
+    position: absolute;
+    height: 7px;
+    width: 0;
+    background-color: #428bca;
+}
+.slider .bufbar{
+    background-color: rgba(0, 0, 0, .15);
+}
+.slider, .slidebar, .bufbar{
+    border-radius: 7px;
+}
+.slider .handle{
+    cursor: pointer;
+    position: absolute;
+    height: 15px;
+    width: 15px;
+    border-radius: 15px;
+    margin-left: -7px;
+    top: -5px;
+    left: 0;
+    background-color: #f7f7f7;
+    box-shadow: 0 1px 1px white inset, 0 1px 2px rgba(0, 0, 0, .3);
+}

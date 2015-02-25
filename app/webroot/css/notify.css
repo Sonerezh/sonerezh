@@ -1,0 +1,41 @@
+#notify{
+    position: fixed;
+    width: 300px;
+    background-color: #2299dd;
+    color: white;
+    left: 50%;
+    top:-5px;
+    text-align: center;
+    padding: 7px 0 2px;
+    z-index: 1100;
+    margin-left: -150px;
+    border-radius: 3px;
+    -webkit-animation: slideDown .3s;
+    animation: slideDown .3s;
+}
+#notify.slideUp{
+    top:-100px;
+    -webkit-animation: slideUp .3s;
+    animation: slideUp .3s;
+}
+
+@-webkit-keyframes slideDown
+{
+    from {top: -20px;}
+    to {top: -5px;}
+}
+@keyframes slideDown
+{
+    from {top: -20px;}
+    to {top: -5px;}
+}
+@-webkit-keyframes slideUp
+{
+    from {top: -5px;}
+    to {top: -100px;}
+}
+@keyframes slideUp
+{
+    from {top: -5px;}
+    to {top: -100px;}
+}

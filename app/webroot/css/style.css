@@ -1,0 +1,700 @@
+@font-face{
+    font-family: 'Open Sans';
+    src: url('../fonts/OpenSans-Regular-webfont.woff') format('woff');
+}
+
+body {
+    font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    padding-top: 120px;
+}
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+    line-height: 1.2;
+}
+
+.alert {
+    margin-bottom: 0;
+    margin-top: 20px;
+}
+
+.label{
+    display: inline-block;
+    padding: 0.4em 0.6em 0.3em;
+}
+
+/**
+* Adaptation pour bootstrap 3.2.0
+***********************************/
+.radio input[type=radio], .radio-inline input[type=radio], .checkbox input[type=checkbox], .checkbox-inline input[type=checkbox]{
+    margin-left: 0;
+}
+.text-right .checkbox input[type=checkbox]{
+    right: 0;
+}
+.text-right .checkbox label{
+    padding-left: 0;
+    padding-right: 20px;
+}
+
+.dropdown-menu {
+    right: 0px;
+    left: auto;
+}
+
+/***
+ * Header and navigation bar
+ *********************************/
+.navbar-inverse {
+    background-color: #428bca;
+    border: none;
+}
+.navbar-inverse .navbar-brand {
+    color: #fff;
+}
+.navbar-inverse .navbar-nav>li>a {
+    color: #fff;
+}
+.navbar-inverse .navbar-nav>.active>a, .navbar-inverse .navbar-nav>.active>a:hover, .navbar-inverse .navbar-nav>.active>a:focus{
+    background-color: transparent;
+}
+
+.navbar-inverse .navbar-nav>.active>a:after{
+    content: " ";
+    display: block;
+    position: absolute;
+    border-width: 7px;
+    border-style: solid;
+    border-color: transparent transparent #f8f8f8;
+    bottom: 0;
+    left: 50%;
+    margin-left: -7px;
+}
+
+nav .search .search-input{
+    height: 25px;
+    font-size: 13px;
+    margin-top: 4px;
+    transition: all 0.15s ease-in 0s;
+}
+
+.search .search-input {
+    width: 300px;
+    border: none;
+}
+
+.search-input{
+    background-image: url('../img/icon-search.png');
+    background-repeat: no-repeat;
+    background-position: 10px center;
+    padding: 4px 12px 4px 25px;
+}
+
+.search .search-input:focus {
+    width: 330px;
+}
+
+.navbar-nav li a.nav-avatar {
+    padding: 10px 15px;
+}
+
+/***
+ * Player
+ *********************************/
+.navbar-player{
+    margin-top: 50px;
+    height: 65px;
+    z-index: 1020;
+}
+
+ul.player-controls a {
+    color: #808080;
+}
+
+ul.player-controls{
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+ul.player-controls li{
+    display: table-cell;
+    width: 1%;
+    height: 65px;
+    vertical-align: middle;
+    font-size: 20px;
+    line-height: 0;
+    cursor: default;
+    color: #808080;
+}
+ul.player-controls.volume li.volumeicon .glyphicon{
+    margin-right: 5px;
+}
+ul.player-controls.volume li.volumebar{
+    width: 15%;
+}
+ul.player-controls li span:hover{
+    color:#5a5a5a;
+}
+ul.player-controls li.disable span, ul.player-controls li.disable span:hover{
+    color: #dadada;
+}
+ul.player-controls li.active span, ul.player-controls li.active span:hover{
+    color: #428bca;
+}
+ul.player-controls li.active.single span::after{
+    content: "1";
+    font-size: 8px;
+    color: white;
+    background-color: #428bca;
+    border-radius: 50%;
+    display: inline-block;
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    right: -8px;
+    bottom: -3px;
+}
+ul.player-controls li.play{
+    font-size: 30px;
+}
+.navbar-player .song-infos{
+    margin-top: 10px;
+}
+.navbar-player .song-infos .song-name{
+    font-weight: bold;
+}
+.navbar-player .song-infos .song-artist{
+    color: #808080;
+}
+.navbar-player ul.timebar{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.navbar-player ul.timebar li{
+    display: table-cell;
+    width: 1%;
+    padding-right: 9px;
+}
+.navbar-player ul.timebar li.bar{
+    width: 100%;
+}
+.navbar-player ul.timebar li:last-child{
+    padding-right: 0;
+}
+.navbar-player .song-cover{
+    float: left;
+    width: 64px;
+    height: 64px;
+    margin-right: 10px;
+}
+
+.badge-timer{
+    background-color: #428BCA;
+}
+
+.queue {
+    border-bottom: 1px solid transparent;
+    top: -196px;
+    left: 0;
+    position: fixed;
+    width: 100%;
+    box-sizing: border-box;
+    z-index: 1000;
+    transition: top 0.3s ease 0s;
+}
+
+.queue.queue-open {
+    top: 114px;
+}
+
+.queue > .queue-wrapper {
+    /*border-bottom: 1px solid #E7E7E7;*/
+    box-shadow: 0 2px 4px rgba(0,0,0,.25);
+    padding: 0;
+}
+
+.queue-wrapper {
+    position: relative;
+}
+
+.current-queue {
+    position: relative;
+    z-index: 1000;
+}
+
+.current-queue-inner {
+    height: 300px;
+    background-color: #F8F8F8;
+    color: #5A5A5A;
+    overflow: auto;
+}
+
+.current-queue-inner table {
+    border-collapse: separate;
+}
+
+.current-queue-inner table tbody tr td.playtime-cell {
+    width: 75px;
+}
+body, body.modal-open {
+    padding-right: 0px !important;
+    overflow-y: auto;
+}
+
+#flash{
+    position: fixed;
+    width: 250px;
+    z-index: 100;
+    bottom: 15px;
+    right: -300px;
+}
+
+/***
+ * Generics classes
+ *********************************/
+.track-number{
+    width: 25px;
+    line-height:1;
+    color:#999;
+}
+
+.truncated-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.separator-right {
+    border-right: 1px solid #DDD;
+}
+
+.album-table-container {
+    padding-right: 0;
+    padding-left: 0;
+}
+
+.table-album {
+    table-layout: fixed;
+}
+
+.table-album-left {
+    margin-bottom: 0;
+}
+
+.playtime-cell {
+    width: 55px;
+}
+
+.on-air td {
+    font-weight: bold;
+}
+
+.on-air td.playtime-cell .song-playtime,
+.on-air td.playtime-cell .action-play {
+    display: none;
+}
+
+.on-air td.playtime-cell .action-pause,
+.on-air td.playtime-cell .action-add-to-playlist {
+    display: inline;
+}
+
+.on-air.paused td.playtime-cell .action-pause {
+    display: none;
+}
+.on-air.paused td.playtime-cell .action-play{
+    display: inline;
+}
+
+.btn-selecter {
+    padding: 9px 12px;
+}
+
+.input-group .selecter-selected {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.input-group .selecter.open .selecter-selected {
+    border-top-right-radius: 0;
+}
+/***
+ * Artists view
+ *********************************/
+.artist-name{
+    color: #999;
+}
+
+.band-name{
+	margin-bottom: 25px;
+}
+
+.band-stats{
+	margin: -8px auto;
+	font-style: italic;
+	color: #999;
+}
+
+.disc-number{
+	margin: 10px 0;
+}
+
+.cover{
+    display: block;
+    float: none;
+    border-radius: 3px;
+    box-shadow: 0 2px 3px rgba(0,0,0, .5);
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.song-controls {
+	color: #999;
+	margin: 0 2px;
+	padding: 0 2px;
+    cursor: pointer;
+}
+
+.song-controls:hover {
+    color: #555555;
+}
+
+.table>thead>tr>th,
+.table>tbody>tr>th,
+.table>tfoot>tr>th,
+.table>thead>tr>td,
+.table>tbody>tr>td,
+.table>tfoot>tr>td {
+    border: none;
+}
+.song-controls,
+.album:hover h4 small.album-year,
+table tbody tr:hover td span.song-playtime,
+table tbody tr.on-air:hover td span.action-remove-from-queue {
+    display: none;
+}
+
+.band-name:hover h3 small span.song-controls,
+.album:hover h4 small span.song-controls,
+.album:hover h3 small span.song-controls,
+.playlist-row:hover h4 small span.song-controls,
+table tbody tr:hover td span.action-play,
+table tbody tr:hover td span.action-add-to-playlist,
+table tbody tr:hover td span.action-remove-from-queue,
+table tbody tr:hover td span.action-remove-from-playlist{
+    display: inline;
+    cursor: pointer;
+}
+
+@media (min-width: 1200px) {
+    .artist-view-title-cell {
+        width: 301px;
+        max-width: 301px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .artist-view-title-cell {
+        max-width: 561px;
+        min-width: 450px;
+    }
+}
+
+/***
+* Albums view
+**********************************/
+.action-expend.active:after{
+    content: " ";
+    display: block;
+    position: absolute;
+    border-width: 11px;
+    border-color: transparent transparent #333333;
+    border-style: solid;
+    bottom: 0;
+    left: 50%;
+    margin-left: -10px;
+}
+
+.action-expend.active{
+    -webkit-transition: margin-bottom .2s ease;
+       -moz-transition: margin-bottom .2s ease;
+        -ms-transition: margin-bottom .2s ease;
+         -o-transition: margin-bottom .2s ease;
+            transition: margin-bottom .2s ease;
+}
+
+.action-expend.loading img{
+    opacity: 0.3;
+}
+
+.action-expend.loading .loader{
+    position: absolute;
+    left: 0;right: 0;
+    top: 50%;
+    margin-top: -30px;
+    text-align: center;
+}
+
+#album-expended{
+    position: absolute;
+    background-color: #333;
+    color: #aaa;
+    width: 100%;
+    left: 0;
+}
+#album-expended h3{
+    color: white;
+}
+
+#album-expended .close-album{
+    cursor: default;
+}
+
+#album-expended table .title{
+    color: white;
+}
+#album-expended .row{
+    margin-left: 0;
+    margin-right: 0;
+}
+
+
+/***
+ * Settings
+ *********************************/
+.conversions-table, .conversions-table td {
+    width: 100%;
+    padding: 4px;
+}
+
+.conversions-table-left, .conversions-table-left thead th {
+    text-align: right;
+}
+
+#quality-slider{
+    margin-top: 7px;
+}
+
+
+/***
+ * Users edition
+ *********************************/
+ .avatar-container{
+    width: 188px;
+ }
+
+.avatar-remover{
+    position: absolute;
+    bottom: 0;
+}
+
+.avatar-selector{
+    height: 50px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.avatar-remover-link {
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.6) 50%, rgba(0, 0, 0, 0.6) 100%) repeat scroll 0% 0% transparent;
+    width: 188px;
+    padding: 0;
+    height: 200%;
+    bottom: -140px;
+    right: 0;
+    left: 0;
+    transition: bottom 0.13s ease-out 0s;
+
+}
+
+.avatar-remover-icon{
+    display: block;
+    bottom: 8px;
+    left: 12px;
+    width: 32px;
+    line-height: 32px;
+    color: #FFF;
+    text-align: center;
+    font-size: 18px;
+}
+
+.avatar-selector-label{
+    padding-left: 52px;
+    height: 50px;
+    width: 188px;
+    line-height: 50px;
+    color: #FFF;
+}
+
+.avatar-container:hover .avatar-remover-link{
+    bottom: 0;
+}
+
+/**
+* Playlist
+***************************/
+.panel-heading {
+    position: relative;
+}
+
+.btn-add-plst {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.list-group-item {
+    overflow: hidden;
+}
+
+.btn-mgmt {
+    display: block;
+    position: absolute;
+    transition: all .5s ease 0s;
+}
+.btn-playlist-delete {
+    top: 10px;
+    right: -37px;
+}
+.btn-playlist-edit {
+    top: -32px;
+    right: 40px;
+}
+
+.list-group-item:hover .btn-playlist-edit{
+    top: 10px;
+}
+
+.list-group-item:hover .btn-playlist-delete{
+    right: 10px;
+}
+
+/**
+* Animations
+***************************/
+.animated {
+    -webkit-animation-duration: .2s;
+    animation-duration: .2s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+}
+@-webkit-keyframes flipInX {
+    0% {
+        -webkit-transform: perspective(400px) rotate3d(1, 0, 0, 5deg);
+        transform: perspective(400px) rotate3d(1, 0, 0, 5deg);
+        -webkit-transition-timing-function: ease-in;
+        transition-timing-function: ease-in;
+        opacity: 0;
+    }
+
+    100% {
+        -webkit-transform: perspective(400px);
+        transform: perspective(400px);
+    }
+}
+
+@keyframes flipInX {
+    0% {
+        -webkit-transform: perspective(400px) rotate3d(1, 0, 0, 5deg);
+            -ms-transform: perspective(400px) rotate3d(1, 0, 0, 5deg);
+                transform: perspective(400px) rotate3d(1, 0, 0, 5deg);
+        -webkit-transition-timing-function: ease-in;
+                transition-timing-function: ease-in;
+        opacity: 0;
+    }
+
+    100% {
+        -webkit-transform: perspective(400px);
+        -ms-transform: perspective(400px);
+        transform: perspective(400px);
+    }
+}
+
+
+@-webkit-keyframes loader-ani1{
+    100%{
+        -webkit-transform:translate(20px);
+        transform:translate(20px);
+        opacity: 0;
+    }
+}
+@keyframes loader-ani1{
+    100%{
+        -webkit-transform:translate(20px);
+        transform:translate(20px);
+        opacity: 0;
+    }
+}
+@-webkit-keyframes loader-ani2{
+    100%{
+        -webkit-transform:translate(10px);
+        transform:translate(10px);
+        opacity: 1;
+    }
+}
+@keyframes loader-ani2{
+    100%{
+        -webkit-transform:translate(10px);
+        transform:translate(10px);
+        opacity: 1;
+    }
+}
+@-webkit-keyframes loader-ani3{
+    100%{
+        -webkit-transform:translate(10px);
+        transform:translate(10px);
+    }
+}
+@keyframes loader-ani3{
+    100%{
+        -webkit-transform:translate(10px);
+        transform:translate(10px);
+    }
+}
+
+.flipInX {
+    -webkit-backface-visibility: visible !important;
+    -ms-backface-visibility: visible !important;
+    backface-visibility: visible !important;
+    -webkit-animation-name: flipInX;
+    animation-name: flipInX;
+}
+
+.loader i{
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+    border-radius: 50%;
+    background: #00b3d5;
+}
+.loader i:first-child{
+    -webkit-animation:loader-ani2 0.5s linear infinite;
+    animation:loader-ani2 0.5s linear infinite;
+    opacity: 0;
+    -webkit-transform:translate(-10px);
+    -ms-transform:translate(-10px);
+    transform:translate(-10px);
+}
+.loader i:nth-child(2),
+.loader i:nth-child(3){
+    -webkit-animation:loader-ani3 0.5s linear infinite;
+    animation:loader-ani3 0.5s linear infinite;
+}
+.loader i:last-child{
+    -webkit-animation:loader-ani1 0.5s linear infinite;
+    animation:loader-ani1 0.5s linear infinite;
+}
+
+/* Lazyload */
+.lzld {
+    width: 100%;
+    height: auto;
+    -webkit-transition: opacity 500ms ease-in-out;
+    -moz-transition: opacity 500ms ease-in-out;
+    -o-transition: opacity 500ms ease-in-out;
+    transition: opacity 500ms ease-in-out;
+    max-width: 100%;
+    opacity: 0;
+}
+.lzld.lzld-loaded {
+    opacity: 1;
+}
