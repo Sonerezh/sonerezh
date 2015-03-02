@@ -4,6 +4,8 @@ App::uses('Component', 'Controller');
 
 class ImageComponent extends Component{
 
+    public $components = array('CheckCmd');
+
     private static $useGD = TRUE;
     private static $jpeg_quality = 90;
     private static $png_quality = 9;
@@ -12,7 +14,13 @@ class ImageComponent extends Component{
 
         $dimensions = getimagesize($img);
         $ratio		= $dimensions[0] / $dimensions[1];
-        $exif = exif_read_data($img);
+        $extension = substr($img, 0, -strpos($img, '.'));
+        if (in_array($extension,array('jpeg','jpg','gif')) ) {
+            $exif = exif_read_data($img);
+        } else {
+            $exif['Orientation'] = 1;
+        }
+
         $rotation = 0;
 
         if(isset($exif['Orientation'])){
@@ -84,12 +92,12 @@ class ImageComponent extends Component{
                 imagejpeg($pattern, $to, self::$jpeg_quality);
             }
             return TRUE;
-        }else{
+        }else {
             $cmd = '/usr/bin/convert -resize '.$dimX.'x'.$dimY.' "'.$img.'" "'.$to.'"';
-            shell_exec($cmd);
+            $this->CheckCmd->is_shell_exec_available($cmd);
 
             $cmd = '/usr/bin/convert -gravity Center -quality '.self::$quality.' -crop '.$width.'x'.$height.'+0+0 -page '.$width.'x'.$height.' "'.$to.'" "'.$to.'"';
-            shell_exec($cmd);
+            $this->CheckCmd->is_shell_exec_available($cmd);
         }
         return TRUE;
     }
