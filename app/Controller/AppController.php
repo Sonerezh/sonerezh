@@ -37,6 +37,7 @@ class AppController extends Controller {
         'Session',
         'DebugKit.Toolbar',
         'Image',
+        'CheckCmd',
         'Paginator',
         'Auth' => array(
             'authenticate' => array(

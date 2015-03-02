@@ -11,6 +11,7 @@ App::uses("AppController", "Controller");
 class SettingsController extends AppController {
 
     public $helpers = array('FileSize');
+    public $components = array('CheckCmd');
 
     /**
      * This function manages the Sonerezh settings panel.
@@ -56,7 +57,7 @@ class SettingsController extends AppController {
         }
 
         // Check if avconv shell command is available
-        $cmd = shell_exec("which avconv");
+        $cmd = $this->CheckCmd->is_shell_exec_available('which avconv');
         $avconv = empty($cmd) ? false : true;
 
         if (empty($this->request->data)) {
