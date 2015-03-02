@@ -4,6 +4,7 @@ App::uses('AppController', 'Controller');
 App::uses('File', 'Utility');
 App::uses('ConnectionManager', 'Model');
 App::uses('SchemaShell', 'Console/Command');
+App::uses('Component', 'Controller');
 
 /**
  * Class InstallationsController
@@ -15,6 +16,8 @@ class InstallersController extends AppController {
 
     var $uses = array();
     var $layout = 'installer';
+
+    public $components = array('CheckCmd');
 
     public function beforeFilter() {
         parent::beforeFilter();
@@ -29,7 +32,7 @@ class InstallersController extends AppController {
     public function index() {
         $this->view = "index";
         $gd = extension_loaded('gd');
-        $libavtools = shell_exec('which avconv') != '';
+        $libavtools = $this->CheckCmd->is_shell_exec_available('which avconv') != '';
         $is_config_writable = is_writable(APP.'Config');
         $is_core_writable = is_writable(APP.'Config'.DS.'core.php');
 
