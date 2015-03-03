@@ -26,7 +26,7 @@ CREATE TABLE `sonerezh`.`playlists` (
 
 CREATE TABLE `sonerezh`.`settings` (
 	`id` int(3) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`rootpath` varchar(55) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+	`rootpath` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
 	`enable_auto_conv` tinyint(1) DEFAULT '0' NOT NULL,
 	`convert_from` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT 'aac,flac,wma' NOT NULL,
 	`convert_to` varchar(5) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT 'mp3' NOT NULL,
