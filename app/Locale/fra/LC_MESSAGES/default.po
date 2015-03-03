@@ -238,7 +238,7 @@ msgstr "Rechercher"
 #: app/View/Settings/index.ctp:70
 #: app/View/Songs/import.ctp:30
 msgid "Database update"
-msgstr "Mettre à jour la base de donnée"
+msgstr "Mettre à jour la base"
 
 #: app/View/Elements/admin_navbar.ctp:14
 msgid "Settings"
@@ -538,7 +538,7 @@ msgstr "Qualité"
 #: lib/Cake/View/Helper/FormHelper.php:1895
 #: lib/Cake/View/Scaffolds/form.ctp:21
 msgid "Submit"
-msgstr "Envoyer"
+msgstr "Enregistrer"
 
 #: app/View/Settings/index.ctp:67
 msgid "Database management"
@@ -550,7 +550,7 @@ msgstr "Nettoyer le cache"
 
 #: app/View/Settings/index.ctp:76
 msgid "Reset the database"
-msgstr "Réinitialiser la base de données"
+msgstr "Réinitialiser la base"
 
 #: app/View/Settings/index.ctp:76
 msgid "Are you sure? All your songs and playlists will disappear!"
