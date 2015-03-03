@@ -17,6 +17,7 @@
 <?php if($query){ ?>
     <div data-scroll-container="true">
         <?= $this->element('artists_view'); ?>
+	<?= $this->element('add_to_playlist'); ?>
         <?= $this->element('pagination');?>
     </div>
 <?php } ?>
