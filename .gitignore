@@ -3,6 +3,8 @@
 /app/Config/database.php
 /app/Config/email.php
 /app/tmp/tests
+/app/tmp/cache
+/app/tmp/logs
 /lib/Cake/Console/Templates/skel/tmp/
 /plugins
 /vendors
