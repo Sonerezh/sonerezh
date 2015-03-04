@@ -7,7 +7,13 @@ $(function(){
 
     function loadPage(url, pushState, method, data) {
         Pace.restart();
-        if(url.indexOf("?ajax=true") == -1)url = url + "?ajax=true";
+        if(url.indexOf("ajax=true") == -1){
+            if(url.indexOf("?") == -1){
+                url = url + "?ajax=true";
+            }else{
+                url = url + "&ajax=true";
+            }
+        }
         if(pushState === undefined)pushState = true;
         if(method === undefined)method = "GET";
         if(data === undefined)data = null;
