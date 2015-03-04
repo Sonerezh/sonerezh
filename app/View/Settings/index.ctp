@@ -87,15 +87,14 @@
             <div class="row" style="margin-top: 20px;">
                 <div class="col-xs-6 text-center">
                     <a href="https://flattr.com/submit/auto?user_id=Sonerezh&url=https%3A%2F%2Fwww.sonerezh.bzh&title=Sonerezh" target="_blank" class="no-ajax">
-                        <img src="//api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this" border="0">
+                        <?php echo $this->Html->image('flattr-badge-large.png', array('alt' => 'Flattr this', 'title' => 'Flattr this'));?>
                     </a>
                 </div>
                 <div class="col-xs-6 text-center">
                     <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank" class="no-ajax">
                         <input type="hidden" name="cmd" value="_s-xclick">
                         <input type="hidden" name="hosted_button_id" value="TWMJXGFUK8SXG">
-                        <input type="image" src="https://www.paypalobjects.com/fr_FR/FR/i/btn/btn_donate_SM.gif" border="0" name="submit" alt="PayPal - la solution de paiement en ligne la plus simple et la plus sécurisée !">
-                        <img alt="" border="0" src="https://www.paypalobjects.com/fr_FR/i/scr/pixel.gif" width="1" height="1">
+                        <?php echo $this->Form->submit("btn_donate_SM.gif", array('name' => 'submit', 'alt' => 'PayPal - la solution de paiement en ligne la plus simple et la plus sécurisée !'));?>
                     </form>
                 </div>
             </div>
