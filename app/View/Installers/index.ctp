@@ -56,9 +56,8 @@
     <hr />
 
     <p>
-        <?php echo __("Please provide the following information to allow Sonerezh to access to its MySQL database."); ?> <span class="text-danger"><?php echo __('Note that if you are reinstalling Sonerezh, all your previous data will be lost.') ?></span>
+        <?php echo __("Please provide the following information to allow Sonerezh to access its database."); ?> <span class="text-danger"><?php echo __('Note that if you are reinstalling Sonerezh, all your previous data will be lost.') ?></span>
     </p>
-
 
     <?php echo $this->Form->create(null, array(
         'class' => 'form-horizontal',
@@ -74,6 +73,7 @@
 
     <div class="col-xs-8 col-xs-offset-2">
         <?php
+        echo $this->Form->input('DB.datasource', array('placeholder' => __('Database source'), 'options' => array('Database/Mysql' => 'MySQL', 'Database/Sqlite' => 'SQLite', 'Database/Postgres' => 'PostgreSQL', 'Database/Sqlserver' => 'SQL Server'), 'default' => 'Database/Mysql'));
         echo $this->Form->input('DB.host', array('placeholder' => __('Database host (generally localhost)')));
         echo $this->Form->input('DB.database', array('placeholder' => __('Database name')));
         echo $this->Form->input('DB.login', array('placeholder' => __('Database user login')));

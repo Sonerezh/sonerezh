@@ -59,7 +59,6 @@ class InstallersController extends AppController {
         else if($this->request->is('post')) {
 
             $db_config_array = $this->request->data['DB'];
-            $db_config_array['datasource'] = 'Database/Mysql';
             $db_config_array['persistent'] = false;
             $db_config_array['encoding'] = 'utf8';
 
@@ -82,7 +81,7 @@ class InstallersController extends AppController {
             try{
                 $db_connection = ConnectionManager::getDataSource('default');
                 $db_connection->begin();
-                $db_connection->execute("SHOW TABLES;");
+                $db_connection->execute("SELECT 1");
                 $db_connection->commit();
             }catch (Exception $e){
                 $db_config_file->delete();
