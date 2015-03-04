@@ -384,7 +384,13 @@ class SongsController extends AppController{
             }
             $this->set('songs', $parsed);
         }
-        $this->set('query', $query);
+
+        $this->loadModel('Playlist');
+        $playlists = $this->Playlist->find('list', array(
+            'fields'        => array('Playlist.id', 'Playlist.title'),
+            'conditions'    => array('user_id' => AuthComponent::user('id'))
+        ));
+        $this->set(compact('query', 'playlists'));
     }
 
     /**

@@ -49,7 +49,7 @@
 <div class="navbar navbar-default navbar-fixed-top navbar-player">
     <div class="container">
         <!-- Play/Pause buttons -->
-        <div class="col-md-2 col-xs-2">
+        <div class="col-md-2 col-xs-3">
             <ul class="player-controls">
                 <li><span class="glyphicon glyphicon-backward" id="backward"></span></li>
                 <li class="play"><span class="glyphicon glyphicon-play" id="play"></span></li>
@@ -64,8 +64,8 @@
             </ul>
         </div>
         <!-- Current playing -->
-        <div class="col-md-6 col-xs-8">
-            <?= $this->Html->image("no-cover.png", array('class' => "song-cover")); ?>
+        <div class="col-md-6 col-xs-6">
+            <?= $this->Html->image("no-cover.png", array('class' => "song-cover hidden-xs")); ?>
             <div class="song-infos truncated-name">
                 <span class="song-name"></span>
                 -
