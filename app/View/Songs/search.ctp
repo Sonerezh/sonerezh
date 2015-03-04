@@ -3,7 +3,7 @@
         <div class="form-group">
             <label for="inputSearch" class="col-xs-2 control-label"><?= __('Looking for'); ?></label>
             <div class="col-xs-8">
-                <input type="text" class="form-control search-input" placeholder="Nirvana" name="q" value="<?= isset($query) ? $query : ''; ?>"/>
+                <input type="text" class="form-control search-input" placeholder="Nirvana" name="q" value="<?= isset($query) ? h($query) : ''; ?>"/>
             </div>
         </div>
         <div class="form-group">

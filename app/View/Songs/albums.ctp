@@ -6,12 +6,12 @@ $this->end(); ?>
 	<?php
     $i=1;
     foreach($songs as $album){ ?>
-        <div class="col-md-2 col-sm-3 col-xs-4 action-expend" data-band="<?php echo $album['Song']['band']; ?>" data-album="<?php echo $album['Song']['album']; ?>" data-scroll-content="true">
+        <div class="col-md-2 col-sm-3 col-xs-4 action-expend" data-band="<?php echo h($album['Song']['band']); ?>" data-album="<?php echo h($album['Song']['album']); ?>" data-scroll-content="true">
             <?php echo $this->Image->lazyload($this->Image->resizedPath($album['Song']['cover'], 220, 220), array('class' => 'img-responsive cover lzld', 'style' => 'cursor: pointer;'));?>
-            <h4 class="truncated-name" title="<?php echo $album['Song']['album']; ?>">
-                <?php echo $album['Song']['album']; ?>
+            <h4 class="truncated-name" title="<?php echo h($album['Song']['album']); ?>">
+                <?php echo h($album['Song']['album']); ?>
                 <small>
-                    <br /><?php echo $album['Song']['band']; ?>
+                    <br /><?php echo h($album['Song']['band']); ?>
                 </small>
             </h4>
 		</div>

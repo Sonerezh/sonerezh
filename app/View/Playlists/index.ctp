@@ -55,7 +55,7 @@
         <div class="row playlist-row" data-playlist="<?php echo $playlistInfo['id'];?>">
             <div class="col-xs-10">
                 <h4>
-                    <?php echo $playlistInfo['name']; ?>
+                    <?php echo h($playlistInfo['name']); ?>
                 </h4>
             </div>
             <div class="col-xs-2">
@@ -91,21 +91,21 @@
                     </thead>
                     <tbody>
                     <?php foreach($playlist as $song): ?>
-                        <tr data-id="<?php echo $song['Song']['id']; ?>" data-scroll-content="true">
+                        <tr data-id="<?php echo h($song['Song']['id']); ?>" data-scroll-content="true">
                             <td class="track-number">
-                                <span class="song-number"><?php echo $song['PlaylistMembership']['sort']; ?></span>
+                                <span class="song-number"><?php echo h($song['PlaylistMembership']['sort']); ?></span>
                             </td>
-                            <td class="truncated-name"><?php echo $song['Song']['title']; ?></td>
-                            <td class="truncated-name hidden-xs hidden-sm"><?php echo $song['Song']['artist']; ?></td>
-                            <td class="truncated-name visible-lg"><?php echo $song['Song']['album']; ?></td>
+                            <td class="truncated-name"><?php echo h($song['Song']['title']); ?></td>
+                            <td class="truncated-name hidden-xs hidden-sm"><?php echo h($song['Song']['artist']); ?></td>
+                            <td class="truncated-name visible-lg"><?php echo h($song['Song']['album']); ?></td>
                             <td class="text-right playtime-cell">
-                                <span class="song-playtime"><?php echo $song['Song']['playtime']; ?></span>
+                                <span class="song-playtime"><?php echo h($song['Song']['playtime']); ?></span>
                                 <span class="glyphicon glyphicon-play song-controls action-play" data-action="play" title="<?php echo __('Play'); ?>"></span><span class="glyphicon glyphicon-pause song-controls action-pause" data-action="pause" title="<?php echo __('Pause'); ?>"></span>
                                 <?php echo $this->Form->postLink(
                                         '<span class="glyphicon glyphicon-remove song-controls action-remove-from-playlist" title="'.__("Remove").'"></span>',
                                         array('controller' => 'playlist_memberships', 'action' => 'remove', $song['PlaylistMembership']['id']),
                                         array('style' => 'text-decoration: none;', 'escape' => false),
-                                        __('Remove').' '.$song['Song']['title'].' '.__('from the playlist?')
+                                        __('Remove').' '.h($song['Song']['title']).' '.__('from the playlist?')
                                 ); ?>
                             </td>
                         </tr>

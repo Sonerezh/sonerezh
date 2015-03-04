@@ -1,9 +1,9 @@
 <?php foreach($songs as $band => $songs): ?>
 	<!-- Artists view -->
-	<div class="col-xs-12 band-name" data-band="<?php echo $band;?>" data-scroll-content="true">
+	<div class="col-xs-12 band-name" data-band="<?php echo h($band);?>" data-scroll-content="true">
         <div class="col-xs-10">
 		<h3>
-            <?= $band; ?>
+            <?php echo h($band); ?>
         </h3>
 		<p class="band-stats">
             <small>
@@ -40,21 +40,21 @@
                     <?php echo $this->Image->lazyload($this->Image->resizedPath($album['cover'], 240, 240), array('alt' => 'Album cover', 'class' => 'img-responsive cover lzld')); ?>
                     <?php if(!empty($album['genre'])){
                         foreach($album['genre'] as $genre){
-                            echo '<span class="label label-info">'.$genre.'</span>&nbsp;';
+                            echo '<span class="label label-info">'.h($genre).'</span>&nbsp;';
                         }
                     } ?>
 				</div>
 
-				<div class="col-md-9 col-xs-12 album" data-album="<?php echo $album['album'];?>">
+				<div class="col-md-9 col-xs-12 album" data-album="<?php echo h($album['album']);?>">
 					<div class="col-xs-10">
 						<h4 class="truncated-name">
-                            <?= $album['album']; ?>
+                            <?php echo h($album['album']); ?>
                         </h4>
 					</div>
 					<div class="col-xs-2">
 						<h4 class="text-right">
                             <small class="album-year">
-                                <?= $album['year']; ?>
+                                <?php echo h($album['year']); ?>
                             </small>
                             <small>
                                 <span class="glyphicon glyphicon-play song-controls action-play-album" title="<?= ('Play all tracks'); ?>"></span>
@@ -77,7 +77,7 @@
                         <!-- Songs list -->
                         <div class="col-lg-6 col-xs-12 album-table-container">
                             <?php if(count($album['discs']) > 1){ ?>
-                                <p class="disc-number"><strong><?= __('Disc') ?> <?= $keyDisc; ?></strong></p>
+                                <p class="disc-number"><strong><?= __('Disc') ?> <?php echo h($keyDisc); ?></strong></p>
                             <?php } ?>
                             <table class="table table-striped table-condensed table-hover table-album table-album-left">
                                 <tbody>
@@ -98,18 +98,18 @@
                                     <?php endif; ?>
 
                                     <!-- Add 'class="on-air"' on play to highlight the row -->
-                                    <tr data-id="<?= $song['id'];?>">
+                                    <tr data-id="<?php echo h($song['id']);?>">
                                         <td class="track-number">
-                                            <span class="song-number"><?= $song['track_number']; ?></span>
+                                            <span class="song-number"><?php echo h($song['track_number']); ?></span>
                                         </td>
                                         <td class="truncated-name">
-                                            <?= $song['title']; ?>
+                                            <?php echo h($song['title']); ?>
                                             <?php if($song['artist'] != $song['band']){ ?>
-                                                <br /><small class="artist-name truncated-name"><?= $song['artist']; ?></small>
+                                                <br /><small class="artist-name truncated-name"><?php echo h($song['artist']); ?></small>
                                             <?php } ?>
                                         </td>
                                         <td class="text-right playtime-cell">
-                                            <span class="song-playtime"><?= $song['playtime']; ?></span>
+                                            <span class="song-playtime"><?php echo h($song['playtime']); ?></span>
                                             <?php echo $this->element('add_menu'); ?>
                                         </td>
                                     </tr>
