@@ -13,7 +13,9 @@ class UsersController extends AppController{
     public function isAuthorized($user){
         if($user['role'] == "admin"){
             return true;
-        }else if (in_array($this->action, array('logout', 'edit', 'deleteAvatar'))) {
+        }else if($this->action == 'logout'){
+            return true;
+        }else if (in_array($this->action, array('edit', 'deleteAvatar')) && $this->passedArgs[0] == $this->Auth->user('id')) {
             return true;
         }
         return false;
