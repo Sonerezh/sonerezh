@@ -56,7 +56,7 @@ class SettingsController extends AppController {
         }
 
         // Check if avconv shell command is available
-        $cmd = shell_exec("which avconv");
+        $cmd = shell_exec("which avconv && which ffmpeg");
         $avconv = empty($cmd) ? false : true;
 
         if (empty($this->request->data)) {

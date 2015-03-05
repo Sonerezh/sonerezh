@@ -418,15 +418,18 @@ class SongsController extends AppController{
         if (empty($song['Song']['path']) || $file_extension != $settings['Setting']['convert_to']) {
             if (in_array($file_extension, explode(',', $settings['Setting']['convert_from']))) {
                 $bitrate = $settings['Setting']['quality'];
-
+                $avconv = "ffmpeg";
+                if(shell_exec("which avconv") != ""){
+                    $avconv = "avconv";
+                }
                 if ($settings['Setting']['convert_to'] == 'mp3') {
                     $path = TMP.date('YmdHis').".mp3";
                     $song['Song']['path'] = $path;
-                    passthru('avconv -i "'.$song['Song']['source_path'].'" -threads 4  -c:a libmp3lame -b:a '.$bitrate.'k "'.$path.'"');
+                    passthru($avconv.' -i "'.$song['Song']['source_path'].'" -threads 4  -c:a libmp3lame -b:a '.$bitrate.'k "'.$path.'" 2>&1');
                 } else if ($settings['Setting']['convert_to'] == 'ogg'){
                     $path = TMP.date('YmdHis').".ogg";
                     $song['Song']['path'] = $path;
-                    passthru('avconv -i "'.$song['Song']['source_path'].'" -threads 4  -c:a libvorbis -b:a '.$bitrate.'k "'.$path.'"');
+                    passthru($avconv.' -i "'.$song['Song']['source_path'].'" -threads 4  -c:a libvorbis -b:a '.$bitrate.'k "'.$path.'" 2>&1');
                 }
             } else if(empty($song['Song']['path'])) {
                 $song['Song']['path'] = $song['Song']['source_path'];
