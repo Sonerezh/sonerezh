@@ -419,7 +419,7 @@ class SongsController extends AppController{
             if (in_array($file_extension, explode(',', $settings['Setting']['convert_from']))) {
                 $bitrate = $settings['Setting']['quality'];
                 $avconv = "ffmpeg";
-                if(shell_exec("which avconv") != ""){
+                if(shell_exec("which avconv")){
                     $avconv = "avconv";
                 }
                 if ($settings['Setting']['convert_to'] == 'mp3') {
