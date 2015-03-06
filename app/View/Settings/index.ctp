@@ -18,7 +18,7 @@
             <?php
             echo $this->Form->create('Setting');
             echo $this->Form->input('id');
-            echo $this->Form->input('rootpath', array('label' => __('Music root directory'), 'placeholder' => __('Music root directory')));
+            echo $this->Form->input('rootpath', array('label' => __('Music root directory'), 'placeholder' => __('Music root directory'), 'after' => '<p class="help-block">Current App folder is: '.APP.'</p>'));
             ?>
             <span class=" offs help-block"><?php echo __('Make sure Sonerezh can read this folder recursively.'); ?></span>
             <div class="panel <?php echo $avconv ? 'panel-default' : 'panel-danger'; ?>">
