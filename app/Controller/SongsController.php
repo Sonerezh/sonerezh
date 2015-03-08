@@ -47,7 +47,7 @@ class SongsController extends AppController{
             }
 
             if (isset($songInfo['comments']['track_number']) && intval($songInfo['comments']['track_number'][0])) {
-                $newSong['track_number'] = $songInfo['comments']['track_number'][0];
+                $newSong['track_number'] = intval($songInfo['comments']['track_number'][0]);
             }
 
             if (isset($songInfo['playtime_string'])) {
