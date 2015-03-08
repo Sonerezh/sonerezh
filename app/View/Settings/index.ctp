@@ -18,9 +18,29 @@
             <?php
             echo $this->Form->create('Setting');
             echo $this->Form->input('id');
-            echo $this->Form->input('rootpath', array('label' => __('Music root directory'), 'placeholder' => __('Music root directory'), 'after' => '<p class="help-block">Current App folder is: '.APP.'</p>'));
+            echo $this->Form->input('rootpath', array(
+                'label' => __('Music root directory'),
+                'placeholder' => __('Music root directory'),
+                'after' => '<small><span class="help-block">Make sure Sonerezh can read this folder recursively. Current App folder is: '.APP.'</span></small>'
+            ));
+            echo $this->Form->input('enable_mail_notification', array(
+                'type'  => 'checkbox',
+                'label' => __('Enable mail notifications.'),
+            ));
             ?>
-            <span class=" offs help-block"><?php echo __('Make sure Sonerezh can read this folder recursively.'); ?></span>
+
+            <small>
+                <span class="help-block">
+                    <?php echo __('Sonerezh can send an email on users creation to notify them.'); ?>
+                    <?php echo $this->Html->link(
+                        '<i class="glyphicon glyphicon-question-sign"></i>',
+                        'https://www.sonerezh.bzh', // TODO: edit link
+                        array('escape' => false, 'target' => 'blank', 'class' => 'no-ajax')
+                    ); ?>
+                </span>
+            </small>
+
+
             <div class="panel <?php echo $avconv ? 'panel-default' : 'panel-danger'; ?>">
                 <div class="panel-heading">
                     <h4 class="panel-title"><?php echo __('Automatic tracks conversion'); ?>

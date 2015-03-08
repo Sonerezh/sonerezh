@@ -2,12 +2,13 @@
     <tbody>
     <tr width="630">
         <td style="font-size: 24px;">
-            Welcome on Sonerezh,
+            <?php echo __('Welcome on Sonerezh,'); ?>
         </td>
     </tr>
     <tr width="630">
         <td style="padding-top: 25px;">
-            Your account has been successfully created. We hope you will enjoy it :)
+            <?php echo __("Your account ($user_email) has been successfully created. We hope you will enjoy it :)."); ?>
+            <?php echo $this->Html->link(__('Log me in'), array('controller' => 'users', 'action' => 'login', 'full_base' => true)); ?>
         </td>
     </tr>
     </tbody>

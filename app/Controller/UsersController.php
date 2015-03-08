@@ -38,10 +38,11 @@ class UsersController extends AppController{
 
     public function add(){
 
-        // (Not implemented yet) Send email on user creation
-        //App::uses('UsersEventListener', 'Event');
-        //$usersEventListener = new UsersEventListener();
-        //$this->User->getEventManager()->attach($usersEventListener);
+        // Send email on user creation
+        App::uses('UsersEventListener', 'Event');
+        $usersEventListener = new UsersEventListener();
+        $this->User->getEventManager()->attach($usersEventListener);
+
 
         if($this->request->is('post')){
             $this->User->create();

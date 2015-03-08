@@ -99,6 +99,7 @@ class User extends AppModel{
             CakeSession::write(AuthComponent::$sessionKey, $newData);
         }
 
+        // Raise user creation event
         if($created) {
             $event = new CakeEvent('Model.User.add', $this);
             $this->getEventManager()->dispatch($event);
