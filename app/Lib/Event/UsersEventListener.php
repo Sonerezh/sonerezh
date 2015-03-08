@@ -12,7 +12,9 @@ class UsersEventListener implements CakeEventListener {
     }
 
     public function sendUserCreationEmail(CakeEvent $event) {
-        $mail_notifications_enabled = true;
+        $setting = ClassRegistry::init('Setting');
+        $settings = $setting->find('first', array('fields' => array('Setting.enable_mail_notification')));
+        $mail_notifications_enabled = $settings['Setting']['enable_mail_notification'];
 
         if ($mail_notifications_enabled) {
             $user_email = $event->subject()->data['User']['email'];

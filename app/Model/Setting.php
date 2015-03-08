@@ -30,7 +30,13 @@ class Setting extends AppModel {
 				'rule'			=> array('convConflicts'),
 				'message'		=> "Wrong conversion destination! Make sure you are not trying to convert MP3 to MP3, or OGG to OGG."
 			)
-		)
+		),
+        'enable_mail_notification'	=> array(
+            'boolean'			=> array(
+                'rule'				=> array('boolean'),
+                'message'			=> 'Something went wrong!'
+            )
+        )
 	);
 
 	public function beforeSave($options = array()){
