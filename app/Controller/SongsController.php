@@ -132,7 +132,7 @@ class SongsController extends AppController{
         }
 
         $dir = new Folder($path);
-        $songs = $dir->findRecursive('^.*\.(mp3|ogg|flac|wma|aac)$');
+        $songs = $dir->findRecursive('^.*\.(mp3|ogg|flac|aac)$');
         $existingSongs = $this->Song->find('list', array('fields' => array('id', 'source_path')));
         $new = array_merge(array_diff($songs, $existingSongs));
         $deleted = array_diff($existingSongs, $songs);
