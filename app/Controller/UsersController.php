@@ -21,35 +21,32 @@ class UsersController extends AppController{
         return false;
     }
 
-    public function index(){
+    public function index() {
         $users = $this->User->find('all');
 
-        foreach($users as $key => $user){
-            if(!empty($user['User']['avatar'])){
+        foreach ($users as $key => $user) {
+            if (!empty($user['User']['avatar'])) {
                 $users[$key]['User']['avatar'] = AVATARS_DIR.DS.$user['User']['avatar'];
-            }else{
+            } else {
                 $gavatarId = md5($user['User']['email']);
                 $users[$key]['User']['gravatar'] = 'https://secure.gravatar.com/avatar/'.$gavatarId.'.png';
             }
         }
-
         $this->set('users', $users);
     }
 
-    public function add(){
-
+    public function add() {
         // Send email on user creation
         App::uses('UsersEventListener', 'Event');
         $usersEventListener = new UsersEventListener();
         $this->User->getEventManager()->attach($usersEventListener);
 
-
-        if($this->request->is('post')){
+        if ($this->request->is('post')) {
             $this->User->create();
-            if($this->User->save($this->request->data)){
+            if ($this->User->save($this->request->data)) {
                 $this->Session->setFlash(__('A new user has been created!'), 'flash_success');
-            }else{
-                $this->Session->setFlash(__('Unable to create a user. Make sure his email is not already used and his password is at least 8 characters long.'), 'flash_error');
+            } else {
+                $this->Session->setFlash(__('Unable to create a user. Make sure its email is not already used and his password is at least 8 characters long.'), 'flash_error');
             }
             $this->redirect(array('action' => 'index'));
         }

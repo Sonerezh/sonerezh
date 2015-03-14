@@ -43,6 +43,13 @@ class User extends AppModel{
                 'required'  => true
             )
         ),
+        'confirm_password' => array(
+            'notEmpty' => array(
+                'rule'      => 'notEmpty',
+                'message'   => 'Please confirm the new password',
+                'required'  => true
+            )
+        ),
         'role'  => array(
             'inList'     => array(
                 'rule'      => array('inlist', array('admin', 'listener')),
@@ -77,12 +84,20 @@ class User extends AppModel{
         return true;
     }
 
-    public function beforeSave($options = array()){
-        if(isset($this->data[$this->alias]['password'])){
+    public function beforeSave($options = array()) {
+        // Check if confirm_password == password
+        if (isset($this->data[$this->alias]['password']) && isset($this->data[$this->alias]['confirm_password'])) {
+            if ($this->data[$this->alias]['password'] != $this->data[$this->alias]['confirm_password']) {
+                return false;
+            }
+        }
+
+        if (isset($this->data[$this->alias]['password'])) {
             $passwordHasher = new BlowfishPasswordHasher();
             $this->data[$this->alias]['password'] = $passwordHasher->hash($this->data[$this->alias]['password']);
         }
-        if(isset($this->data[$this->alias]['avatar']) && is_array($this->data[$this->alias]['avatar'])){
+
+        if (isset($this->data[$this->alias]['avatar']) && is_array($this->data[$this->alias]['avatar'])) {
             $this->__uploadAvatar($this->data[$this->alias]['avatar']);
         }
         return true;
@@ -106,21 +121,20 @@ class User extends AppModel{
         }
     }
 
-    public function beforeValidate($options = array()){
+    public function beforeValidate($options = array()) {
         // On vérifie que l'utilisateur a un ID
-        if(isset($this->data[$this->alias]['id'])){
+        if (isset($this->data[$this->alias]['id'])) {
             // Si aucun mot de passe n'est modifié, on supprime la validation
-            if(empty($this->data[$this->alias]['password'])){
+            if (empty($this->data[$this->alias]['password'])) {
                 $validator = $this->validator();
-                unset($validator['password']);
-                unset($this->data[$this->alias]['password']);
+                unset($validator['password'], $validator['confirm_password'], $this->data[$this->alias]['password'], $this->data[$this->alias]['confirm_password']);
             }
             //Si aucun avatar n'est envoyé, on supprime la validation
-            if($this->data[$this->alias]['avatar']['error'] === 4){
+            if ($this->data[$this->alias]['avatar']['error'] === 4) {
                 unset($this->data[$this->alias]['avatar']);
             }
             //Si aucun role n'est envoyé, on supprime la validation
-            if(!isset($this->data[$this->alias]['role'])){
+            if (!isset($this->data[$this->alias]['role'])) {
                 $validator = $this->validator();
                 unset($validator['role']);
             }

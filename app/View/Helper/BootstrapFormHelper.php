@@ -23,28 +23,28 @@ class BootstrapFormHelper extends FormHelper{
         $this->setEntity($fieldName);
         $defaultOptions = $this->_parseOptions($options);
 
-        if($defaultOptions['type'] == 'checkbox'){
+        if ($defaultOptions['type'] == 'checkbox') {
             $newDefaultOptions = array(
-                'div' => array('class' => 'checkbox'),
+                'div'   => array('class' => 'checkbox'),
                 'class' => false,
-                'type' => 'checkbox'
+                'type'  => 'checkbox'
             );
-            if(isset($defaultOptions["disabled"]) && $defaultOptions['disabled'] == 'disabled'){
+
+            if (isset($defaultOptions["disabled"]) && $defaultOptions['disabled'] == 'disabled') {
                 $newDefaultOptions['div']['class'] .= ' disabled';
             }
             $options = array_merge($newDefaultOptions, $options);
         }
 
-        if($defaultOptions['type'] == 'radio'){
+        if ($defaultOptions['type'] == 'radio') {
             $defaultOptions = array(
                 'div'       => array('class' => 'radio'),
-                'separator'   => '</div><div class="radio">',
+                'separator' => '</div><div class="radio">',
                 'class'     => false,
                 'legend'    => false
             );
             $options = array_merge($defaultOptions, $options);
         }
-
         return parent::input($fieldName, $options);
     }
 

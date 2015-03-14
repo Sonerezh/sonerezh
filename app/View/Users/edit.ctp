@@ -22,18 +22,19 @@
     <div class="row">
         <div class="col-md-7 col-xs-12">
             <?php
-
             echo $this->Form->input('id', array('type' => 'hidden'));
-            echo $this->Form->input('email', array('placeholder' => __('Enter an email')));
-            echo '<p class="help-block"><i>'.__('We also use email for avatar detection if no avatar is uploaded.').'</i></p>';
-            echo $this->Form->input('password', array('placeholder' => __('Choose a password'), 'required' => false));
+            echo $this->Form->input('email', array(
+                'placeholder' => __('Enter an email'),
+                'after' => '<span class="help-block">'.__('We also use email for avatar detection if no avatar is uploaded.').'</span>'
+            ));
+            echo $this->Form->input('password', array('placeholder' => __('Choose a password'), 'label' => __('New password'), 'required' => false));
+            echo $this->Form->input('confirm_password', array('type' => 'password', 'placeholder' => __('Confirm new password'), 'label' => __('Confirm new password'), 'required' => false));
             if(AuthComponent::user('role') == 'admin'){
                 echo $this->Form->input('role', array(
                     'options'   => array('admin' => __('Administrator'), 'listener' => __('Listener')),
                     'label'     => __('Select a role')
                 ));
             }
-
             ?>
         </div>
 

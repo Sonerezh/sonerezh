@@ -322,6 +322,10 @@ body, body.modal-open {
 .input-group .selecter.open .selecter-selected {
     border-top-right-radius: 0;
 }
+
+.selecter {
+    margin-top: 0;
+}
 /***
  * Artists view
  *********************************/
