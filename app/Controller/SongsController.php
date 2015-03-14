@@ -110,7 +110,7 @@ class SongsController extends AppController{
      * The import view function.
      * The function does the following action:
      *      - Check the root path,
-     *      - Search every media files (mp3, ogg, flac, wma, aac) to load them in an array
+     *      - Search every media files (mp3, ogg, flac, aac) to load them in an array
      *      - Compare this array with the list of existing songs to keep only new tracks
      *      - Pass this array to the view.
      *

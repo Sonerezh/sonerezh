@@ -63,7 +63,6 @@
                                 <?php echo $this->Form->input('from_ogg', array('type' => 'checkbox', 'label' => 'Ogg Vorbis (OGG)')); ?>
                                 <?php echo $this->Form->input('from_aac', array('type' => 'checkbox', 'label' => 'Advanced Audio Coding (AAC)', 'disabled' => 'disabled', 'checked' => 'checked')); ?>
                                 <?php echo $this->Form->input('from_flac', array('type' => 'checkbox', 'label' => 'Free Lossless Audio Codec (FLAC)', 'disabled' => 'disabled', 'checked' => 'checked')); ?>
-                                <?php echo $this->Form->input('from_wma', array('type' => 'checkbox', 'label' => 'Windows Media Audio (WMA)', 'disabled' => 'disabled', 'checked' => 'checked')); ?>
                             </div>
                             <div class="col-xs-6">
                                 <h5><strong><?php echo __('Destination format'); ?></strong></h5>
