@@ -29,7 +29,13 @@ class InstallersController extends AppController {
     public function index() {
         $this->view = "index";
         $gd = extension_loaded('gd');
-        $libavtools = shell_exec('which avconv') || shell_exec('which ffmpeg');
+		
+		if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+			$libavtools = shell_exec("where avconv") || shell_exec("where ffmpeg");//WIN
+		} else {
+			$libavtools = shell_exec("which avconv") || shell_exec("which ffmpeg");//NO WIN
+		}
+		
         $is_config_writable = is_writable(APP.'Config');
         $is_core_writable = is_writable(APP.'Config'.DS.'core.php');
 
