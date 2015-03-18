@@ -6,6 +6,7 @@
             <?php echo $this->Form->input('email', array('placeholder' => __('Email Address'), 'required')); ?>
 			<?php echo $this->Form->input('password', array('placeholder' => __('Password'), 'required')); ?>
 
+            <?php if($settings['Setting']['enable_mail_notification']): ?>
 			<span class="button-checkbox clearfix">
                 <!-- Not implemented yet
 				<button type="button" class="btn" data-color="info"><?php echo __('Remember Me'); ?></button>
@@ -13,6 +14,7 @@
 				-->
 				<a href="#forgot-password" class="btn btn-link pull-right" data-toggle="modal"><?php echo __('Forgot Password?'); ?></a>
 			</span>
+            <?php endif; ?>
 
 			<hr class="colorgraph" />
 			<div class="row">
@@ -27,7 +29,7 @@
 <div class="modal fade" id="forgot-password" tabindex="-1" role="dialog" aria-labelledby="forgot-password-modal" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <?php echo $this->Form->create('User', array('action' => 'resetPassword')); ?>
+            <?php echo $this->Form->create('User', array('action' => 'setResetPasswordToken')); ?>
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title"><?php echo __('Retrieve my password'); ?></h4>
@@ -35,7 +37,7 @@
             <div class="modal-body">
                 <?php
                 echo $this->Form->input('email', array(
-                        'placeholder' => __('Enter an email'),
+                        'placeholder' => __('Enter your email'),
                         'after' => '<span class="help-block"><small>'.__('If your account exists, you will receive an email explaining how to change your password.').'</small></span>')
                 );
                 ?>

@@ -48,6 +48,10 @@ class User extends AppModel{
                 'rule'      => 'notEmpty',
                 'message'   => 'Please confirm the new password',
                 'required'  => true
+            ),
+            'confirmPassword' => array(
+                'rule'      => 'confirmPassword',
+                'message'   => 'Wrong confirmation password.'
             )
         ),
         'role'  => array(
@@ -85,13 +89,6 @@ class User extends AppModel{
     }
 
     public function beforeSave($options = array()) {
-        // Check if confirm_password == password
-        if (isset($this->data[$this->alias]['password']) && isset($this->data[$this->alias]['confirm_password'])) {
-            if ($this->data[$this->alias]['password'] != $this->data[$this->alias]['confirm_password']) {
-                return false;
-            }
-        }
-
         if (isset($this->data[$this->alias]['password'])) {
             $passwordHasher = new BlowfishPasswordHasher();
             $this->data[$this->alias]['password'] = $passwordHasher->hash($this->data[$this->alias]['password']);
@@ -130,7 +127,7 @@ class User extends AppModel{
                 unset($validator['password'], $validator['confirm_password'], $this->data[$this->alias]['password'], $this->data[$this->alias]['confirm_password']);
             }
             //Si aucun avatar n'est envoyé, on supprime la validation
-            if ($this->data[$this->alias]['avatar']['error'] === 4) {
+            if (isset($this->data[$this->alias]['avatar']) && $this->data[$this->alias]['avatar']['error'] === 4) {
                 unset($this->data[$this->alias]['avatar']);
             }
             //Si aucun role n'est envoyé, on supprime la validation
@@ -140,6 +137,13 @@ class User extends AppModel{
             }
         }
         return true;
+    }
+
+    public function confirmPassword () {
+        if ($this->data[$this->alias]['password'] == $this->data[$this->alias]['confirm_password']) {
+            return true;
+        }
+        return false;
     }
 
     private function __uploadAvatar($avatarData){

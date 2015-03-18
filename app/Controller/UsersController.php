@@ -9,13 +9,17 @@ App::uses("AppController", "Controller");
  */
 class UsersController extends AppController{
 
+    public function beforeFilter() {
+        parent::beforeFilter();
+        $this->Auth->allow('setResetPasswordToken', 'resetPassword');
+    }
 
     public function isAuthorized($user){
-        if($user['role'] == "admin"){
+        if($user['role'] == "admin") {
             return true;
-        }else if($this->action == 'logout'){
+        } else if($this->action == 'logout') {
             return true;
-        }else if (in_array($this->action, array('edit', 'deleteAvatar')) && $this->passedArgs[0] == $this->Auth->user('id')) {
+        } else if (in_array($this->action, array('edit', 'deleteAvatar')) && $this->passedArgs[0] == $this->Auth->user('id')) {
             return true;
         }
         return false;
@@ -115,23 +119,133 @@ class UsersController extends AppController{
         }
     }
 
-	public function login(){
+	public function login() {
 		$this->layout = 'login';
-        
-        if($this->request->is('post')){
-            if($this->Auth->login()){
+
+        $this->loadModel('Setting');
+        $settings = $this->Setting->find('first', array('fields' => 'Setting.enable_mail_notification'));
+        $this->set(compact('settings'));
+
+        if ($this->request->is('post')) {
+            if ($this->Auth->login()) {
                 return $this->redirect($this->Auth->redirectUrl());
-            }else{
+            } else {
                 $this->Session->setFlash(__('Wrong credentials!'), 'flash_error');
             }
         }
 	}
 
-    public function logout(){
+    public function logout() {
         return $this->redirect($this->Auth->logout());
     }
 
-    public function resetPassword() {
+    /**
+     * This function allows users to reset their password
+     * A token is forged from user informations and send to the provided email
+     * Thanks to @bdelespierre (http://bdelespierre.fr/article/bien-plus-quun-simple-jeton/)
+     */
+    public function setResetPasswordToken() {
+        if ($this->request->is('POST')) {
+            if (!empty($this->request->data['User']['email'])) {
+                $user = $this->User->find('first', array(
+                    'conditions' => array('User.email' => $this->request->data['User']['email'])
+                ));
+            }
 
+            if (empty($user)) {
+                $this->Session->setFlash(__('Unable to find your account'), 'flash_error');
+                $this->redirect(array('action' => 'login'));
+            }
+
+            $this->DateComponent = $this->Components->load('Date');
+            $this->UrlComponent = $this->Components->load('Url');
+
+            $id = (int)$user['User']['id'];
+            $date = $this->DateComponent->date16_encode(date('y'), date('m'), date('d'));
+            $entropy = mt_rand();
+            $password_crc32 = crc32($user['User']['password']);
+            $binary_token = pack('ISSL', $id, $date, $entropy, $password_crc32);
+            $urlsafe_token =$this->UrlComponent->base64url_encode($binary_token);
+
+            // Send the token
+            if ($urlsafe_token) {
+                App::uses('UsersEventListener', 'Event');
+
+                $usersEventListener = new UsersEventListener();
+                $event = new CakeEvent('Controller.User.resetPassword', array('email' => $user['User']['email'], 'token' => $urlsafe_token));
+
+                $this->User->getEventManager()->attach($usersEventListener);
+                $this->User->getEventManager()->dispatch($event);
+
+                $this->Session->setFlash(__('Email successfully sent.'), 'flash_success');
+            } else {
+                $this->Session->setFlash(__('Unable to generate a token.'), 'flash_error');
+            }
+            $this->redirect(array('action' => 'login'));
+        }
+    }
+
+    public function resetPassword() {
+        $this->layout = 'login';
+
+        $token = isset($this->request->query['t']) ? $this->request->query['t'] : null;
+
+        if (!$token) {
+            $this->Session->setFlash(__('You need to provide a token.'), 'flash_error');
+            $this->redirect(array('action' => 'login'));
+        }
+
+        $this->UrlComponent = $this->Components->load('Url');
+        $binary_token = $this->UrlComponent->base64url_decode($token);
+
+        if (!$binary_token) {
+            $this->Session->setFlash(__('Unable to decode your token.'), 'flash_error');
+            $this->redirect(array('action' => 'login'));
+        }
+
+        $token_data = @unpack('Iid/Sdate/Sentropy/Lpassword_crc32', $binary_token);
+
+        if (!$token_data) {
+            $this->Session->setFlash(__('Unable to read your token.'), 'flash_error');
+            $this->redirect(array('action' => 'login'));
+        }
+
+        $this->DateComponent = $this->Components->load('Date');
+        list($year, $month, $day) = $this->DateComponent->date16_decode($token_data['date']);
+        $token_date = "{$year}-{$month}-{$day}";
+        $today = date('y-n-d');
+
+        if ($token_date != $today) {
+            $this->Session->setFlash(__('The token has expired.'), 'flash_error');
+            $this->redirect(array('action' => 'login'));
+        }
+
+        $token_id = $token_data['id'];
+        $user = $this->User->find('first', array(
+            'fields'        => array('User.id', 'User.email', 'User.password'),
+            'conditions'    => array('User.id' => $token_id)
+        ));
+
+        if (empty($user)) {
+            $this->Session->setFlash(__('Unable to find your account.'), 'flash_error');
+            $this->redirect(array('action' => 'login'));
+        } elseif (crc32($user['User']['password']) != $token_data['password_crc32']) {
+            $this->Session->setFlash(__('Wrong token.'), 'flash_error');
+            $this->redirect(array('action' => 'login'));
+        }
+
+        $this->set(compact('user'));
+
+        if ($this->request->is(array('post', 'put'))) {
+            $user['User']['password'] = $this->request->data['User']['password'];
+            $user['User']['confirm_password'] = $this->request->data['User']['confirm_password'];
+
+            if ($this->User->save($user)) {
+                $this->Session->setFlash(__('Your password has been updated.'), 'flash_success');
+                $this->redirect(array('action' => 'login'));
+            } else {
+                $this->Session->setFlash(__('Unable to update your password.'), 'flash_error');
+            }
+        }
     }
 }
