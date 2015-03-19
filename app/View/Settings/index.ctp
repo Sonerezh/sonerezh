@@ -18,11 +18,25 @@
             <?php
             echo $this->Form->create('Setting');
             echo $this->Form->input('id');
-            echo $this->Form->input('rootpath', array(
-                'label' => __('Music root directory'),
-                'placeholder' => __('Music root directory'),
-                'after' => '<small><span class="help-block">Make sure Sonerezh can read this folder recursively. Current App folder is: '.APP.'</span></small>'
-            ));
+            ?>
+            <label for="SettingRootPath">
+                <?php echo __('Music root directory'); ?>
+            </label>
+            <div id="root-path-input-group" class="input-group">
+                <?php
+                echo $this->Form->input('rootpath', array(
+                    'label' => false,
+                    'div'   => false,
+                    'placeholder' => __('Music root directory'),
+                    'after' => '<span class="input-group-btn"><button type="button" id="add-root-path-field" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i></button></span>'
+                ));
+                ?>
+            </div>
+            <small>
+                <?php echo '<span class="help-block">Make sure Sonerezh can read this folder recursively. Current App folder is: '.APP.'</span>'; ?>
+            </small>
+            <?php
+
             echo $this->Form->input('enable_mail_notification', array(
                 'type'  => 'checkbox',
                 'label' => __('Enable mail notifications.'),
