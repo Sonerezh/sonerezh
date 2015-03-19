@@ -34,7 +34,7 @@
                     <?php echo __('Sonerezh can send an email on users creation to notify them.'); ?>
                     <?php echo $this->Html->link(
                         '<i class="glyphicon glyphicon-question-sign"></i>',
-                        'https://www.sonerezh.bzh', // TODO: edit link
+                        'https://www.sonerezh.bzh/docs/en/configuration.html#enable-mail-notification',
                         array('escape' => false, 'target' => 'blank', 'class' => 'no-ajax')
                     ); ?>
                 </span>
@@ -70,7 +70,7 @@
                                 <h5><strong><?php echo __('Quality'); ?></strong></h5>
                                 <?php echo $this->Form->input('quality', array('type' => 'hidden'));?>
                                 <div class="row quality">
-                                    <div class="col-xs-9"><div id="quality-slider" ></div></div>
+                                    <div class="col-xs-9"><div id="quality-slider"></div></div>
                                     <div class="col-xs-3"><?php echo $this->request->data['Setting']['quality'];?>kb/s</div>
                                 </div>
                             </div>
