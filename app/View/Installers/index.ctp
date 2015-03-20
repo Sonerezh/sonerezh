@@ -97,7 +97,7 @@
         <?php
         echo $this->Form->input('User.email', array('placeholder' => 'john.doe@sonerezh.bzh'));
         echo $this->Form->input('User.password', array('placeholder' => __('Password'), 'label' => array('text' => __('Password (twice)'), 'class' => 'col-sm-3 control-label')));
-        echo $this->Form->input('User.password_confirmation', array('placeholder' => __('Confirm your password'), 'type' => 'password', 'label' => array('text' => '', 'class' => 'col-sm-3 control-label')));
+        echo $this->Form->input('User.confirm_password', array('placeholder' => __('Confirm your password'), 'type' => 'password', 'label' => array('text' => '', 'class' => 'col-sm-3 control-label')));
         echo $this->Form->input('Setting.rootpath', array('placeholder' => '/home/jdoe/Music', 'label' => array('text' => 'Music folder', 'class' => 'col-sm-3 control-label'), 'after' => '<p class="help-block">Current App folder is: '.APP.'</p>'));
 
         if ($gd && $is_config_writable && $is_core_writable) {
