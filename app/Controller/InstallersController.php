@@ -107,7 +107,7 @@ class InstallersController extends AppController {
             $this->request->data['Setting']['enable_auto_conv'] = $libavtools;
 
 
-            if($this->request->data['User']['password'] != $this->request->data['User']['password_confirmation']){
+            if($this->request->data['User']['password'] != $this->request->data['User']['confirm_password']){
                 $user = false;
                 $this->User->validationErrors["password"][] = __("Passwords do not match.");
             }else{
