@@ -1,0 +1,21 @@
+Changes with 1.0.0-beta
+-----------------------
+New features:
+* #46: Forgot my password system
+* #45: Email notifications system
+
+Improvements:
+
+* #35: Help for get root path on shared hosting
+* #32: Improve import process
+* #15: Added the pointer cursor on music titles clickable lines (Thanks to maximelebastard)
+
+Bug / Security fixes:
+* Fix #48 #64: Ask for password twice when trying to update it) (Thanks to FoxiesCuties)
+* Fix #34: XSS vulnerability on search form
+* Fix #33: A "Listener" can update any account
+* Fix #31: Do not hotlink images from flattr.com, paypalobjects.com
+* Fix #22: Invalid search query when using history back button
+* Fix #19: Unable to add songs to playlist from search results screen (Thanks to Cr33p)
+* Fix #8: Length path limitation) (Thanks to maximelebastard)
+* Fix #3: Avconv and FFmpeg
