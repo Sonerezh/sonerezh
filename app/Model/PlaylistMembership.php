@@ -12,7 +12,7 @@ class PlaylistMembership extends AppModel {
     public $belongsTo = array('Song', 'Playlist');
 
     public function afterDelete() {
-        if(!empty($this->data)){
+        if (!empty($this->data)) {
             $this->updateAll(
                 array('PlaylistMembership.sort' => '`PlaylistMembership`.`sort` - 1'),
                 array(

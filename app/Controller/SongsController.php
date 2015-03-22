@@ -5,7 +5,7 @@ App::uses("AppController", "Controller");
 /**
  * @property Song $Song
  */
-class SongsController extends AppController{
+class SongsController extends AppController {
 
     /**
      * Extract and import metadata in database.
@@ -14,7 +14,7 @@ class SongsController extends AppController{
      * @link http://getid3.sourceforge.net/
      * @see SongsController::import
      */
-    public function ajax_import(){
+    public function ajax_import() {
         App::import('Vendor', 'Getid3/getid3');
         App::uses('Folder', 'Utility');
 
@@ -116,7 +116,7 @@ class SongsController extends AppController{
      *
      * @see SongsController::ajax_import
      */
-    public function import(){
+    public function import() {
         App::uses('Folder', 'Utility');
 
         $this->loadModel('Setting');
@@ -143,7 +143,7 @@ class SongsController extends AppController{
      * The albums view function.
      * Find songs in the database, alphabetically and grouped by album.
      */
-    public function albums(){
+    public function albums() {
         $this->loadModel('Playlist');
         $playlists = $this->Playlist->find('list', array(
             'fields'        => array('Playlist.id', 'Playlist.title'),
@@ -175,7 +175,7 @@ class SongsController extends AppController{
      * Get album content.
      * This function is called when you click on a cover from the albums view.
      */
-    public function album(){
+    public function album() {
         $band = $this->request->query('band');
         $album = $this->request->query('album');
         $songs = $this->Song->find('all', array(
@@ -204,7 +204,7 @@ class SongsController extends AppController{
      * The artists view function.
      * Generate a list of 5 bands, in alphabetical order. This list is then read to find all the songs of each band, grouped by album and disc.
      */
-    public function artists(){
+    public function artists() {
         $this->loadModel('Playlist');
         $this->Playlist->recursive = 0;
         $playlists = $this->Playlist->find('list', array(
@@ -278,7 +278,7 @@ class SongsController extends AppController{
      * The index view function
      * Get songs from database, ordered by artist.
      */
-    public function index(){
+    public function index() {
         $this->Paginator->settings = array(
             'Song' => array(
                 'limit'     => 50,
@@ -306,7 +306,7 @@ class SongsController extends AppController{
      * Search view function
      * We just make a MySQL request...
      */
-    public function search(){
+    public function search() {
         $query = isset($this->request->query['q']) ? $this->request->query['q'] : false ;
 
         if ($query) {
@@ -400,7 +400,7 @@ class SongsController extends AppController{
      * @param null $id
      * @return CakeResponse audio file
      */
-    public function download($id = null){
+    public function download($id = null) {
         $this->loadModel('Setting');
         $settings = $this->Setting->find('first');
 
@@ -411,7 +411,7 @@ class SongsController extends AppController{
 
         if (empty($song['Song']['path'])) {
             $file_extension = substr(strrchr($song['Song']['source_path'], "."), 1);
-        }else {
+        } else {
             $file_extension = substr(strrchr($song['Song']['path'], "."), 1);
         }
 
@@ -431,7 +431,7 @@ class SongsController extends AppController{
                     $song['Song']['path'] = $path;
                     passthru($avconv.' -i "'.$song['Song']['source_path'].'" -threads 4  -c:a libvorbis -b:a '.$bitrate.'k "'.$path.'" 2>&1');
                 }
-            } else if(empty($song['Song']['path'])) {
+            } else if (empty($song['Song']['path'])) {
                 $song['Song']['path'] = $song['Song']['source_path'];
             }
 
@@ -515,8 +515,4 @@ class SongsController extends AppController{
         $this->render(false);
         echo json_encode($songs);
     }
-
-    # ------------------------- Sonerezh API ------------------------- #
-
-
 }

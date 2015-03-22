@@ -16,7 +16,7 @@ class SettingsController extends AppController {
      * This function manages the Sonerezh settings panel.
      * It also calculates some statistics and checks if avconv command is available.
      */
-    public function index(){
+    public function index() {
 
         $this->loadModel('Song');
 
@@ -44,14 +44,21 @@ class SettingsController extends AppController {
         $stats['thumbCache'] = 0;
 
         if (is_dir(RESIZED_DIR)) {
-            foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator(RESIZED_DIR)) as $file) {
+            $recursiveResizedDirectoryIterator = new RecursiveDirectoryIterator(RESIZED_DIR);
+            $recursiveResizedIteratorIterator = new RecursiveIteratorIterator($recursiveResizedDirectoryIterator);
+
+            foreach ($recursiveResizedIteratorIterator as $file) {
                 $stats['thumbCache'] += $file->getSize();
             }
         }
 
         // MP3 cache size
         $stats['mp3Cache'] = 0;
-        foreach (new RegexIterator(new RecursiveIteratorIterator(new RecursiveDirectoryIterator(TMP)), '/^.+\.(mp3|ogg)$/i') as $mp3) {
+        $recursiveTmpDirectoryIterator = new RecursiveDirectoryIterator(TMP);
+        $recursiveTmpIteratorIterator = new RecursiveIteratorIterator($recursiveTmpDirectoryIterator);
+        $regexTmpIterator = new RegexIterator($recursiveTmpIteratorIterator, '/^.+\.(mp3|ogg)$/i');
+
+        foreach ($regexTmpIterator as $mp3) {
             $stats['mp3Cache'] += $mp3->getSize();
         }
 
@@ -78,7 +85,7 @@ class SettingsController extends AppController {
      * This function clears the Sonerezh caches.
      * It deletes all the .(mp3|ogg) files in tmp/ and the thumbnails cache.
      */
-    public function clear(){
+    public function clear() {
         App::uses('Folder', 'Utility');
         App::uses('File', 'Utility');
         $this->loadModel('Song');

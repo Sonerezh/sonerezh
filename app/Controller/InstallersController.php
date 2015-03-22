@@ -49,7 +49,7 @@ class InstallersController extends AppController {
             unset($this->Toolbar->panels['sql_log']);
         }
 
-        if($this->request->is('get') && $is_core_writable){
+        if ($this->request->is('get') && $is_core_writable) {
             // Update Security settings
             $core_config_file = new File(APP.'Config'.DS.'core.php');
             $core_config_file->replaceText(
@@ -62,7 +62,7 @@ class InstallersController extends AppController {
                 )
             );
         }
-        else if($this->request->is('post')) {
+        else if ($this->request->is('post')) {
 
             $db_config_array = $this->request->data['DB'];
             $db_config_array['datasource'] = 'Database/Mysql';
@@ -85,12 +85,12 @@ class InstallersController extends AppController {
             }
 
             // Check database connexion
-            try{
+            try {
                 $db_connection = ConnectionManager::getDataSource('default');
                 $db_connection->begin();
                 $db_connection->execute("SHOW TABLES;");
                 $db_connection->commit();
-            }catch (Exception $e){
+            } catch (Exception $e) {
                 $db_config_file->delete();
                 $this->Session->setFlash(__('Could not connect to database'), 'flash_error');
                 return;
@@ -113,17 +113,17 @@ class InstallersController extends AppController {
             $this->request->data['Setting']['enable_auto_conv'] = $libavtools;
 
 
-            if($this->request->data['User']['password'] != $this->request->data['User']['confirm_password']){
+            if ($this->request->data['User']['password'] != $this->request->data['User']['confirm_password']) {
                 $user = false;
                 $this->User->validationErrors["password"][] = __("Passwords do not match.");
-            }else{
+            } else {
                 $user = $this->User->save($this->request->data['User']);
             }
             $setting = $this->Setting->save($this->request->data['Setting']);
 
-            if($user && $setting) {
+            if ($user && $setting) {
                 $this->Session->setFlash(__('Installation successful!'), 'flash_success');
-            }else {
+            } else {
                 $this->Session->setFlash(__('Unable to save your data.'), 'flash_error');
                 $db_config_file->delete();
                 return;

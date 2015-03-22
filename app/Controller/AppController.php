@@ -74,7 +74,7 @@ class AppController extends Controller {
     }
 
     public function redirect($url, $status = null, $exit = true) {
-        if($url == null && $status == 403 && $this->request->is('ajax')){
+        if ($url == null && $status == 403 && $this->request->is('ajax')) {
             $url = $this->Auth->loginAction;
         }
         parent::redirect($url, $status, $exit);
@@ -84,7 +84,7 @@ class AppController extends Controller {
      * This function checks if Sonerezh is already installed on the server
      * @return bool
      */
-    private function __isInstalled(){
+    private function __isInstalled() {
         $installed = true;
 
         if (!file_exists(APP."Config".DS."database.php")) {
@@ -99,8 +99,6 @@ class AppController extends Controller {
                 $installed = false;
             }
         }
-
         return $installed;
     }
-
 }

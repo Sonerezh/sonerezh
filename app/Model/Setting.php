@@ -39,7 +39,7 @@ class Setting extends AppModel {
         )
 	);
 
-	public function beforeSave($options = array()){
+	public function beforeSave($options = array()) {
 		// On place les fichiers à convertir dans ['convert_from']
 		$this->data[$this->alias]['convert_from'] = '';
 		if (isset($this->data[$this->alias]['from_mp3']) && $this->data[$this->alias]['from_mp3']) {
@@ -53,18 +53,18 @@ class Setting extends AppModel {
 		return true;
 	}
 
-	public function convConflicts($options = array()){
+	public function convConflicts($options = array()) {
 		// On s'assure que l'utilisateur n'a pas choisis MP3 -> MP3 ou OGG -> OGG
-		if($this->data[$this->alias]['from_mp3'] && $this->data[$this->alias]['convert_to'] == 'mp3'){
+		if ($this->data[$this->alias]['from_mp3'] && $this->data[$this->alias]['convert_to'] == 'mp3') {
 			return false;
 		}
-		if($this->data[$this->alias]['from_ogg'] && $this->data[$this->alias]['convert_to'] == 'ogg'){
+		if ($this->data[$this->alias]['from_ogg'] && $this->data[$this->alias]['convert_to'] == 'ogg') {
 			return false;
 		}
 		return true;
 	}
 
-	public function pathExists($options = array()){
+	public function pathExists($options = array()) {
 		if (!file_exists($this->data[$this->alias]['rootpath'])) {
 			return false;
 		}

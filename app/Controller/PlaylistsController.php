@@ -39,7 +39,7 @@ class PlaylistsController extends AppController {
 
         // Find playlist content
         if (!empty($playlists)) {
-            if($id == null){
+            if ($id == null) {
                 $id = key($playlists);
             }
             $playlistInfo = array('id' => $id, 'name' => $playlists[$id]);

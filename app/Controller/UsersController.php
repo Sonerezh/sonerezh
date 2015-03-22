@@ -7,15 +7,15 @@ App::uses("AppController", "Controller");
  *
  * @property User $User
  */
-class UsersController extends AppController{
+class UsersController extends AppController {
 
     public function beforeFilter() {
         parent::beforeFilter();
         $this->Auth->allow('setResetPasswordToken', 'resetPassword');
     }
 
-    public function isAuthorized($user){
-        if($user['role'] == "admin") {
+    public function isAuthorized($user) {
+        if ($user['role'] == "admin") {
             return true;
         } else if($this->action == 'logout') {
             return true;
@@ -56,26 +56,26 @@ class UsersController extends AppController{
         }
     }
 
-    public function edit($id = null){
+    public function edit($id = null) {
 
-        if($id === null){
+        if ($id === null) {
             $this->redirect($this->referer());
         }
 
         $this->User->id = $id;
-        if(!$this->User->exists()){
+        if (!$this->User->exists()) {
             throw new NotFoundException(__('Invalid user'));
         }
 
-        if($this->request->is(array('post', 'put'))){
-            if($this->User->save($this->request->data)){
+        if ($this->request->is(array('post', 'put'))) {
+            if ($this->User->save($this->request->data)) {
                 $this->Session->setFlash(__('User '.$id.' ('.$this->request->data['User']['email'].') has been successfully updated!'), 'flash_success');
-            }else{
+            } else {
                 $this->Session->setFlash(__('Something went wrong!'), 'flash_error');
             }
         }
         $user = $this->User->findById($id);
-        if(empty($this->request->data)){
+        if (empty($this->request->data)) {
             $this->request->data = $user;
             unset($this->request->data['User']['password']);
         }
@@ -83,8 +83,8 @@ class UsersController extends AppController{
         $this->set('user', $user);
     }
 
-    public function delete($id){
-        if($this->request->is('get')){
+    public function delete($id) {
+        if ($this->request->is('get')) {
             throw new MethodNotAllowedException();
         }
 
@@ -96,9 +96,9 @@ class UsersController extends AppController{
         $this->redirect($this->referer());
     }
 
-    public function deleteAvatar($id = null){
+    public function deleteAvatar($id = null) {
 
-        if(!isset($id)){
+        if (!isset($id)) {
             $this->redirect($this->referer());
         }
 
@@ -107,13 +107,13 @@ class UsersController extends AppController{
 
         $avatar = IMAGES.AVATARS_DIR.DS.$user['User']['avatar'];
 
-        if(file_exists($avatar)){
+        if (file_exists($avatar)) {
             unlink($avatar);           
-            if($this->User->saveField('avatar', null)){
+            if ($this->User->saveField('avatar', null)) {
                 $this->Session->setFlash(__('Avatar has been successfully removed!'), 'flash_success');
                 $this->redirect(array('action' => 'edit/'.$id));
             }
-        }else{
+        } else {
             $this->Session->setFlash(__('Something went wrong!'), 'flash_error');
             $this->redirect(array('action' => 'edit/'.$id));
         }
