@@ -73,7 +73,7 @@ class PlaylistMembershipsController extends AppController {
             } else {
                 $this->Session->setFlash(__('Unable to add the song'), 'flash_error');
             }
-            //$this->redirect($this->referer());
+            $this->redirect($this->referer());
             $this->render(false);
         } else {
             throw new MethodNotAllowedException();
