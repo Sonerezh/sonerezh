@@ -26,44 +26,51 @@ class SongsController extends AppController {
 
         // Parse file metadata to $newSong array.
         if (isset($songInfo['comments'])) {
-            if (isset($songInfo['comments']['title'])) {
-                $newSong['title'] = $songInfo['comments']['title'][0];
+            if (!empty($songInfo['comments']['title'])) {
+                $title_array_length = count($songInfo['comments']['title']);
+                $newSong['title'] = $songInfo['comments']['title'][$title_array_length - 1];
+            } else {
+                $newSong['title'] = 'Unknown Title';
             }
 
-            if (isset($songInfo['comments']['artist']) && !empty($songInfo['comments']['artist'])) {
-                $newSong['artist'] = $songInfo['comments']['artist'][0];
+            if (!empty($songInfo['comments']['artist'])) {
+                $artist_array_length = count($songInfo['comments']['artist']);
+                $newSong['artist'] = $songInfo['comments']['artist'][$artist_array_length - 1];
             } else {
                 $newSong['artist'] = 'Unknown Artist';
             }
 
-            if (isset($songInfo['comments']['band'])) {
-                $newSong['band'] = $songInfo['comments']['band'][0];
+            if (!empty($songInfo['comments']['band'])) {
+                $band_array_length = count($songInfo['comments']['band']);
+                $newSong['band'] = $songInfo['comments']['band'][$band_array_length - 1];
             }
 
-            if (isset($songInfo['comments']['album']) && !empty($songInfo['comments']['album'])) {
-                $newSong['album'] = $songInfo['comments']['album'][count($songInfo['comments']['album']) - 1];
+            if (!empty($songInfo['comments']['album'])) {
+                $album_array_length = count($songInfo['comments']['album']);
+                $newSong['album'] = $songInfo['comments']['album'][$album_array_length - 1];
             } else {
                 $newSong['album'] = 'Unknown Album';
             }
 
-            if (isset($songInfo['comments']['track_number']) && intval($songInfo['comments']['track_number'][0])) {
+            if (!empty($songInfo['comments']['track_number'])) {
                 $newSong['track_number'] = $songInfo['comments']['track_number'][0];
             }
 
-            if (isset($songInfo['playtime_string'])) {
+            if (!empty($songInfo['playtime_string'])) {
                 $newSong['playtime'] = $songInfo['playtime_string'];
             }
 
-            if (isset($songInfo['comments']['year'])) {
+            if (!empty($songInfo['comments']['year'])) {
                 $newSong['year'] = $songInfo['comments']['year'][0];
             }
 
-            if (isset($songInfo['comments']['part_of_a_set'])) {
+            if (!empty($songInfo['comments']['part_of_a_set'])) {
                 $newSong['disc'] = $songInfo['comments']['part_of_a_set'][0];
             }
 
-            if (isset($songInfo['comments']['genre'])){
-                $newSong['genre'] = $songInfo['comments']['genre'][0];
+            if (!empty($songInfo['comments']['genre'])){
+                $genre_array_length = count($songInfo['comments']['genre']);
+                $newSong['genre'] = $songInfo['comments']['genre'][$genre_array_length - 1];
             }
 
             if (isset($songInfo['comments']['picture'])) {
