@@ -131,19 +131,24 @@ class SongsController extends AppController {
         $settings = $this->Setting->find('first');
 
         if ($settings) {
-            $path = $settings['Setting']['rootpath'];
+            $paths = explode(';', $settings['Setting']['rootpath']);
         } else {
             $path = false;
             $this->Session->setFlash(__('Please define a root path.'), 'flash_error');
             $this->redirect(array('controller' => 'settings', 'action' => 'index'));
         }
 
-        $dir = new Folder($path);
-        $songs = $dir->findRecursive('^.*\.(mp3|ogg|flac|aac)$');
+        $songs = array();
+
+        foreach ($paths as $path) {
+            $dir = new Folder($path);
+            $songs = array_merge($songs, $dir->findRecursive('^.*\.(mp3|ogg|flac|aac)$'));
+        }
+
         $existingSongs = $this->Song->find('list', array('fields' => array('id', 'source_path')));
         $new = array_merge(array_diff($songs, $existingSongs));
-        $deleted = array_diff($existingSongs, $songs);
-        $this->set('songs',json_encode($new));
+        //$deleted = array_diff($existingSongs, $songs);
+        $this->set('songs', json_encode($new));
     }
 
     /**

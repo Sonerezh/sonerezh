@@ -25,6 +25,7 @@
             <div id="root-path-input-group" class="input-group">
                 <?php
                 echo $this->Form->input('rootpath', array(
+                    'type'  => 'text',
                     'label' => false,
                     'div'   => false,
                     'placeholder' => __('Music root directory'),

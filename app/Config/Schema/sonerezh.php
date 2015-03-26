@@ -33,7 +33,7 @@ class SonerezhSchema extends CakeSchema {
 
 	public $settings = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 3, 'unsigned' => true, 'key' => 'primary'),
-		'rootpath' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 255, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+		'rootpath' => array('type' => 'text', 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'enable_auto_conv' => array('type' => 'boolean', 'null' => false, 'default' => '0'),
 		'convert_from' => array('type' => 'string', 'null' => false, 'default' => 'aac,flac', 'length' => 25, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'convert_to' => array('type' => 'string', 'null' => false, 'default' => 'mp3', 'length' => 5, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),

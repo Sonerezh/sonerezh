@@ -65,16 +65,22 @@ class Setting extends AppModel {
 	}
 
 	public function pathExists($options = array()) {
-		if (!file_exists($this->data[$this->alias]['rootpath'])) {
-			return false;
-		}
+        $paths = explode(';', $this->data[$this->alias]['rootpath']);
+        foreach ($paths as $path) {
+            if (!file_exists($path)) {
+                return false;
+            }
+        }
 		return true;
 	}
 
 	public function isReadable($options = array()) {
-		if (!is_readable($this->data[$this->alias]['rootpath'])) {
-			return false;
-		}
+        $paths = explode(';', $this->data[$this->alias]['rootpath']);
+        foreach ($paths as $path) {
+            if (!is_readable($path)) {
+                return false;
+            }
+        }
 		return true;
 	}
 }
