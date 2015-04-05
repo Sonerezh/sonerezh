@@ -64,10 +64,16 @@ class InstallersController extends AppController {
         }
         else if ($this->request->is('post')) {
 
-            $db_config_array = $this->request->data['DB'];
-            $db_config_array['datasource'] = 'Database/Mysql';
-            $db_config_array['persistent'] = false;
-            $db_config_array['encoding'] = 'utf8';
+            $datasources = array('Database/Mysql', 'Database/Postgres');
+
+            if (in_array($this->request->data['DB']['datasource'], $datasources)) {
+                $db_config_array = $this->request->data['DB'];
+                $db_config_array['persistent'] = false;
+                $db_config_array['encoding'] = 'utf8';
+            } else {
+                $this->Session->setFlash(__('Wrong datasource.'), 'flash_error');
+                return;
+            }
 
             // Write app/Config/database.php
             $db_config_file = new File(APP.'Config'.DS.'database.php');
@@ -77,7 +83,6 @@ class InstallersController extends AppController {
                 $db_config_data .= "class DATABASE_CONFIG {\n";
                 $db_config_data .= 'public $default = '.var_export($db_config_array, true).";\n";
                 $db_config_data .= '}';
-
                 $db_config_file->write($db_config_data);
             } else {
                 $this->Session->setFlash(__('Unable to write configuration file.'), 'flash_error');
@@ -87,9 +92,7 @@ class InstallersController extends AppController {
             // Check database connexion
             try {
                 $db_connection = ConnectionManager::getDataSource('default');
-                $db_connection->begin();
-                $db_connection->execute("SHOW TABLES;");
-                $db_connection->commit();
+                $db_connection->connect();
             } catch (Exception $e) {
                 $db_config_file->delete();
                 $this->Session->setFlash(__('Could not connect to database'), 'flash_error');

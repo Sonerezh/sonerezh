@@ -7,9 +7,9 @@
     <title>
         <?php echo $title_for_layout; ?>
     </title>
-    <?= $this->Html->meta('icon'); ?>
-    <?= $this->Html->css(array('bootstrap.min'));?>
     <?php
+    echo $this->Html->meta('icon');
+    echo $this->Html->css(array('bootstrap.min', 'jquery.fs.selecter.min'));
     echo $this->fetch('meta');
     echo $this->fetch('css');
     ?>
@@ -30,9 +30,11 @@
     </div>
 </div>
 <script type="text/javascript">
-    var baseurl = "<?= $this->request->base; ?>";
+    var baseurl = "<?php echo $this->request->base; ?>";
 </script>
-<?php echo $this->Html->script(array('jquery-2.1.0.min', 'bootstrap.min'));?>
-<?php echo $this->fetch('script'); ?>
+<?php
+echo $this->Html->script(array('jquery-2.1.0.min', 'bootstrap.min', 'jquery.fs.selecter.min'));
+echo $this->fetch('script');
+?>
 </body>
 </html>

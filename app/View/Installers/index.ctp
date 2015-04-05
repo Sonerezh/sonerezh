@@ -1,3 +1,13 @@
+<?php echo $this->start('script'); ?>
+<script>
+    $(function(){
+        $('#DBDatasource').selecter({
+            label: "<?php echo __('Select a database type'); ?>"
+        });
+    });
+</script>
+<?php echo $this->end(); ?>
+
 <div class="col-xs-12" style="margin-bottom: 20px;">
     <div class="page-header">
         <h1><?php echo __('Sonerezh'); ?></h1>
@@ -56,7 +66,7 @@
     <hr />
 
     <p>
-        <?php echo __("Please provide the following information to allow Sonerezh to access to its MySQL database."); ?> <span class="text-danger"><?php echo __('Note that if you are reinstalling Sonerezh, all your previous data will be lost.') ?></span>
+        <?php echo __("Please provide the following information to allow Sonerezh to access to its database."); ?> <span class="text-danger"><?php echo __('Note that if you are reinstalling Sonerezh, all your previous data will be lost.') ?></span>
     </p>
 
 
@@ -74,6 +84,10 @@
 
     <div class="col-xs-8 col-xs-offset-2">
         <?php
+        echo $this->Form->input('DB.datasource', array(
+            'options'   => array('Database/Mysql' => 'MySQL', 'Database/Postgres' => 'PostgreSQL'),
+            'label'     => array('text' => __('Database type'), 'class' => 'col-sm-3 control-label', 'style' => 'padding-top: 20px;')
+        ));
         echo $this->Form->input('DB.host', array('placeholder' => __('Database host (generally localhost)')));
         echo $this->Form->input('DB.database', array('placeholder' => __('Database name')));
         echo $this->Form->input('DB.login', array('placeholder' => __('Database user login')));
@@ -98,7 +112,7 @@
         echo $this->Form->input('User.email', array('placeholder' => 'john.doe@sonerezh.bzh'));
         echo $this->Form->input('User.password', array('placeholder' => __('Password'), 'label' => array('text' => __('Password (twice)'), 'class' => 'col-sm-3 control-label')));
         echo $this->Form->input('User.confirm_password', array('placeholder' => __('Confirm your password'), 'type' => 'password', 'label' => array('text' => '', 'class' => 'col-sm-3 control-label')));
-        echo $this->Form->input('Setting.rootpath', array('placeholder' => '/home/jdoe/Music', 'label' => array('text' => 'Music folder', 'class' => 'col-sm-3 control-label'), 'after' => '<p class="help-block">Current App folder is: '.APP.'</p>'));
+        echo $this->Form->input('Setting.rootpath', array('placeholder' => '/home/jdoe/Music', 'label' => array('text' => 'Music folder', 'class' => 'col-sm-3 control-label'), 'after' => '<small><span class="help-block">Current App folder is: '.APP.'</span></small>'));
 
         if ($gd && $is_config_writable && $is_core_writable) {
             echo $this->Form->submit('Run!', array('class' => 'btn btn-success pull-right'));
