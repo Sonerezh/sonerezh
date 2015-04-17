@@ -26,7 +26,7 @@
                 $('#scroll-loader').show();
                 $.ajax({
                     url: link + (link.indexOf("?ajax=true") == -1 ? (link.indexOf("?") == -1) ? "?ajax=true" : "&ajax=true" : ""),
-                    type: 'json',
+                    dataType : 'json',
                     success: function(data){
                         var html = data[2].html;
                         var nextLink = $(html).find(settings.nextSelector).attr('href');
