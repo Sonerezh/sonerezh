@@ -54,10 +54,8 @@ $(function(){
                 updateSelectedSong();
 
             },
-            error: function(xhr){
-                var response = JSON.parse(xhr.responseText);
-                $('#content').html(response[2].html);
-                //document.location.reload();
+            error: function(){
+                document.location.reload();
             }
         });
     }

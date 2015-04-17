@@ -2,6 +2,7 @@
 
 DROP TABLE IF EXISTS `sonerezh`.`playlist_memberships`;
 DROP TABLE IF EXISTS `sonerezh`.`playlists`;
+DROP TABLE IF EXISTS `sonerezh`.`rootpaths`;
 DROP TABLE IF EXISTS `sonerezh`.`settings`;
 DROP TABLE IF EXISTS `sonerezh`.`songs`;
 DROP TABLE IF EXISTS `sonerezh`.`users`;
@@ -24,9 +25,15 @@ CREATE TABLE `sonerezh`.`playlists` (
 	COLLATE=utf8_general_ci,
 	ENGINE=InnoDB;
 
+CREATE TABLE `sonerezh`.`rootpaths` (
+	`id` int(11) NOT NULL AUTO_INCREMENT,
+	`setting_id` int(11) NOT NULL,
+	`rootpath` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,	PRIMARY KEY  (`id`)) 	DEFAULT CHARSET=latin1,
+	COLLATE=latin1_swedish_ci,
+	ENGINE=InnoDB;
+
 CREATE TABLE `sonerezh`.`settings` (
 	`id` int(3) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`rootpath` text CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
 	`enable_auto_conv` tinyint(1) DEFAULT '0' NOT NULL,
 	`convert_from` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT 'aac,flac' NOT NULL,
 	`convert_to` varchar(5) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT 'mp3' NOT NULL,
