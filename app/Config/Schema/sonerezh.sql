@@ -28,7 +28,7 @@ CREATE TABLE `sonerezh`.`playlists` (
 CREATE TABLE `sonerezh`.`rootpaths` (
 	`id` int(11) NOT NULL AUTO_INCREMENT,
 	`setting_id` int(11) NOT NULL,
-	`rootpath` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,	PRIMARY KEY  (`id`)) 	DEFAULT CHARSET=latin1,
+	`rootpath` varchar(1024) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,	PRIMARY KEY  (`id`)) 	DEFAULT CHARSET=latin1,
 	COLLATE=latin1_swedish_ci,
 	ENGINE=InnoDB;
 
@@ -47,8 +47,8 @@ CREATE TABLE `sonerezh`.`songs` (
 	`title` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
 	`album` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
 	`artist` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-	`source_path` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-	`path` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+	`source_path` varchar(1024) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+	`path` varchar(1024) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
 	`cover` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
 	`playtime` varchar(9) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
 	`track_number` int(5) UNSIGNED DEFAULT NULL,
