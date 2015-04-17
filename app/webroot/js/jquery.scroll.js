@@ -26,7 +26,6 @@
                 $('#scroll-loader').show();
                 $.ajax({
                     url: link + (link.indexOf("?ajax=true") == -1 ? (link.indexOf("?") == -1) ? "?ajax=true" : "&ajax=true" : ""),
-                    type: 'get',
                     dataType : 'json',
                     success: function(data){
                         var html = data[2].html;
