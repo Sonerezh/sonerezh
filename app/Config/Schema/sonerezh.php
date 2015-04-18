@@ -1,5 +1,5 @@
 <?php 
-class AppSchema extends CakeSchema {
+class SonerezhSchema extends CakeSchema {
 
 	public function before($event = array()) {
 		return true;
