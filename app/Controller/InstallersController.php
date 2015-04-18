@@ -122,7 +122,7 @@ class InstallersController extends AppController {
             } else {
                 $user = $this->User->save($this->request->data['User']);
             }
-            $setting = $this->Setting->save($this->request->data['Setting']);
+            $setting = $this->Setting->saveAssociated($this->request->data['Setting']);
 
             if ($user && $setting) {
                 $this->Session->setFlash(__('Installation successful!'), 'flash_success');
