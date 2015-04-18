@@ -53,7 +53,8 @@ class SongsController extends AppController {
             }
 
             if (!empty($songInfo['comments']['track_number'])) {
-                $newSong['track_number'] = $songInfo['comments']['track_number'][0];
+                $track_number_array = explode('/', (string)$songInfo['comments']['track_number'][0]);
+                $newSong['track_number'] = intval($track_number_array[0]);
             }
 
             if (!empty($songInfo['playtime_string'])) {
@@ -145,7 +146,9 @@ class SongsController extends AppController {
             $songs = array_merge($songs, $dir->findRecursive('^.*\.(mp3|ogg|flac|aac)$'));
         }
 
-        $existingSongs = $this->Song->find('list', array('fields' => array('id', 'source_path')));
+        $existingSongs = $this->Song->find('list', array(
+            'fields' => array('Song.id', 'Song.source_path')
+        ));
         $new = array_merge(array_diff($songs, $existingSongs));
         //$deleted = array_diff($existingSongs, $songs);
         $this->set('songs', json_encode($new));
@@ -162,14 +165,27 @@ class SongsController extends AppController {
             'conditions'    => array('user_id' => AuthComponent::user('id'))
         ));
 
+        $db = $this->Song->getDataSource();
+        $subQuery = $db->buildStatement(
+            array(
+                'fields'    => array('MIN(subsong.id)', 'subsong.album'),
+                'table'     => $db->fullTableName($this->Song),
+                'alias'     => 'subsong',
+                'group'     => 'subsong.album'
+            ),
+            $this->Song
+        );
+        $subQuery = ' (Song.id, Song.album) IN ('. $subQuery .') ';
+
         $this->Paginator->settings = array(
             'Song' => array(
-                'limit'         => 36,
-                'fields'        => array('Song.band', 'Song.album', 'Song.cover'),
-                'order'         => $this->Song->albumOrder,
-                'group'         => 'Song.album'
+                'fields'        => array('Song.id', 'Song.band', 'Song.album', 'Song.cover'),
+                'conditions'    => $subQuery,
+                'order'         => 'Song.album',
+                'limit'         => 36
             )
         );
+
         $songs = $this->Paginator->paginate();
 
         foreach ($songs as &$song) {
@@ -192,10 +208,12 @@ class SongsController extends AppController {
         $album = $this->request->query('album');
         $songs = $this->Song->find('all', array(
                 'fields'        => array('Song.id', 'Song.title', 'Song.album', 'Song.artist', 'Song.band', 'Song.playtime', 'Song.track_number', 'Song.year', 'Song.disc'),
-                'conditions'    => array('Song.band' => $band, 'Song.album' => $album),
-                'order'         => $this->Song->order
+                'conditions'    => array('Song.band' => $band, 'Song.album' => $album)
             )
         );
+
+        $this->SortComponent = $this->Components->load('Sort');
+        $songs = $this->SortComponent->sortByDisc($songs);
 
         $parsed = array();
         foreach ($songs as &$song) {
@@ -224,30 +242,32 @@ class SongsController extends AppController {
             'conditions'    => array('user_id' => AuthComponent::user('id'))
         ));
 
-        // Getting 5 band names.
+        // Get 5 band names
         $this->Paginator->settings = array(
             'Song' => array(
                 'limit'     => 5,
                 'fields'    => array('Song.band'),
-                'order'     => $this->Song->order,
                 'group'     => array('Song.band')
             )
         );
 
         $bands = $this->Paginator->paginate();
+
         $band_list = array();
         foreach ($bands as $band) {
             $band_list[] = $band['Song']['band'];
         }
 
-        // Finding the songs
+        // Get songs from the previous band names
         $songs = $this->Song->find('all', array(
             'fields'        => array('Song.id', 'Song.title', 'Song.album', 'Song.band', 'Song.artist', 'Song.cover', 'Song.playtime', 'Song.track_number', 'Song.year', 'Song.disc', 'Song.genre'),
-            'order'         => $this->Song->order,
             'conditions'    => array('Song.band' => $band_list)
         ));
 
-        // Ordering the songs
+        $this->SortComponent = $this->Components->load('Sort');
+        $songs = $this->SortComponent->sortByBand($songs);
+
+        // Then we can group the songs by band name, album and disc.
         $parsed = array();
         foreach ($songs as $song) {
             $setsQuantity = preg_split('/\//', $song['Song']['disc']);
@@ -278,8 +298,8 @@ class SongsController extends AppController {
             }
 
             $parsed[$song['Song']['band']]['albums'][$song['Song']['album']]['discs'][$currentDisc]['songs'][] = $song['Song'];
-
         }
+
         if (empty($parsed)) {
             $this->Session->setFlash("<strong>".__('Oops!')."</strong> ".__('The database is empty...'), 'flash_info');
         }
@@ -316,7 +336,7 @@ class SongsController extends AppController {
 
     /**
      * Search view function
-     * We just make a MySQL request...
+     * We just make a SQL request...
      */
     public function search() {
         $query = isset($this->request->query['q']) ? $this->request->query['q'] : false ;

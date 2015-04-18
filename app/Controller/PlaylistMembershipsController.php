@@ -17,6 +17,7 @@ class PlaylistMembershipsController extends AppController {
      */
     public function add() {
         if ($this->request->is('post')) {
+
             // Verify that Playlist.id is correct
             if (empty($this->request->data['Playlist']['id']) && empty($this->request->data['Playlist']['title'])) {
                 $this->Session->setFlash(__('You must specify a valid playlist'), 'flash_error');
@@ -49,19 +50,32 @@ class PlaylistMembershipsController extends AppController {
                     'song_id' => $this->request->data['song'],
                     'sort' => $playlist_length+1
                 );
-            } else if (isset($this->request->data['band'])) { //It's a band !
-                $conditions = array('Song.band' => $this->request->data['band']);
-                $order = array('Song.band', 'Song.album', 'Song.disc+0', 'Song.track_number');
 
-                if (isset($this->request->data['album'])) { //It's an album !
+            } else if (isset($this->request->data['band'])) { // It's a band!
+                $conditions = array('Song.band' => $this->request->data['band']);
+                $order = 'band';
+
+                if (isset($this->request->data['album'])) { // It's an album!
                     $conditions['Song.album'] = $this->request->data['album'];
-                    $order = array('Song.album', 'Song.disc+0', 'Song.track_number');
+                    $order = 'disc';
                 }
 
-                $songsId = $this->PlaylistMembership->Song->find('list', array('conditions' => $conditions, 'order' => $order));
-                foreach ($songsId as $key => $songId) {
+                $songs = $this->PlaylistMembership->Song->find('all', array(
+                    'fields'        => array('Song.id', 'Song.title', 'Song.album', 'Song.band', 'Song.track_number', 'Song.disc'),
+                    'conditions'    => $conditions
+                ));
+
+                $this->SortComponent = $this->Components->load('Sort');
+
+                if ($order == 'band') {
+                    $songs = $this->SortComponent->sortByBand($songs);
+                } elseif ($order == 'disc') {
+                    $songs = $this->SortComponent->sortByDisc($songs);
+                }
+
+                foreach ($songs as $song) {
                     $data['PlaylistMembership'][] = array(
-                        'song_id' => $key,
+                        'song_id' => $song['Song']['id'],
                         'sort' => ++$playlist_length
                     );
                 }

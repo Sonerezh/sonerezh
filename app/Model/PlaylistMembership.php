@@ -14,7 +14,7 @@ class PlaylistMembership extends AppModel {
     public function afterDelete() {
         if (!empty($this->data)) {
             $this->updateAll(
-                array('PlaylistMembership.sort' => '`PlaylistMembership`.`sort` - 1'),
+                array('PlaylistMembership.sort' => 'PlaylistMembership.sort - 1'),
                 array(
                     'PlaylistMembership.playlist_id'    => $this->data['PlaylistMembership']['playlist_id'],
                     'PlaylistMembership.sort >'         => $this->data['PlaylistMembership']['sort']
