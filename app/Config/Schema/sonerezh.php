@@ -34,7 +34,7 @@ class AppSchema extends CakeSchema {
 	public $rootpaths = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'unsigned' => false, 'key' => 'primary'),
 		'setting_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'unsigned' => false),
-		'rootpath' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 1024, 'collate' => 'latin1_swedish_ci', 'charset' => 'latin1'),
+		'rootpath' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 1024, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'indexes' => array(
 			'PRIMARY' => array('column' => 'id', 'unique' => 1)
 		),
