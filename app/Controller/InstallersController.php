@@ -105,7 +105,6 @@ class InstallersController extends AppController {
             $schema_shell->params = array('connection' => 'default', 'file' => 'sonerezh.php', 'yes' => 1, 'name' => 'Sonerezh');
             $schema_shell->startup();
             $schema_shell->create();
-            debug('ok');die;
 
             // Save first user and firsts settings
             $this->User->useTable = 'users';
