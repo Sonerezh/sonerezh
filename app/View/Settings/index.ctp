@@ -1,14 +1,6 @@
-<?php $this->start('script');?>
-<script type="text/javascript">
-    $(function(){
-        $('#quality-slider').slider({min: 56, max: 320, steps:[128, 192, 256], change: function(val){
-            $('#SettingQuality').val(val);
-            $('.quality div:last').text(val+'kb/s');
-        }});
-        $('#quality-slider').slider("value", $('#SettingQuality').val());
-    });
-</script>
-<?php $this->end();?>
+<?php $this->start('script');
+echo $this->Html->script('settings');
+$this->end();?>
 
 <div class="row" style="margin-bottom: 50px;">
     <div class="col-md-8 col-xs-12">
@@ -22,17 +14,37 @@
             <label for="SettingRootPath">
                 <?php echo __('Music root directory'); ?>
             </label>
-            <div id="root-path-input-group" class="input-group">
-                <?php
-                echo $this->Form->input('rootpath', array(
+            <div class="rootpath">
+            <?php
+            if (isset($this->request->data['Rootpath'][0])) echo $this->Form->input("Rootpath.0.id");
+            echo $this->Form->error('Rootpath.0.rootpath', null, array('class' => 'text-danger'));
+            echo $this->Form->input('Rootpath.0.rootpath', array(
+                'type'  => 'text',
+                'label' => false,
+                'div'   => array('id' => 'root-path-input-group', 'class' => 'input-group'),
+                'error' => false,
+                'placeholder' => __('Music root directory'),
+                'after' => '<span class="input-group-btn"><button type="button" id="add-root-path-field" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i></button></span>'
+            ));
+            ?>
+            </div>
+            <?php
+            foreach ($this->request->data['Rootpath'] as $i => &$rootpath){
+                if (!$i) continue;
+                echo '<div class="rootpath">';
+                if (isset($rootpath['id'])) echo $this->Form->input("Rootpath.$i.id");
+                echo $this->Form->error("Rootpath.$i.rootpath", null, array('class' => 'text-danger'));
+                echo $this->Form->input("Rootpath.$i.rootpath", array(
                     'type'  => 'text',
                     'label' => false,
-                    'div'   => false,
+                    'div'   => array('class' => 'input-group'),
+                    'error' => false,
                     'placeholder' => __('Music root directory'),
-                    'after' => '<span class="input-group-btn"><button type="button" id="add-root-path-field" class="btn btn-primary"><i class="glyphicon glyphicon-plus"></i></button></span>'
+                    'after' => '<span class="input-group-btn"><button type="button" class="btn btn-danger remove-dir"><i class="glyphicon glyphicon-minus"></i></button></span>'
                 ));
-                ?>
-            </div>
+                echo '</div>';
+            }
+            ?>
             <small>
                 <?php echo '<span class="help-block">Make sure Sonerezh can read this folder recursively. Current App folder is: '.APP.'</span>'; ?>
             </small>

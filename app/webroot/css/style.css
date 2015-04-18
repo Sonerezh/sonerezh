@@ -480,6 +480,10 @@ table tbody tr:hover td span.action-remove-from-playlist{
     margin-top: 7px;
 }
 
+.rootpath{
+    margin-bottom: 10px;
+}
+
 
 /***
  * Users edition

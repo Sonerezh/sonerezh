@@ -19,12 +19,39 @@ class SettingsController extends AppController {
     public function index() {
 
         $this->loadModel('Song');
+        $this->Setting->contain('Rootpath');
 
         if ($this->request->is(array('POST', 'PUT'))) {
-            if ($this->Setting->save($this->request->data)) {
+
+            $rootpaths = array();
+            foreach ($this->request->data['Rootpath'] as $rootpath) {
+                if (isset($rootpath['id'])) {
+                    $rootpaths[] = $rootpath['id'];
+                }
+            }
+            $sessionRootpaths = $this->Session->check('rootpaths') ? $this->Session->read('rootpaths') : array();
+            $deleteRootpaths = array_diff($sessionRootpaths, $rootpaths);
+
+            if ($this->Setting->saveAssociated($this->request->data)) {
+
+                $this->Setting->Rootpath->deleteAll(array('Rootpath.id' => $deleteRootpaths));
+                $this->request->data = $this->Setting->find('first');
+                $this->_saveRootpathsInSession($this->request->data['Rootpath']);
                 $this->Session->setFlash(__('Settings saved !'), 'flash_success');
+
             } else {
                 $this->Session->setFlash(__('Unable to save settings!'), 'flash_error');
+            }
+        }
+
+        if (empty($this->request->data)) {
+            $this->request->data = $this->Setting->find('first');
+            $this->_saveRootpathsInSession($this->request->data['Rootpath']);
+        }
+        if (isset($this->request->data['Setting']['convert_from'])) {
+            $convert_from = explode(',', $this->request->data['Setting']['convert_from']);
+            foreach ($convert_from as $v) {
+                $this->request->data['Setting']['from_'.$v] = true;
             }
         }
 
@@ -63,19 +90,10 @@ class SettingsController extends AppController {
         }
 
         // Check if avconv shell command is available
-		if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-			$avconv = shell_exec("where avconv") || shell_exec("where ffmpeg");//WIN
-		} else {
-			$avconv = shell_exec("which avconv") || shell_exec("which ffmpeg");//NO WIN
-		}
-		
-        if (empty($this->request->data)) {
-            $this->request->data = $this->Setting->find('first');
-            $convert_from = explode(',', $this->request->data['Setting']['convert_from']);
-
-            foreach ($convert_from as $v) {
-                $this->request->data['Setting']['from_'.$v] = true;
-            }
+       if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+          $avconv = shell_exec("where avconv") || shell_exec("where ffmpeg");//WIN
+        } else {
+            $avconv = shell_exec("which avconv") || shell_exec("which ffmpeg");//NO WIN
         }
 
         $this->set(array('stats' => $stats, 'avconv' => $avconv));
@@ -138,5 +156,14 @@ class SettingsController extends AppController {
             $this->Session->setFlash(__('Unable to clean the database!'), 'flash_error');
             return $this->redirect(array('action' => 'index'));
         }
+    }
+
+    protected function _saveRootpathsInSession($rootpaths) {
+        $rps = array();
+        foreach ($rootpaths as $rootpath) {
+            $rps[] = $rootpath['id'];
+        }
+        $this->Session->delete('rootpaths');
+        $this->Session->write('rootpaths', $rps);
     }
 }

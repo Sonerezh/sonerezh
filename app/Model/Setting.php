@@ -3,18 +3,9 @@
 App::uses('AppModel', 'Model');
 
 class Setting extends AppModel {
+    public $hasMany = array('Rootpath');
 	public $name = 'Setting';
 	public $validate = array(
-		'rootpath'	=> array(
-			'pathExists'	=> array(
-				'rule'			=> 'pathExists',
-				'message'		=> 'Invalid root path'
-			),
-			'isReadable'	=> array(
-				'rule'			=> 'isReadable',
-				'message'		=> 'Root path folder is not readable'
-			),
-		),
 		'enable_auto_conv'	=> array(
 			'boolean'			=> array(
 				'rule'				=> array('boolean'),
@@ -64,23 +55,4 @@ class Setting extends AppModel {
 		return true;
 	}
 
-	public function pathExists($options = array()) {
-        $paths = explode(';', $this->data[$this->alias]['rootpath']);
-        foreach ($paths as $path) {
-            if (!file_exists($path)) {
-                return false;
-            }
-        }
-		return true;
-	}
-
-	public function isReadable($options = array()) {
-        $paths = explode(';', $this->data[$this->alias]['rootpath']);
-        foreach ($paths as $path) {
-            if (!is_readable($path)) {
-                return false;
-            }
-        }
-		return true;
-	}
 }

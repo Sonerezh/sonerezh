@@ -1,5 +1,5 @@
 <?php 
-class SonerezhSchema extends CakeSchema {
+class AppSchema extends CakeSchema {
 
 	public function before($event = array()) {
 		return true;
@@ -31,14 +31,23 @@ class SonerezhSchema extends CakeSchema {
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB')
 	);
 
+	public $rootpaths = array(
+		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'unsigned' => false, 'key' => 'primary'),
+		'setting_id' => array('type' => 'integer', 'null' => false, 'default' => null, 'unsigned' => false),
+		'rootpath' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 1024, 'collate' => 'latin1_swedish_ci', 'charset' => 'latin1'),
+		'indexes' => array(
+			'PRIMARY' => array('column' => 'id', 'unique' => 1)
+		),
+		'tableParameters' => array('charset' => 'latin1', 'collate' => 'latin1_swedish_ci', 'engine' => 'InnoDB')
+	);
+
 	public $settings = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 3, 'unsigned' => true, 'key' => 'primary'),
-		'rootpath' => array('type' => 'text', 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'enable_auto_conv' => array('type' => 'boolean', 'null' => false, 'default' => '0'),
 		'convert_from' => array('type' => 'string', 'null' => false, 'default' => 'aac,flac', 'length' => 25, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'convert_to' => array('type' => 'string', 'null' => false, 'default' => 'mp3', 'length' => 5, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'quality' => array('type' => 'integer', 'null' => false, 'default' => '256', 'length' => 3, 'unsigned' => true),
-        'enable_mail_notification' => array('type' => 'boolean', 'null' => false, 'default' => '0'),
+		'enable_mail_notification' => array('type' => 'boolean', 'null' => false, 'default' => '0'),
 		'indexes' => array(
 			'PRIMARY' => array('column' => 'id', 'unique' => 1)
 		),
@@ -50,8 +59,8 @@ class SonerezhSchema extends CakeSchema {
 		'title' => array('type' => 'string', 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'album' => array('type' => 'string', 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'artist' => array('type' => 'string', 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
-		'source_path' => array('type' => 'string', 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
-		'path' => array('type' => 'string', 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+		'source_path' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 1024, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+		'path' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 1024, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'cover' => array('type' => 'string', 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'playtime' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 9, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'track_number' => array('type' => 'integer', 'null' => true, 'default' => null, 'length' => 5, 'unsigned' => true),

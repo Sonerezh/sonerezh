@@ -62,7 +62,7 @@ class SongsController extends AppController {
             }
 
             if (!empty($songInfo['comments']['year'])) {
-                $newSong['year'] = $songInfo['comments']['year'][0];
+                $newSong['year'] = intval($songInfo['comments']['year'][0]);
             }
 
             if (!empty($songInfo['comments']['part_of_a_set'])) {
@@ -129,10 +129,11 @@ class SongsController extends AppController {
 
         $this->loadModel('Setting');
 
+        $this->Setting->contain('Rootpath');
         $settings = $this->Setting->find('first');
 
         if ($settings) {
-            $paths = explode(';', $settings['Setting']['rootpath']);
+            $paths = $settings['Rootpath'];
         } else {
             $path = false;
             $this->Session->setFlash(__('Please define a root path.'), 'flash_error');
@@ -142,7 +143,7 @@ class SongsController extends AppController {
         $songs = array();
 
         foreach ($paths as $path) {
-            $dir = new Folder($path);
+            $dir = new Folder($path['rootpath']);
             $songs = array_merge($songs, $dir->findRecursive('^.*\.(mp3|ogg|flac|aac)$'));
         }
 
