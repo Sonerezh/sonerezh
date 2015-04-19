@@ -1,11 +1,13 @@
 Changes with 1.0.0-beta
 -----------------------
 New features:
+* #61: Set multiple root folders
 * #46: Forgot my password system
 * #45: Email notifications system
+* Sonerezh now works with PostgreSQL
 
 Improvements:
-
+* #72: Improve ID3v2 support
 * #35: Help for get root path on shared hosting
 * #32: Improve import process
 * #15: Added the pointer cursor on music titles clickable lines (Thanks to maximelebastard)
@@ -17,5 +19,5 @@ Bug / Security fixes:
 * Fix #31: Do not hotlink images from flattr.com, paypalobjects.com
 * Fix #22: Invalid search query when using history back button
 * Fix #19: Unable to add songs to playlist from search results screen (Thanks to Cr33p)
-* Fix #8: Length path limitation) (Thanks to maximelebastard)
+* Fix #8: Length path limitation (Thanks to maximelebastard)
 * Fix #3: Avconv and FFmpeg
