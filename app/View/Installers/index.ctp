@@ -86,12 +86,13 @@
         <?php
         echo $this->Form->input('DB.datasource', array(
             'options'   => array('Database/Mysql' => 'MySQL', 'Database/Postgres' => 'PostgreSQL'),
-            'label'     => array('text' => __('Database type'), 'class' => 'col-sm-3 control-label', 'style' => 'padding-top: 20px;')
+            'label'     => array('text' => __('Database type'), 'class' => 'col-sm-3 control-label', 'style' => 'padding-top: 20px;'),
+            'required'
         ));
-        echo $this->Form->input('DB.host', array('placeholder' => __('Database host (generally localhost)')));
-        echo $this->Form->input('DB.database', array('placeholder' => __('Database name')));
-        echo $this->Form->input('DB.login', array('placeholder' => __('Database user login')));
-        echo $this->Form->input('DB.password', array('placeholder' => __('Database user password')));
+        echo $this->Form->input('DB.host', array('placeholder' => __('Database host (generally localhost)'), 'required'));
+        echo $this->Form->input('DB.database', array('placeholder' => __('Database name'), 'required'));
+        echo $this->Form->input('DB.login', array('placeholder' => __('Database user login'), 'required'));
+        echo $this->Form->input('DB.password', array('placeholder' => __('Database user password'), 'required'));
         echo $this->Form->input('DB.prefix', array('placeholder' => __('Leave empty if none'), 'label' => array('text' => __('Prefix (optionnal)'), 'class' => 'col-sm-3 control-label')));
         ?>
     </div>
@@ -109,9 +110,9 @@
     <div class="col-xs-8 col-xs-offset-2">
 
         <?php
-        echo $this->Form->input('User.email', array('placeholder' => 'john.doe@sonerezh.bzh'));
-        echo $this->Form->input('User.password', array('placeholder' => __('Password'), 'label' => array('text' => __('Password (twice)'), 'class' => 'col-sm-3 control-label')));
-        echo $this->Form->input('User.confirm_password', array('placeholder' => __('Confirm your password'), 'type' => 'password', 'label' => array('text' => '', 'class' => 'col-sm-3 control-label')));
+        echo $this->Form->input('User.email', array('placeholder' => 'john.doe@sonerezh.bzh', 'required'));
+        echo $this->Form->input('User.password', array('placeholder' => __('Password'), 'label' => array('text' => __('Password (twice)'), 'class' => 'col-sm-3 control-label'), 'required'));
+        echo $this->Form->input('User.confirm_password', array('placeholder' => __('Confirm your password'), 'type' => 'password', 'label' => array('text' => '', 'class' => 'col-sm-3 control-label'), 'required'));
         echo $this->Form->input('Setting.rootpath', array('placeholder' => '/home/jdoe/Music', 'label' => array('text' => 'Music folder', 'class' => 'col-sm-3 control-label'), 'after' => '<small><span class="help-block">Current App folder is: '.APP.'</span></small>'));
 
         if ($gd && $is_config_writable && $is_core_writable) {
