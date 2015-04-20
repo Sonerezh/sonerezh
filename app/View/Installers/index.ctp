@@ -85,7 +85,7 @@
     <div class="col-xs-8 col-xs-offset-2">
         <?php
         echo $this->Form->input('DB.datasource', array(
-            'options'   => array('Database/Mysql' => 'MySQL', 'Database/Postgres' => 'PostgreSQL'),
+            'options'   => array('Database/Mysql' => 'MySQL', 'Database/Postgres' => 'PostgreSQL', 'Database/Sqlserver' => 'SQL Server'),
             'label'     => array('text' => __('Database type'), 'class' => 'col-sm-3 control-label', 'style' => 'padding-top: 20px;'),
             'required'
         ));
