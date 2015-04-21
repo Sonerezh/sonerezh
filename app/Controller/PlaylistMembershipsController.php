@@ -87,8 +87,13 @@ class PlaylistMembershipsController extends AppController {
             } else {
                 $this->Session->setFlash(__('Unable to add the song'), 'flash_error');
             }
-            //$this->redirect($this->referer());
-            $this->render(false);
+
+            $this->PlaylistMembership->Playlist->recursive = 0;
+            $playlists = $this->PlaylistMembership->Playlist->find('list', array(
+                'fields'        => array('Playlist.id', 'Playlist.title'),
+                'conditions'    => array('user_id' => AuthComponent::user('id'))
+            ));
+            $this->set('playlists', json_encode($playlists, true));
         } else {
             throw new MethodNotAllowedException();
         }
