@@ -4,6 +4,13 @@
         $('#DBDatasource').selecter({
             label: "<?php echo __('Select a database type'); ?>"
         });
+        $('#DBDatasource').change(function(){
+            if($(this).val() == "Database/Sqlite"){
+                $('.sqlite-optional').hide();
+            }else{
+                $('.sqlite-optional').show();
+            }
+        });
     });
 </script>
 <?php echo $this->end(); ?>
@@ -85,16 +92,20 @@
     <div class="col-xs-8 col-xs-offset-2">
         <?php
         echo $this->Form->input('DB.datasource', array(
-            'options'   => array('Database/Mysql' => 'MySQL', 'Database/Postgres' => 'PostgreSQL', 'Database/Sqlserver' => 'SQL Server'),
+            'options'   => array('Database/Mysql' => 'MySQL', 'Database/Postgres' => 'PostgreSQL', 'Database/Sqlite' => 'SQLite', 'Database/Sqlserver' => 'SQL Server'),
             'label'     => array('text' => __('Database type'), 'class' => 'col-sm-3 control-label', 'style' => 'padding-top: 20px;'),
             'required'
         ));
+        ?><div class="sqlite-optional"><?php
         echo $this->Form->input('DB.host', array('placeholder' => __('Database host (generally localhost)'), 'required'));
+        ?></div><?php
         echo $this->Form->input('DB.database', array('placeholder' => __('Database name'), 'required'));
+        ?><div class="sqlite-optional"><?php
         echo $this->Form->input('DB.login', array('placeholder' => __('Database user login'), 'required'));
         echo $this->Form->input('DB.password', array('placeholder' => __('Database user password'), 'required'));
         echo $this->Form->input('DB.prefix', array('placeholder' => __('Leave empty if none'), 'label' => array('text' => __('Prefix (optionnal)'), 'class' => 'col-sm-3 control-label')));
         ?>
+        </div>
     </div>
 
     <div class="clearfix"></div>
