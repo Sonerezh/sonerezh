@@ -20,6 +20,7 @@
  */
 
 App::uses('Controller', 'Controller');
+App::uses('BlowfishPasswordHasher', 'Controller/Component/Auth');
 
 /**
  * Application Controller
@@ -35,6 +36,11 @@ class AppController extends Controller {
     public $helpers = array('Session', 'Form' => array('className' => 'BootstrapForm'), 'Html' => array('className' => 'AjaxHtml'), 'Image');
     public $components = array(
         'Session',
+        'Cookie' => array(
+            'name' => 'Sonerezh',
+            'time' => '7 Days',
+            'httpOnly' => true
+        ),
         'DebugKit.Toolbar',
         'Image',
         'Paginator',
@@ -63,6 +69,21 @@ class AppController extends Controller {
         } elseif ($this->request->params['controller'] == 'installers' && $this->__isInstalled()) {
             $this->Session->setFlash(__('Sonerezh is already installed. Remove or rename app/Config/database.php to run the installation again.'), 'flash_info');
             $this->redirect(array('controller' => 'songs', 'action' => 'index'));
+        }
+
+        if (!$this->Auth->user() && $this->Cookie->check('auth')) {
+            $this->loadModel('User');
+            $cookie = $this->Cookie->read('auth');
+            $authCookie = explode(':', $cookie);
+            $user = $this->User->find('first', array('conditions' => array('id' => $authCookie[0])));
+            $passwordHasher = new BlowfishPasswordHasher();
+            if ($passwordHasher->check($user['User']['email'], $authCookie[1]) && $passwordHasher->check($user['User']['password'], $authCookie[2])) {
+                unset($user['User']['password']);
+                $this->Auth->login($user['User']);
+                $this->Cookie->write('auth', $this->Cookie->read('auth'));
+            } else {
+                $this->Cookie->delete('auth');
+            }
         }
     }
 
