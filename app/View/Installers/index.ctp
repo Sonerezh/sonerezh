@@ -6,11 +6,11 @@
         });
         $('#DBDatasource').change(function(){
             if($(this).val() == "Database/Sqlite"){
-                $('.sqlite-optional').hide();
+                $('.sqlite-optional').hide().find('input').removeAttr('required');
             }else{
-                $('.sqlite-optional').show();
+                $('.sqlite-optional').show().find('input').attr('required', 'required');
             }
-        });
+        }).change();
     });
 </script>
 <?php echo $this->end(); ?>
