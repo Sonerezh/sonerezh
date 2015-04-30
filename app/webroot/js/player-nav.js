@@ -283,7 +283,8 @@ $(function(){
         var track = player.getCurrentTrack();
         $('.song-name').text(track.title);
         $('.song-artist').text(track.artist);
-        $('.song-cover').attr('src', track.cover.replace(/\\/g, '/').replace(/(\.[a-z0-9]+)/i, "_64x64$1"));
+        var replace = "_64x64"+(retina ? "@2x" : "")+"$1";
+        $('.song-cover').attr('src', track.cover.replace(/\\/g, '/').replace(/(\.[a-z0-9]+)/i, replace));
         updateSelectedSong();
         updateControls();
     });

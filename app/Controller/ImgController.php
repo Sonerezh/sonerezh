@@ -21,8 +21,12 @@ class ImgController extends AppController {
      * @return CakeResponse Resized image path.
      */
     public function index($img) {
-        preg_match("/.*(_([0-9]+)x([0-9]+))\.[a-z0-9]+$/i", $img, $format);
+        preg_match("/.*(_([0-9]+)x([0-9]+)(@2x)?)\.[a-z0-9]+$/i", $img, $format);
         $dimensions = array($format[2], $format[3]);
+        if (isset($format[4])) {
+            $dimensions[0] *= 2;
+            $dimensions[1] *= 2;
+        }
         $path = IMAGES.str_replace($format[1], '', $img);
         $resized = RESIZED_DIR.pathinfo($img, PATHINFO_BASENAME);
 

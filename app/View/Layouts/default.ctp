@@ -11,6 +11,17 @@
     <?= $this->Html->css(array('bootstrap.min', 'jquery.fs.selecter.min', 'pace', 'notify', 'slider', 'style'));?>
     <?php
     echo $this->Html->script("lazyload.min");
+    ?>
+    <script>
+        var retina = window.devicePixelRatio > 1;
+        var lzldhd = lazyload({src: function(img) {
+            if(retina) {
+                return img.getAttribute('data-src').replace(/(_[0-9]+x[0-9]+)\./g, '$1@2x.');
+            }
+            return img.getAttribute('data-src');
+        }});
+    </script>
+    <?php
     echo $this->fetch('meta');
     echo $this->fetch('css');
     ?>
