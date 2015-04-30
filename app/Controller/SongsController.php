@@ -7,6 +7,10 @@ App::uses("AppController", "Controller");
  */
 class SongsController extends AppController {
 
+    public function beforeFilter() {
+        parent::beforeFilter();
+    }
+
     /**
      * Extract and import metadata in database.
      * Sonerezh uses the Getid3 PHP media file parser to extract useful information from MP3 & other multimedia formats.
@@ -486,15 +490,17 @@ class SongsController extends AppController {
     }
 
     public function ajax_view($id) {
+        $this->viewClass = 'Json';
         $song = $this->Song->find('first', array('conditions' => array('Song.id' => $id)));
         $song['Song']['url'] = Router::url(array('controller'=>'songs', 'action'=>'download', $song['Song']['id'], 'api'=> false));
         $song['Song']['cover'] = $this->request->base.DS.IMAGES_URL.(empty($song['Song']['cover']) ? "no-cover.png" : THUMBNAILS_DIR.$song['Song']['cover']);
-        $this->layout = false;
-        $this->render(false);
-        echo json_encode($song);
+
+        $this->set('data', $song);
+        $this->set('_serialize', 'data');
     }
 
     public function ajax_artist() {
+        $this->viewClass = 'Json';
         $artist = $this->request->query('artist');
         $songs = $this->Song->find('all', array(
             'conditions' => array(
@@ -506,12 +512,13 @@ class SongsController extends AppController {
             $song['Song']['url'] = Router::url(array('controller'=>'songs', 'action'=>'download', $song['Song']['id'], 'api'=> false));
             $song['Song']['cover'] = $this->request->base.DS.IMAGES_URL.(empty($song['Song']['cover']) ? "no-cover.png" : THUMBNAILS_DIR.$song['Song']['cover']);
         }
-        $this->layout = false;
-        $this->render(false);
-        echo json_encode($songs);
+
+        $this->set('data', $songs);
+        $this->set('_serialize', 'data');
     }
 
     public function ajax_album() {
+        $this->viewClass = 'Json';
         $artist = $this->request->query('artist');
         $album = $this->request->query('album');
         $songs = $this->Song->find('all', array(
@@ -525,12 +532,13 @@ class SongsController extends AppController {
             $song['Song']['url'] = Router::url(array('controller'=>'songs', 'action'=>'download', $song['Song']['id'], 'api'=> false));
             $song['Song']['cover'] = $this->request->base.DS.IMAGES_URL.(empty($song['Song']['cover']) ? "no-cover.png" : THUMBNAILS_DIR.$song['Song']['cover']);
         }
-        $this->layout = false;
-        $this->render(false);
-        echo json_encode($songs);
+
+        $this->set('data', $songs);
+        $this->set('_serialize', 'data');
     }
 
     public function ajax_playlist() {
+        $this->viewClass = 'Json';
         $playlist = $this->request->query('playlist');
         $this->Song->PlaylistMembership->contain('Song');
         $songs = $this->Song->PlaylistMembership->find('all', array(
@@ -544,8 +552,8 @@ class SongsController extends AppController {
             $song['Song']['url'] = Router::url(array('controller'=>'songs', 'action'=>'download', $song['Song']['id'], 'api'=> false));
             $song['Song']['cover'] = $this->request->base.DS.IMAGES_URL.(empty($song['Song']['cover']) ? "no-cover.png" : THUMBNAILS_DIR.$song['Song']['cover']);
         }
-        $this->layout = false;
-        $this->render(false);
-        echo json_encode($songs);
+
+        $this->set('data', $songs);
+        $this->set('_serialize', 'data');
     }
 }
