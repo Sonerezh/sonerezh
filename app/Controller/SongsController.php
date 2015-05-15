@@ -349,10 +349,9 @@ class SongsController extends AppController {
         if ($query) {
             $this->Paginator->settings = array(
                 'Song' => array(
-                    'limit'         => 5,
                     'fields'        => array('Song.band'),
-                    'order'         => $this->Song->albumOrder,
                     'group'         => array('Song.band'),
+                    'limit'         => 5,
                     'conditions'    => array('OR' => array(
                         'Song.title like'   => '%'.$query.'%',
                         'Song.band like'    => '%'.$query.'%',
@@ -364,14 +363,13 @@ class SongsController extends AppController {
             );
 
             $bands = $this->Paginator->paginate();
-       
             $band_list = array();
+
             foreach ($bands as $band) {
                 $band_list[] = $band['Song']['band'];
             }
-            
+
             $songs = $this->Song->find('all', array(
-                'order'         => $this->Song->order,
                 'conditions'    => array(
                     'OR' => array(
                         'Song.title like'   => '%'.$query.'%',
@@ -382,6 +380,9 @@ class SongsController extends AppController {
                     )
                 )
             );
+
+            $this->SortComponent = $this->Components->load('Sort');
+            $songs = $this->SortComponent->sortByBand($songs);
 
             $parsed = array();
             foreach ($songs as $song) {
