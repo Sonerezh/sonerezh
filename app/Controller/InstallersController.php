@@ -64,7 +64,7 @@ class InstallersController extends AppController {
         }
         else if ($this->request->is('post')) {
 
-            $datasources = array('Database/Mysql', 'Database/Postgres', 'Database/Sqlserver', 'Database/Sqlite');
+            $datasources = array('Database/Mysql', 'Database/Postgres', 'Database/Sqlite');
 
             if (in_array($this->request->data['DB']['datasource'], $datasources)) {
                 $db_config_array = $this->request->data['DB'];

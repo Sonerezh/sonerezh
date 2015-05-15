@@ -71,7 +71,7 @@ class AppController extends Controller {
             $this->redirect(array('controller' => 'songs', 'action' => 'index'));
         }
 
-        if (!$this->Auth->user() && $this->Cookie->check('auth')) {
+        if ($this->__isInstalled() && !$this->Auth->user() && $this->Cookie->check('auth')) {
             $this->loadModel('User');
             $cookie = $this->Cookie->read('auth');
             $authCookie = explode(':', $cookie);

@@ -16,7 +16,7 @@ class ImageHelper extends AppHelper{
 
     public function lazyload($path, $options = array()){
         $image = $this->Html->image($path, $options);
-        return str_replace('src="', 'src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" onload="lzld(this)" data-src="', $image);
+        return str_replace('src="', 'src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" onload="lzldhd(this)" data-src="', $image);
     }
 
     public function avatar($auth, $size = null){
