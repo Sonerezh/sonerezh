@@ -252,7 +252,8 @@ class SongsController extends AppController {
             'Song' => array(
                 'limit'     => 5,
                 'fields'    => array('Song.band'),
-                'group'     => array('Song.band')
+                'group'     => array('Song.band'),
+                'order'     => array('Song.band' => 'ASC')
             )
         );
 
@@ -316,25 +317,41 @@ class SongsController extends AppController {
      * Get songs from database, ordered by artist.
      */
     public function index() {
-        $this->Paginator->settings = array(
-            'Song' => array(
-                'limit'     => 50,
-                'fields'    => array('Song.id', 'Song.title', 'Song.album', 'Song.band', 'Song.playtime', 'Song.track_number'),
-                'order'     => $this->Song->order
-            )
-        );
-
-        $songs = $this->Paginator->paginate();
-
-        if (empty($songs)) {
-            $this->Session->setFlash("<strong>".__('Oops!')."</strong> ".__('The database is empty...'), 'flash_info');
-        }
-
         $this->loadModel('Playlist');
         $playlists = $this->Playlist->find('list', array(
             'fields'        => array('Playlist.id', 'Playlist.title'),
             'conditions'    => array('user_id' => AuthComponent::user('id'))
         ));
+
+        // Get 5 band names
+        $this->Paginator->settings = array(
+            'Song' => array(
+                'limit'     => 5,
+                'fields'    => array('Song.band'),
+                'group'     => array('Song.band'),
+                'order'     => array('Song.band' => 'ASC')
+            )
+        );
+
+        $bands = $this->Paginator->paginate();
+
+        $band_list = array();
+        foreach ($bands as $band) {
+            $band_list[] = $band['Song']['band'];
+        }
+
+        // Get songs from the previous band names
+        $songs = $this->Song->find('all', array(
+            'fields'        => array('Song.id', 'Song.title', 'Song.album', 'Song.band', 'Song.artist', 'Song.cover', 'Song.playtime', 'Song.track_number', 'Song.year', 'Song.disc', 'Song.genre'),
+            'conditions'    => array('Song.band' => $band_list)
+        ));
+
+        $this->SortComponent = $this->Components->load('Sort');
+        $songs = $this->SortComponent->sortByBand($songs);
+
+        if (empty($songs)) {
+            $this->Session->setFlash("<strong>".__('Oops!')."</strong> ".__('The database is empty...'), 'flash_info');
+        }
 
         $this->set(compact('songs', 'playlists'));
     }
@@ -370,7 +387,8 @@ class SongsController extends AppController {
             }
 
             $songs = $this->Song->find('all', array(
-                'conditions'    => array(
+                    'fields'        => array('Song.id', 'Song.title', 'Song.album', 'Song.band', 'Song.artist', 'Song.cover', 'Song.playtime', 'Song.track_number', 'Song.year', 'Song.disc', 'Song.genre'),
+                    'conditions'    => array(
                     'OR' => array(
                         'Song.title like'   => '%'.$query.'%',
                         'Song.artist like'  => '%'.$query.'%',
@@ -504,11 +522,15 @@ class SongsController extends AppController {
         $this->viewClass = 'Json';
         $artist = $this->request->query('artist');
         $songs = $this->Song->find('all', array(
+            'fields'        => array('Song.id', 'Song.title', 'Song.album', 'Song.band', 'Song.artist', 'Song.cover', 'Song.playtime', 'Song.track_number', 'Song.year', 'Song.disc', 'Song.genre'),
             'conditions' => array(
                 'Song.band' => $artist
-            ),
-            'order' => $this->Song->order
+            )
         ));
+
+        $this->SortComponent = $this->Components->load('Sort');
+        $songs = $this->SortComponent->sortByBand($songs);
+
         foreach ($songs as &$song) {
             $song['Song']['url'] = Router::url(array('controller'=>'songs', 'action'=>'download', $song['Song']['id'], 'api'=> false));
             $song['Song']['cover'] = $this->request->base.DS.IMAGES_URL.(empty($song['Song']['cover']) ? "no-cover.png" : THUMBNAILS_DIR.$song['Song']['cover']);
@@ -523,12 +545,16 @@ class SongsController extends AppController {
         $artist = $this->request->query('artist');
         $album = $this->request->query('album');
         $songs = $this->Song->find('all', array(
+            'fields'        => array('Song.id', 'Song.title', 'Song.album', 'Song.artist', 'Song.band', 'Song.playtime', 'Song.track_number', 'Song.year', 'Song.disc', 'Song.cover'),
             'conditions' => array(
                 'Song.band' => $artist,
                 'Song.album' => $album
-            ),
-            'order' => $this->Song->albumOrder
+            )
         ));
+
+        $this->SortComponent = $this->Components->load('Sort');
+        $songs = $this->SortComponent->sortByDisc($songs);
+
         foreach ($songs as &$song) {
             $song['Song']['url'] = Router::url(array('controller'=>'songs', 'action'=>'download', $song['Song']['id'], 'api'=> false));
             $song['Song']['cover'] = $this->request->base.DS.IMAGES_URL.(empty($song['Song']['cover']) ? "no-cover.png" : THUMBNAILS_DIR.$song['Song']['cover']);
