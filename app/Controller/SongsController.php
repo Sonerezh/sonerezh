@@ -44,9 +44,11 @@ class SongsController extends AppController {
                 $newSong['artist'] = 'Unknown Artist';
             }
 
-            if (!empty($songInfo['comments']['band'])) {
+            if (!empty($songInfo['comments']['band'])) { // MP3 Tags
                 $band_array_length = count($songInfo['comments']['band']);
                 $newSong['band'] = $songInfo['comments']['band'][$band_array_length - 1];
+            } elseif (!empty($songInfo['comments']['ensemble'])) { // OGG Tag
+                $newSong['band'] = $songInfo['comments']['ensemble'][0];
             }
 
             if (!empty($songInfo['comments']['album'])) {
@@ -56,9 +58,11 @@ class SongsController extends AppController {
                 $newSong['album'] = 'Unknown Album';
             }
 
-            if (!empty($songInfo['comments']['track_number'])) {
+            if (!empty($songInfo['comments']['track_number'])) { // MP3 Tag
                 $track_number_array = explode('/', (string)$songInfo['comments']['track_number'][0]);
                 $newSong['track_number'] = intval($track_number_array[0]);
+            } elseif (!empty($songInfo['comments']['tracknumber'])) { // OGG Tag
+                $newSong['track_number'] = intval($songInfo['comments']['tracknumber'][0]);
             }
 
             if (!empty($songInfo['playtime_string'])) {
@@ -69,11 +73,13 @@ class SongsController extends AppController {
                 $newSong['year'] = intval($songInfo['comments']['year'][0]);
             }
 
-            if (!empty($songInfo['comments']['part_of_a_set'])) {
+            if (!empty($songInfo['comments']['part_of_a_set'])) { // MP3 Tag
                 $newSong['disc'] = $songInfo['comments']['part_of_a_set'][0];
+            } elseif (!empty($songInfo['comments']['discnumber'])) { // OGG Tag
+                $newSong['disc'] = $songInfo['comments']['discnumber'][0];
             }
 
-            if (!empty($songInfo['comments']['genre'])){
+            if (!empty($songInfo['comments']['genre'])) {
                 $genre_array_length = count($songInfo['comments']['genre']);
                 $newSong['genre'] = $songInfo['comments']['genre'][$genre_array_length - 1];
             }
