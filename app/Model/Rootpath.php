@@ -28,6 +28,10 @@ class Rootpath extends AppModel {
         if (!is_readable($this->data[$this->alias]['rootpath'])) {
             return false;
         }
+
+        if (preg_match('/^\s/', $this->data[$this->alias]['rootpath']) || preg_match('/\s$/', $this->data[$this->alias]['rootpath'])) {
+            return false;
+        }
         return true;
     }
 
