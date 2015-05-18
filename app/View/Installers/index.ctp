@@ -8,7 +8,7 @@
             if($(this).val() == "Database/Sqlite"){
                 $('.sqlite-optional').hide().find('input').removeAttr('required');
             }else{
-                $('.sqlite-optional').show().find('input').attr('required', 'required');
+                $('.sqlite-optional').show().find('input:not(#DBPrefix)').attr('required', 'required');
             }
         }).change();
     });
