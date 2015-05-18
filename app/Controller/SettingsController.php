@@ -90,8 +90,8 @@ class SettingsController extends AppController {
         }
 
         // Check if avconv shell command is available
-       if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-          $avconv = shell_exec("where avconv") || shell_exec("where ffmpeg");//WIN
+        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+            $avconv = shell_exec("where avconv") || shell_exec("where ffmpeg");//WIN
         } else {
             $avconv = shell_exec("which avconv") || shell_exec("which ffmpeg");//NO WIN
         }

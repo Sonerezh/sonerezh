@@ -1,9 +1,43 @@
 $(function(){
-    $('#quality-slider').slider({min: 56, max: 320, steps:[128, 192, 256], change: function(val){
+    var mp3Quality = {min: 56, max: 320, steps:[128, 192, 256]};
+    var oggQuality = {min: 0, max: 10, steps:[1, 2, 3, 4, 5, 6, 7, 8, 9]};
+    var mp3Val = 256;
+    var oggVal = 8;
+    var init = true;
+
+    $('#quality-slider').slider({change: function(val) {
         $('#SettingQuality').val(val);
-        $('.quality div:last').text(val+'kb/s');
+        updateSlider();
     }});
-    $('#quality-slider').slider("value", $('#SettingQuality').val());
+
+    $('[name="data[Setting][convert_to]"]').change(function(){
+        var $checked = $('[name="data[Setting][convert_to]"]:checked');
+        if($checked.val() == "mp3") {
+            $('#quality-slider').slider(mp3Quality);
+            if(!init) {
+                $('#SettingQuality').val(mp3Val);
+            }
+        }else {
+            $('#quality-slider').slider(oggQuality);
+            if(!init) {
+                $('#SettingQuality').val(oggVal);
+            }
+        }
+        init = false;
+        $('#quality-slider').slider('value', $('#SettingQuality').val());
+        updateSlider();
+    }).change();
+
+    function updateSlider() {
+        var val = $('#SettingQuality').val();
+        if($('[name="data[Setting][convert_to]"]:checked').val() == "mp3") {
+            mp3Val = val;
+            val += 'kb/s';
+        }else {
+            oggVal = val;
+        }
+        $('.quality div:last').text(val);
+    }
 
     $('#SettingIndexForm').on('click', '.remove-dir', function(){
         $(this).parents('.rootpath').remove();

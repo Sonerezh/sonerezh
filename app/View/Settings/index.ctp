@@ -98,7 +98,7 @@ $this->end();?>
                                 <?php echo $this->Form->input('quality', array('type' => 'hidden'));?>
                                 <div class="row quality">
                                     <div class="col-xs-9"><div id="quality-slider"></div></div>
-                                    <div class="col-xs-3"><?php echo $this->request->data['Setting']['quality'];?>kb/s</div>
+                                    <div class="col-xs-3"><?php echo $this->request->data['Setting']['quality'];?></div>
                                 </div>
                             </div>
                         </div>

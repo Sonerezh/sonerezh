@@ -491,7 +491,7 @@ class SongsController extends AppController {
                 } else if ($settings['Setting']['convert_to'] == 'ogg'){
                     $path = TMP.date('YmdHis').".ogg";
                     $song['Song']['path'] = $path;
-                    passthru($avconv.' -i "'.$song['Song']['source_path'].'" -threads 4  -c:a libvorbis -b:a '.$bitrate.'k "'.$path.'" 2>&1');
+                    passthru($avconv.' -i "'.$song['Song']['source_path'].'" -threads 4  -c:a libvorbis -q:a '.$bitrate.' "'.$path.'" 2>&1');
                 }
             } else if (empty($song['Song']['path'])) {
                 $song['Song']['path'] = $song['Song']['source_path'];

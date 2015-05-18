@@ -36,12 +36,14 @@
                 }else{
                     var steps = $slider.data('steps');
                     if(steps !== null){
-                        steps.push(max);
                         var tmpRange = 0;
                         for(var key in steps){
                             if(range >= steps[key]){
                                 tmpRange = steps[key];
                             }
+                        }
+                        if(range >= max) {
+                            tmpRange = max;
                         }
                         range = tmpRange;
                     }
@@ -70,12 +72,10 @@
 
         return this.each(function(){
             if($(this).hasClass('slider')){
-                if(options.min != undefined){
-                    $(this).data('min', options.min);
-                }
-                if(options.max != undefined){
-                    $(this).data('max', options.max);
-                }
+                $(this).data('min', opts.min);
+                $(this).data('max', opts.max);
+                $(this).data('steps', opts.steps);
+
                 return;
             }
             var slidebar = $('<div class="slidebar"></div>');
@@ -93,17 +93,22 @@
                 e.preventDefault();
                 opts.max = $slider.data('max');
                 opts.min = $slider.data('min');
+                opts.steps = $slider.data('steps');
                 opts.change = $slider.data('change');
                 var position = e.pageX - $slider.offset().left;
                 var range = getRangeFromPosition(opts.min, opts.max, $slider.width(), position);
                 if(opts.steps !== null){
-                    opts.steps.push(opts.max);
                     var tmpRange = opts.min;
+                    var tolerance = ((opts.max-opts.min)/opts.steps.length)/2;
                     for(var key in opts.steps){
-                        if(range+10 >= opts.steps[key]){
+                        if(range >= opts.steps[key] - tolerance){
                             tmpRange = opts.steps[key];
                             position = getPositionFromRange(opts.min, opts.max, $slider.width(), opts.steps[key]);
                         }
+                    }
+                    if(range >= opts.max - tolerance){
+                        tmpRange = opts.max;
+                        position = getPositionFromRange(opts.min, opts.max, $slider.width(), opts.max);
                     }
                     range = tmpRange;
                 }
@@ -121,6 +126,7 @@
             });
             handle.mousedown(function(e){
                 e.preventDefault();
+                e.stopPropagation();
                 $(window).mousemove(function(ev){
                     ev.preventDefault();
                     opts.max = $slider.data('max');
@@ -130,13 +136,17 @@
                     var position = ev.pageX - $slider.offset().left;
                     var range = getRangeFromPosition(opts.min, opts.max, $slider.width(), position);
                     if(opts.steps !== null){
-                        opts.steps.push(opts.max);
                         var tmpRange = opts.min;
+                        var tolerance = ((opts.max-opts.min)/opts.steps.length)/2;
                         for(var key in opts.steps){
-                            if(range >= opts.steps[key]){
+                            if(range >= opts.steps[key]-tolerance){
                                 tmpRange = opts.steps[key];
                                 position = getPositionFromRange(opts.min, opts.max, $slider.width(), opts.steps[key]);
                             }
+                        }
+                        if(range >= opts.max-tolerance) {
+                            tmpRange = opts.max;
+                            position = getPositionFromRange(opts.min, opts.max, $slider.width(), opts.max);
                         }
                         range = tmpRange;
                     }
@@ -156,6 +166,7 @@
             $(window).mouseup(function(e){
                 e.preventDefault();
                 $(this).unbind('mousemove');
+                handle.data('handled', false);
             });
 
             $(this).addClass('slider');
