@@ -93,7 +93,7 @@ class SongsController extends AppController {
                 }
 
                 $name = md5($newSong['artist'].$newSong['album']);
-                $path = IMAGES.THUMBNAILS_DIR.$name.'.'.$extension;
+                $path = IMAGES.THUMBNAILS_DIR.DS.$name.'.'.$extension;
 
                 if (!file_exists($path)) {
                     if (!file_exists(IMAGES.THUMBNAILS_DIR)) {
@@ -200,7 +200,7 @@ class SongsController extends AppController {
         $songs = $this->Paginator->paginate();
 
         foreach ($songs as &$song) {
-            $song['Song']['cover'] = empty($song['Song']['cover']) ? "no-cover.png" : THUMBNAILS_DIR.$song['Song']['cover'];
+            $song['Song']['cover'] = empty($song['Song']['cover']) ? "no-cover.png" : THUMBNAILS_DIR.'/'.$song['Song']['cover'];
         }
 
         if (empty($songs)) {
@@ -293,7 +293,7 @@ class SongsController extends AppController {
             if (!isset($parsed[$song['Song']['band']]['albums'][$song['Song']['album']])) {
                 $parsed[$song['Song']['band']]['albums'][$song['Song']['album']] = array(
                     'album' => $song['Song']['album'],
-                    'cover' => empty($song['Song']['cover']) ? "no-cover.png" : THUMBNAILS_DIR.$song['Song']['cover'],
+                    'cover' => empty($song['Song']['cover']) ? "no-cover.png" : THUMBNAILS_DIR.'/'.$song['Song']['cover'],
                     'year'  => $song['Song']['year'],
                     'genre' => array(),
                 );
@@ -421,7 +421,7 @@ class SongsController extends AppController {
                 if (!isset($parsed[$song['Song']['band']]['albums'][$song['Song']['album']])) {
                     $parsed[$song['Song']['band']]['albums'][$song['Song']['album']] = array(
                         'album' => $song['Song']['album'],
-                        'cover' => empty($song['Song']['cover']) ? "no-cover.png" : THUMBNAILS_DIR.$song['Song']['cover'],
+                        'cover' => empty($song['Song']['cover']) ? "no-cover.png" : THUMBNAILS_DIR.'/'.$song['Song']['cover'],
                         'year'  => $song['Song']['year'],
                         'genre' => array()
                     );
@@ -518,7 +518,7 @@ class SongsController extends AppController {
         $this->viewClass = 'Json';
         $song = $this->Song->find('first', array('conditions' => array('Song.id' => $id)));
         $song['Song']['url'] = Router::url(array('controller'=>'songs', 'action'=>'download', $song['Song']['id'], 'api'=> false));
-        $song['Song']['cover'] = $this->request->base.DS.IMAGES_URL.(empty($song['Song']['cover']) ? "no-cover.png" : THUMBNAILS_DIR.$song['Song']['cover']);
+        $song['Song']['cover'] = $this->request->base.'/'.IMAGES_URL.(empty($song['Song']['cover']) ? "no-cover.png" : THUMBNAILS_DIR.'/'.$song['Song']['cover']);
 
         $this->set('data', $song);
         $this->set('_serialize', 'data');
@@ -539,7 +539,7 @@ class SongsController extends AppController {
 
         foreach ($songs as &$song) {
             $song['Song']['url'] = Router::url(array('controller'=>'songs', 'action'=>'download', $song['Song']['id'], 'api'=> false));
-            $song['Song']['cover'] = $this->request->base.DS.IMAGES_URL.(empty($song['Song']['cover']) ? "no-cover.png" : THUMBNAILS_DIR.$song['Song']['cover']);
+            $song['Song']['cover'] = $this->request->base.DS.IMAGES_URL.(empty($song['Song']['cover']) ? "no-cover.png" : THUMBNAILS_DIR.'/'.$song['Song']['cover']);
         }
 
         $this->set('data', $songs);
@@ -563,7 +563,7 @@ class SongsController extends AppController {
 
         foreach ($songs as &$song) {
             $song['Song']['url'] = Router::url(array('controller'=>'songs', 'action'=>'download', $song['Song']['id'], 'api'=> false));
-            $song['Song']['cover'] = $this->request->base.DS.IMAGES_URL.(empty($song['Song']['cover']) ? "no-cover.png" : THUMBNAILS_DIR.$song['Song']['cover']);
+            $song['Song']['cover'] = $this->request->base.DS.IMAGES_URL.(empty($song['Song']['cover']) ? "no-cover.png" : THUMBNAILS_DIR.'/'.$song['Song']['cover']);
         }
 
         $this->set('data', $songs);
@@ -583,7 +583,7 @@ class SongsController extends AppController {
         foreach ($songs as &$song) {
             unset($song['PlaylistMembership']);
             $song['Song']['url'] = Router::url(array('controller'=>'songs', 'action'=>'download', $song['Song']['id'], 'api'=> false));
-            $song['Song']['cover'] = $this->request->base.DS.IMAGES_URL.(empty($song['Song']['cover']) ? "no-cover.png" : THUMBNAILS_DIR.$song['Song']['cover']);
+            $song['Song']['cover'] = $this->request->base.DS.IMAGES_URL.(empty($song['Song']['cover']) ? "no-cover.png" : THUMBNAILS_DIR.'/'.$song['Song']['cover']);
         }
 
         $this->set('data', $songs);

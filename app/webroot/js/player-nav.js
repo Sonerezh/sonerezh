@@ -284,7 +284,7 @@ $(function(){
         $('.song-name').text(track.title);
         $('.song-artist').text(track.artist);
         var replace = "_64x64"+(retina ? "@2x" : "")+"$1";
-        $('.song-cover').attr('src', track.cover.replace(/\\/g, '/').replace(/(\.[a-z0-9]+)/i, replace));
+        $('.song-cover').attr('src', track.cover.replace(/(\.[a-z0-9]+)/i, replace));
         updateSelectedSong();
         updateControls();
     });
