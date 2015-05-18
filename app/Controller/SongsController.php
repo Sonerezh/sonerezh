@@ -161,13 +161,16 @@ class SongsController extends AppController {
             $this->set('newSongsTotal', count($new));
         }else if($this->request->is("post")) {
             $songs = $this->Session->read('song_list');
-            ob_clean();
+            $imported = array();
+            $count = 0;
             foreach($songs as $song) {
-                $title = $this->_importSong($song);
-                echo $title."<br>";
-                ob_flush();
-                flush();
+                $imported[] = $song;
+                $this->_importSong($song);
+                if($count >= 100) break;
+                $count++;
             }
+            $diff = array_diff($songs, $imported);
+            $this->Session->write('song_list', $diff);
             $this->layout = null;
             $this->render(false);
         }
