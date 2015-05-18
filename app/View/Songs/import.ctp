@@ -1,28 +1,28 @@
 <?= $this->start('script');?>
 <script type="text/javascript">
-    var songs = <?= $songs ?>;
-    var selectedSong = 0;
-    function ajaxImport(){
-        if(selectedSong<songs.length){
-            $.ajax({
-                url:"<?= $this->Html->url(array('controller' => 'songs', 'action' => 'ajax_import')); ?>",
-                data: "path="+encodeURIComponent(songs[selectedSong]),
-                dataType: 'JSON',
-                success: function(json){
-                    var percentage = Math.round(selectedSong*100/songs.length);
-                    $('#progress').css('width', percentage+"%");
-                    $('#song-name').text(json.title);
-                    selectedSong++;
-                    ajaxImport();
-                }
-            });
-        }else{
-            $('#progress').addClass('progress-bar-success').css('width', '100%');
-            $('#infos').remove();
-            $('#label').remove();
-        }
-    }
-    ajaxImport();
+    $(function(){
+        var newSongsTotal = <?php echo $newSongsTotal;?>;
+        var newSongSaved = 0;
+        var lastResponse = "";
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange  = function() {
+            var song = xhr.responseText.substring(lastResponse.length);
+            lastResponse = xhr.responseText;
+            if (xhr.readyState != 4) {
+                $('#song-name').text(song.substring(0, song.length-4));
+                newSongSaved++;
+                var percentage = Math.round(newSongSaved * 100 / newSongsTotal);
+                $('#progress').css('width', percentage + "%");
+            } else {
+                $('#progress').addClass('progress-bar-success').css('width', '100%');
+                $('#infos').remove();
+                $('#label').remove();
+            }
+        };
+        xhr.open("POST", "<?= $this->Html->url(array('controller' => 'songs', 'action' => 'import')); ?>", true);
+        xhr.send();
+    });
+
 </script>
 <?= $this->end();?>
 

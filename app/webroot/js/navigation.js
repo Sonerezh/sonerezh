@@ -28,7 +28,7 @@ $(function(){
                 $('body').removeClass('modal-open');
 
                 if(pushState){
-                    history.pushState(null, null, response[1].url);
+                    history.pushState({url: response[1].url}, null, response[1].url);
                 }
 
                 if(player.paused() && response[2].html.length){
@@ -43,7 +43,7 @@ $(function(){
                     $(document).scrollTop(0);
                     $('#content').html(response[2].html);
                 }else{
-                    history.replaceState(null, null, referrer);
+                    history.replaceState({url: response[1].url}, null, referrer);
                     response[1].url = referrer;
                 }
                 referrer = response[1].url;
@@ -102,9 +102,14 @@ $(function(){
         loadPage(url, true, method, data);
     });
 
-    window.onpopstate = function(){
-        loadPage(window.location.href, false);
+    window.onpopstate = function(e){
+        if(e.state != null) {
+            loadPage(window.location.href, false);
+        }else {
+            history.replaceState({url: window.location.href}, null, window.location.href);
+        }
     };
+    history.replaceState({url: window.location.href}, null, window.location.href);
 
 
     $("#content").on('show.bs.modal', '#add-to', function(event){

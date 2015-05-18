@@ -18,11 +18,9 @@ class SongsController extends AppController {
      * @link http://getid3.sourceforge.net/
      * @see SongsController::import
      */
-    public function ajax_import() {
-        App::import('Vendor', 'Getid3/getid3');
-        App::uses('Folder', 'Utility');
+    protected function _importSong($song) {
 
-        $song = $this->request->query['path'];
+       //$song = $this->request->query['path'];
         $getID3 = new getID3();
         $songInfo = $getID3->analyze($song);
         getid3_lib::CopyTagsToComments($songInfo);
@@ -118,10 +116,7 @@ class SongsController extends AppController {
         $newSong['source_path'] = $song;
         $this->Song->create();
         $this->Song->save($newSong);
-        $this->layout = false;
-        $this->render(false);
-
-        echo json_encode(array('title' => $newSong['title']));
+        return $newSong['title'];
     }
 
     /**
@@ -132,37 +127,50 @@ class SongsController extends AppController {
      *      - Compare this array with the list of existing songs to keep only new tracks
      *      - Pass this array to the view.
      *
-     * @see SongsController::ajax_import
+     * @see SongsController::_importSong
      */
     public function import() {
+        App::import('Vendor', 'Getid3/getid3');
         App::uses('Folder', 'Utility');
 
-        $this->loadModel('Setting');
+        if($this->request->is("get")) {
+            $this->loadModel('Setting');
 
-        $this->Setting->contain('Rootpath');
-        $settings = $this->Setting->find('first');
+            $this->Setting->contain('Rootpath');
+            $settings = $this->Setting->find('first');
 
-        if ($settings) {
-            $paths = $settings['Rootpath'];
-        } else {
-            $path = false;
-            $this->Session->setFlash(__('Please define a root path.'), 'flash_error');
-            $this->redirect(array('controller' => 'settings', 'action' => 'index'));
+            if ($settings) {
+                $paths = $settings['Rootpath'];
+            } else {
+                $this->Session->setFlash(__('Please define a root path.'), 'flash_error');
+                $this->redirect(array('controller' => 'settings', 'action' => 'index'));
+            }
+
+            $songs = array();
+
+            foreach ($paths as $path) {
+                $dir = new Folder($path['rootpath']);
+                $songs = array_merge($songs, $dir->findRecursive('^.*\.(mp3|ogg|flac|aac)$'));
+            }
+
+            $existingSongs = $this->Song->find('list', array(
+                'fields' => array('Song.id', 'Song.source_path')
+            ));
+            $new = array_merge(array_diff($songs, $existingSongs));
+            $this->Session->write('song_list', $new);
+            $this->set('newSongsTotal', count($new));
+        }else if($this->request->is("post")) {
+            $songs = $this->Session->read('song_list');
+            ob_clean();
+            foreach($songs as $song) {
+                $title = $this->_importSong($song);
+                echo $title."<br>";
+                ob_flush();
+                flush();
+            }
+            $this->layout = null;
+            $this->render(false);
         }
-
-        $songs = array();
-
-        foreach ($paths as $path) {
-            $dir = new Folder($path['rootpath']);
-            $songs = array_merge($songs, $dir->findRecursive('^.*\.(mp3|ogg|flac|aac)$'));
-        }
-
-        $existingSongs = $this->Song->find('list', array(
-            'fields' => array('Song.id', 'Song.source_path')
-        ));
-        $new = array_merge(array_diff($songs, $existingSongs));
-        //$deleted = array_diff($existingSongs, $songs);
-        $this->set('songs', json_encode($new));
     }
 
     /**
