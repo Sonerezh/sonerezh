@@ -7,7 +7,7 @@
 			<?php echo $this->Form->input('password', array('placeholder' => __('Password'), 'required')); ?>
 
             <?php echo $this->Form->input('rememberme', array('type' => 'checkbox', 'label' => __('Remember me'), 'div' => array('class' => 'checkbox pull-left')));?>
-            <?php if(!$settings['Setting']['enable_mail_notification']): ?>
+            <?php if($settings['Setting']['enable_mail_notification']): ?>
             <a href="#forgot-password" class="btn btn-link pull-right" data-toggle="modal"><?php echo __('Forgot Password?'); ?></a>
             <?php endif; ?>
             <div class="clearfix"></div>
