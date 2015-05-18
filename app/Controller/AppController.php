@@ -37,7 +37,7 @@ class AppController extends Controller {
     public $components = array(
         'Session',
         'Cookie' => array(
-            'name' => 'Sonerezh',
+            'name' => 'SonerezhCookie',
             'time' => '7 Days',
             'httpOnly' => true
         ),
