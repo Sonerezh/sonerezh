@@ -28,7 +28,7 @@ CREATE TABLE `sonerezh`.`playlists` (
 CREATE TABLE `sonerezh`.`rootpaths` (
 	`id` int(11) NOT NULL AUTO_INCREMENT,
 	`setting_id` int(11) NOT NULL,
-	`rootpath` varchar(1024) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,	PRIMARY KEY  (`id`)) 	DEFAULT CHARSET=latin1,
+	`rootpath` varchar(1024) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,	PRIMARY KEY  (`id`)) 	DEFAULT CHARSET=utf8,
 	COLLATE=utf8_general_ci,
 	ENGINE=InnoDB;
 
@@ -38,7 +38,8 @@ CREATE TABLE `sonerezh`.`settings` (
 	`convert_from` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT 'aac,flac' NOT NULL,
 	`convert_to` varchar(5) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT 'mp3' NOT NULL,
 	`quality` int(3) UNSIGNED DEFAULT 256 NOT NULL,
-	`enable_mail_notification` tinyint(1) DEFAULT '0' NOT NULL,	PRIMARY KEY  (`id`)) 	DEFAULT CHARSET=utf8,
+	`enable_mail_notification` tinyint(1) DEFAULT '0' NOT NULL,
+	`sync_token` int(11) DEFAULT NULL,	PRIMARY KEY  (`id`)) 	DEFAULT CHARSET=utf8,
 	COLLATE=utf8_general_ci,
 	ENGINE=InnoDB;
 

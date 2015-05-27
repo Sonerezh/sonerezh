@@ -48,6 +48,7 @@ class SonerezhSchema extends CakeSchema {
 		'convert_to' => array('type' => 'string', 'null' => false, 'default' => 'mp3', 'length' => 5, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'quality' => array('type' => 'integer', 'null' => false, 'default' => '256', 'length' => 3, 'unsigned' => true),
 		'enable_mail_notification' => array('type' => 'boolean', 'null' => false, 'default' => '0'),
+		'sync_token' => array('type' => 'integer', 'null' => true, 'default' => null, 'unsigned' => false),
 		'indexes' => array(
 			'PRIMARY' => array('column' => 'id', 'unique' => 1)
 		),
