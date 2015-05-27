@@ -1,29 +1,30 @@
 <?= $this->start('script');?>
 <script type="text/javascript">
-        var newSongsTotal = <?php echo $newSongsTotal;?>;
-        var newSongSaved = 0;
-        var lastResponse = "";
-        var noOutput = false;
-        function ajaxImport() {
-            var xhr = new XMLHttpRequest();
-            xhr.onreadystatechange  = function() {
-                if (xhr.readyState == 4) {
-                    if(newSongSaved >= newSongsTotal) {
-                        $('#progress').addClass('progress-bar-success').css('width', '100%');
-                        $('#label').remove();
-                    }else {
-                        newSongSaved += 100;
-                        var percentage = Math.round(newSongSaved * 100 / newSongsTotal);
-                        $('#progress').css('width', percentage + "%");
-                        ajaxImport();
-                    }
-
+    var newSongsTotal = <?php echo $newSongsTotal;?>;
+    var newSongSaved = 0;
+    var lastResponse = "";
+    var noOutput = false;
+    function ajaxImport() {
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange  = function() {
+            if (xhr.readyState == 4) {
+                if(newSongSaved >= newSongsTotal) {
+                    $('#progress').addClass('progress-bar-success').css('width', '100%');
+                    $('#label').remove();
+                    songsManager.sync(+xhr.response);
+                }else {
+                    newSongSaved += 100;
+                    var percentage = Math.round(newSongSaved * 100 / newSongsTotal);
+                    $('#progress').css('width', percentage + "%");
+                    ajaxImport();
                 }
-            };
-            xhr.open("POST", "<?= $this->Html->url(array('controller' => 'songs', 'action' => 'import')); ?>", true);
-            xhr.send();
-        }
-        ajaxImport();
+
+            }
+        };
+        xhr.open("POST", "<?= $this->Html->url(array('controller' => 'songs', 'action' => 'import')); ?>", true);
+        xhr.send();
+    }
+    ajaxImport();
 </script>
 <?= $this->end();?>
 

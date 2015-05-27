@@ -31,7 +31,7 @@ $(function(){
                     history.pushState({url: response[1].url}, null, response[1].url);
                 }
 
-                if(player.paused() && response[2].html.length){
+                if(!player.isPlaying() && response[2].html.length){
                     $('title').text(response[1].title);
                 }
                 $('head').append(response[0].css);

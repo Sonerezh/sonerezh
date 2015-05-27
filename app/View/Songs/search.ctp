@@ -1,4 +1,4 @@
-<div class="col-xs-12" style="margin-top: 20px;">
+<div class="col-xs-12" style="margin-top: 20px;" data-view="search">
     <form class="form-horizontal" action="<?= $this->Html->url(array('controller' => 'songs', 'action' => 'search')); ?>" role="search">
         <div class="form-group">
             <label for="inputSearch" class="col-xs-2 control-label"><?= __('Looking for'); ?></label>

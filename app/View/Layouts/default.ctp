@@ -136,11 +136,13 @@
     </div>
 </div>
 <script type="text/javascript">
-    var baseurl = "<?= $this->request->base; ?>";
+    var baseurl = "<?php echo $this->request->base; ?>";
+    var syncToken = "<?php echo $sync_token;?>";
 </script>
 <?php echo $this->Html->script(array(
     "jquery-2.1.0.min",
     "Player",
+    "SongsManager",
     "player-nav",
     "navigation",
     "pace.min",

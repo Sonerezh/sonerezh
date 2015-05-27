@@ -2,7 +2,7 @@
 echo $this->Html->script('albums');
 $this->end(); ?>
 
-<div class="col-lg-12" data-scroll-container="true">
+<div class="col-lg-12" data-scroll-container="true" data-view="albums">
 	<?php
     $i=1;
     foreach($songs as $album){ ?>

@@ -1,34 +1,34 @@
-function Player(ajax_url){
-    var playlist = new Playlist(ajax_url);
+function Player() {
+
     var audioElement = document.createElement('audio');
-    var selected = null;
+    var playlist = new Playlist();
     var self = this;
-    var loop = false;
-    var random = false;
+    var selected = null;
+    var loop = false; // all || single || false
+    var shuffle = false;
 
     var repeatChange = new Event('repeatChange');
+    var playlistChange = new Event('playlistChange');
     var shuffleChange = new Event('shuffleChange');
 
+    audioElement.addEventListener("ended", function(){
+        if(loop == "single") {
+            self.play();
+        }else {
+            self.next();
+        }
+    }, true);
     this.addEventListener = function(event, callback) {
-        if(event == 'playlistChange'){
-            playlist.onChange = callback;
-        }else{
-            audioElement.addEventListener(event, callback, true);
-        }
+        audioElement.addEventListener(event, callback, true);
     };
-
-    this.setVolume = function (vol) {
-        if(vol >= 0 && vol <= 100){
-            audioElement.volume = vol/100;
-        }
+    this.getPlaylist = function() {
+        return playlist.getSongs();
     };
-    this.getVolume = function() {
-        return audioElement.volume * 100;
+    this.getCurrentTrack = function() {
+        return selected;
     };
-    this.seek = function(currentTime) {
-        if(currentTime <= audioElement.duration){
-            audioElement.currentTime = currentTime;
-        }
+    this.getCurrentIndex = function() {
+        return playlist.getCurrentIndex();
     };
     this.getDuration = function() {
         return audioElement.duration;
@@ -42,560 +42,253 @@ function Player(ajax_url){
         }
         return 0;
     };
-    this.getCurrentTrack = function() {
-        return selected;
+    this.seek = function(currentTime) {
+        if(currentTime <= audioElement.duration){
+            audioElement.currentTime = currentTime;
+        }
     };
-    this.getCurrentIndex = function() {
-        return playlist.getIndex();
-    };
-    this.getPlaylist = function() {
-        return playlist.getPlaylist();
-    };
-    this.clearPlaylist = function() {
-        playlist.clear();
-    };
-
-
     this.canPlay = function() {
-        return selected != null;
-    };
-    this.hasNext = function() {
-        return playlist.hasNext(loop);
+        return selected !== null;
     };
     this.hasPrev = function() {
-        return playlist.hasPrev(loop);
+        return (this.canPlay() && playlist.hasPrev());
     };
-    this.add = function(id, callback) {
-        if(selected == null){
-            var self = this;
-            var c = function(song){
-                selected = song;
-                if(callback !== undefined){
-                    callback(song);
-                }
-                self.play(selected.id);
-            };
-            playlist.add(id, c);
-        }else{
-            playlist.add(id, callback);
-        }
-    };
-    this.addArtist = function(artist, callback) {
-        if(selected == null){
-            var self = this;
-            var c = function(songs){
-                selected = songs[0];
-                if(callback !== undefined){
-                    callback(songs);
-                }
-                self.play(selected.id);
-            };
-            playlist.addArtist(artist, c);
-        }else{
-            playlist.addArtist(artist, callback);
-        }
-    };
-    this.addAlbum = function(artist, album, callback) {
-        if(selected == null){
-            var self = this;
-            var c = function(songs){
-                selected = songs[0];
-                if(callback !== undefined){
-                    callback(songs);
-                }
-                self.play(selected.id);
-            };
-            playlist.addAlbum(artist, album, c);
-        }else{
-            playlist.addAlbum(artist, album, callback);
-        }
-    };
-    this.addPlaylist = function(id, callback) {
-        if(selected == null){
-            var self = this;
-            var c = function(songs){
-                selected = songs[0];
-                if(callback !== undefined){
-                    callback(songs);
-                }
-                self.play(selected.id);
-            };
-            playlist.addPlaylist(id, c);
-        }else{
-            playlist.addPlaylist(id, callback);
-        }
-    };
-    this.remove = function(index) {
-        playlist.remove(index);
+    this.hasNext = function() {
+        return (this.canPlay() && playlist.hasNext());
     };
     this.play = function(id) {
         if(id !== undefined) {
             selected = playlist.get(id);
             audioElement.src = selected.url;
         }
-        audioElement.play();
+        if(audioElement.src != "") {
+            audioElement.play();
+        }
     };
     this.playIndex = function(index) {
-        selected = playlist.get(index, "index");
-        if(selected != null) {
-            audioElement.src = selected.url;
-            this.play();
-        }
-    };
-    this.playNext = function(id, callback) {
-        if(selected == null){
-            var self = this;
-            var c = function(song){
-                selected = song;
-                if(callback !== undefined){
-                    callback(song);
-                }
-                self.play(selected.id);
-            };
-            playlist.playNext(id, c);
-        }else{
-            playlist.playNext(id, callback);
-        }
-    };
-    this.playArtistNext = function(artist, callback) {
-        if(selected == null){
-            var self = this;
-            var c = function(songs){
-                selected = songs[0];
-                if(callback !== undefined){
-                    callback(songs);
-                }
-                self.play(selected.id);
-            };
-            playlist.playArtistNext(artist, c);
-        }else{
-            playlist.playArtistNext(artist, callback);
-        }
-    };
-    this.playAlbumNext = function(artist, album, callback) {
-        if(selected == null){
-            var self = this;
-            var c = function(songs){
-                selected = songs[0];
-                if(callback !== undefined){
-                    callback(songs);
-                }
-                self.play(selected.id);
-            };
-            playlist.playAlbumNext(artist, album, c);
-        }else{
-            playlist.playAlbumNext(artist, album, callback);
-        }
-    };
-    this.playPlaylistNext = function(id, callback) {
-        if(selected == null){
-            var self = this;
-            var c = function(songs){
-                selected = songs[0];
-                if(callback !== undefined){
-                    callback(songs);
-                }
-                self.play(selected.id);
-            };
-            playlist.playPlaylistNext(id, c);
-        }else{
-            playlist.playPlaylistNext(id, callback);
-        }
-    };
-    this.shuffleArtist = function(artist, callback) {
-        playlist.shuffleArtist(artist, callback);
-    };
-    this.shuffleAlbum = function(artist, album, callback) {
-        playlist.shuffleAlbum(artist, album, callback);
-    };
-    this.shufflePlaylist = function(id, callback) {
-        playlist.shufflePlaylist(id, callback);
+        this.play(playlist.getByIndex(index).id);
     };
     this.pause = function() {
         audioElement.pause();
     };
-    this.paused = function() {
-        return audioElement.paused;
-    };
-    this.next = function() {
-        if(playlist.hasNext(loop)) {
-            selected = playlist.next(loop);
-            audioElement.src = selected.url;
-            this.play();
-        }
+    this.isPlaying = function() {
+        return !audioElement.paused;
     };
     this.prev = function() {
-        if(playlist.hasPrev(loop)) {
-            selected = playlist.prev(loop);
-            audioElement.src = selected.url;
-            this.play();
+        if(selected != null) {
+            var next = playlist.prev();
+            if(next !== null) {
+                selected = next;
+                audioElement.src = selected.url;
+                this.play();
+            }
         }
     };
-    this.repeat = function(param) {
-        if(param === undefined){
-            if(!loop) {
+    this.next = function() {
+        if(selected != null) {
+            var next = playlist.next();
+            if(next !== null) {
+                selected = next;
+                audioElement.src = selected.url;
+                this.play();
+            }
+        }
+    };
+    this.add = function(song) {
+        playlist.add(song);
+        if(selected === null) {
+            selected = song;
+        }
+        audioElement.dispatchEvent(playlistChange);
+    };
+    this.addAll = function(songs) {
+        for(var i = 0; i < songs.length; i++) {
+            playlist.add(songs[i]);
+        }
+        if(selected == null) {
+            selected = songs[0];
+        }
+        audioElement.dispatchEvent(playlistChange);
+    };
+    this.playNext = function(song) {
+        playlist.addNext(song);
+        audioElement.dispatchEvent(playlistChange);
+    };
+    this.playNextAll = function(songs) {
+        songs.reverse();
+        for(var i = 0; i < songs.length; i++) {
+            playlist.addNext(songs[i]);
+        }
+        audioElement.dispatchEvent(playlistChange);
+    };
+    this.remove = function(index) {
+        playlist.remove(index);
+        audioElement.dispatchEvent(playlistChange);
+    };
+    this.clearPlaylist = function() {
+        playlist.clear();
+        audioElement.dispatchEvent(playlistChange);
+    };
+    this.volume = function(vol) {
+        if(vol === undefined) {
+            return audioElement.volume*100;
+        }else if(vol >= 0 && vol <= 100) {
+            audioElement.volume = vol/100;
+        }
+    };
+    this.mute = function() {
+        audioElement.muted = !audioElement.muted;
+    };
+    this.isMuted = function() {
+        return audioElement.muted;
+    };
+    this.repeat = function(data) {
+        if(data === undefined) {
+            if(loop == false) {
                 loop = "all";
-            } else if (loop == "all") {
+            }else if(loop == "all") {
                 loop = "single";
-            } else {
+            }else {
                 loop = false;
             }
-        }else{
-            loop = param;
+        }else {
+            loop = data;
         }
+        playlist.setLoopMode(loop);
         audioElement.dispatchEvent(repeatChange);
     };
-    this.repeatState = function() {
+    this.repeatMode = function() {
         return loop;
     };
-    this.shuffle = function(param){
+    this.shuffle = function(param) {
         if(param === undefined) {
-            random = !random;
-        }else{
-            random = param;
+            shuffle = !shuffle;
+            audioElement.dispatchEvent(shuffleChange);
+        }else if(shuffle != param){
+            shuffle = param;
+            audioElement.dispatchEvent(shuffleChange);
         }
-        playlist.setShuffle(random);
-        audioElement.dispatchEvent(shuffleChange);
+        playlist.setShuffle(shuffle);
+        audioElement.dispatchEvent(playlistChange);
     };
-    this.isShuffle = function(){
-        return random;
+    this.isShuffle = function() {
+        return shuffle;
     };
-
-
-    this.konami = function(){
-        audioElement.defaultPlaybackRate = 2;
-        audioElement.load();
-        this.play();
-        self = this;
-        setInterval(function(){
-            self.setVolume(Math.random()*100);
-        },300);
-    };
-    audioElement.addEventListener("ended", function(){
-        if(loop == "single") {
-            self.play();
-        } else {
-            self.next();
-        }
-    }, true);
 }
-function Playlist(ajax_url){
+
+function Playlist() {
     var songs = [];
-    var shuffleSongs = [];
+    var shuffledSongs = [];
     var index = 0;
-    var random = false;
+    var loopMode = false;
+    var shuffle = false;
 
-    var getSong = function(id, callback) {
-        $.ajax({
-            url: ajax_url+"view/"+id,
-            dataType: 'json',
-            success: callback
-        });
-    };
-    var getArtist = function(artist, callback) {
-        $.ajax({
-            url: ajax_url+"artist",
-            data: 'artist='+encodeURIComponent(artist),
-            dataType: 'json',
-            success: callback
-        });
-    };
-    var getAlbum = function(artist, album, callback) {
-        $.ajax({
-            url: ajax_url+"album",
-            data: 'artist='+encodeURIComponent(artist)+'&album='+encodeURIComponent(album),
-            dataType: 'json',
-            success: callback
-        });
-    };
-    var getPlaylist = function(id, callback) {
-        $.ajax({
-            url: ajax_url+"playlist",
-            data: "playlist="+id,
-            dataType: 'json',
-            success: callback
-        });
-    };
-    var shuffleArray = function(array, start) {
-        if(array.length){
-            if(start === undefined)start = 0;
-            var tmp = array.slice(start);
-            var shuffledArray = [];
-            while(tmp.length){
-                var i = Math.floor(Math.random() * tmp.length);
-                var song = tmp.splice(i, 1);
-                shuffledArray.push(song[0]);
+    var getIndex = function(id) {
+        for(var i = 0; i < playlist().length; i++) {
+            if(playlist()[i].id == id) {
+                return i;
             }
-            return shuffledArray;
         }
-        return [];
+        return null;
+    };
+    var playlist = function() {
+        return shuffle ? shuffledSongs : songs;
+    };
+    var shuffleArray = function(array) {
+        if(array.length == 0) return [];
+        var tmp = array.slice();
+        return tmp.shuffle();
     };
 
+    this.getSongs = function() {
+        return playlist();
+    };
     this.setShuffle = function(param) {
-        if(random != param){
-            random = param;
-            if(random){
-                if(songs.length){
-                    var current = songs.splice(index, 1);
-                    shuffleSongs = shuffleArray(songs);
-                    songs.splice(index, 0, current[0]);
-                    shuffleSongs.unshift(current[0]);
-                }
+        shuffle = param;
+        if(songs.length) {
+            if(shuffle) {
+                var current = songs.splice(index, 1);
+                shuffledSongs = shuffleArray(songs);
+                songs.splice(index, 0, current[0]);
+                shuffledSongs.unshift(current[0]);
                 index = 0;
-            }else{
-                var current = shuffleSongs[index];
+            }else {
+                var current = shuffledSongs[index];
                 for(var i = 0; i < songs.length; i++){
                     if(songs[i].id == current.id){
                         index = i;
                     }
                 }
             }
-            this.onChange();
         }
     };
-    this.clear = function(){
+    this.setLoopMode = function(mode) {
+        loopMode = mode;
+    };
+    this.size = function() {
+        return playlist().length;
+    };
+    this.clear = function() {
         songs = [];
-        shuffleSongs = [];
+        shuffledSongs = [];
         index = 0;
-        this.onChange();
     };
-    this.getPlaylist = function() {
-        return random ? shuffleSongs : songs;
+    this.add = function(song) {
+        songs.push(song);
+        var i = Math.floor((Math.random() * shuffledSongs.length) + index);
+        shuffledSongs.splice(i, 0, song);
     };
-    this.hasNext = function(loop) {
-        if(loop){
-            return songs[(index+1)] !== undefined || songs[0] !== undefined;
-        }
-        return songs[(index+1)] !== undefined;
-    };
-    this.hasPrev = function(loop) {
-        if(loop) {
-            return songs[(index-1)] !== undefined || songs[songs.length-1] !== undefined;
-        }
-        return songs[(index-1)] !== undefined;
-    };
-    this.next = function(loop) {
-        if(this.hasNext(loop)){
-            var s = random ? shuffleSongs : songs;
-            if(loop){
-                index = (s[(index+1)] !== undefined ? index+1 : 0);
-            }else{
-                index++;
-            }
-            return s[index];
-        }
-        return null;
-    };
-    this.prev = function(loop) {
-        if(this.hasPrev(loop)) {
-            var s = random ? shuffleSongs : songs;
-            if(loop) {
-                index = (s[(index-1)] !== undefined ? index-1 : s.length-1);
-            } else {
-                index--;
-            }
-            return s[index];
-        }
-        return null;
-    };
-    //ADD
-    this.add = function(id, callback) {
-        var self = this;
-        getSong(id, function(json){
-            songs.push(json.Song);
-            var i = Math.floor((Math.random() * shuffleSongs.length) + index);
-            shuffleSongs.splice(i, 0, json.Song);
-            if(callback !== undefined){
-                callback(json.Song);
-            }
-            self.onChange();
-        });
-    };
-    this.addArtist = function(artist, callback) {
-        var self = this;
-        getArtist(artist, function(json){
-            var addedSongs = [];
-            var shuffledSongs = shuffleArray(json);
-            for(var i = 0; i < json.length; i++){
-                songs.push(json[i].Song);
-                shuffleSongs.push(shuffledSongs[i].Song);
-                addedSongs.push(json[i].Song);
-            }
-            if(callback !== undefined){
-                callback(addedSongs);
-            }
-            self.onChange();
-        });
-    };
-    this.addAlbum = function(artist, album, callback) {
-        var self = this;
-        getAlbum(artist, album, function(json){
-            var addedSongs = [];
-            var shuffledSongs = shuffleArray(json);
-            for(var i = 0; i < json.length; i++){
-                songs.push(json[i].Song);
-                shuffleSongs.push(shuffledSongs[i].Song);
-                addedSongs.push(json[i].Song);
-            }
-            if(callback !== undefined){
-                callback(addedSongs);
-            }
-            self.onChange();
-        });
-    };
-    this.addPlaylist = function(id, callback) {
-        var self = this;
-        getPlaylist(id, function(json){
-            var addedSongs = [];
-            var shuffledSongs = shuffleArray(json);
-            for(var i = 0; i < json.length; i++){
-                songs.push(json[i].Song);
-                shuffleSongs.push(shuffledSongs[i].Song);
-                addedSongs.push(json[i].Song);
-            }
-            if(callback !== undefined){
-                callback(addedSongs);
-            }
-            self.onChange();
-        });
-    };
-    //PLAY NEXT
-    this.playNext = function(id, callback) {
-        var self = this;
-        getSong(id, function(json){
-            shuffleSongs.splice((index+1), 0, json.Song);
-            songs.splice((index+1), 0, json.Song);
-            if(callback !== undefined){
-                callback(json.Song);
-            }
-            self.onChange();
-        });
-    };
-    this.playArtistNext = function(artist, callback) {
-        var self = this;
-        getArtist(artist, function(json){
-            var addedSongs = [];
-            var shuffledSongs = shuffleArray(json);
-            for(var i = 0; i < json.length; i++){
-                songs.splice((index+1+i), 0, json[i].Song);
-                shuffleSongs.splice((index+1+i), 0, shuffledSongs[i].Song);
-                addedSongs.push(json[i].Song);
-            }
-            if(callback !== undefined){
-                callback(addedSongs);
-            }
-            self.onChange();
-        });
-    };
-    this.playAlbumNext = function(artist, album, callback){
-        var self = this;
-        getAlbum(artist, album, function(json){
-            var addedSongs = [];
-            var shuffledSongs = shuffleArray(json);
-            for(var i = 0; i < json.length; i++){
-                songs.splice((index+1+i), 0, json[i].Song);
-                shuffleSongs.splice((index+1+i), 0, shuffledSongs[i].Song);
-                addedSongs.push(json[i].Song);
-            }
-            if(callback !== undefined){
-                callback(addedSongs);
-            }
-            self.onChange();
-        });
-    };
-    this.playPlaylistNext = function(id, callback){
-        var self = this;
-        getPlaylist(id, function(json){
-            var addedSongs = [];
-            var shuffledSongs = shuffleArray(json);
-            for(var i = 0; i < json.length; i++){
-                songs.splice((index+1+i), 0, json[i].Song);
-                shuffleSongs.splice((index+1+i), 0, shuffledSongs[i].Song);
-                addedSongs.push(json[i].Song);
-            }
-            if(callback !== undefined){
-                callback(addedSongs);
-            }
-            self.onChange();
-        });
-    };
-    //SHUFFLE
-    this.shuffleArtist = function(artist, callback) {
-        var self = this;
-        getArtist(artist, function(json){
-            var addedSongs = [];
-            json = shuffleArray(json);
-            for(var i = 0; i < json.length; i++){
-                songs.push(json[i].Song);
-                addedSongs.push(json[i].Song);
-            }
-            shuffleSongs = songs.slice(0);
-            if(callback !== undefined){
-                callback(addedSongs);
-            }
-            self.onChange();
-        });
-    };
-    this.shuffleAlbum = function(artist, album, callback) {
-        var self = this;
-        getAlbum(artist, album, function(json){
-            var addedSongs = [];
-            json = shuffleArray(json);
-            for(var i = 0; i < json.length; i++){
-                songs.push(json[i].Song);
-                addedSongs.push(json[i].Song);
-            }
-            shuffleSongs = songs.slice(0);
-            if(callback !== undefined){
-                callback(addedSongs);
-            }
-            self.onChange();
-        });
-    };
-    this.shufflePlaylist = function(id, callback) {
-        var self = this;
-        getPlaylist(id, function(json){
-            var addedSongs = [];
-            json = shuffleArray(json);
-            for(var i = 0; i < json.length; i++){
-                songs.push(json[i].Song);
-                addedSongs.push(json[i].Song);
-            }
-            shuffleSongs = songs.slice(0);
-            if(callback !== undefined){
-                callback(addedSongs);
-            }
-            self.onChange();
-        });
-    };
-    this.get = function(id, method) {
-        if(method === undefined)method = "id";
-        if(method == "id"){
-            for(var i = 0; i < songs.length; i++){
-                if(songs[i].id == id){
-                    return songs[i];
-                }
-            }
-        }else{
-            var s = random ? shuffleSongs : songs;
-            if(s[id] !== undefined) {
-                index = id;
-                return s[id];
-            }
-        }
-        return null;
+    this.addNext = function(song) {
+        shuffledSongs.splice(index+1, 0, song);
+        songs.splice(index+1, 0, song);
     };
     this.remove = function(i) {
-        if(songs[i] !== undefined) {
-            songs.splice(songs.indexOf(songs[i]),1);
-            if(i < index) {
-                index--;
-            }
-            this.onChange();
+        var song = playlist()[i];
+        playlist().splice(i, 1);
+        shuffle = !shuffle;
+        var s = getIndex(song.id);
+        playlist().splice(s, 1);
+        shuffle = !shuffle;
+        if(i < index) {
+            index--;
         }
     };
-    this.getIndex = function() {
+    this.get = function(id) {
+        index = +getIndex(id);
+        if(index !== null) {
+            return playlist()[index];
+        }
+        return null;
+    };
+    this.getByIndex = function(i) {
+        if(playlist()[i] === undefined) return null;
+        return playlist()[i];
+    };
+    this.getCurrentIndex = function() {
         return index;
     };
-    this.onChange = function(){};
+    this.hasPrev = function() {
+        return (loopMode && this.size()) || (playlist()[(index-1)] !== undefined);
+    };
+    this.hasNext = function() {
+        return (loopMode && this.size()) || (playlist()[(index+1)] !== undefined);
+    };
+    this.prev = function() {
+        if(playlist()[(index-1)] !== undefined) {
+            return playlist()[--index];
+        }else if(loopMode && this.size()) {
+            index = this.size()-1;
+            return playlist()[index];
+        }
+        return null;
+    };
+    this.next = function() {
+        if(playlist()[(index+1)] !== undefined) {
+            return playlist()[++index];
+        }else if(loopMode && this.size()) {
+            index = 0;
+            return playlist()[0];
+        }
+        return null;
+    };
 }

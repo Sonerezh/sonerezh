@@ -133,11 +133,11 @@ class SongsController extends AppController {
         App::import('Vendor', 'Getid3/getid3');
         App::uses('Folder', 'Utility');
 
-        if($this->request->is("get")) {
-            $this->loadModel('Setting');
+        $this->loadModel('Setting');
+        $this->Setting->contain('Rootpath');
+        $settings = $this->Setting->find('first');
 
-            $this->Setting->contain('Rootpath');
-            $settings = $this->Setting->find('first');
+        if($this->request->is("get")) {
 
             if ($settings) {
                 $paths = $settings['Rootpath'];
@@ -169,11 +169,32 @@ class SongsController extends AppController {
                 if($count >= 100) break;
                 $count++;
             }
+            if($count) {
+                $settings['Setting']['sync_token'] = time();
+                $this->Setting->save($settings);
+            }
+            echo $settings['Setting']['sync_token'];
             $diff = array_diff($songs, $imported);
             $this->Session->write('song_list', $diff);
             $this->layout = null;
             $this->render(false);
         }
+    }
+
+    public function sync() {
+        $this->viewClass = 'Json';
+        $this->SortComponent = $this->Components->load('Sort');
+
+        $songs = $this->Song->find("all", array('order' => 'title'));
+        $songs = $this->SortComponent->sortByBand($songs);
+        foreach($songs as &$song) {
+            $song['Song']['url'] = Router::url(array('controller'=>'songs', 'action'=>'download', $song['Song']['id'], 'api'=> false));
+            $song['Song']['cover'] = $this->request->base.'/'.IMAGES_URL.(empty($song['Song']['cover']) ? "no-cover.png" : THUMBNAILS_DIR.'/'.$song['Song']['cover']);
+        }
+        $songs = Hash::extract($songs, '{n}.Song');
+
+        $this->set('data', $songs);
+        $this->set('_serialize', 'data');
     }
 
     /**

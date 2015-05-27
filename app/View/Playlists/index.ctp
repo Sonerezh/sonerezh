@@ -1,5 +1,26 @@
+<?php $this->start('script');?>
+    <script>
+        function syncPlaylist() {
+            var songs = [];
+            var length = $('.playlist-row [data-id]').length;
+            $('.playlist-row [data-id]').each(function(index, element) {
+                songsManager.getSong($(element).attr('data-id'), function(song) {
+                    songs.push(song);
+                    if(songs.length == length) {
+                        songsManager.setPlaylist(songs);
+                    }
+                });
+            });
+        }
+        if(songsManager.isOpen()) {
+            syncPlaylist();
+        }else {
+            songsManager.addOnDBReadyListener(syncPlaylist);
+        }
+    </script>
+<?php $this->end();?>
 <div class="col-xs-3">
-    <div class="panel panel-default" style="margin-top: 20px;">
+    <div class="panel panel-default" data-view="playlists" style="margin-top: 20px;">
         <div class="panel-heading">
             <h4 class="panel-title"><?php echo __('Playlists'); ?></h4>
             <?php echo $this->Html->link(
