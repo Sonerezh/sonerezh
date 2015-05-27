@@ -32,9 +32,11 @@ var playAlbum = '.action-play-album';
 var playTitleNext = '.action-play-next';
 var playBandNext = '.action-artist-play-next';
 var playAlbumNext = '.action-album-play-next';
+var playPlaylistNext = '.action-playlist-play-next';
 var playTitleAfter = '.action-add-to-up-next';
 var playBandAfter = '.action-add-artist-to-up-next';
 var playAlbumAfter = '.action-add-album-to-up-next';
+var playPlaylistAfter = '.action-add-playlist-to-up-next';
 var playPlaylist = '.action-play-playlist';
 var shuffleBand = '.action-shuffle-artist';
 var shuffleAlbum = '.action-shuffle-album';
@@ -217,10 +219,21 @@ function init() {
             player.play(songs[0]);
         });
     });
+    $('#content').on('click', playPlaylistNext, function(e) {
+        e.preventDefault();
+        songsManager.getPlaylistAllSongs(function(songs) {
+            player.playNextAll(songs);
+        });
+    });
+    $('#content').on('click', playPlaylistAfter, function(e) {
+        e.preventDefault();
+        songsManager.getPlaylistAllSongs(function(songs) {
+            player.addAll(songs);
+        });
+    });
     $('#content').on('click', shufflePlaylist, function(e) {
         e.preventDefault();
-        var playlistId = $(this).parents('[data-playlist]').attr('data-playlist');
-        songsManager.getPlaylistAllSongs(playlistId, function(songs) {
+        songsManager.getPlaylistAllSongs(function(songs) {
             player.clearPlaylist();
             player.addAll(songs.shuffle());
             player.play(songs[0]);

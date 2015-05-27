@@ -60,6 +60,8 @@ function Player() {
         if(id !== undefined) {
             selected = playlist.get(id);
             audioElement.src = selected.url;
+        }else if(selected != null) {
+            audioElement.src = selected.url;
         }
         if(audioElement.src != "") {
             audioElement.play();
@@ -112,12 +114,18 @@ function Player() {
     };
     this.playNext = function(song) {
         playlist.addNext(song);
+        if(selected == null) {
+            selected = song;
+        }
         audioElement.dispatchEvent(playlistChange);
     };
     this.playNextAll = function(songs) {
         songs.reverse();
         for(var i = 0; i < songs.length; i++) {
             playlist.addNext(songs[i]);
+        }
+        if(selected == null) {
+            selected = songs[songs.length-1];
         }
         audioElement.dispatchEvent(playlistChange);
     };
