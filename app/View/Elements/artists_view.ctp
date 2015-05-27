@@ -79,7 +79,7 @@
                             <?php if(count($album['discs']) > 1){ ?>
                                 <p class="disc-number"><strong><?= __('Disc') ?> <?php echo h($keyDisc); ?></strong></p>
                             <?php } ?>
-                            <table class="table table-striped table-condensed table-hover table-album table-album-left">
+                            <table class="table table-hover table-album table-album-left">
                                 <tbody>
                                 <?php $switchOn = count($disc['songs']) > 5 ? round(count($disc['songs']) / 2) : count($disc['songs']); ?>
                                 <?php foreach($disc['songs'] as $key => $song): ?>
@@ -92,7 +92,7 @@
                                         </div>
                                         <div class="col-lg-6 col-xs-12 album-table-container">
                                         <?= count($album['discs']) > 1 ?  '<p class="disc-number visible-lg">&nbsp;</p>' : ''; ?>
-                                        <table class="table table-striped table-condensed table-hover table-album">
+                                        <table class="table table-condensed table-hover table-album">
                                         <tbody>
 
                                     <?php endif; ?>

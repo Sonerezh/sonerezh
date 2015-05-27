@@ -100,10 +100,10 @@
                     <?php echo __("This playlist is empty :("); ?>
                 </div>
             <?php else: ?>
-                <table class="table table-striped table-condensed table-hover" data-scroll-container="true" style="margin-top: 20px;">
+                <table class="table table-hover" data-scroll-container="true" style="margin-top: 20px;">
                     <thead>
                     <tr>
-                        <th>#</th>
+                        <th class="track-number">#</th>
                         <th><?php echo __('Song Title'); ?></th>
                         <th class="hidden-xs hidden-sm"><?php echo __('Artist'); ?></th>
                         <th class="visible-lg"><?php echo __('Album'); ?></th>

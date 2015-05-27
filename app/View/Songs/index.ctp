@@ -1,9 +1,9 @@
 <?php if(!empty($songs)){ ?>
     <div class="col-lg-12" data-view="artists">
-        <table class="table table-striped table-condensed table-hover" data-scroll-container="true">
+        <table class="table table-hover" data-scroll-container="true">
             <thead>
             <tr>
-                <th>#</th>
+                <th class="track-number">#</th>
                 <th><?php echo __('Song Title'); ?></th>
                 <th class="hidden-xs hidden-sm"><?php echo __('Artist'); ?></th>
                 <th class="visible-lg"><?php echo __('Album'); ?></th>

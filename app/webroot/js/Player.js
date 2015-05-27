@@ -60,7 +60,7 @@ function Player() {
         if(id !== undefined) {
             selected = playlist.get(id);
             audioElement.src = selected.url;
-        }else if(selected != null) {
+        }else if(audioElement.src == "" && selected != null) {
             audioElement.src = selected.url;
         }
         if(audioElement.src != "") {

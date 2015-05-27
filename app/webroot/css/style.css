@@ -119,6 +119,8 @@ nav .search .search-input{
     margin-top: 50px;
     height: 65px;
     z-index: 1020;
+    border: none;
+    box-shadow: 0 2px 4px 0 rgba(0,0,0,.15);
 }
 
 ul.player-controls a {
@@ -198,13 +200,14 @@ ul.player-controls li.play{
 }
 .navbar-player .song-cover{
     float: left;
-    width: 64px;
-    height: 64px;
+    width: 65px;
+    height: 65px;
     margin-right: 10px;
 }
 
 .badge-timer{
     background-color: #428BCA;
+    font-weight: normal;
 }
 
 .queue {
@@ -267,14 +270,31 @@ body, body.modal-open {
 /***
  * Generics classes
  *********************************/
+
+.table>tbody>tr>td, .table>thead>tr>th {
+    padding: 15px 5px;
+}
+
+.table-album>tbody>tr>td, .table-album>thead>tr>th {
+    padding: 8px 5px;
+}
+
+.table>thead>tr>th {
+    font-size: 95%;
+    text-transform: uppercase;
+}
+
  tr[data-id]{
  	cursor: pointer;
  }
- 
-.track-number{
-    width: 25px;
-    line-height:1;
+
+.table>tbody>tr>td.track-number{
+    width: 35px;
     color:#999;
+    padding-left: 15px;
+}
+.table>thead>tr>th.track-number {
+    padding-left: 15px;
 }
 
 .truncated-name {
@@ -304,8 +324,24 @@ body, body.modal-open {
     width: 55px;
 }
 
+#album-expended .table>tbody>tr:hover {
+    background-color: #282828;
+}
+
+.table>tbody>tr.on-air,.table>tbody>tr.on-air:hover {
+    background-color: #fafafa;
+}
+
+#album-expended .table>tbody>tr.on-air, #album-expended .table>tbody>tr.on-air:hover {
+    background-color: #2D2D2D;
+}
+
 .on-air td {
     font-weight: bold;
+}
+
+.on-air td.track-number {
+    font-weight: normal;
 }
 
 .on-air td.playtime-cell .song-playtime,
@@ -357,6 +393,7 @@ body, body.modal-open {
 
 .disc-number{
 	margin: 10px 0;
+    text-transform: uppercase;
 }
 
 .cover{

@@ -17,7 +17,7 @@
 
     <div class="panel panel-default">
         <div class="panel-body">
-            <table class="table table-striped table-condensed table-hover">
+            <table class="table table-hover">
                 <thead>
                 <tr>
                     <th></th>
@@ -29,7 +29,7 @@
                 <tbody>
                 <?php foreach($users as $user): ?>
                     <tr>
-                        <td style="width: 42px;">
+                        <td style="width: 52px;" class="text-right">
                             <?php 
                             if (isset($user['User']['gravatar'])) {
                                 echo $this->Html->image($user['User']['gravatar'].'?s=32');

@@ -307,7 +307,7 @@ function init() {
         var track = player.getCurrentTrack();
         $songTitle.text(track.title);
         $songBand.text(track.band);
-        var replace = "_64x64"+(retina ? "@2x" : "")+"$1";
+        var replace = "_65x65"+(retina ? "@2x" : "")+"$1";
         $coverImg.attr('src', track.cover.replace(/(\.[a-z0-9]+)/i, replace));
         updateUI();
     });

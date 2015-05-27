@@ -113,7 +113,7 @@
                         <div id="queue-list" style="display:none">
                             <div class="col-xs-12">
                                 <h4><?= __('Queue').'&nbsp;<small><i><span class="queue-size">'.'0</span> '.__('Songs').'</i></small>'; ?></h4>
-                                <table class="table table-striped table-condensed table-hover table-album">
+                                <table class="table table-hover table-album">
                                     <tbody>
                                     </tbody>
                                 </table>

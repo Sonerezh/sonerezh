@@ -31,7 +31,7 @@
                 </div>
                 <?php }?>
                 <div class="col-lg-6 col-xs-12 album-table-container">
-                    <table class="table table-condensed table-album table-album-left">
+                    <table class="table table-hover table-album table-album-left">
                         <tbody>
                         <?php
                         $switchAs = count($album) > 5 ? round(count($album)/2) : count($album);
@@ -41,7 +41,7 @@
                     </table>
                 </div>
                 <div class="col-lg-6 col-xs-12 album-table-container">
-                    <table class="table table-condensed table-album">
+                    <table class="table table-hover table-album">
                         <tbody>
                         <?php } ?>
                         <!-- Add 'class="on-air"' on play to highlight the row -->
