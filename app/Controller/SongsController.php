@@ -185,10 +185,10 @@ class SongsController extends AppController {
         $this->viewClass = 'Json';
         $this->SortComponent = $this->Components->load('Sort');
 
-        $songs = $this->Song->find("all", array('order' => 'title'));
+        $songs = $this->Song->find("all", array('fields' => array('id', 'album', 'artist', 'band', 'cover', 'title', 'disc', 'track_number'), 'order' => 'title'));
         $songs = $this->SortComponent->sortByBand($songs);
-        foreach($songs as &$song) {
-            $song['Song']['url'] = Router::url(array('controller'=>'songs', 'action'=>'download', $song['Song']['id'], 'api'=> false));
+        foreach($songs as $k => &$song) {
+            $song['Song']['url'] = $this->request->base . '/songs/download/' . $song['Song']['id'];
             $song['Song']['cover'] = $this->request->base.'/'.IMAGES_URL.(empty($song['Song']['cover']) ? "no-cover.png" : THUMBNAILS_DIR.'/'.$song['Song']['cover']);
         }
         $songs = Hash::extract($songs, '{n}.Song');

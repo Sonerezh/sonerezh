@@ -54,14 +54,18 @@ function SongsManager(baseurl, version) {
         store.clear();
     };
 
-    var addSong = function(song) {
+    var addSongs = function(songs) {
         var store = getObjectStore(DB_STORE_NAME, "readwrite");
-        store.add(song);
+        for(var i = 0; i < songs.length; i++) {
+            store.add(songs[i]);
+        }
     };
 
-    var addPlaylistSong = function(song, id) {
+    var addPlaylistSong = function(songs) {
         var store = getObjectStore(DB_PLAYLIST_STORE_NAME, "readwrite");
-        store.add(song, id);
+        for(var i = 0; i < songs.length; i++) {
+            store.add(songs[i], i);
+        }
     };
 
     this.getAllSongs = function(callback) {
@@ -170,9 +174,7 @@ function SongsManager(baseurl, version) {
         xhr.open("GET", baseurl+"/sync");
         xhr.onload = function() {
             var json = JSON.parse(xhr.response);
-            for (var i = 0; i < json.length; i++) {
-                addSong(json[i]);
-            }
+            addSongs(json);
             localStorage.setItem("sync_token", syncToken);
             console.timeEnd("sync");
         };
@@ -180,8 +182,6 @@ function SongsManager(baseurl, version) {
     };
     this.setPlaylist = function(songs) {
         clearObjectStore(DB_PLAYLIST_STORE_NAME);
-        for(var i = 0; i < songs.length; i++) {
-            addPlaylistSong(songs[i], i);
-        }
+        addPlaylistSong(songs);
     };
 }
