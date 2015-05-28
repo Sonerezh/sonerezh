@@ -26,7 +26,7 @@
     echo $this->fetch('css');
     ?>
     <script id="queue-tr" type="text/html">
-        <tr>
+        <tr data-id="">
             <td class="truncated-name title"></td>
             <td class="truncated-name hidden-xs hidden-sm artist"></td>
             <td class="truncated-name visible-lg album"></td>
@@ -149,6 +149,7 @@
     "bootstrap.min",
     "jquery.slider",
     "jquery.scroll",
+    "jquery.list",
     "jquery.fs.selecter.min"));?>
 <?php echo $this->fetch('script'); ?>
 </body>
