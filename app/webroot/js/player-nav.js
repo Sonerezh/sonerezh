@@ -257,7 +257,7 @@ function init() {
         player.pause();
     });
     $('#queue').on('click', '.action-remove-from-queue', function() {
-        player.remove($(this).parents('tr').index());
+        player.remove($(this).parents('tr').attr('data-index'));
     });
     $(document).on('focus', 'input', function(){
         shortcut=false;
