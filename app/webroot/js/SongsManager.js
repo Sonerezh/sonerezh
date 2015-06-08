@@ -2,11 +2,13 @@ function SongsManager(baseurl, version) {
     const DB_NAME = "songs-db";
     const DB_VERSION = 1;
     const DB_STORE_NAME = "songs";
-    const DB_PLAYLIST_STORE_NAME = "playlists";
 
     var self = this;
     var db;
     var onDBReady = [];
+
+    var songs = [];
+    var playlist = [];
 
     openDB(function(){
         if(+version > +localStorage.getItem("sync_token")) {
@@ -21,19 +23,43 @@ function SongsManager(baseurl, version) {
             for(var i = 0; i < onDBReady.length; i++) {
                 onDBReady[i]();
             }
+            var store = getObjectStore(DB_STORE_NAME, "readonly");
+            store.openCursor().onsuccess = function (e) {
+                if(e.target.result) {
+                    songs = e.target.result.value;
+                }
+            };
             callback();
         };
         req.onerror = function (e) {
             console.log("indexedDB error : " + e.target.errorCode);
         };
         req.onupgradeneeded = function (e) {
-            var store = e.target.result.createObjectStore(DB_STORE_NAME, { autoIncrement: true });
-            store.createIndex("id", "id", { unique: true });
-            store.createIndex("band", "band", { unique: false });
-            store.createIndex("album", ["album", "band"], { unique: false });
-
-            e.target.result.createObjectStore(DB_PLAYLIST_STORE_NAME);
+            e.target.result.createObjectStore(DB_STORE_NAME, { autoIncrement: true });
         };
+    }
+
+    function albumSort(a, b) {
+        if(a.album > b.album)return 1;
+        else if(a.album < b.album)return -1;
+
+        var aDics = a.disc == null ? 0 : +a.disc.split('/')[0];
+        var bDics = b.disc == null ? 0 : +b.disc.split('/')[0];
+
+        if(aDics > bDics)return 1;
+        else if(aDics < bDics)return -1;
+
+        if(+a.track_number > +b.track_number)return 1;
+        if(+a.track_number < +b.track_number)return -1;
+
+        return 0;
+    }
+
+    function bandSort(a, b) {
+        if(a.band > b.band)return 1;
+        else if(a.band < b.band)return -1;
+
+        return albumSort(a, b);
     }
 
     this.addOnDBReadyListener = function(callback) {
@@ -56,114 +82,63 @@ function SongsManager(baseurl, version) {
 
     var addSongs = function(songs) {
         var store = getObjectStore(DB_STORE_NAME, "readwrite");
+        store.add(songs);
+    };
+
+    this.getAllSongs = function() {
+        return songs.sort(bandSort);
+    };
+
+    this.getAllAlbumSongs = function() {
+        return songs.sort(albumSort);
+    };
+
+    this.getSong = function(id) {
         for(var i = 0; i < songs.length; i++) {
-            store.add(songs[i]);
+            if(songs[i].id == id){
+                return songs[i];
+            }
         }
     };
 
-    var addPlaylistSong = function(songs) {
-        var store = getObjectStore(DB_PLAYLIST_STORE_NAME, "readwrite");
+    this.getPlaylistAllSongs = function() {
+        return playlist;
+    };
+
+    this.getBandSongs = function(band) {
+        var bands = [];
         for(var i = 0; i < songs.length; i++) {
-            store.add(songs[i], i);
+            if(songs[i].band == band) {
+                bands.push(songs[i]);
+            }
         }
+        return bands;
     };
 
-    this.getAllSongs = function(callback) {
-        var store = getObjectStore(DB_STORE_NAME, "readonly");
-        var index = store.index("band");
-        var songs = [];
-        index.openCursor().onsuccess = function (e) {
-            var cursor = e.target.result;
-            if (cursor) {
-                songs.push(cursor.value);
-                cursor.continue();
-            } else {
-                callback(songs);
+    this.getFirstbandSong = function(band) {
+        for(var i = 0; i < songs.length; i++) {
+            if(songs[i].band == band) {
+                return songs[i];
             }
         }
     };
 
-    this.getAllAlbumSongs = function(callback) {
-        var store = getObjectStore(DB_STORE_NAME, "readonly");
-        var index = store.index("album");
-        var songs = [];
-        index.openCursor().onsuccess = function (e) {
-            var cursor = e.target.result;
-            if (cursor) {
-                songs.push(cursor.value);
-                cursor.continue();
-            } else {
-                callback(songs);
+    this.getAlbumSongs = function(band, album) {
+        var albums = [];
+        for(var i = 0; i < songs.length; i++) {
+            if(songs[i].band == band && songs[i].album == album) {
+                albums.push(songs[i]);
             }
         }
+        return albums;
     };
 
-    this.getSong = function(id, callback) {
-        var store = getObjectStore(DB_STORE_NAME, "readonly");
-        var index = store.index("id");
-        index.get(id).onsuccess = function (e) {
-            callback(e.target.result);
-        }
-    };
-
-    this.getPlaylistAllSongs = function(callback) {
-        var store = getObjectStore(DB_PLAYLIST_STORE_NAME, "readonly");
-        var songs = [];
-        store.openCursor().onsuccess = function (e) {
-            var cursor = e.target.result;
-            if (cursor) {
-                songs.push(cursor.value);
-                cursor.continue();
-            } else {
-                callback(songs);
+    this.getFirstAlbumSong = function(band, album) {
+        for(var i = 0; i < songs.length; i++) {
+            if(songs[i].band == band && songs[i].album == album) {
+                return songs[i];
             }
         }
-    };
-
-    this.getBandSongs = function(band, callback) {
-        var store = getObjectStore(DB_STORE_NAME, "readonly");
-        var index = store.index("band");
-        var songs = [];
-        index.openCursor(IDBKeyRange.only(band)).onsuccess = function (e) {
-            var cursor = e.target.result;
-            if (cursor) {
-                songs.push(cursor.value);
-                cursor.continue();
-            } else {
-                callback(songs);
-            }
-        }
-    };
-
-    this.getFirstbandSong = function(band, callback) {
-        var store = getObjectStore(DB_STORE_NAME, "readonly");
-        var index = store.index("band");
-        index.get(band).onsuccess = function (e) {
-            callback(e.target.result);
-        };
-    };
-
-    this.getAlbumSongs = function(band, album, callback) {
-        var store = getObjectStore(DB_STORE_NAME, "readonly");
-        var index = store.index("album");
-        var songs = [];
-        index.openCursor(IDBKeyRange.only([album, band])).onsuccess = function (e) {
-            var cursor = e.target.result;
-            if (cursor) {
-                songs.push(cursor.value);
-                cursor.continue();
-            } else {
-                callback(songs);
-            }
-        }
-    };
-
-    this.getFirstAlbumSong = function(band, album, callback) {
-        var store = getObjectStore(DB_STORE_NAME, "readonly");
-        var index = store.index("album");
-        index.get([album, band]).onsuccess = function (e) {
-            callback(e.target.result);
-        };
     };
 
 
@@ -175,13 +150,13 @@ function SongsManager(baseurl, version) {
         xhr.onload = function() {
             var json = JSON.parse(xhr.response);
             addSongs(json);
+            songs = json;
             localStorage.setItem("sync_token", syncToken);
             console.timeEnd("sync");
         };
         xhr.send();
     };
     this.setPlaylist = function(songs) {
-        clearObjectStore(DB_PLAYLIST_STORE_NAME);
-        addPlaylistSong(songs);
+        playlist = songs;
     };
 }

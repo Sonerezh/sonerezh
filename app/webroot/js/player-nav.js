@@ -42,8 +42,6 @@ var shuffleBand = '.action-shuffle-artist';
 var shuffleAlbum = '.action-shuffle-album';
 var shufflePlaylist = '.action-shuffle-playlist';
 
-var lastView = null;
-var lastPlaylist = null;
 var shortcut=false;
 var k = "65663937393740403838";
 var ks = "";
@@ -121,9 +119,8 @@ function init() {
     $('#content').on('dblclick', 'tr[data-id]', function(e){
         e.preventDefault();
         var songId = $(this).attr('data-id');
-        populatePlaylist(function() {
-            player.play(songId);
-        });
+        populatePlaylist();
+        player.play(songId);
     });
     $('#content').on('click', pauseTitle, function(e) {
         e.preventDefault();
@@ -132,112 +129,88 @@ function init() {
     $('#content').on('click', playTitleNext, function(e) {
         e.preventDefault();
         var songId = $(this).parents('[data-id]').attr('data-id');
-        songsManager.getSong(songId, function(song) {
-            player.playNext(song);
-        });
+        player.playNext(songsManager.getSong(songId));
     });
     $('#content').on('click', playTitleAfter, function(e) {
         e.preventDefault();
         var songId = $(this).parents('[data-id]').attr('data-id');
-        songsManager.getSong(songId, function(song) {
-            player.add(song);
-        });
+        player.add(songsManager.getSong(songId));
     });
     $('#content').on('click', playBand, function(e) {
         e.preventDefault();
         var band = $(this).parents('[data-band]').attr('data-band');
-        populatePlaylist(function() {
-            songsManager.getFirstbandSong(band, function(song) {
-                player.play(song.id);
-            });
-        });
+        var song = songsManager.getFirstbandSong(band);
+        populatePlaylist();
+        player.play(song.id);
     });
     $('#content').on('click', playBandNext, function(e) {
         e.preventDefault();
         var band = $(this).parents('[data-band]').attr('data-band');
-        songsManager.getBandSongs(band, function(songs) {
-            player.playNextAll(songs);
-        });
+        player.playNextAll(songsManager.getBandSongs(band));
     });
     $('#content').on('click', playBandAfter, function(e) {
         e.preventDefault();
         var band = $(this).parents('[data-band]').attr('data-band');
-        songsManager.getBandSongs(band, function(songs) {
-            player.addAll(songs);
-        });
+        player.addAll(songsManager.getBandSongs(band));
     });
     $('#content').on('click', shuffleBand, function(e) {
         e.preventDefault();
         var band = $(this).parents('[data-band]').attr('data-band');
-        songsManager.getBandSongs(band, function(songs) {
-            player.clearPlaylist();
-            player.addAll(songs.shuffle());
-            player.playIndex(0);
-        });
+        var songs = songsManager.getBandSongs(band);
+        player.clearPlaylist();
+        player.addAll(songs.shuffle());
+        player.playIndex(0);
     });
     $('#content').on('click', playAlbum, function(e) {
         e.preventDefault();
         var band = $(this).parents('[data-band]').attr('data-band');
         var album = $(this).parents('[data-album]').attr('data-album');
-        populatePlaylist(function() {
-            songsManager.getFirstAlbumSong(band, album, function(song) {
-                player.play(song.id);
-            });
-        });
+        var song = songsManager.getFirstAlbumSong(band, album);
+        populatePlaylist();
+        player.play(song.id);
     });
     $('#content').on('click', playAlbumNext, function(e) {
         e.preventDefault();
         var band = $(this).parents('[data-band]').attr('data-band');
         var album = $(this).parents('[data-album]').attr('data-album');
-        songsManager.getAlbumSongs(band, album, function(songs) {
-            player.playNextAll(songs);
-        });
+        player.playNextAll(songsManager.getAlbumSongs(band, album));
     });
     $('#content').on('click', playAlbumAfter, function(e) {
         e.preventDefault();
         var band = $(this).parents('[data-band]').attr('data-band');
         var album = $(this).parents('[data-album]').attr('data-album');
-        songsManager.getAlbumSongs(band, album, function(songs) {
-            player.addAll(songs);
-        });
+        player.addAll(songsManager.getAlbumSongs(band, album));
     });
     $('#content').on('click', shuffleAlbum, function(e) {
         e.preventDefault();
         var band = $(this).parents('[data-band]').attr('data-band');
         var album = $(this).parents('[data-album]').attr('data-album');
-        songsManager.getAlbumSongs(band, album, function(songs) {
-            player.clearPlaylist();
-            player.addAll(songs.shuffle());
-            player.playIndex(0);
-        });
+        var songs = songsManager.getAlbumSongs(band, album);
+        player.clearPlaylist();
+        player.addAll(songs.shuffle());
+        player.playIndex(0);
     });
     $('#content').on('click', playPlaylist, function(e) {
         e.preventDefault();
-        songsManager.getPlaylistAllSongs(function(songs) {
-            player.clearPlaylist();
-            player.addAll(songs);
-            player.play(songs[0]);
-        });
+        var songs = songsManager.getPlaylistAllSongs();
+        player.clearPlaylist();
+        player.addAll(songs);
+        player.play(songs[0]);
     });
     $('#content').on('click', playPlaylistNext, function(e) {
         e.preventDefault();
-        songsManager.getPlaylistAllSongs(function(songs) {
-            player.playNextAll(songs);
-        });
+        player.playNextAll(songsManager.getPlaylistAllSongs());
     });
     $('#content').on('click', playPlaylistAfter, function(e) {
         e.preventDefault();
-        songsManager.getPlaylistAllSongs(function(songs) {
-            player.addAll(songs);
-        });
+        player.addAll(songsManager.getPlaylistAllSongs());
     });
     $('#content').on('click', shufflePlaylist, function(e) {
         e.preventDefault();
-        songsManager.getPlaylistAllSongs(function(songs) {
-            player.clearPlaylist();
-            player.addAll(songs.shuffle());
-            player.play(songs[0]);
-        });
+        var songs =songsManager.getPlaylistAllSongs();
+        player.clearPlaylist();
+        player.addAll(songs.shuffle());
+        player.play(songs[0]);
     });
     $queue.on('click', playTitle, function(){
         var index = $(this).parents('tr').attr('data-index');
@@ -354,6 +327,8 @@ function init() {
         if(songs.length) {
             $('.current-queue-inner').list({
                 cellHeight: 36,
+                cellsShowed: 30,
+                min: 10,
                 cellTemplate: $('#queue-tr').html(),
                 table:'.table-album',
                 data: songs,
@@ -453,32 +428,15 @@ function getFormatedTime(s){
     return minutes+":"+secondes;
 }
 
-function populatePlaylist(callback) {
+function populatePlaylist() {
     var v = $('[data-view]').attr('data-view');
-    var p = $('[data-playlist]').attr('data-playlist');
-    if(p === undefined) p = lastPlaylist;
-    if(lastView != v || lastPlaylist != p) {
-        lastView = v;
-        lastPlaylist = p;
-        player.clearPlaylist();
-        if(v == "albums") {
-            songsManager.getAllAlbumSongs(function(songs) {
-                player.addAll(songs);
-                callback();
-            });
-        }else if(v == "playlists") {
-            songsManager.getPlaylistAllSongs(function(songs) {
-                player.addAll(songs);
-                callback();
-            });
-        }else {
-            songsManager.getAllSongs(function(songs) {
-                player.addAll(songs);
-                callback();
-            });
-        }
+    player.clearPlaylist();
+    if(v == "albums") {
+        player.addAll(songsManager.getAllAlbumSongs());
+    }else if(v == "playlists") {
+        player.addAll(songsManager.getPlaylistAllSongs());
     }else {
-        callback();
+        player.addAll(songsManager.getAllSongs());
     }
 }
 

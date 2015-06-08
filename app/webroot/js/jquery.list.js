@@ -18,7 +18,8 @@
         var maxIndex = settings.data.length - settings.cellsShowed;
 
         $(settings.table  + " tbody", this).append('<tr class="first-line"><td style="padding:0"></td></tr>');
-        for(var i = 0; i < settings.cellsShowed; i++) {
+        var max = Math.min(settings.data.length, settings.cellsShowed);
+        for(var i = 0; i < max; i++) {
             var $template = settings.updateTemplate($(settings.cellTemplate), settings.data[i], i);
             $(settings.table  + " tbody", this).append($template);
         }

@@ -4,12 +4,10 @@
             var songs = [];
             var length = $('.playlist-row [data-id]').length;
             $('.playlist-row [data-id]').each(function(index, element) {
-                songsManager.getSong($(element).attr('data-id'), function(song) {
-                    songs.push(song);
-                    if(songs.length == length) {
-                        songsManager.setPlaylist(songs);
-                    }
-                });
+                songs.push(songsManager.getSong($(element).attr('data-id')));
+                if(songs.length == length) {
+                    songsManager.setPlaylist(songs);
+                }
             });
         }
         if(songsManager.isOpen()) {
