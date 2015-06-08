@@ -108,13 +108,12 @@ function init() {
     $('#content').on('click', playTitle, function(e) {
         e.preventDefault();
         var songId = $(this).parents('[data-id]').attr('data-id');
-        populatePlaylist(function() {
-            if(player.getCurrentTrack().id == songId) {
-                player.play();
-            }else {
-                player.play(songId);
-            }
-        });
+        populatePlaylist();
+        if(player.getCurrentTrack().id == songId) {
+            player.play();
+        }else {
+            player.play(songId);
+        }
     });
     $('#content').on('dblclick', 'tr[data-id]', function(e){
         e.preventDefault();
