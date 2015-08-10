@@ -1,6 +1,8 @@
 function Player(ajax_url){
     var playlist = new Playlist(ajax_url);
     var audioElement = document.createElement('audio');
+    var audioElementBuffer = document.createElement('audio');
+	var hasBufferedNext=false;
     var selected = null;
     var self = this;
     var loop = false;
@@ -36,6 +38,14 @@ function Player(ajax_url){
     this.getCurrentTime = function() {
         return audioElement.currentTime;
     };
+	this.bufferNext = function() {
+        if(playlist.hasNext(loop) && !hasBufferedNext) {
+			hasBufferedNext=true;
+			audioElementBuffer.src=playlist.getNext(loop).url;
+			audioElementBuffer.play();
+			audioElementBuffer.pause(); //Force cache
+		}
+	};
     this.getBuffered = function() {
         if(audioElement.buffered.length){
             return audioElement.buffered.end(audioElement.buffered.length-1);
@@ -134,6 +144,7 @@ function Player(ajax_url){
             audioElement.src = selected.url;
         }
         audioElement.play();
+		hasBufferedNext=false;
     };
     this.playIndex = function(index) {
         selected = playlist.get(index, "index");
@@ -374,6 +385,20 @@ function Playlist(ajax_url){
         }
         return songs[(index-1)] !== undefined;
     };
+    this.getNext = function(loop) {
+        if(this.hasNext(loop)){
+            var s = random ? shuffleSongs : songs;
+			var aux;
+            if(loop){
+                aux= (s[(index+1)] !== undefined ? index+1 : 0);
+            }else{
+                aux=index+1;
+            }
+            return s[aux];
+        }
+        return null;
+    };
+
     this.next = function(loop) {
         if(this.hasNext(loop)){
             var s = random ? shuffleSongs : songs;
