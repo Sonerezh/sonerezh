@@ -295,6 +295,9 @@ $(function(){
     player.addEventListener('timeupdate', function(){
         $('#timebar').slider('value', player.getCurrentTime());
         $('.currentTime').text(getFormatedTime(player.getCurrentTime()));
+		var timeLeft = player.getDuration() - player.getCurrentTime();
+		if (timeLeft < 15)
+			player.bufferNext();
     });
     player.addEventListener('progress', function(){
         $('#timebar').slider('buffered', player.getBuffered());
