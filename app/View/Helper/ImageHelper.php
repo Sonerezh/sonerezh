@@ -22,7 +22,7 @@ class ImageHelper extends AppHelper{
     public function avatar($auth, $size = null){
         $image = $auth['avatar'];
         if(empty($image)){
-            $image = 'https://secure.gravatar.com/avatar/'.md5($auth['email']).'.png?s='.$size;
+            $image = 'https://secure.gravatar.com/avatar/'.md5($auth['email']).'.png?r=x&s='.$size;
         }else{
             $image = $this->resizedPath("avatars".DS.$auth['avatar'], $size, $size);
         }
