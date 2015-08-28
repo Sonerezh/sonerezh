@@ -152,6 +152,13 @@ class SongsController extends AppController {
                 $dir = new Folder($path['rootpath']);
                 $songs = array_merge($songs, $dir->findRecursive('^.*\.(mp3|ogg|flac|aac)$'));
             }
+            if(!empty($settings['exclude_pattern'])){
+                foreach($songs as $index=>$song){
+                    if(preg_match($settings['exclude_pattern'],$song)){
+                        unset($songs[$index]);
+                    }
+                }
+            }
 
             $existingSongs = $this->Song->find('list', array(
                 'fields' => array('Song.id', 'Song.source_path')

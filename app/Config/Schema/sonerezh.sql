@@ -33,15 +33,16 @@ CREATE TABLE `sonerezh`.`rootpaths` (
 	ENGINE=InnoDB;
 
 CREATE TABLE `sonerezh`.`settings` (
-	`id` int(3) UNSIGNED NOT NULL AUTO_INCREMENT,
-	`enable_auto_conv` tinyint(1) DEFAULT '0' NOT NULL,
-	`convert_from` varchar(25) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT 'aac,flac' NOT NULL,
-	`convert_to` varchar(5) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT 'mp3' NOT NULL,
-	`quality` int(3) UNSIGNED DEFAULT 256 NOT NULL,
-	`enable_mail_notification` tinyint(1) DEFAULT '0' NOT NULL,
-	`sync_token` int(11) DEFAULT NULL,	PRIMARY KEY  (`id`)) 	DEFAULT CHARSET=utf8,
+        `id` int(3) unsigned NOT NULL AUTO_INCREMENT,
+        `enable_auto_conv` tinyint(1) NOT NULL DEFAULT '0',
+        `convert_from` varchar(25) NOT NULL DEFAULT 'aac,flac',
+        `convert_to` varchar(5) NOT NULL DEFAULT 'mp3',
+        `quality` int(3) unsigned NOT NULL DEFAULT '256',
+        `enable_mail_notification` tinyint(1) NOT NULL DEFAULT '0',
+        `sync_token` int(11) DEFAULT NULL,
+        `exclusion_pattern` varchar(2048) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '/^.*\/(\.|lost\+found).*$/i', PRIMARY KEY (`id`)) DEFAULT CHARSET=utf8,
 	COLLATE=utf8_general_ci,
-	ENGINE=InnoDB;
+        ENGINE=InnoDB;
 
 CREATE TABLE `sonerezh`.`songs` (
 	`id` int(8) UNSIGNED NOT NULL AUTO_INCREMENT,

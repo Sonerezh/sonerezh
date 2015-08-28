@@ -30,3 +30,7 @@
 Icon?
 ehthumbs.db
 Thumbs.db
+
+# Netbeans project folder and files #
+#####################################
+nbproject
