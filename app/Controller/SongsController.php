@@ -120,7 +120,8 @@ class SongsController extends AppController {
                     'title' => $newSong['title'],
                     'album' => $newSong['album'],
                     'artist' => $newSong['artist'],
-                    'year' => $newSong['year']
+                    'year' => $newSong['year'],
+                    'track_number' => $newSong['track_number']
                 )
             ));
             if($existingSong > 0){
@@ -564,6 +565,7 @@ class SongsController extends AppController {
         }
 
         $this->response->file($song['Song']['path'], array('download' => true));
+        $this->response->header('X-Sendfile',$song['Song']['path']);
         return $this->response;
     }
 

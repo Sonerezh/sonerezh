@@ -355,7 +355,7 @@
  *       Please check the comments in bootstrap.php for more info on the cache engines available
  *       and their settings.
  */
-$engine = 'Xcache';
+$engine = 'File';
 
 // In development mode, caches should expire quickly.
 $duration = '+999 days';
