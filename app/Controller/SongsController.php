@@ -18,9 +18,8 @@ class SongsController extends AppController {
      * @link http://getid3.sourceforge.net/
      * @see SongsController::import
      */
-    protected function _importSong($song) {
+    protected function _importSong($song, $hide_duplicate = false) {
 
-       //$song = $this->request->query['path'];
         $getID3 = new getID3();
         $songInfo = $getID3->analyze($song);
         getid3_lib::CopyTagsToComments($songInfo);
@@ -57,7 +56,7 @@ class SongsController extends AppController {
             }
 
             if (!empty($songInfo['comments']['track_number'])) { // MP3 Tag
-                $track_number_array = explode('/', (string)$songInfo['comments']['track_number'][0]);
+                $track_number_array = explode('/', (string) $songInfo['comments']['track_number'][0]);
                 $newSong['track_number'] = intval($track_number_array[0]);
             } elseif (!empty($songInfo['comments']['tracknumber'])) { // OGG Tag
                 $newSong['track_number'] = intval($songInfo['comments']['tracknumber'][0]);
@@ -90,18 +89,18 @@ class SongsController extends AppController {
                     $extension = 'jpg';
                 }
 
-                $name = md5($newSong['artist'].$newSong['album']);
-                $path = IMAGES.THUMBNAILS_DIR.DS.$name.'.'.$extension;
+                $name = md5($newSong['artist'] . $newSong['album']);
+                $path = IMAGES . THUMBNAILS_DIR . DS . $name . '.' . $extension;
 
                 if (!file_exists($path)) {
-                    if (!file_exists(IMAGES.THUMBNAILS_DIR)) {
-                        new Folder(IMAGES.THUMBNAILS_DIR, true, 0777);
+                    if (!file_exists(IMAGES . THUMBNAILS_DIR)) {
+                        new Folder(IMAGES . THUMBNAILS_DIR, true, 0777);
                     }
                     $file = fopen($path, "w");
                     fwrite($file, $songInfo['comments']['picture'][0]['data']);
                     fclose($file);
                 }
-                $newSong['cover'] = $name.'.'.$extension;
+                $newSong['cover'] = $name . '.' . $extension;
             }
         }
 
@@ -114,6 +113,20 @@ class SongsController extends AppController {
         }
 
         $newSong['source_path'] = $song;
+        if ($hide_duplicate) {
+            $this->loadModel('Song');
+            $existingSong = $this->Song->find('count', array(
+                conditions => array(
+                    'title' => $newSong['title'],
+                    'album' => $newSong['album'],
+                    'artist' => $newSong['artist'],
+                    'year' => $newSong['year']
+                )
+            ));
+            if($existingSong > 0){
+                return $newSong['title'];
+            }
+        }
         $this->Song->create();
         $this->Song->save($newSong);
         return $newSong['title'];
@@ -137,7 +150,7 @@ class SongsController extends AppController {
         $this->Setting->contain('Rootpath');
         $settings = $this->Setting->find('first');
 
-        if($this->request->is("get")) {
+        if ($this->request->is("get")) {
 
             if ($settings) {
                 $paths = $settings['Rootpath'];
@@ -152,9 +165,10 @@ class SongsController extends AppController {
                 $dir = new Folder($path['rootpath']);
                 $songs = array_merge($songs, $dir->findRecursive('^.*\.(mp3|ogg|flac|aac)$'));
             }
-            if(!empty($settings['exclude_pattern'])){
-                foreach($songs as $index=>$song){
-                    if(preg_match($settings['exclude_pattern'],$song)){
+
+            if (!empty($settings['Setting']['exclusion_pattern'])) {
+                foreach ($songs as $index => $song) {
+                    if (preg_match($settings['Setting']['exclusion_pattern'], $song)) {
                         unset($songs[$index]);
                     }
                 }
@@ -166,17 +180,19 @@ class SongsController extends AppController {
             $new = array_merge(array_diff($songs, $existingSongs));
             $this->Session->write('song_list', $new);
             $this->set('newSongsTotal', count($new));
-        }else if($this->request->is("post")) {
+        } else if ($this->request->is("post")) {
             $songs = $this->Session->read('song_list');
             $imported = array();
             $count = 0;
-            foreach($songs as $song) {
+            foreach ($songs as $song) {
                 $imported[] = $song;
-                $this->_importSong($song);
-                if($count >= 100) break;
+                $this->_importSong($song,$settings['Setting']['hide_duplicate']);
+                if ($count >= 100) {
+                    break;
+                }
                 $count++;
             }
-            if($count) {
+            if ($count) {
                 $settings['Setting']['sync_token'] = time();
                 $this->Setting->save($settings);
             }
@@ -194,9 +210,9 @@ class SongsController extends AppController {
 
         $songs = $this->Song->find("all", array('fields' => array('id', 'album', 'artist', 'band', 'cover', 'title', 'disc', 'track_number', 'playtime'), 'order' => 'title'));
         $songs = $this->SortComponent->sortByBand($songs);
-        foreach($songs as $k => &$song) {
+        foreach ($songs as $k => &$song) {
             $song['Song']['url'] = $this->request->base . '/songs/download/' . $song['Song']['id'];
-            $song['Song']['cover'] = $this->request->base.'/'.IMAGES_URL.(empty($song['Song']['cover']) ? "no-cover.png" : THUMBNAILS_DIR.'/'.$song['Song']['cover']);
+            $song['Song']['cover'] = $this->request->base . '/' . IMAGES_URL . (empty($song['Song']['cover']) ? "no-cover.png" : THUMBNAILS_DIR . '/' . $song['Song']['cover']);
         }
         $songs = Hash::extract($songs, '{n}.Song');
 
@@ -211,39 +227,38 @@ class SongsController extends AppController {
     public function albums() {
         $this->loadModel('Playlist');
         $playlists = $this->Playlist->find('list', array(
-            'fields'        => array('Playlist.id', 'Playlist.title'),
-            'conditions'    => array('user_id' => AuthComponent::user('id'))
+            'fields' => array('Playlist.id', 'Playlist.title'),
+            'conditions' => array('user_id' => AuthComponent::user('id'))
         ));
 
         $db = $this->Song->getDataSource();
         $subQuery = $db->buildStatement(
-            array(
-                'fields'    => array('MIN(subsong.id)', 'subsong.album'),
-                'table'     => $db->fullTableName($this->Song),
-                'alias'     => 'subsong',
-                'group'     => 'subsong.album'
-            ),
-            $this->Song
+                array(
+            'fields' => array('MIN(subsong.id)', 'subsong.album'),
+            'table' => $db->fullTableName($this->Song),
+            'alias' => 'subsong',
+            'group' => 'subsong.album'
+                ), $this->Song
         );
-        $subQuery = ' (Song.id, Song.album) IN ('. $subQuery .') ';
+        $subQuery = ' (Song.id, Song.album) IN (' . $subQuery . ') ';
 
         $this->Paginator->settings = array(
             'Song' => array(
-                'fields'        => array('Song.id', 'Song.band', 'Song.album', 'Song.cover'),
-                'conditions'    => $subQuery,
-                'order'         => 'Song.album',
-                'limit'         => 36
+                'fields' => array('Song.id', 'Song.band', 'Song.album', 'Song.cover'),
+                'conditions' => $subQuery,
+                'order' => 'Song.album',
+                'limit' => 36
             )
         );
 
         $songs = $this->Paginator->paginate();
 
         foreach ($songs as &$song) {
-            $song['Song']['cover'] = empty($song['Song']['cover']) ? "no-cover.png" : THUMBNAILS_DIR.'/'.$song['Song']['cover'];
+            $song['Song']['cover'] = empty($song['Song']['cover']) ? "no-cover.png" : THUMBNAILS_DIR . '/' . $song['Song']['cover'];
         }
 
         if (empty($songs)) {
-            $this->Session->setFlash('<strong>'.__('Oops!').'</strong> '.__('The database is empty...'), 'flash_info');
+            $this->Session->setFlash('<strong>' . __('Oops!') . '</strong> ' . __('The database is empty...'), 'flash_info');
         }
 
         $this->set(compact('songs', 'playlists'));
@@ -257,9 +272,9 @@ class SongsController extends AppController {
         $band = $this->request->query('band');
         $album = $this->request->query('album');
         $songs = $this->Song->find('all', array(
-                'fields'        => array('Song.id', 'Song.title', 'Song.album', 'Song.artist', 'Song.band', 'Song.playtime', 'Song.track_number', 'Song.year', 'Song.disc'),
-                'conditions'    => array('Song.band' => $band, 'Song.album' => $album)
-            )
+            'fields' => array('Song.id', 'Song.title', 'Song.album', 'Song.artist', 'Song.band', 'Song.playtime', 'Song.track_number', 'Song.year', 'Song.disc'),
+            'conditions' => array('Song.band' => $band, 'Song.album' => $album)
+                )
         );
 
         $this->SortComponent = $this->Components->load('Sort');
@@ -288,17 +303,17 @@ class SongsController extends AppController {
         $this->loadModel('Playlist');
         $this->Playlist->recursive = 0;
         $playlists = $this->Playlist->find('list', array(
-            'fields'        => array('Playlist.id', 'Playlist.title'),
-            'conditions'    => array('user_id' => AuthComponent::user('id'))
+            'fields' => array('Playlist.id', 'Playlist.title'),
+            'conditions' => array('user_id' => AuthComponent::user('id'))
         ));
 
         // Get 5 band names
         $this->Paginator->settings = array(
             'Song' => array(
-                'limit'     => 5,
-                'fields'    => array('Song.band'),
-                'group'     => array('Song.band'),
-                'order'     => array('Song.band' => 'ASC')
+                'limit' => 5,
+                'fields' => array('Song.band'),
+                'group' => array('Song.band'),
+                'order' => array('Song.band' => 'ASC')
             )
         );
 
@@ -311,8 +326,8 @@ class SongsController extends AppController {
 
         // Get songs from the previous band names
         $songs = $this->Song->find('all', array(
-            'fields'        => array('Song.id', 'Song.title', 'Song.album', 'Song.band', 'Song.artist', 'Song.cover', 'Song.playtime', 'Song.track_number', 'Song.year', 'Song.disc', 'Song.genre'),
-            'conditions'    => array('Song.band' => $band_list)
+            'fields' => array('Song.id', 'Song.title', 'Song.album', 'Song.band', 'Song.artist', 'Song.cover', 'Song.playtime', 'Song.track_number', 'Song.year', 'Song.disc', 'Song.genre'),
+            'conditions' => array('Song.band' => $band_list)
         ));
 
         $this->SortComponent = $this->Components->load('Sort');
@@ -332,8 +347,8 @@ class SongsController extends AppController {
             if (!isset($parsed[$song['Song']['band']]['albums'][$song['Song']['album']])) {
                 $parsed[$song['Song']['band']]['albums'][$song['Song']['album']] = array(
                     'album' => $song['Song']['album'],
-                    'cover' => empty($song['Song']['cover']) ? "no-cover.png" : THUMBNAILS_DIR.'/'.$song['Song']['cover'],
-                    'year'  => $song['Song']['year'],
+                    'cover' => empty($song['Song']['cover']) ? "no-cover.png" : THUMBNAILS_DIR . '/' . $song['Song']['cover'],
+                    'year' => $song['Song']['year'],
                     'genre' => array(),
                 );
             }
@@ -352,7 +367,7 @@ class SongsController extends AppController {
         }
 
         if (empty($parsed)) {
-            $this->Session->setFlash("<strong>".__('Oops!')."</strong> ".__('The database is empty...'), 'flash_info');
+            $this->Session->setFlash("<strong>" . __('Oops!') . "</strong> " . __('The database is empty...'), 'flash_info');
         }
         $this->set(array('songs' => $parsed, 'playlists' => $playlists));
     }
@@ -364,17 +379,17 @@ class SongsController extends AppController {
     public function index() {
         $this->loadModel('Playlist');
         $playlists = $this->Playlist->find('list', array(
-            'fields'        => array('Playlist.id', 'Playlist.title'),
-            'conditions'    => array('user_id' => AuthComponent::user('id'))
+            'fields' => array('Playlist.id', 'Playlist.title'),
+            'conditions' => array('user_id' => AuthComponent::user('id'))
         ));
 
         // Get 5 band names
         $this->Paginator->settings = array(
             'Song' => array(
-                'limit'     => 5,
-                'fields'    => array('Song.band'),
-                'group'     => array('Song.band'),
-                'order'     => array('Song.band' => 'ASC')
+                'limit' => 5,
+                'fields' => array('Song.band'),
+                'group' => array('Song.band'),
+                'order' => array('Song.band' => 'ASC')
             )
         );
 
@@ -387,15 +402,15 @@ class SongsController extends AppController {
 
         // Get songs from the previous band names
         $songs = $this->Song->find('all', array(
-            'fields'        => array('Song.id', 'Song.title', 'Song.album', 'Song.band', 'Song.artist', 'Song.cover', 'Song.playtime', 'Song.track_number', 'Song.year', 'Song.disc', 'Song.genre'),
-            'conditions'    => array('Song.band' => $band_list)
+            'fields' => array('Song.id', 'Song.title', 'Song.album', 'Song.band', 'Song.artist', 'Song.cover', 'Song.playtime', 'Song.track_number', 'Song.year', 'Song.disc', 'Song.genre'),
+            'conditions' => array('Song.band' => $band_list)
         ));
 
         $this->SortComponent = $this->Components->load('Sort');
         $songs = $this->SortComponent->sortByBand($songs);
 
         if (empty($songs)) {
-            $this->Session->setFlash("<strong>".__('Oops!')."</strong> ".__('The database is empty...'), 'flash_info');
+            $this->Session->setFlash("<strong>" . __('Oops!') . "</strong> " . __('The database is empty...'), 'flash_info');
         }
 
         $this->set(compact('songs', 'playlists'));
@@ -406,19 +421,19 @@ class SongsController extends AppController {
      * We just make a SQL request...
      */
     public function search() {
-        $query = isset($this->request->query['q']) ? $this->request->query['q'] : false ;
+        $query = isset($this->request->query['q']) ? $this->request->query['q'] : false;
 
         if ($query) {
             $this->Paginator->settings = array(
                 'Song' => array(
-                    'fields'        => array('Song.band'),
-                    'group'         => array('Song.band'),
-                    'limit'         => 5,
-                    'conditions'    => array('OR' => array(
-                        'Song.title like'   => '%'.$query.'%',
-                        'Song.band like'    => '%'.$query.'%',
-                        'Song.artist like'  => '%'.$query.'%',
-                        'Song.album like'   => '%'.$query.'%'
+                    'fields' => array('Song.band'),
+                    'group' => array('Song.band'),
+                    'limit' => 5,
+                    'conditions' => array('OR' => array(
+                            'Song.title like' => '%' . $query . '%',
+                            'Song.band like' => '%' . $query . '%',
+                            'Song.artist like' => '%' . $query . '%',
+                            'Song.album like' => '%' . $query . '%'
                         )
                     )
                 )
@@ -432,16 +447,16 @@ class SongsController extends AppController {
             }
 
             $songs = $this->Song->find('all', array(
-                    'fields'        => array('Song.id', 'Song.title', 'Song.album', 'Song.band', 'Song.artist', 'Song.cover', 'Song.playtime', 'Song.track_number', 'Song.year', 'Song.disc', 'Song.genre'),
-                    'conditions'    => array(
+                'fields' => array('Song.id', 'Song.title', 'Song.album', 'Song.band', 'Song.artist', 'Song.cover', 'Song.playtime', 'Song.track_number', 'Song.year', 'Song.disc', 'Song.genre'),
+                'conditions' => array(
                     'OR' => array(
-                        'Song.title like'   => '%'.$query.'%',
-                        'Song.artist like'  => '%'.$query.'%',
-                        'Song.album like'   => '%'.$query.'%'
-                        ),
+                        'Song.title like' => '%' . $query . '%',
+                        'Song.artist like' => '%' . $query . '%',
+                        'Song.album like' => '%' . $query . '%'
+                    ),
                     'Song.band' => $band_list
-                    )
                 )
+                    )
             );
 
             $this->SortComponent = $this->Components->load('Sort');
@@ -451,7 +466,7 @@ class SongsController extends AppController {
             foreach ($songs as $song) {
                 $setsQuantity = preg_split('/\//', $song['Song']['disc']);
 
-                if (count($setsQuantity) < 2 || $setsQuantity[1] == '1'  ) {
+                if (count($setsQuantity) < 2 || $setsQuantity[1] == '1') {
                     $currentDisc = '1';
                 } else {
                     $currentDisc = $setsQuantity[0];
@@ -460,8 +475,8 @@ class SongsController extends AppController {
                 if (!isset($parsed[$song['Song']['band']]['albums'][$song['Song']['album']])) {
                     $parsed[$song['Song']['band']]['albums'][$song['Song']['album']] = array(
                         'album' => $song['Song']['album'],
-                        'cover' => empty($song['Song']['cover']) ? "no-cover.png" : THUMBNAILS_DIR.'/'.$song['Song']['cover'],
-                        'year'  => $song['Song']['year'],
+                        'cover' => empty($song['Song']['cover']) ? "no-cover.png" : THUMBNAILS_DIR . '/' . $song['Song']['cover'],
+                        'year' => $song['Song']['year'],
                         'genre' => array()
                     );
                 }
@@ -477,19 +492,18 @@ class SongsController extends AppController {
                 }
 
                 $parsed[$song['Song']['band']]['albums'][$song['Song']['album']]['discs'][$currentDisc]['songs'][] = $song['Song'];
-
             }
 
             if (empty($parsed)) {
-                $this->Session->setFlash("<strong>".__('Oops!')."</strong> ".__('No results.'), 'flash_error');
+                $this->Session->setFlash("<strong>" . __('Oops!') . "</strong> " . __('No results.'), 'flash_error');
             }
             $this->set('songs', $parsed);
         }
 
         $this->loadModel('Playlist');
         $playlists = $this->Playlist->find('list', array(
-            'fields'        => array('Playlist.id', 'Playlist.title'),
-            'conditions'    => array('user_id' => AuthComponent::user('id'))
+            'fields' => array('Playlist.id', 'Playlist.title'),
+            'conditions' => array('user_id' => AuthComponent::user('id'))
         ));
         $this->set(compact('query', 'playlists'));
     }
@@ -520,17 +534,17 @@ class SongsController extends AppController {
             if (in_array($file_extension, explode(',', $settings['Setting']['convert_from']))) {
                 $bitrate = $settings['Setting']['quality'];
                 $avconv = "ffmpeg";
-                if(shell_exec("which avconv")){
+                if (shell_exec("which avconv")) {
                     $avconv = "avconv";
                 }
                 if ($settings['Setting']['convert_to'] == 'mp3') {
-                    $path = TMP.date('YmdHis').".mp3";
+                    $path = TMP . date('YmdHis') . ".mp3";
                     $song['Song']['path'] = $path;
-                    passthru($avconv.' -i "'.$song['Song']['source_path'].'" -threads 4  -c:a libmp3lame -b:a '.$bitrate.'k "'.$path.'" 2>&1');
-                } else if ($settings['Setting']['convert_to'] == 'ogg'){
-                    $path = TMP.date('YmdHis').".ogg";
+                    passthru($avconv . ' -i "' . $song['Song']['source_path'] . '" -threads 4  -c:a libmp3lame -b:a ' . $bitrate . 'k "' . $path . '" 2>&1');
+                } else if ($settings['Setting']['convert_to'] == 'ogg') {
+                    $path = TMP . date('YmdHis') . ".ogg";
                     $song['Song']['path'] = $path;
-                    passthru($avconv.' -i "'.$song['Song']['source_path'].'" -threads 4  -c:a libvorbis -q:a '.$bitrate.' "'.$path.'" 2>&1');
+                    passthru($avconv . ' -i "' . $song['Song']['source_path'] . '" -threads 4  -c:a libvorbis -q:a ' . $bitrate . ' "' . $path . '" 2>&1');
                 }
             } else if (empty($song['Song']['path'])) {
                 $song['Song']['path'] = $song['Song']['source_path'];
@@ -542,7 +556,7 @@ class SongsController extends AppController {
 
         // Symlink files whose name contains '..' to avoid CakePHP request error.
         if (strpos($song['Song']['path'], '..') !== false) {
-            $symlinkPath = TMP.md5($song['Song']['path']).'.'.substr(strrchr($song['Song']['path'], "."), 1);
+            $symlinkPath = TMP . md5($song['Song']['path']) . '.' . substr(strrchr($song['Song']['path'], "."), 1);
             if (!file_exists($symlinkPath)) {
                 symlink($song['Song']['path'], $symlinkPath);
             }
@@ -556,8 +570,8 @@ class SongsController extends AppController {
     public function ajax_view($id) {
         $this->viewClass = 'Json';
         $song = $this->Song->find('first', array('conditions' => array('Song.id' => $id)));
-        $song['Song']['url'] = Router::url(array('controller'=>'songs', 'action'=>'download', $song['Song']['id'], 'api'=> false));
-        $song['Song']['cover'] = $this->request->base.'/'.IMAGES_URL.(empty($song['Song']['cover']) ? "no-cover.png" : THUMBNAILS_DIR.'/'.$song['Song']['cover']);
+        $song['Song']['url'] = Router::url(array('controller' => 'songs', 'action' => 'download', $song['Song']['id'], 'api' => false));
+        $song['Song']['cover'] = $this->request->base . '/' . IMAGES_URL . (empty($song['Song']['cover']) ? "no-cover.png" : THUMBNAILS_DIR . '/' . $song['Song']['cover']);
 
         $this->set('data', $song);
         $this->set('_serialize', 'data');
@@ -567,7 +581,7 @@ class SongsController extends AppController {
         $this->viewClass = 'Json';
         $artist = $this->request->query('artist');
         $songs = $this->Song->find('all', array(
-            'fields'        => array('Song.id', 'Song.title', 'Song.album', 'Song.band', 'Song.artist', 'Song.cover', 'Song.playtime', 'Song.track_number', 'Song.year', 'Song.disc', 'Song.genre'),
+            'fields' => array('Song.id', 'Song.title', 'Song.album', 'Song.band', 'Song.artist', 'Song.cover', 'Song.playtime', 'Song.track_number', 'Song.year', 'Song.disc', 'Song.genre'),
             'conditions' => array(
                 'Song.band' => $artist
             )
@@ -577,8 +591,8 @@ class SongsController extends AppController {
         $songs = $this->SortComponent->sortByBand($songs);
 
         foreach ($songs as &$song) {
-            $song['Song']['url'] = Router::url(array('controller'=>'songs', 'action'=>'download', $song['Song']['id'], 'api'=> false));
-            $song['Song']['cover'] = $this->request->base.DS.IMAGES_URL.(empty($song['Song']['cover']) ? "no-cover.png" : THUMBNAILS_DIR.'/'.$song['Song']['cover']);
+            $song['Song']['url'] = Router::url(array('controller' => 'songs', 'action' => 'download', $song['Song']['id'], 'api' => false));
+            $song['Song']['cover'] = $this->request->base . DS . IMAGES_URL . (empty($song['Song']['cover']) ? "no-cover.png" : THUMBNAILS_DIR . '/' . $song['Song']['cover']);
         }
 
         $this->set('data', $songs);
@@ -590,7 +604,7 @@ class SongsController extends AppController {
         $artist = $this->request->query('artist');
         $album = $this->request->query('album');
         $songs = $this->Song->find('all', array(
-            'fields'        => array('Song.id', 'Song.title', 'Song.album', 'Song.artist', 'Song.band', 'Song.playtime', 'Song.track_number', 'Song.year', 'Song.disc', 'Song.cover'),
+            'fields' => array('Song.id', 'Song.title', 'Song.album', 'Song.artist', 'Song.band', 'Song.playtime', 'Song.track_number', 'Song.year', 'Song.disc', 'Song.cover'),
             'conditions' => array(
                 'Song.band' => $artist,
                 'Song.album' => $album
@@ -601,8 +615,8 @@ class SongsController extends AppController {
         $songs = $this->SortComponent->sortByDisc($songs);
 
         foreach ($songs as &$song) {
-            $song['Song']['url'] = Router::url(array('controller'=>'songs', 'action'=>'download', $song['Song']['id'], 'api'=> false));
-            $song['Song']['cover'] = $this->request->base.DS.IMAGES_URL.(empty($song['Song']['cover']) ? "no-cover.png" : THUMBNAILS_DIR.'/'.$song['Song']['cover']);
+            $song['Song']['url'] = Router::url(array('controller' => 'songs', 'action' => 'download', $song['Song']['id'], 'api' => false));
+            $song['Song']['cover'] = $this->request->base . DS . IMAGES_URL . (empty($song['Song']['cover']) ? "no-cover.png" : THUMBNAILS_DIR . '/' . $song['Song']['cover']);
         }
 
         $this->set('data', $songs);
@@ -621,11 +635,12 @@ class SongsController extends AppController {
         ));
         foreach ($songs as &$song) {
             unset($song['PlaylistMembership']);
-            $song['Song']['url'] = Router::url(array('controller'=>'songs', 'action'=>'download', $song['Song']['id'], 'api'=> false));
-            $song['Song']['cover'] = $this->request->base.DS.IMAGES_URL.(empty($song['Song']['cover']) ? "no-cover.png" : THUMBNAILS_DIR.'/'.$song['Song']['cover']);
+            $song['Song']['url'] = Router::url(array('controller' => 'songs', 'action' => 'download', $song['Song']['id'], 'api' => false));
+            $song['Song']['cover'] = $this->request->base . DS . IMAGES_URL . (empty($song['Song']['cover']) ? "no-cover.png" : THUMBNAILS_DIR . '/' . $song['Song']['cover']);
         }
 
         $this->set('data', $songs);
         $this->set('_serialize', 'data');
     }
+
 }

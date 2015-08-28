@@ -1,4 +1,4 @@
-<?= $this->start('script');?>
+<?php echo $this->start('script'); ?>
 <script type="text/javascript">
     var newSongsTotal = <?php echo $newSongsTotal;?>;
     var newSongSaved = 0;
@@ -7,7 +7,7 @@
     function ajaxImport() {
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange  = function() {
-            if (xhr.readyState == 4) {
+            if (xhr.readyState === 4) {
                 if(newSongSaved >= newSongsTotal) {
                     $('#progress').addClass('progress-bar-success').css('width', '100%');
                     $('#label').remove();
@@ -21,12 +21,12 @@
 
             }
         };
-        xhr.open("POST", "<?= $this->Html->url(array('controller' => 'songs', 'action' => 'import')); ?>", true);
+        xhr.open("POST", "<?php echo $this->Html->url(array('controller' => 'songs', 'action' => 'import')); ?>", true);
         xhr.send();
     }
     ajaxImport();
 </script>
-<?= $this->end();?>
+<?php echo $this->end();?>
 
 <div class="col-lg-12">
     <h3><?= __('Database update'); ?></h3>

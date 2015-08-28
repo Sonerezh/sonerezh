@@ -50,6 +50,7 @@ class SonerezhSchema extends CakeSchema {
 		'enable_mail_notification' => array('type' => 'boolean', 'null' => false, 'default' => '0'),
 		'sync_token' => array('type' => 'integer', 'null' => true, 'default' => null, 'unsigned' => false),
                 'exclusion_pattern' => array('type' => 'string', 'length' => 2048, 'null' => true, 'default' => '/^.*\/(\.|lost\+found).*$/i'),
+                'hide_duplicate' => array('type' => 'boolean', 'null' => false, 'default' => '1'),
 		'indexes' => array(
 			'PRIMARY' => array('column' => 'id', 'unique' => 1)
 		),

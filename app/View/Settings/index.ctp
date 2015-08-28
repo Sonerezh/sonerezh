@@ -1,4 +1,6 @@
-<?php $this->start('script');
+<?php
+
+$this->start('script');
 echo $this->Html->script('settings');
 $this->end();?>
 
@@ -46,8 +48,44 @@ $this->end();?>
             }
             ?>
             <small>
-                <?php echo '<span class="help-block">Make sure Sonerezh can read this folder recursively. Current App folder is: '.APP.'</span>'; ?>
+                <?php echo '<span class="help-block">'. __('Make sure Sonerezh can read this folder recursively. Current App folder is:') . ' '.APP.'</span>'; ?>
             </small>
+
+            <label for="exclusion_pattern"> 
+                <?php echo __('File exclusion pattern'); ?>
+            </label>
+
+            <div class="exclusion_pattern">
+            <?php
+            echo $this->Form->input('exclusion_pattern', array(
+                'type'  => 'text',
+                'label' => false,
+                'placeholder' => __('Files you do not want to scan (preg format)'),
+            ));
+            ?>
+                <small>
+                    <span class="help-block">
+                    <?php echo __('Preg format. Excludes any file that the name corresponds to this pattern.'); ?>
+                    </span>
+                </small>
+            </div>
+
+            <div class="hide_duplicate">
+            <?php
+
+            echo $this->Form->input('hide_duplicate', array(
+                'type'  => 'checkbox',
+                'label' => __('Hide duplicate files.'),
+            ));
+            ?>
+
+                <small>
+                    <span class="help-block">
+                    <?php echo __('When Sonerezh find two or more files that have the same ID tags, it will only keep the first.'); ?>
+                    </span>
+                </small>
+            </div>
+
             <?php
 
             echo $this->Form->input('enable_mail_notification', array(
@@ -65,7 +103,7 @@ $this->end();?>
                         array('escape' => false, 'target' => 'blank', 'class' => 'no-ajax')
                     ); ?>
                 </span>
-            </small>
+            </small> 
 
 
             <div class="panel <?php echo $avconv ? 'panel-default' : 'panel-danger'; ?>">
@@ -74,34 +112,34 @@ $this->end();?>
                 </div>
                 <div class="panel-body">
                     <?php if(!$avconv): ?>
-                        <p class="text-danger">
-                            <strong><?php echo __("The command 'avconv' is not available. Sonerezh cannot convert your tracks.") ?></strong>
-                        </p>
+                    <p class="text-danger">
+                        <strong><?php echo __("The command 'avconv' is not available. Sonerezh cannot convert your tracks.") ?></strong>
+                    </p>
                     <?php else: ?>
-                        <p class="help-block">
-                            <small>
+                    <p class="help-block">
+                        <small>
                                 <?php echo __('If you have heterogeneous formats in your collection, and because your browser cannot read them all, Sonerezh can convert your tracks to MP3 or OGG/Vorbis before being played. The converted songs will be stored in the "Songs Cache".'); ?>
-                            </small>
-                        </p>
-                        <div class="col-xs-12">
-                            <div class="col-xs-6 separator-right text-right">
-                                <h5><strong><?php echo __('Source format'); ?></strong></h5>
+                        </small>
+                    </p>
+                    <div class="col-xs-12">
+                        <div class="col-xs-6 separator-right text-right">
+                            <h5><strong><?php echo __('Source format'); ?></strong></h5>
                                 <?php echo $this->Form->input('from_mp3', array('type' => 'checkbox', 'label' => 'MPEG-1/2 Audio Layer 3 (MP3)')); ?>
                                 <?php echo $this->Form->input('from_ogg', array('type' => 'checkbox', 'label' => 'Ogg Vorbis (OGG)')); ?>
                                 <?php echo $this->Form->input('from_aac', array('type' => 'checkbox', 'label' => 'Advanced Audio Coding (AAC)', 'disabled' => 'disabled', 'checked' => 'checked')); ?>
                                 <?php echo $this->Form->input('from_flac', array('type' => 'checkbox', 'label' => 'Free Lossless Audio Codec (FLAC)', 'disabled' => 'disabled', 'checked' => 'checked')); ?>
-                            </div>
-                            <div class="col-xs-6">
-                                <h5><strong><?php echo __('Destination format'); ?></strong></h5>
+                        </div>
+                        <div class="col-xs-6">
+                            <h5><strong><?php echo __('Destination format'); ?></strong></h5>
                                 <?php echo $this->Form->input('convert_to', array('type' => 'radio', 'options' => array('mp3' => 'MP3', 'ogg' => 'OGG'))); ?>
-                                <h5><strong><?php echo __('Quality'); ?></strong></h5>
+                            <h5><strong><?php echo __('Quality'); ?></strong></h5>
                                 <?php echo $this->Form->input('quality', array('type' => 'hidden'));?>
-                                <div class="row quality">
-                                    <div class="col-xs-9"><div id="quality-slider"></div></div>
-                                    <div class="col-xs-3"><?php echo $this->request->data['Setting']['quality'];?></div>
-                                </div>
+                            <div class="row quality">
+                                <div class="col-xs-9"><div id="quality-slider"></div></div>
+                                <div class="col-xs-3"><?php echo $this->request->data['Setting']['quality'];?></div>
                             </div>
                         </div>
+                    </div>
                     <?php endif; ?>
                 </div>
             </div>

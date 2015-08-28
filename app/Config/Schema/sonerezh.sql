@@ -40,7 +40,8 @@ CREATE TABLE `sonerezh`.`settings` (
         `quality` int(3) unsigned NOT NULL DEFAULT '256',
         `enable_mail_notification` tinyint(1) NOT NULL DEFAULT '0',
         `sync_token` int(11) DEFAULT NULL,
-        `exclusion_pattern` varchar(2048) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '/^.*\/(\.|lost\+found).*$/i', PRIMARY KEY (`id`)) DEFAULT CHARSET=utf8,
+        `exclusion_pattern` varchar(2048) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '/^.*\/(\.|lost\+found).*$/i',
+        `hide_duplicate` tinyint(1) NOT NULL DEFAULT '1', PRIMARY KEY (`id`)) DEFAULT CHARSET=utf8,
 	COLLATE=utf8_general_ci,
         ENGINE=InnoDB;
 
