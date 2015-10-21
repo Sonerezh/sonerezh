@@ -19,6 +19,8 @@
 # IDE and editor specific files #
 #################################
 .idea
+/app/Config/database.php.pgsql
+/app/Config/database.php.mysql
 
 # OS generated files #
 ######################
