@@ -25,49 +25,14 @@
 
     <h2><?php echo __('Requirements'); ?></h2>
     <hr />
-    <!-- Check for PHP-GD -->
-    <?php if ($gd): ?>
-        <div class="alert alert-success">
-            <?php echo __('PHP GD is installed!'); ?>
-        </div>
-    <?php else: ?>
-        <div class="alert alert-danger">
-            <?php echo __('PHP GD is missing.'); ?>
-        </div>
-    <?php endif; ?>
 
-    <!-- Check for lib-avtools -->
-    <?php if ($libavtools): ?>
-        <div class="alert alert-success">
-            <?php echo __('libav-tools (avconv) is installed!'); ?>
+    <?php foreach($requirements as $requirement): ?>
+        <div class="alert alert-<?php echo $requirement['label']; ?>">
+            <?php echo $requirement['message']; ?>
         </div>
-    <?php else: ?>
-        <div class="alert alert-warning">
-            <?php echo __('libav-tools (avconv) is missing. Sonerezh will not be able to convert your tracks.'); ?>
-        </div>
-    <?php endif; ?>
+    <?php endforeach; ?>
 
-    <!-- Check if APP/Config is writable -->
-    <?php if ($is_config_writable): ?>
-        <div class="alert alert-success">
-            <?php echo __('I can write the configuration in '.APP.'Config'); ?>
-        </div>
-    <?php else: ?>
-        <div class="alert alert-danger">
-            <?php echo __('I cannot write the configuration in '.APP.'Config. Please verify access rights on that folder.'); ?>
-        </div>
-    <?php endif; ?>
-
-    <!-- Check if APP/Config/core is writable -->
-    <?php if ($is_core_writable): ?>
-        <div class="alert alert-success">
-            <?php echo __('I can write in the core configuration file ('.APP.'Config'.DS.'core.php)'); ?>
-        </div>
-    <?php else: ?>
-        <div class="alert alert-danger">
-            <?php echo __('I cannot write in the core configuration file ('.APP.'Config'.DS.'core.php). Please verify access rights on that file.'); ?>
-        </div>
-    <?php endif; ?>
+    <?php if (!$missing_requirements): ?>
 
     <h2><?php echo __('Database configuration'); ?></h2>
     <hr />
@@ -92,12 +57,12 @@
     <div class="col-xs-8 col-xs-offset-2">
         <?php
         echo $this->Form->input('DB.datasource', array(
-            'options'   => array('Database/Mysql' => 'MySQL', 'Database/Postgres' => 'PostgreSQL', 'Database/Sqlite' => 'SQLite'),
+            'options'   => $available_drivers,
             'label'     => array('text' => __('Database type'), 'class' => 'col-sm-3 control-label', 'style' => 'padding-top: 20px;'),
             'required'
         ));
         ?><div class="sqlite-optional"><?php
-        echo $this->Form->input('DB.host', array('placeholder' => __('Database host (generally localhost)'), 'required'));
+        echo $this->Form->input('DB.host', array('placeholder' => __('Database host'), 'required'));
         ?></div><?php
         echo $this->Form->input('DB.database', array('placeholder' => __('Database name'), 'required'));
         ?><div class="sqlite-optional"><?php
@@ -125,15 +90,10 @@
         echo $this->Form->input('User.password', array('placeholder' => __('Password'), 'label' => array('text' => __('Password (twice)'), 'class' => 'col-sm-3 control-label'), 'required'));
         echo $this->Form->input('User.confirm_password', array('placeholder' => __('Confirm your password'), 'type' => 'password', 'label' => array('text' => '', 'class' => 'col-sm-3 control-label'), 'required'));
         echo $this->Form->input('Setting.Rootpath.0.rootpath', array('placeholder' => '/home/jdoe/Music', 'label' => array('text' => 'Music folder', 'class' => 'col-sm-3 control-label'), 'after' => '<small><span class="help-block"><i class="glyphicon glyphicon-info-sign"></i> Current App folder is: '.APP.'</span></small>'));
-
-        if ($gd && $is_config_writable && $is_core_writable) {
-            echo $this->Form->submit('Run!', array('class' => 'btn btn-success pull-right'));
-        } else {
-            echo '<button class="btn btn-danger pull-right" disabled>'.__('Missing requirements').'</button>';
-        }
-
+        echo $this->Form->submit('Run!', array('class' => 'btn btn-success pull-right'));
         ?>
     </div>
 
     <?php echo $this->Form->end(); ?>
+    <?php endif; ?>
 </div>

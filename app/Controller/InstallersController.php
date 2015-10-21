@@ -28,18 +28,79 @@ class InstallersController extends AppController {
      */
     public function index() {
         $this->view = "index";
+        $requirements = array();
+        $missing_requirements = false;
+
         $gd = extension_loaded('gd');
-		
+
+        if ($gd) {
+            $requirements['gd'] = array('label' => 'success', 'message' => __('PHP GD is available and loaded.'));
+        } else {
+            $requirements['gd'] = array('label' => 'danger', 'message' => __('PHP GD is missing.'));
+            $missing_requirements = true;
+        }
+
 		if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
 			$libavtools = shell_exec("where avconv") || shell_exec("where ffmpeg");//WIN
 		} else {
 			$libavtools = shell_exec("which avconv") || shell_exec("which ffmpeg");//NO WIN
 		}
-		
+
+        if ($libavtools) {
+            $requirements['libavtools'] = array('label' => 'success', 'message' => __('libav-tools (avconv) is installed!'));
+        } else {
+            $requirements['libavtools'] = array('label' => 'warning', 'message' => __('libav-tools (avconv) is missing. Sonerezh will not be able to convert your tracks.'));
+        }
+
+        $pdo_drivers = PDO::getAvailableDrivers();
+        $available_drivers = array(); // Used to load options on the view
+        $drivers = array('mysql', 'pgsql', 'sqlite');
+
+        if (empty($pdo_drivers)) {
+            $requirements['pdo_drivers'] = array('label' => 'danger', 'message' => __('At least one PDO driver must be installed to run Sonerezh (mysql, pgsql or sqlite'));
+            $missing_requirements = true;
+        } else {
+            foreach ($drivers as $driver) {
+                if (in_array($driver, $pdo_drivers)) {
+                    $requirements[$driver] = array('label' => 'success', 'message' => $driver . ' ' .  __('driver is installed.'));
+
+                    switch ($driver) {
+                        case 'mysql':
+                            $available_drivers['Database/Mysql'] = 'MySQL';
+                            break;
+                        case 'pgsql':
+                            $available_drivers['Database/Postgres'] = 'PostgreSQL';
+                            break;
+                        case 'sqlite':
+                            $available_drivers['Database/Sqlite'] = 'SQLite';
+                            break;
+                    }
+
+                } else {
+                    $requirements[$driver] = array('label' => 'warning', 'message' => $driver . ' ' . __('is required if you wan to use Sonerezh with ') . $driver);
+                }
+            }
+        }
+
         $is_config_writable = is_writable(APP.'Config');
+
+        if ($is_config_writable) {
+            $requirements['conf'] = array('label' => 'success', 'message' => APP . 'Config ' . __('is writable'));
+        } else {
+            $requirements['conf'] = array('label' => 'danger', 'message' => APP . 'Config ' . __('is not writable'));
+            $missing_requirements = true;
+        }
+
         $is_core_writable = is_writable(APP.'Config'.DS.'core.php');
 
-        $this->set(compact('gd', 'libavtools', 'is_config_writable', 'is_core_writable'));
+        if ($is_core_writable) {
+            $requirements['core'] = array('label' => 'success', 'message' => APP . 'Config' . DS . 'core.php ' . __('is writable'));
+        } else {
+            $requirements['core'] = array('label' => 'danger', 'message' => APP . 'Config' . DS . 'core.php ' . __('is not writable'));
+            $missing_requirements = true;
+        }
+
+        $this->set(compact('requirements', 'missing_requirements', 'available_drivers'));
 
         $this->loadModel('User');
         $this->loadModel('Setting');
