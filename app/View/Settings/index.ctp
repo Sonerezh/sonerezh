@@ -166,7 +166,7 @@ $this->end();?>
                     <?php echo __('Thumbnails cache'); ?>
                 </li>
                 <li class="list-group-item">
-                    <span class="badge"><?php echo $this->FileSize->humanize($stats['mp3Cache']); ?></span>
+                    <span class="badge"><?php echo $this->FileSize->humanize($stats['audioCache']); ?></span>
                     <?php echo __('Songs cache'); ?>
                 </li>
             </ul>

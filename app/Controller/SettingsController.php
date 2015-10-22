@@ -79,14 +79,16 @@ class SettingsController extends AppController {
             }
         }
 
-        // MP3 cache size
-        $stats['mp3Cache'] = 0;
+        // Audio cache size
+        $stats['audioCache'] = 0;
         $recursiveTmpDirectoryIterator = new RecursiveDirectoryIterator(TMP);
         $recursiveTmpIteratorIterator = new RecursiveIteratorIterator($recursiveTmpDirectoryIterator);
         $regexTmpIterator = new RegexIterator($recursiveTmpIteratorIterator, '/^.+\.(mp3|ogg)$/i');
 
-        foreach ($regexTmpIterator as $mp3) {
-            $stats['mp3Cache'] += $mp3->getSize();
+        foreach ($regexTmpIterator as $audio_file) {
+            if (!$audio_file->isLink()) {
+                $stats['audioCache'] += $audio_file->getSize();
+            }
         }
 
         // Check if avconv shell command is available
