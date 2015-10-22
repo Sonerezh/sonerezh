@@ -17,6 +17,7 @@ Improvements:
 * Performance improvement in algorithm sorting
 
 Bug / Security fixes:
+* Fix #120: Error 500 on settings page
 * Fix #73: Newly created playlists aren't listed
 * Fix #48 #64: Ask for password twice when trying to update it) (Thanks to FoxiesCuties)
 * Fix #34: XSS vulnerability on search form
