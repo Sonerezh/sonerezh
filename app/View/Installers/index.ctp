@@ -61,15 +61,21 @@
             'label'     => array('text' => __('Database type'), 'class' => 'col-sm-3 control-label', 'style' => 'padding-top: 20px;'),
             'required'
         ));
-        ?><div class="sqlite-optional"><?php
-        echo $this->Form->input('DB.host', array('placeholder' => __('Database host'), 'required'));
-        ?></div><?php
-        echo $this->Form->input('DB.database', array('placeholder' => __('Database name'), 'required'));
-        ?><div class="sqlite-optional"><?php
-        echo $this->Form->input('DB.login', array('placeholder' => __('Database user login'), 'required'));
-        echo $this->Form->input('DB.password', array('placeholder' => __('Database user password'), 'required'));
-        echo $this->Form->input('DB.prefix', array('placeholder' => __('Leave empty if none'), 'label' => array('text' => __('Prefix (optionnal)'), 'class' => 'col-sm-3 control-label')));
         ?>
+        <div class="sqlite-optional">
+            <?php
+            echo $this->Form->input('DB.host', array('placeholder' => __('You can specify a non standard port if needed (127.0.0.1:1234)'), 'required'));
+            ?>
+        </div>
+        <?php
+        echo $this->Form->input('DB.database', array('placeholder' => __('Database name'), 'required'));
+        ?>
+        <div class="sqlite-optional">
+            <?php
+            echo $this->Form->input('DB.login', array('placeholder' => __('Database user login'), 'required'));
+            echo $this->Form->input('DB.password', array('placeholder' => __('Database user password'), 'required'));
+            echo $this->Form->input('DB.prefix', array('placeholder' => __('Leave empty if none'), 'label' => array('text' => __('Prefix (optional)'), 'class' => 'col-sm-3 control-label')));
+            ?>
         </div>
     </div>
 

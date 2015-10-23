@@ -8,6 +8,7 @@ New features:
 * Sonerezh now works with PostgreSQL
 
 Improvements:
+* #117: Port option on database installation
 * #82: Improve Raspberry Pi compatibility (Thanks to kletellier)
 * #72: Improve ID3v2 support
 * #35: Help for get root path on shared hosting

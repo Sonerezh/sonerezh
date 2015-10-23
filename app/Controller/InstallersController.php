@@ -128,6 +128,13 @@ class InstallersController extends AppController {
             $datasources = array('Database/Mysql', 'Database/Postgres', 'Database/Sqlite');
 
             if (in_array($this->request->data['DB']['datasource'], $datasources)) {
+                $db_fqdn = explode(':', $this->request->data['DB']['host']);
+                $this->request->data['DB']['host'] = $db_fqdn[0];
+
+                if (isset($db_fqdn[1])) {
+                    $this->request->data['DB']['port'] = $db_fqdn[1];
+                }
+
                 $db_config_array = $this->request->data['DB'];
                 $db_config_array['persistent'] = false;
                 $db_config_array['encoding'] = 'utf8';
