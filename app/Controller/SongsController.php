@@ -42,11 +42,15 @@ class SongsController extends AppController {
                 $newSong['artist'] = 'Unknown Artist';
             }
 
-            if (!empty($songInfo['comments']['band'])) { // MP3 Tags
+            if (!empty($songInfo['comments']['band'])) { // MP3 ID3 Tag
                 $band_array_length = count($songInfo['comments']['band']);
                 $newSong['band'] = $songInfo['comments']['band'][$band_array_length - 1];
             } elseif (!empty($songInfo['comments']['ensemble'])) { // OGG Tag
                 $newSong['band'] = $songInfo['comments']['ensemble'][0];
+            } elseif (!empty($songInfo['comments']['albumartist'])) { // OGG / FLAC Tag
+                $newSong['band'] = $songInfo['comments']['albumartist'][0];
+            } elseif (!empty($songInfo['comments']['album artist'])) { // OGG / FLAC Tag
+                $newSong['band'] = $songInfo['comments']['album artist'];
             }
 
             if (!empty($songInfo['comments']['album'])) {
