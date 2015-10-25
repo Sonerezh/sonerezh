@@ -212,23 +212,11 @@ class SongsController extends AppController {
             'conditions'    => array('user_id' => AuthComponent::user('id'))
         ));
 
-        $db = $this->Song->getDataSource();
-        $subQuery = $db->buildStatement(
-            array(
-                'fields'    => array('MIN(subsong.id)', 'subsong.album'),
-                'table'     => $db->fullTableName($this->Song),
-                'alias'     => 'subsong',
-                'group'     => 'subsong.album'
-            ),
-            $this->Song
-        );
-        $subQuery = ' (Song.id, Song.album) IN ('. $subQuery .') ';
-
         $this->Paginator->settings = array(
             'Song' => array(
                 'fields'        => array('Song.id', 'Song.band', 'Song.album', 'Song.cover'),
-                'conditions'    => $subQuery,
                 'order'         => 'Song.album',
+                'group'         => array('Song.album'),
                 'limit'         => 36
             )
         );
