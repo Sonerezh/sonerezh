@@ -9,9 +9,9 @@
 <?php echo $this->end();?>
 <div class="col-xs-12">
     <h3>
-        <?php if($user['User']['id'] == AuthComponent::user('id')){
+        <?php if ($user['User']['id'] == AuthComponent::user('id')) {
             echo __('Edit your account');
-        }else{
+        } else {
             echo __('Edit a user');
         } ?>
     </h3>
@@ -29,7 +29,7 @@
             ));
             echo $this->Form->input('password', array('placeholder' => __('Choose a password'), 'label' => __('New password'), 'required' => false));
             echo $this->Form->input('confirm_password', array('type' => 'password', 'placeholder' => __('Confirm new password'), 'label' => __('Confirm new password'), 'required' => false));
-            if(AuthComponent::user('role') == 'admin'){
+            if (AuthComponent::user('role') == 'admin' && AuthComponent::user('id') != $this->request->data['User']['id']) {
                 echo $this->Form->input('role', array(
                     'options'   => array('admin' => __('Administrator'), 'listener' => __('Listener')),
                     'label'     => __('Select a role')
@@ -44,11 +44,11 @@
                     <div class="col-xs-6">
                         <div class="avatar-container">
 
-                            <?php echo $this->Html->image($this->Image->avatar($user['User'], 188));?>
+                            <?php echo $this->Html->image($this->Image->avatar($user['User'], 188)); ?>
 
-                            <?php if(!empty($user['User']['avatar'])){ ?>
+                            <?php if (!empty($user['User']['avatar'])): ?>
                                 <div class="avatar-remover avatar-selector">
-                                    <?= $this->Html->link('
+                                    <?php echo $this->Html->link('
                                         <div class="avatar-remover avatar-remover-icon">
                                             <i class="glyphicon glyphicon-remove"></i>
                                         </div>
@@ -60,20 +60,20 @@
                                         __('You avatar will be removed, are you sure?'));
                                     ?>
                                 </div>
-                            <?php } ?>
+                            <?php endif; ?>
                         </div>
                     </div>
                     <div class="col-xs-6">
-                        <?= __('You can upload an avatar here or change it at ').'<a href="https://gravatar.com" target="_blank">gravatar.com</a>'; ?>
+                        <?php echo __('You can upload an avatar here or change it at ').'<a href="https://gravatar.com" target="_blank">gravatar.com</a>'; ?>
                         <hr />
-                        <?= $this->Form->input('avatar', array('type' => 'file', 'required' => false, 'label' => false, 'class' => false, 'style' => 'max-width: 100%;')); ?>
+                        <?php echo $this->Form->input('avatar', array('type' => 'file', 'required' => false, 'label' => false, 'class' => false, 'style' => 'max-width: 100%;')); ?>
                     </div>
                 </div>
             </div>
             <div class="form-group">
-                <?= $this->Form->submit(__('Save Changes'), array('class' => 'btn btn-success pull-right')); ?>
+                <?php echo $this->Form->submit(__('Save Changes'), array('class' => 'btn btn-success pull-right')); ?>
             </div>
         </div>
     </div>
-    <?= $this->Form->end(); ?>
+    <?php echo $this->Form->end(); ?>
 </div>
