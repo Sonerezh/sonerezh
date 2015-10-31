@@ -38,7 +38,7 @@
     <hr />
 
     <p>
-        <?php echo __("Please provide the following information to allow Sonerezh to access to its database."); ?> <span class="text-danger"><?php echo __('Note that if you are reinstalling Sonerezh, all your previous data will be lost.') ?></span>
+        <?php echo __("Please provide the following information to allow Sonerezh to access its database."); ?> <span class="text-danger"><?php echo __('Note that if you are reinstalling Sonerezh, all your previous data will be lost.') ?></span>
     </p>
 
 
