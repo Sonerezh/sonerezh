@@ -128,11 +128,13 @@ class InstallersController extends AppController {
             $datasources = array('Database/Mysql', 'Database/Postgres', 'Database/Sqlite');
 
             if (in_array($this->request->data['DB']['datasource'], $datasources)) {
-                $db_fqdn = explode(':', $this->request->data['DB']['host']);
-                $this->request->data['DB']['host'] = $db_fqdn[0];
+                if (isset($this->request->data['DB']['host'])) {
+                    $db_fqdn = explode(':', $this->request->data['DB']['host']);
+                    $this->request->data['DB']['host'] = $db_fqdn[0];
 
-                if (isset($db_fqdn[1])) {
-                    $this->request->data['DB']['port'] = $db_fqdn[1];
+                    if (isset($db_fqdn[1])) {
+                        $this->request->data['DB']['port'] = $db_fqdn[1];
+                    }
                 }
 
                 $db_config_array = $this->request->data['DB'];
@@ -155,6 +157,22 @@ class InstallersController extends AppController {
             } else {
                 $this->Session->setFlash(__('Unable to write configuration file.'), 'flash_error');
                 return;
+            }
+
+            if ($this->request->data['DB']['datasource'] == 'Database/Sqlite') {
+                $sqlite_path = $this->request->data['DB']['database'];
+
+                // Create SQlite database file if it does not exist
+                if (!file_exists($sqlite_path)) {
+                    $sqlite_file = new File($sqlite_path);
+                    if (!$sqlite_file->create()) {
+                        $this->Session->setFlash(__('Unable to create the SQlite database file.'), 'flash_error');
+                        return;
+                    }
+                } elseif (!is_file($sqlite_path)) {
+                    $this->Session->setFlash($sqlite_path . ' ' . __('is not a regular file.'), 'flash_error');
+                    return;
+                }
             }
 
             // Check database connexion

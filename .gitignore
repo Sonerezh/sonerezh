@@ -21,6 +21,7 @@
 .idea
 /app/Config/database.php.pgsql
 /app/Config/database.php.mysql
+/app/Config/database.php.sqlite
 
 # OS generated files #
 ######################

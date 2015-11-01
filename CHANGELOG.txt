@@ -5,7 +5,7 @@ New features:
 * #46: Forgot my password system
 * #45: Email notifications system
 * #43: 'Remember Me' feature
-* Sonerezh now works with PostgreSQL
+* Sonerezh now works with PostgreSQL and SQlite (not recommended)
 
 Improvements:
 * #117: Port option on database installation

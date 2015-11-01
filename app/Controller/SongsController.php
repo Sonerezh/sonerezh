@@ -213,25 +213,39 @@ class SongsController extends AppController {
         ));
 
         $db = $this->Song->getDataSource();
-        $subQuery = $db->buildStatement(
-            array(
-                'fields'    => array('MIN(subsong.id)', 'subsong.album'),
-                'table'     => $db->fullTableName($this->Song),
-                'alias'     => 'subsong',
-                'group'     => 'subsong.album'
-            ),
-            $this->Song
-        );
-        $subQuery = ' (Song.id, Song.album) IN ('. $subQuery .') ';
 
-        $this->Paginator->settings = array(
-            'Song' => array(
-                'fields'        => array('Song.id', 'Song.band', 'Song.album', 'Song.cover'),
-                'conditions'    => $subQuery,
-                'order'         => 'Song.album',
-                'limit'         => 36
-            )
-        );
+        // Ugly temporary fix for SQlite DB
+        if ($db->config['datasource'] == 'Database/Sqlite') {
+            $this->Paginator->settings = array(
+                'Song' => array(
+                    'fields'    => array('Song.id', 'Song.band', 'Song.album', 'Song.cover'),
+                    'group'     => 'Song.album',
+                    'order'     => 'Song.album',
+                    'limit'     => 36
+                )
+            );
+        } else {
+            $subQuery = $db->buildStatement(
+                array(
+                    'fields' => array('MIN(subsong.id)', 'subsong.album'),
+                    'table' => $db->fullTableName($this->Song),
+                    'alias' => 'subsong',
+                    'group' => 'subsong.album'
+                ),
+                $this->Song
+            );
+            $subQuery = ' (Song.id, Song.album) IN (' . $subQuery . ') ';
+
+            // This doesn't work on SQlite database
+            $this->Paginator->settings = array(
+                'Song' => array(
+                    'fields' => array('Song.id', 'Song.band', 'Song.album', 'Song.cover'),
+                    'conditions' => $subQuery,
+                    'order' => 'Song.album',
+                    'limit' => 36
+                )
+            );
+        }
 
         $songs = $this->Paginator->paginate();
 
