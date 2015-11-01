@@ -59,6 +59,11 @@ class User extends AppModel {
                 'rule'      => array('inlist', array('admin', 'listener')),
                 'required'  => true,
                 'message'   => 'Incorrect role.'
+            ),
+            'isThereAnAdmin' => array(
+                'rule'      => 'isThereAnAdmin',
+                'message'   => 'Sonerezh needs at least one administrator. You can not change your own privileges.',
+                'required'  => true
             )
         ),
         'avatar' => array(
@@ -119,22 +124,29 @@ class User extends AppModel {
     }
 
     public function beforeValidate($options = array()) {
-        // On vérifie que l'utilisateur a un ID
+        // Check if the user has an ID
         if (isset($this->data[$this->alias]['id'])) {
-            // Si aucun mot de passe n'est modifié, on supprime la validation
+            //If the password is not updated, skip the validation
             if (empty($this->data[$this->alias]['password'])) {
                 $validator = $this->validator();
                 unset($validator['password'], $validator['confirm_password'], $this->data[$this->alias]['password'], $this->data[$this->alias]['confirm_password']);
             }
-            //Si aucun avatar n'est envoyé, on supprime la validation
+            // If the avatar is not updated, skip the validation
             if (isset($this->data[$this->alias]['avatar']) && $this->data[$this->alias]['avatar']['error'] === 4) {
                 unset($this->data[$this->alias]['avatar']);
             }
-            //Si aucun role n'est envoyé, on supprime la validation
+            // If the role is not updated, skip the validation
             if (!isset($this->data[$this->alias]['role'])) {
                 $validator = $this->validator();
                 unset($validator['role']);
             }
+        }
+        return true;
+    }
+
+    public function isThereAnAdmin() {
+        if (AuthComponent::user('id') == $this->data[$this->alias]['id'] && isset($this->data[$this->alias]['role'])) {
+            return false;
         }
         return true;
     }
