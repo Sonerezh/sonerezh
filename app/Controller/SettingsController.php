@@ -98,7 +98,11 @@ class SettingsController extends AppController {
             $avconv = shell_exec("which avconv") || shell_exec("which ffmpeg");//NO WIN
         }
 
-        $this->set(array('stats' => $stats, 'avconv' => $avconv));
+        $db = $this->Setting->getDataSource();
+        $db_source = explode('/', $db->config['datasource']);
+        $stats['db_source'] = $db_source[1];
+
+        $this->set(compact('stats', 'avconv'));
     }
 
     /**
