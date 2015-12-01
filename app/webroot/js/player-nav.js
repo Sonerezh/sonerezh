@@ -121,6 +121,13 @@ function init() {
 
         if (view == 'default') {
             var songs = songsManager.getAllSongs();
+        } else if (view == 'artists') {
+            var band = $(this).parents('[data-band]').attr('data-band');
+            var songs = songsManager.getBandSongs(band);
+        } else if (view == 'albums') {
+            var band = $(this).parents('[data-band]').attr('data-band');
+            var album = $(this).parents('[data-album]').attr('data-album');
+            var songs = songsManager.getAlbumSongs(band, album);
         } else {
             var songs = [songsManager.getSong(songId)];
         }
@@ -141,6 +148,13 @@ function init() {
 
         if (view == 'default') {
             var songs = songsManager.getAllSongs();
+        } else if (view == 'artists') {
+            var band = $(this).parents('[data-band]').attr('data-band');
+            var songs = songsManager.getBandSongs(band);
+        } else if (view == 'albums') {
+            var band = $(this).parents('[data-band]').attr('data-band');
+            var album = $(this).parents('[data-album]').attr('data-album');
+            var songs = songsManager.getAlbumSongs(band, album);
         } else {
             var songs = [songsManager.getSong(songId)];
         }
