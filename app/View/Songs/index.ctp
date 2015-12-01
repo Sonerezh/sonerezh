@@ -1,5 +1,5 @@
-<?php if(!empty($songs)){ ?>
-    <div class="col-lg-12" data-view="artists">
+<?php if (!empty($songs)): ?>
+    <div class="col-lg-12" data-view="default">
         <table class="table table-hover" data-scroll-container="true">
             <thead>
             <tr>
@@ -12,7 +12,6 @@
             </thead>
             <tbody>
             <?php foreach($songs as $song){ ?>
-                <!-- Add 'class="on-air"' on play to highlight the row -->
                 <tr data-id="<?php echo h($song['Song']['id']);?>" data-scroll-content="true">
                     <td class="track-number">
                         <span class="song-number"><?php echo h($song['Song']['track_number']); ?></span>
@@ -30,5 +29,5 @@
         </table>
     </div>
     <?php echo $this->element('add_to_playlist'); ?>
-    <?php echo $this->element('pagination');?>
-<?php }?>
+    <?php echo $this->element('pagination'); ?>
+<?php endif; ?>
