@@ -57,7 +57,7 @@ class InstallersController extends AppController {
         $drivers = array('mysql', 'pgsql', 'sqlite');
 
         if (empty($pdo_drivers)) {
-            $requirements['pdo_drivers'] = array('label' => 'danger', 'message' => __('At least one PDO driver must be installed to run Sonerezh (mysql, pgsql or sqlite'));
+            $requirements['pdo_drivers'] = array('label' => 'danger', 'message' => __('At least one PDO driver must be installed to run Sonerezh (mysql, pgsql or sqlite)'));
             $missing_requirements = true;
         } else {
             foreach ($drivers as $driver) {

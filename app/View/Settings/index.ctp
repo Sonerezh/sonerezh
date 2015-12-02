@@ -46,7 +46,7 @@ $this->end();?>
             }
             ?>
             <small>
-                <?php echo '<span class="help-block">Make sure Sonerezh can read this folder recursively. Current App folder is: '.APP.'</span>'; ?>
+                <span class="help-block"><?php echo __('Make sure Sonerezh can read this folder recursively. Current App folder is:') . ' ' . APP; ?></span>
             </small>
             <?php
 

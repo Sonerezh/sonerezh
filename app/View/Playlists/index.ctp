@@ -17,6 +17,7 @@
         }
     </script>
 <?php $this->end();?>
+
 <div class="col-xs-3">
     <div class="panel panel-default" data-view="playlists" style="margin-top: 20px;">
         <div class="panel-heading">
@@ -33,10 +34,10 @@
             ); ?>
         </div>
         <ul class="list-group">
-            <?php if(empty($playlists)): ?>
+            <?php if (empty($playlists)): ?>
             <li class="list-group-item">&nbsp;</li>
             <?php endif; ?>
-            <?php foreach($playlists as $id =>$p): ?>
+            <?php foreach ($playlists as $id =>$p): ?>
             <li class="list-group-item ">
                 <small><i class="glyphicon glyphicon-list"></i></small>&nbsp;
                 <?php echo $this->Html->link(
@@ -66,7 +67,7 @@
     </div>
 </div>
 <div class="col-xs-9" style="padding-top: 20px;">
-    <?php if(empty($playlists)): ?>
+    <?php if (empty($playlists)): ?>
         <div class="alert alert-info">
             <?php echo __("You don't have playlists yet."); ?>
         </div>
@@ -80,10 +81,10 @@
             <div class="col-xs-2">
                 <h4 class="text-right">
                     <small>
-                        <span class="glyphicon glyphicon-play song-controls action-play-playlist" title="<?= ('Play all albums'); ?>"></span>
-                        <span class="glyphicon glyphicon-random song-controls action-shuffle-playlist" title="<?= ('Shuffle this artist'); ?>"></span>
+                        <span class="glyphicon glyphicon-play song-controls action-play-playlist" title="<?php echo __('Play the playlist'); ?>"></span>
+                        <span class="glyphicon glyphicon-random song-controls action-shuffle-playlist" title="<?php echo __('Shuffle this playlist'); ?>"></span>
                         <span class="dropdown">
-                        <span class="glyphicon glyphicon-plus song-controls" data-toggle="dropdown" title="<?= ('Add to playlist'); ?>"></span>
+                        <span class="glyphicon glyphicon-plus song-controls" data-toggle="dropdown" title="<?php echo __('Other actions'); ?>"></span>
                             <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownAlbum">
                                 <li role="presentation"><a role="menuitem" tabindex="-1" href="#" class="action-playlist-play-next"><?= __('Play Next'); ?></a></li>
                                 <li role="presentation"><a role="menuitem" tabindex="-1" href="#" class="action-add-playlist-to-up-next"><?= __('Add to Up Next'); ?></a></li>
@@ -93,7 +94,7 @@
                 </h4>
             </div>
             <hr style="clear: both;"/>
-            <?php if(empty($playlist)): ?>
+            <?php if (empty($playlist)): ?>
                 <div class="alert alert-info">
                     <?php echo __("This playlist is empty :("); ?>
                 </div>
@@ -109,7 +110,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <?php foreach($playlist as $song): ?>
+                    <?php foreach ($playlist as $song): ?>
                         <tr data-id="<?php echo h($song['Song']['id']); ?>" data-scroll-content="true">
                             <td class="track-number">
                                 <span class="song-number"><?php echo h($song['PlaylistMembership']['sort']); ?></span>

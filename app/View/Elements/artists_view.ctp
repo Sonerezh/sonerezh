@@ -17,10 +17,10 @@
         <div class="col-xs-2">
             <h3 class="text-right">
                 <small>
-                    <span class="glyphicon glyphicon-play song-controls action-play-artist" title="<?php echo ('Play all albums'); ?>"></span>
-                    <span class="glyphicon glyphicon-random song-controls action-shuffle-artist" title="<?php echo ('Shuffle this artist'); ?>"></span>
+                    <span class="glyphicon glyphicon-play song-controls action-play-artist" title="<?php echo __('Play all albums'); ?>"></span>
+                    <span class="glyphicon glyphicon-random song-controls action-shuffle-artist" title="<?php echo __('Shuffle this artist'); ?>"></span>
                     <span class="dropdown">
-                    <span class="glyphicon glyphicon-plus song-controls" data-toggle="dropdown" title="<?php echo ('Add to playlist'); ?>"></span>
+                    <span class="glyphicon glyphicon-plus song-controls" data-toggle="dropdown" title="<?php echo __('Other actions'); ?>"></span>
                         <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownAlbum">
                             <li role="presentation"><a role="menuitem" tabindex="-1" href="#" class="action-artist-play-next"><?php echo __('Play Next'); ?></a></li>
                             <li role="presentation"><a role="menuitem" tabindex="-1" href="#" class="action-add-artist-to-up-next"><?php echo __('Add to Up Next'); ?></a></li>
@@ -57,10 +57,10 @@
                                 <?php echo h($album['year']); ?>
                             </small>
                             <small>
-                                <span class="glyphicon glyphicon-play song-controls action-play-album" title="<?php echo ('Play all tracks'); ?>"></span>
-                                <span class="glyphicon glyphicon-random song-controls action-shuffle-album" title="<?php echo ('Shuffle this album'); ?>"></span>
+                                <span class="glyphicon glyphicon-play song-controls action-play-album" title="<?php echo __('Play all tracks'); ?>"></span>
+                                <span class="glyphicon glyphicon-random song-controls action-shuffle-album" title="<?php echo __('Shuffle this album'); ?>"></span>
                                 <span class="dropdown">
-                                    <span class="glyphicon glyphicon-plus song-controls" data-toggle="dropdown" title="<?php echo ('Add to playlist'); ?>"></span>
+                                    <span class="glyphicon glyphicon-plus song-controls" data-toggle="dropdown" title="<?php echo __('Other actions'); ?>"></span>
                                     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownAlbum">
                                         <li role="presentation"><a role="menuitem" tabindex="-1" href="#" class="action-album-play-next"><?php echo __('Play Next'); ?></a></li>
                                         <li role="presentation"><a role="menuitem" tabindex="-1" href="#" class="action-add-album-to-up-next"><?php echo __('Add to Up Next'); ?></a></li>
