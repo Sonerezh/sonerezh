@@ -96,6 +96,10 @@ function Player() {
             }
         }
     };
+    this.setFirst = function(songId) {
+        playlist.setFirst(songId);
+        audioElement.dispatchEvent(playlistChange);
+    };
     this.add = function(song) {
         playlist.add(song);
         if(selected === null) {
@@ -104,11 +108,9 @@ function Player() {
         audioElement.dispatchEvent(playlistChange);
     };
     this.addAll = function(songs) {
-        for(var i = 0; i < songs.length; i++) {
-            playlist.add(songs[i]);
-        }
+        playlist.addAll(songs);
         if(selected == null) {
-            selected = songs[0];
+            selected = playlist.getByIndex(0);
         }
         audioElement.dispatchEvent(playlistChange);
     };
@@ -241,10 +243,21 @@ function Playlist() {
         shuffledSongs = [];
         index = 0;
     };
+    this.setFirst = function(songId) {
+        var song = playlist().splice(getIndex(songId), 1);
+        playlist().unshift(song[0]);
+    };
     this.add = function(song) {
         songs.push(song);
         var i = Math.floor((Math.random() * shuffledSongs.length) + index);
         shuffledSongs.splice(i, 0, song);
+    };
+    this.addAll = function(allSongs) {
+        var shuffled = shuffleArray(allSongs);
+        for(var i = 0; i < allSongs.length; ++i) {
+            songs[songs.length] = allSongs[i];
+            shuffledSongs[shuffledSongs.length] = shuffled[i];
+        }
     };
     this.addNext = function(song) {
         shuffledSongs.splice(index+1, 0, song);

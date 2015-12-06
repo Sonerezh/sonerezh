@@ -133,6 +133,9 @@ function init() {
         }
 
         populatePlaylist(songs);
+        if(player.isShuffle()) {
+            player.setFirst(songId);
+        }
 
         if (player.getCurrentTrack().id == songId) {
             player.play();
@@ -160,6 +163,9 @@ function init() {
         }
 
         populatePlaylist(songs);
+        if(player.isShuffle()) {
+            player.setFirst(songId);
+        }
         player.play(songId);
     });
 
@@ -183,10 +189,9 @@ function init() {
     $('#content').on('click', playBand, function(e) {
         e.preventDefault();
         var band = $(this).parents('[data-band]').attr('data-band');
-        var song = songsManager.getFirstbandSong(band);
         var songs = songsManager.getBandSongs(band);
         populatePlaylist(songs);
-        player.play(song.id);
+        player.playIndex(0);
     });
 
     $('#content').on('click', playBandNext, function(e) {
@@ -213,10 +218,9 @@ function init() {
         e.preventDefault();
         var band = $(this).parents('[data-band]').attr('data-band');
         var album = $(this).parents('[data-album]').attr('data-album');
-        var song = songsManager.getFirstAlbumSong(band, album);
         var songs = songsManager.getAlbumSongs(band, album);
         populatePlaylist(songs);
-        player.play(song.id);
+        player.playIndex(0);
     });
 
     $('#content').on('click', playAlbumNext, function(e) {
