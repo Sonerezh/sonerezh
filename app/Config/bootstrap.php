@@ -109,7 +109,7 @@ CakeLog::config('error', array(
 /**
  * Sonerezh constants declarations
  */
-define('SONEREZH_VERSION', 'v1.0.0-dev');
+define('SONEREZH_VERSION', 'v1.0.0');
 define('THUMBNAILS_DIR', 'thumbnails');
 define('RESIZED_DIR', IMAGES.'resized'.DS);
 define('AVATARS_DIR', 'avatars');
