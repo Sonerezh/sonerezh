@@ -8,6 +8,7 @@ New features:
 * Sonerezh now works with PostgreSQL and SQlite (not recommended)
 
 Improvements:
+* Improvements on queue behavior
 * #117: Port option on database installation
 * #82: Improve Raspberry Pi compatibility (Thanks to kletellier)
 * #72: Improve ID3v2 support
