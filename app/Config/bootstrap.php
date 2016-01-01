@@ -107,6 +107,11 @@ CakeLog::config('error', array(
 ));
 
 /**
+ * Default application language
+ */
+Configure::write('Config.language', 'eng');
+
+/**
  * Sonerezh constants declarations
  */
 define('SONEREZH_VERSION', 'v1.0.0-dev');

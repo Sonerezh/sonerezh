@@ -91,6 +91,8 @@ class AppController extends Controller {
             $setting = $this->Setting->find('first', array('fields' => array('sync_token')));
             $this->set('sync_token', $setting['Setting']['sync_token']);
         }
+
+        $this->__setLanguage();
     }
 
     public function beforeRender() {
@@ -127,5 +129,30 @@ class AppController extends Controller {
             }
         }
         return $installed;
+    }
+
+    /**
+     * This function set the application language according to the browser language and saves it to a cookie
+     */
+    private function __setLanguage() {
+        // Check if the cookie is already set
+        if ($this->Cookie->read('lang')) {
+            Configure::write('Config.language', $this->Cookie->read('lang'));
+            return;
+        }
+
+        // Get browser language
+        $browser_lang = substr(($_SERVER['HTTP_ACCEPT_LANGUAGE']), 0, 2);
+        switch ($browser_lang) {
+            case 'fr':
+                $locale = 'fra';
+                break;
+            default:
+                $locale = 'eng';
+                break;
+        }
+
+        $this->Cookie->write('lang', $locale);
+        Configure::write('Config.language', $locale);
     }
 }
