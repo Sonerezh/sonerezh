@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Sonerezh 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2015-12-02 21:08+0100\n"
+"PO-Revision-Date: 2016-01-03 16:14+0100\n"
 "Last-Translator: Guillaume Leduc <hey@sonerezh.bzh>\n"
 "Language-Team:  <hey@sonerezh.bzh>\n"
 "Language: French\n"
@@ -169,15 +169,15 @@ msgstr "Impossible de nettoyer la base de donnée !"
 msgid "Please define a root path."
 msgstr "Veuillez renseigner l'emplacement de la librairie."
 
-#: Controller/SongsController.php:257;366;409;495
+#: Controller/SongsController.php:275;384;427;513
 msgid "Oops!"
 msgstr "Oups !"
 
-#: Controller/SongsController.php:257;366;409
+#: Controller/SongsController.php:275;384;427
 msgid "The database is empty..."
 msgstr "La base de données est vide..."
 
-#: Controller/SongsController.php:495
+#: Controller/SongsController.php:513
 msgid "No results."
 msgstr "Pas de résultat."
 
@@ -703,6 +703,14 @@ msgstr "Cache audio"
 #: View/Songs/album.ctp:7
 msgid "Play album"
 msgstr "Lire l'album"
+
+#: View/Songs/albums.ctp:6
+msgid "Recently added"
+msgstr "Ajoutés récemment"
+
+#: View/Songs/albums.ctp:43
+msgid "All albums"
+msgstr "Albums"
 
 #: View/Songs/import.ctp:35
 msgid ""

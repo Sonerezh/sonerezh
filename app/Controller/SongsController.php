@@ -212,10 +212,23 @@ class SongsController extends AppController {
             'conditions'    => array('user_id' => AuthComponent::user('id'))
         ));
 
+        $latests = array();
+        // Is this the first page requested?
+        $page = isset($this->request->params['named']['page']) ? $this->request->params['named']['page'] : 1;
         $db = $this->Song->getDataSource();
 
         // Ugly temporary fix for SQlite DB
         if ($db->config['datasource'] == 'Database/Sqlite') {
+
+            if ($page == 1) {
+                $latests = $this->Song->find('all', array(
+                    'fields' => array('Song.id', 'Song.band', 'Song.album', 'Song.cover'),
+                    'group' => 'Song.album',
+                    'order' => 'Song.created DESC',
+                    'limit' => 6
+                ));
+            }
+
             $this->Paginator->settings = array(
                 'Song' => array(
                     'fields'    => array('Song.id', 'Song.band', 'Song.album', 'Song.cover'),
@@ -236,6 +249,15 @@ class SongsController extends AppController {
             );
             $subQuery = ' (Song.id, Song.album) IN (' . $subQuery . ') ';
 
+            if ($page == 1) {
+                $latests = $this->Song->find('all', array(
+                    'fields' => array('Song.id', 'Song.band', 'Song.album', 'Song.cover'),
+                    'conditions' => $subQuery,
+                    'order' => 'Song.created DESC',
+                    'limit' => 6
+                ));
+            }
+
             // This doesn't work on SQlite database
             $this->Paginator->settings = array(
                 'Song' => array(
@@ -253,11 +275,15 @@ class SongsController extends AppController {
             $song['Song']['cover'] = empty($song['Song']['cover']) ? "no-cover.png" : THUMBNAILS_DIR.'/'.$song['Song']['cover'];
         }
 
+        foreach ($latests as &$latest) {
+            $latest['Song']['cover'] = empty($latest['Song']['cover']) ? "no-cover.png" : THUMBNAILS_DIR.'/'.$latest['Song']['cover'];
+        }
+
         if (empty($songs)) {
             $this->Session->setFlash('<strong>'.__('Oops!').'</strong> '.__('The database is empty...'), 'flash_info');
         }
 
-        $this->set(compact('songs', 'playlists'));
+        $this->set(compact('songs', 'playlists', 'latests'));
     }
 
     /**
@@ -298,6 +324,7 @@ class SongsController extends AppController {
     public function artists() {
         $this->loadModel('Playlist');
         $this->Playlist->recursive = 0;
+
         $playlists = $this->Playlist->find('list', array(
             'fields'        => array('Playlist.id', 'Playlist.title'),
             'conditions'    => array('user_id' => AuthComponent::user('id'))

@@ -153,15 +153,15 @@ msgstr ""
 msgid "Please define a root path."
 msgstr ""
 
-#: Controller/SongsController.php:257;366;409;495
+#: Controller/SongsController.php:275;384;427;513
 msgid "Oops!"
 msgstr ""
 
-#: Controller/SongsController.php:257;366;409
+#: Controller/SongsController.php:275;384;427
 msgid "The database is empty..."
 msgstr ""
 
-#: Controller/SongsController.php:495
+#: Controller/SongsController.php:513
 msgid "No results."
 msgstr ""
 
@@ -674,6 +674,14 @@ msgstr ""
 
 #: View/Songs/album.ctp:7
 msgid "Play album"
+msgstr ""
+
+#: View/Songs/albums.ctp:6
+msgid "Recently added"
+msgstr ""
+
+#: View/Songs/albums.ctp:43
+msgid "All albums"
 msgstr ""
 
 #: View/Songs/import.ctp:35
