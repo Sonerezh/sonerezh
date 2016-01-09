@@ -40,6 +40,7 @@ $this->end(); ?>
             <?php endif;
             $i++; ?>
         <?php endforeach; ?>
+        <div class="clearfix"></div>
         <hr />
     <?php endif; ?>
     <h3><?php echo __('All albums'); ?></h3>
