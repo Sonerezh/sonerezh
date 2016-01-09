@@ -52,7 +52,7 @@ var shuffle = localStorage.getItem('shuffle');
 
 //http://stackoverflow.com/questions/6274339/how-can-i-shuffle-an-array-in-javascript
 Array.prototype.shuffle = function() {
-    for(var j, x, i = this.length; i; j = Math.floor(Math.random() * i), x = this[--i], this[i] = this[j], this[j] = x);
+    for (var j, x, i = this.length; i; j = Math.floor(Math.random() * i), x = this[--i], this[i] = this[j], this[j] = x);
     return this;
 };
 
@@ -68,9 +68,9 @@ function init() {
         e.preventDefault();
         e = e.originalEvent;
         var delta = e.wheelDelta>0||e.detail<0?1:-1;
-        if (delta > 0){
+        if (delta > 0) {
             player.volume(player.volume()+2);
-        } else if (delta < 0){
+        } else if (delta < 0) {
             player.volume(player.volume()-2);
         }
     });
@@ -80,7 +80,7 @@ function init() {
         player.mute();
     });
 
-    $timeBar.slider({max: 0, change: function(val){
+    $timeBar.slider({max: 0, change: function(val) {
         player.seek(val);
     }});
 
@@ -121,7 +121,7 @@ function init() {
 
         if (view == 'default') {
             var songs = songsManager.getAllSongs();
-        } else if (view == 'artists') {
+        } else if (view == 'artists' || view == 'search') {
             var band = $(this).parents('[data-band]').attr('data-band');
             var songs = songsManager.getBandSongs(band);
         } else if (view == 'albums') {
@@ -133,6 +133,9 @@ function init() {
         }
 
         populatePlaylist(songs);
+        if (player.isShuffle()) {
+            player.setFirst(songId);
+        }
 
         if (player.getCurrentTrack().id == songId) {
             player.play();
@@ -148,7 +151,7 @@ function init() {
 
         if (view == 'default') {
             var songs = songsManager.getAllSongs();
-        } else if (view == 'artists') {
+        } else if (view == 'artists' || view == 'search') {
             var band = $(this).parents('[data-band]').attr('data-band');
             var songs = songsManager.getBandSongs(band);
         } else if (view == 'albums') {
@@ -160,6 +163,9 @@ function init() {
         }
 
         populatePlaylist(songs);
+        if (player.isShuffle()) {
+            player.setFirst(songId);
+        }
         player.play(songId);
     });
 
@@ -183,10 +189,9 @@ function init() {
     $('#content').on('click', playBand, function(e) {
         e.preventDefault();
         var band = $(this).parents('[data-band]').attr('data-band');
-        var song = songsManager.getFirstbandSong(band);
         var songs = songsManager.getBandSongs(band);
         populatePlaylist(songs);
-        player.play(song.id);
+        player.playIndex(0);
     });
 
     $('#content').on('click', playBandNext, function(e) {
@@ -213,10 +218,9 @@ function init() {
         e.preventDefault();
         var band = $(this).parents('[data-band]').attr('data-band');
         var album = $(this).parents('[data-album]').attr('data-album');
-        var song = songsManager.getFirstAlbumSong(band, album);
         var songs = songsManager.getAlbumSongs(band, album);
         populatePlaylist(songs);
-        player.play(song.id);
+        player.playIndex(0);
     });
 
     $('#content').on('click', playAlbumNext, function(e) {
@@ -479,13 +483,13 @@ function updateUI() {
 
 }
 
-function updateSelectedSong(){
+function updateSelectedSong() {
     var track = player.getCurrentTrack();
-    if (track){
+    if (track) {
         $('tr.on-air').removeClass('on-air');
         $('#content tr[data-id="'+track.id+'"]').addClass('on-air');
         $('#queue').find('[data-index="'+player.getCurrentIndex()+'"]').addClass('on-air');
-        if (!player.isPlaying()){
+        if (!player.isPlaying()) {
             $('#content tr[data-id="'+track.id+'"]').addClass('paused');
             $('#queue').find('[data-index="'+player.getCurrentIndex()+'"]').addClass('paused');
         }
@@ -498,7 +502,7 @@ function getFormatedTime(s) {
     var secondes = Math.round(s%60);
     minutes = minutes < 10 ? "0"+minutes : minutes;
     secondes = secondes < 10 ? "0"+secondes : secondes;
-    if (isNaN(minutes) || isNaN(secondes)){
+    if (isNaN(minutes) || isNaN(secondes)) {
         minutes = secondes = "--";
     }
     return minutes+":"+secondes;
@@ -510,7 +514,7 @@ function populatePlaylist(songs) {
 }
 
 function toggleQueueList() {
-    if ($queue.hasClass('queue-open')){
+    if ($queue.hasClass('queue-open')) {
         $queue.removeClass('queue-open');
         $queueButton.parent().removeClass('active');
     } else {
@@ -520,7 +524,7 @@ function toggleQueueList() {
 }
 
 var test = [];
-for(var i = 0; i < 100; i++) {
+for (var i = 0; i < 100; i++) {
     test.push({title:"element : " + (i+1)});
 }
 $(function() {
