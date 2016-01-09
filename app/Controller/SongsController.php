@@ -31,8 +31,10 @@ class SongsController extends AppController {
             if (!empty($songInfo['comments']['title'])) {
                 $title_array_length = count($songInfo['comments']['title']);
                 $newSong['title'] = $songInfo['comments']['title'][$title_array_length - 1];
+            } elseif (!empty($songInfo['filename'])) {
+                    $newSong['title'] = $songInfo['filename'];
             } else {
-                $newSong['title'] = 'Unknown Title';
+                $newSong['title'] = $song;
             }
 
             if (!empty($songInfo['comments']['artist'])) {
@@ -106,14 +108,6 @@ class SongsController extends AppController {
                     fclose($file);
                 }
                 $newSong['cover'] = $name.'.'.$extension;
-            }
-        }
-
-        if (!isset($newSong['title'])) {
-            if (isset($songInfo['filename'])) {
-                $newSong['title'] = $songInfo['filename'];
-            } else {
-                $newSong['title'] = $song;
             }
         }
 
