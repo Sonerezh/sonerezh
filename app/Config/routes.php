@@ -27,6 +27,7 @@
 	Router::connect('/', array('controller' => 'songs', 'action' => 'index'));
 
     Router::connect('/install', array('controller' => 'installers', 'action' => 'index'));
+    Router::connect('/docker-install', array('controller' => 'installers', 'action' => 'docker'));
 
     Router::connect('/login', array('controller' => 'users', 'action' => 'login'));
     Router::connect('/logout', array('controller' => 'users', 'action' => 'logout'));

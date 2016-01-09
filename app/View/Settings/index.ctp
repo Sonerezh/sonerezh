@@ -171,7 +171,9 @@ $this->end();?>
                 </li>
             </ul>
             <p class="help-block text-right">
-                <small><?php echo 'Sonerezh ' . SONEREZH_VERSION . ' - ' . $stats['db_source']; ?> | <?php echo $this->Html->link('sonerezh.bzh', 'https://www.sonerezh.bzh', array('class' => 'no-ajax', 'target' => 'blank')); ?></small>
+                <small>
+                    <?php echo $stats['sonerezh_version']; ?> | <?php echo $this->Html->link('sonerezh.bzh', 'https://www.sonerezh.bzh', array('class' => 'no-ajax', 'target' => 'blank')); ?>
+                </small>
             </p>
         </div>
     </div>

@@ -65,7 +65,11 @@ class AppController extends Controller {
             $this->response->type("application/json");
             $this->layout = "ajax";
         } elseif ($this->request->params['controller'] != 'installers' && !$this->__isInstalled()) {
-            $this->redirect(array('controller' => 'installers', 'action' => 'index'));
+            if (DOCKER) {
+                $this->redirect(array('controller' => 'installers', 'action' => 'docker'));
+            } else {
+                $this->redirect(array('controller' => 'installers', 'action' => 'index'));
+            }
         } elseif ($this->request->params['controller'] == 'installers' && $this->__isInstalled()) {
             $this->Session->setFlash(__('Sonerezh is already installed. Remove or rename app/Config/database.php to run the installation again.'), 'flash_info');
             $this->redirect(array('controller' => 'songs', 'action' => 'index'));
@@ -124,6 +128,22 @@ class AppController extends Controller {
             App::uses('ConnectionManager', 'Model');
             try {
                 ConnectionManager::getDataSource('default');
+            } catch (Exception $connectionError) {
+                $installed = false;
+            }
+        }
+
+        // The docker image is packaged with database files
+        // So we check if there is at least one admin user in the db
+        if (DOCKER && $installed) {
+            try {
+                $this->loadModel('User');
+                $admins = $this->User->find('count', array(
+                    'conditions' => array('role' => 'admin')
+                ));
+                if ($admins < 1) {
+                    $installed = false;
+                }
             } catch (Exception $connectionError) {
                 $installed = false;
             }
