@@ -1,6 +1,6 @@
 <?php echo $this->start('script'); ?>
 <script>
-    $(function(){
+    $(function() {
         $('#UserRole').selecter({
            label: "<?php echo __('Select a role'); ?>"
         });
@@ -27,7 +27,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <?php foreach($users as $user): ?>
+                <?php foreach ($users as $user): ?>
                     <tr>
                         <td style="width: 52px;" class="text-right">
                             <?php 
@@ -39,9 +39,9 @@
                             ?>
                         </td>
                         <td style="vertical-align: middle;"><?php echo $user['User']['email']; ?></td>
-                        <?php if($user['User']['role'] == 'admin'){ ?>
+                        <?php if ($user['User']['role'] == 'admin') { ?>
                             <td class="text-center" style="vertical-align: middle;"><span class="label label-primary"><?php echo __('Administrator'); ?></span></td>
-                        <?php }else{ ?>
+                        <?php } else { ?>
                             <td class="text-center" style="vertical-align: middle;"><span class="label label-info"><?php echo __('Listener'); ?></span></td>
                         <?php } ?>
                         <td class="text-center">

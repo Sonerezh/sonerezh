@@ -86,7 +86,7 @@ class AppController extends Controller {
             }
         }
 
-        if(!$this->request->is('ajax') && $this->Auth->user()) {
+        if (!$this->request->is('ajax') && $this->Auth->user()) {
             $this->loadModel('Setting');
             $setting = $this->Setting->find('first', array('fields' => array('sync_token')));
             $this->set('sync_token', $setting['Setting']['sync_token']);

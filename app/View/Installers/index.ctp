@@ -1,13 +1,13 @@
 <?php echo $this->start('script'); ?>
 <script>
-    $(function(){
+    $(function() {
         $('#DBDatasource').selecter({
             label: "<?php echo __('Select a database type'); ?>"
         });
-        $('#DBDatasource').change(function(){
-            if($(this).val() == "Database/Sqlite"){
+        $('#DBDatasource').change(function() {
+            if ($(this).val() == "Database/Sqlite") {
                 $('.sqlite-optional').hide().find('input').removeAttr('required');
-            }else{
+            } else {
                 $('.sqlite-optional').show().find('input:not(#DBPrefix)').attr('required', 'required');
             }
         }).change();
@@ -26,7 +26,7 @@
     <h2><?php echo __('Requirements'); ?></h2>
     <hr />
 
-    <?php foreach($requirements as $requirement): ?>
+    <?php foreach ($requirements as $requirement): ?>
         <div class="alert alert-<?php echo $requirement['label']; ?>">
             <?php echo $requirement['message']; ?>
         </div>

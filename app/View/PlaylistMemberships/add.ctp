@@ -1,10 +1,10 @@
-<?php $this->start('script');?>
+<?php $this->start('script'); ?>
 <script type="text/javascript">
-$(function(){
-    var newOptions = <?php echo $playlists;?>;
+$(function() {
+    var newOptions = <?php echo $playlists; ?>;
     $('#add-to-playlist-selecter').empty();
     $('#PlaylistTitle').val('');
-    $.each(newOptions, function(key, value){
+    $.each(newOptions, function(key, value) {
         $('#add-to-playlist-selecter').append($('<option></option>').attr('value', key).text(value));
     });
     $('#add-to-playlist-selecter').selecter('destroy');
@@ -13,4 +13,4 @@ $(function(){
     });
 });
 </script>
-<?php $this->end();?>
+<?php $this->end(); ?>

@@ -1,22 +1,22 @@
-<?php $this->start('script');?>
+<?php $this->start('script'); ?>
     <script>
         function syncPlaylist() {
             var songs = [];
             var length = $('.playlist-row [data-id]').length;
             $('.playlist-row [data-id]').each(function(index, element) {
                 songs.push(songsManager.getSong($(element).attr('data-id')));
-                if(songs.length == length) {
+                if (songs.length == length) {
                     songsManager.setPlaylist(songs);
                 }
             });
         }
-        if(songsManager.isOpen()) {
+        if (songsManager.isOpen()) {
             syncPlaylist();
-        }else {
+        } else {
             songsManager.addOnDBReadyListener(syncPlaylist);
         }
     </script>
-<?php $this->end();?>
+<?php $this->end(); ?>
 
 <div class="col-xs-3">
     <div class="panel panel-default" data-view="playlists" style="margin-top: 20px;">
@@ -72,7 +72,7 @@
             <?php echo __("You don't have playlists yet."); ?>
         </div>
     <?php else: ?>
-        <div class="row playlist-row" data-playlist="<?php echo $playlistInfo['id'];?>">
+        <div class="row playlist-row" data-playlist="<?php echo $playlistInfo['id']; ?>">
             <div class="col-xs-10">
                 <h4>
                     <?php echo h($playlistInfo['name']); ?>
@@ -86,8 +86,8 @@
                         <span class="dropdown">
                         <span class="glyphicon glyphicon-plus song-controls" data-toggle="dropdown" title="<?php echo __('Other actions'); ?>"></span>
                             <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownAlbum">
-                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" class="action-playlist-play-next"><?= __('Play Next'); ?></a></li>
-                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" class="action-add-playlist-to-up-next"><?= __('Add to Up Next'); ?></a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" class="action-playlist-play-next"><?php echo __('Play Next'); ?></a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" class="action-add-playlist-to-up-next"><?php echo __('Add to Up Next'); ?></a></li>
                             </ul>
                         </span>
                     </small>
@@ -158,8 +158,8 @@
 </div>
 
 <!-- Edit playlist modal -->
-<?php if(!empty($playlists)): ?>
-    <?php foreach($playlists as $id => $name): ?>
+<?php if (!empty($playlists)): ?>
+    <?php foreach ($playlists as $id => $name): ?>
         <div id="<?php echo 'edit-playlist-'.$id.'-modal'; ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="editPlaylistModal" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">

@@ -1,12 +1,12 @@
-<?php echo $this->start('script');?>
+<?php echo $this->start('script'); ?>
 <script>
-    $(function(){
+    $(function() {
         $('#UserRole').selecter({
             label: "<?php echo __('Select a role'); ?>"
         });
     });
 </script>
-<?php echo $this->end();?>
+<?php echo $this->end(); ?>
 <div class="col-xs-12">
     <h3>
         <?php if ($user['User']['id'] == AuthComponent::user('id')) {

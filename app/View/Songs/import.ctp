@@ -1,6 +1,6 @@
-<?= $this->start('script');?>
+<?php echo $this->start('script'); ?>
 <script type="text/javascript">
-    var newSongsTotal = <?php echo $newSongsTotal;?>;
+    var newSongsTotal = <?php echo $newSongsTotal; ?>;
     var newSongSaved = 0;
     var lastResponse = "";
     var noOutput = false;
@@ -8,11 +8,11 @@
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange  = function() {
             if (xhr.readyState == 4) {
-                if(newSongSaved >= newSongsTotal) {
+                if (newSongSaved >= newSongsTotal) {
                     $('#progress').addClass('progress-bar-success').css('width', '100%');
                     $('#label').remove();
                     songsManager.sync(+xhr.response);
-                }else {
+                } else {
                     newSongSaved += 100;
                     var percentage = Math.round(newSongSaved * 100 / newSongsTotal);
                     $('#progress').css('width', percentage + "%");
@@ -21,18 +21,18 @@
 
             }
         };
-        xhr.open("POST", "<?= $this->Html->url(array('controller' => 'songs', 'action' => 'import')); ?>", true);
+        xhr.open("POST", "<?php echo $this->Html->url(array('controller' => 'songs', 'action' => 'import')); ?>", true);
         xhr.send();
     }
     ajaxImport();
 </script>
-<?= $this->end();?>
+<?php echo $this->end(); ?>
 
 <div class="col-lg-12">
-    <h3><?= __('Database update'); ?></h3>
+    <h3><?php echo __('Database update'); ?></h3>
     <hr />
     <p id="label">
-        <?= __('Sonerezh is currently updating the database. Please be patient, it may take a few minutes...'); ?>
+        <?php echo __('Sonerezh is currently updating the database. Please be patient, it may take a few minutes...'); ?>
     </p>
 
     <div class="progress">

@@ -1,6 +1,6 @@
 <?php $this->start('script');
 echo $this->Html->script('settings');
-$this->end();?>
+$this->end(); ?>
 
 <div class="row" style="margin-bottom: 50px;">
     <div class="col-md-8 col-xs-12">
@@ -29,7 +29,7 @@ $this->end();?>
             ?>
             </div>
             <?php
-            foreach ($this->request->data['Rootpath'] as $i => &$rootpath){
+            foreach ($this->request->data['Rootpath'] as $i => &$rootpath) {
                 if (!$i) continue;
                 echo '<div class="rootpath">';
                 if (isset($rootpath['id'])) echo $this->Form->input("Rootpath.$i.id");
@@ -73,7 +73,7 @@ $this->end();?>
                     <h4 class="panel-title"><?php echo __('Automatic tracks conversion'); ?>
                 </div>
                 <div class="panel-body">
-                    <?php if(!$avconv): ?>
+                    <?php if (!$avconv): ?>
                         <p class="text-danger">
                             <strong><?php echo __("The command 'avconv' is not available. Sonerezh cannot convert your tracks.") ?></strong>
                         </p>
@@ -95,10 +95,10 @@ $this->end();?>
                                 <h5><strong><?php echo __('Destination format'); ?></strong></h5>
                                 <?php echo $this->Form->input('convert_to', array('type' => 'radio', 'options' => array('mp3' => 'MP3', 'ogg' => 'OGG'))); ?>
                                 <h5><strong><?php echo __('Quality'); ?></strong></h5>
-                                <?php echo $this->Form->input('quality', array('type' => 'hidden'));?>
+                                <?php echo $this->Form->input('quality', array('type' => 'hidden')); ?>
                                 <div class="row quality">
                                     <div class="col-xs-9"><div id="quality-slider"></div></div>
-                                    <div class="col-xs-3"><?php echo $this->request->data['Setting']['quality'];?></div>
+                                    <div class="col-xs-3"><?php echo $this->request->data['Setting']['quality']; ?></div>
                                 </div>
                             </div>
                         </div>
@@ -113,10 +113,10 @@ $this->end();?>
             <h3><?php echo __('Database management'); ?></h3>
             <hr />
             <div class="col-sm-4 col-xs-12">
-                <?php echo $this->Html->link(__('Database update'), array('controller' => 'songs', 'action' => 'import'), array('class' => 'btn btn-info clearfix center-block'));?>
+                <?php echo $this->Html->link(__('Database update'), array('controller' => 'songs', 'action' => 'import'), array('class' => 'btn btn-info clearfix center-block')); ?>
             </div>
             <div class="col-sm-4 col-xs-12">
-                <?php echo $this->Html->link(__('Clear the cache'), array('controller' => 'settings', 'action' => 'clear'), array('class' => 'btn btn-warning clearfix center-block'));?>
+                <?php echo $this->Html->link(__('Clear the cache'), array('controller' => 'settings', 'action' => 'clear'), array('class' => 'btn btn-warning clearfix center-block')); ?>
             </div>
             <div class="col-sm-4 col-xs-12">
                 <?php echo $this->Form->postLink(__('Reset the database'), array('action' => 'truncate'), array('class' => 'btn btn-danger clearfix center-block'), __('Are you sure? All your songs and playlists will disappear!')); ?>
@@ -133,14 +133,14 @@ $this->end();?>
             <div class="row" style="margin-top: 20px;">
                 <div class="col-xs-6 text-center">
                     <a href="https://flattr.com/submit/auto?user_id=Sonerezh&url=https%3A%2F%2Fwww.sonerezh.bzh&title=Sonerezh" target="_blank" class="no-ajax">
-                        <?php echo $this->Html->image('flattr-badge-large.png', array('alt' => 'Flattr this', 'title' => 'Flattr this'));?>
+                        <?php echo $this->Html->image('flattr-badge-large.png', array('alt' => 'Flattr this', 'title' => 'Flattr this')); ?>
                     </a>
                 </div>
                 <div class="col-xs-6 text-center">
                     <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank" class="no-ajax">
                         <input type="hidden" name="cmd" value="_s-xclick">
                         <input type="hidden" name="hosted_button_id" value="TWMJXGFUK8SXG">
-                        <?php echo $this->Form->submit("btn_donate_SM.gif", array('name' => 'submit', 'alt' => 'PayPal - la solution de paiement en ligne la plus simple et la plus sécurisée !'));?>
+                        <?php echo $this->Form->submit("btn_donate_SM.gif", array('name' => 'submit', 'alt' => 'PayPal - la solution de paiement en ligne la plus simple et la plus sécurisée !')); ?>
                     </form>
                 </div>
             </div>

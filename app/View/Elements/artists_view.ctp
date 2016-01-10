@@ -1,6 +1,6 @@
 <?php foreach ($songs as $band => $songs): ?>
 	<!-- Artists view -->
-	<div class="col-xs-12 band-name" data-band="<?php echo h($band);?>" data-scroll-content="true">
+	<div class="col-xs-12 band-name" data-band="<?php echo h($band); ?>" data-scroll-content="true">
         <div class="col-xs-10">
 		<h3>
             <?php echo h($band); ?>
@@ -45,7 +45,7 @@
                     } ?>
 				</div>
 
-				<div class="col-md-9 col-xs-12 album" data-album="<?php echo h($album['album']);?>">
+				<div class="col-md-9 col-xs-12 album" data-album="<?php echo h($album['album']); ?>">
 					<div class="col-xs-10">
 						<h4 class="truncated-name">
                             <?php echo h($album['album']); ?>

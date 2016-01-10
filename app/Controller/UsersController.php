@@ -18,9 +18,9 @@ class UsersController extends AppController {
     public function isAuthorized($user) {
         if ($user['role'] == "admin") {
             return true;
-        } else if($this->action == 'logout') {
+        } elseif ($this->action == 'logout') {
             return true;
-        } else if (in_array($this->action, array('edit', 'deleteAvatar')) && $this->passedArgs[0] == $this->Auth->user('id')) {
+        } elseif (in_array($this->action, array('edit', 'deleteAvatar')) && $this->passedArgs[0] == $this->Auth->user('id')) {
             return true;
         }
         return false;
@@ -91,7 +91,7 @@ class UsersController extends AppController {
 
         $user = $this->User->findById($id);
 
-        if($this->User->delete($id)){
+        if ($this->User->delete($id)) {
             $this->Session->setFlash(__('User '.$id.' ('.$user['User']['email'].') has been successfully deleted!'), 'flash_success');
         }
         $this->redirect($this->referer());

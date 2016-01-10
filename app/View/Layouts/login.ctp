@@ -7,8 +7,8 @@
         <title>
             <?php echo $title_for_layout; ?>
         </title>
-        <?= $this->Html->meta('icon'); ?>
-        <?= $this->Html->css(array('bootstrap.min', 'login'));?>
+        <?php echo $this->Html->meta('icon'); ?>
+        <?php echo $this->Html->css(array('bootstrap.min', 'login')); ?>
         <?php
 
             echo $this->fetch('meta');
@@ -28,7 +28,7 @@
         </div>
         <?php echo $this->Html->script(array(
             "jquery-2.1.0.min",
-            "bootstrap.min"));?>
+            "bootstrap.min")); ?>
         <?php echo $this->fetch('script'); ?>
     </body>
 </html>

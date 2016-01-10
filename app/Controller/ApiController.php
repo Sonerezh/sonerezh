@@ -22,7 +22,7 @@ class ApiController extends AppController {
         $this->viewClass = "Json";
     }
 
-    public function json($one, $two = null){
+    public function json($one, $two = null) {
         parent::set($one, $two);
         $this->jsonVars = $this->viewVars;
     }

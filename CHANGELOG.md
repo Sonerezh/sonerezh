@@ -1,3 +1,24 @@
+Changes with 1.0.0-stable (under development)
+---------------------------------------------
+New features:
+* Docker compatibility
+* The first row on the album view shows the 6 latest albums added
+
+Improvements:
+* Code readability
+
+Bug / Security fixes:
+* Fix #142: Mp3 files without Id3 tags all showns as "Unknown"
+* Fix #122: Songs are duplicated when i attempt to update database
+
+Changes with 1.0.0-beta2
+------------------------
+New features:
+* French translation (using the browser language)
+
+Improvements:
+* Improve queue behavior on the "search" view
+
 Changes with 1.0.0-beta
 -----------------------
 New features:

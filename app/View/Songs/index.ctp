@@ -11,8 +11,8 @@
             </tr>
             </thead>
             <tbody>
-            <?php foreach($songs as $song){ ?>
-                <tr data-id="<?php echo h($song['Song']['id']);?>" data-scroll-content="true">
+            <?php foreach ($songs as $song) { ?>
+                <tr data-id="<?php echo h($song['Song']['id']); ?>" data-scroll-content="true">
                     <td class="track-number">
                         <span class="song-number"><?php echo h($song['Song']['track_number']); ?></span>
                     </td>

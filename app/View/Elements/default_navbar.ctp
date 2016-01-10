@@ -3,7 +3,7 @@
     <li><?php echo $this->Html->link(__('Albums'), array('controller' => 'songs', 'action' => 'albums')); ?></li>
     <li><?php echo $this->Html->link(__('Playlists'), array('controller' => 'playlists', 'action' => 'index')); ?></li>
 </ul>
-<form action="<?php echo $this->Html->url(array('controller' => 'songs', 'action' => 'search'));?>" class="navbar-form navbar-left hidden-sm hidden-xs" role="search">
+<form action="<?php echo $this->Html->url(array('controller' => 'songs', 'action' => 'search')); ?>" class="navbar-form navbar-left hidden-sm hidden-xs" role="search">
     <div class="form-group search" >
         <input type="text" class="form-control search-input" placeholder="<?php echo __('Search'); ?>" name="q" >
     </div>
@@ -24,6 +24,6 @@
             ),
             array('controller' => 'users', 'action' => 'edit', AuthComponent::user('id')),
             array('class' => 'nav-avatar', 'escape' => false)
-        );?>
+        ); ?>
     </li>
 </ul>

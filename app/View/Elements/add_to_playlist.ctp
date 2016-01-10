@@ -1,25 +1,25 @@
 <?php echo $this->start('script'); ?>
 <script>
-    $(function(){
+    $(function() {
         $('#add-to-playlist-selecter').selecter({
             label: "<?php echo __('Select a playlist'); ?>"
         });
 
-        $('#btn-show-plstinput').on('click', function(){
+        $('#btn-show-plstinput').on('click', function() {
             $('#create-playlist-input').slideDown();
             $('#add-to-playlist-selecter').selecter('disable');
         });
 
-        $('#btn-hide-plstinput').on('click', function(){
+        $('#btn-hide-plstinput').on('click', function() {
             $('#create-playlist-input').hide();
             $('#add-to-playlist-selecter').selecter('enable');
         });
 
-        $('#add-to').on('hidden.bs.modal', function(){
+        $('#add-to').on('hidden.bs.modal', function() {
             $('#btn-hide-plstinput').click();
         });
 
-        $('#content').on('click', '.action-add-to', function(){
+        $('#content').on('click', '.action-add-to', function() {
             var songId = $(this).parents('tr').attr('data-id');
             $('#SongId').val(songId);
         });

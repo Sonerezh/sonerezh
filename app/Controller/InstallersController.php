@@ -123,7 +123,7 @@ class InstallersController extends AppController {
                 )
             );
         }
-        else if ($this->request->is('post')) {
+        elseif ($this->request->is('post')) {
 
             $datasources = array('Database/Mysql', 'Database/Postgres', 'Database/Sqlite');
 

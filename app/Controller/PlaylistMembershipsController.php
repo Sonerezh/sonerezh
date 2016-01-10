@@ -51,7 +51,7 @@ class PlaylistMembershipsController extends AppController {
                     'sort' => $playlist_length+1
                 );
 
-            } else if (isset($this->request->data['band'])) { // It's a band!
+            } elseif (isset($this->request->data['band'])) { // It's a band!
                 $conditions = array('Song.band' => $this->request->data['band']);
                 $order = 'band';
 

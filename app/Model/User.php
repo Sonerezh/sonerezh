@@ -163,7 +163,7 @@ class User extends AppModel {
         return false;
     }
 
-    private function __uploadAvatar($avatarData){
+    private function __uploadAvatar($avatarData) {
         $avatarFolder = IMAGES.AVATARS_DIR;
         $avatarId = md5(microtime(true));
         $ext = strtolower(substr(strrchr($avatarData['name'], "."), 1));

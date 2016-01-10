@@ -136,7 +136,7 @@ class SongsController extends AppController {
         $this->Setting->contain('Rootpath');
         $settings = $this->Setting->find('first');
 
-        if($this->request->is("get")) {
+        if ($this->request->is("get")) {
 
             if ($settings) {
                 $paths = $settings['Rootpath'];
@@ -159,17 +159,17 @@ class SongsController extends AppController {
             $this->Session->write('song_list', $new);
 
             $this->set('newSongsTotal', count($new));
-        }else if($this->request->is("post")) {
+        } elseif ($this->request->is("post")) {
             $songs = $this->Session->read('song_list');
             $imported = array();
             $count = 0;
-            foreach($songs as $song) {
+            foreach ($songs as $song) {
                 $imported[] = $song;
                 $this->_importSong($song);
-                if($count >= 100) break;
+                if ($count >= 100) break;
                 $count++;
             }
-            if($count) {
+            if ($count) {
                 $settings['Setting']['sync_token'] = time();
                 $this->Setting->save($settings);
             }
@@ -187,7 +187,7 @@ class SongsController extends AppController {
 
         $songs = $this->Song->find("all", array('fields' => array('id', 'album', 'artist', 'band', 'cover', 'title', 'disc', 'track_number', 'playtime'), 'order' => 'title'));
         $songs = $this->SortComponent->sortByBand($songs);
-        foreach($songs as $k => &$song) {
+        foreach ($songs as $k => &$song) {
             $song['Song']['url'] = $this->request->base . '/songs/download/' . $song['Song']['id'];
             $song['Song']['cover'] = $this->request->base.'/'.IMAGES_URL.(empty($song['Song']['cover']) ? "no-cover.png" : THUMBNAILS_DIR.'/'.$song['Song']['cover']);
         }
@@ -554,19 +554,19 @@ class SongsController extends AppController {
             if (in_array($file_extension, explode(',', $settings['Setting']['convert_from']))) {
                 $bitrate = $settings['Setting']['quality'];
                 $avconv = "ffmpeg";
-                if(shell_exec("which avconv")){
+                if (shell_exec("which avconv")) {
                     $avconv = "avconv";
                 }
                 if ($settings['Setting']['convert_to'] == 'mp3') {
                     $path = TMP.date('YmdHis').".mp3";
                     $song['Song']['path'] = $path;
                     passthru($avconv.' -i "'.$song['Song']['source_path'].'" -threads 4  -c:a libmp3lame -b:a '.$bitrate.'k "'.$path.'" 2>&1');
-                } else if ($settings['Setting']['convert_to'] == 'ogg'){
+                } elseif ($settings['Setting']['convert_to'] == 'ogg') {
                     $path = TMP.date('YmdHis').".ogg";
                     $song['Song']['path'] = $path;
                     passthru($avconv.' -i "'.$song['Song']['source_path'].'" -threads 4  -c:a libvorbis -q:a '.$bitrate.' "'.$path.'" 2>&1');
                 }
-            } else if (empty($song['Song']['path'])) {
+            } elseif (empty($song['Song']['path'])) {
                 $song['Song']['path'] = $song['Song']['source_path'];
             }
 

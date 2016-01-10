@@ -17,14 +17,14 @@
  */
 ?>
 [{
-    "css": <?= json_encode($this->fetch('css'));?>,
-    "js": <?= json_encode($this->fetch('script'));?>
+    "css": <?php echo json_encode($this->fetch('css')); ?>,
+    "js": <?php echo json_encode($this->fetch('script')); ?>
 },
 {
-    "title": "<?= $title_for_layout;?>",
-    "url": "<?= $this->request->here(); ?>"
+    "title": "<?php echo $title_for_layout; ?>",
+    "url": "<?php echo $this->request->here(); ?>"
 },
 {
-    "flash": <?= json_encode($this->Session->flash());?>,
-    "html": <?= json_encode($this->fetch('content'));?>
+    "flash": <?php echo json_encode($this->Session->flash()); ?>,
+    "html": <?php echo json_encode($this->fetch('content')); ?>
 }]
