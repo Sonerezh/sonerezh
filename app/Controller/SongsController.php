@@ -32,7 +32,7 @@ class SongsController extends AppController {
                 $title_array_length = count($songInfo['comments']['title']);
                 $newSong['title'] = $songInfo['comments']['title'][$title_array_length - 1];
             } elseif (!empty($songInfo['filename'])) {
-                    $newSong['title'] = $songInfo['filename'];
+                $newSong['title'] = $songInfo['filename'];
             } else {
                 $newSong['title'] = $song;
             }
@@ -109,11 +109,12 @@ class SongsController extends AppController {
                 }
                 $newSong['cover'] = $name.'.'.$extension;
             }
+
+            $newSong['source_path'] = $song;
+            $this->Song->create();
+            $this->Song->save($newSong);
         }
 
-        $newSong['source_path'] = $song;
-        $this->Song->create();
-        $this->Song->save($newSong);
         return $newSong['title'];
     }
 
@@ -156,6 +157,7 @@ class SongsController extends AppController {
             ));
             $new = array_merge(array_diff($songs, $existingSongs));
             $this->Session->write('song_list', $new);
+
             $this->set('newSongsTotal', count($new));
         }else if($this->request->is("post")) {
             $songs = $this->Session->read('song_list');
