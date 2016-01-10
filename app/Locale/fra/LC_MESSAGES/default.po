@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Sonerezh 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2016-01-03 16:14+0100\n"
+"PO-Revision-Date: 2016-01-09 16:18+0100\n"
 "Last-Translator: Guillaume Leduc <hey@sonerezh.bzh>\n"
 "Language-Team:  <hey@sonerezh.bzh>\n"
 "Language: French\n"
@@ -17,7 +17,7 @@ msgstr ""
 "X-Loco-Target-Locale: zz_ZZ\n"
 "X-Generator: Poedit 1.5.4\n"
 
-#: Controller/AppController.php:70
+#: Controller/AppController.php:74
 msgid ""
 "Sonerezh is already installed. Remove or rename app/Config/database.php to "
 "run the installation again."
@@ -85,19 +85,19 @@ msgstr "Impossible de créer le fichier SQlite."
 msgid "is not a regular file."
 msgstr "n'est pas un fichier."
 
-#: Controller/InstallersController.php:184
+#: Controller/InstallersController.php:184;242
 msgid "Could not connect to database"
 msgstr "Connexion à la base de données impossible"
 
-#: Controller/InstallersController.php:206
+#: Controller/InstallersController.php:206;266
 msgid "Passwords do not match."
 msgstr "Les mots de passe ne correspondent pas."
 
-#: Controller/InstallersController.php:213
+#: Controller/InstallersController.php:213;273
 msgid "Installation successful!"
 msgstr "Installation réussie !"
 
-#: Controller/InstallersController.php:215
+#: Controller/InstallersController.php:215;275
 msgid "Unable to save your data."
 msgstr "Impossible de sauvegarder vos données."
 
@@ -153,15 +153,15 @@ msgstr "Préférences enregistrées !"
 msgid "Unable to save settings!"
 msgstr "Impossible d'enregistrer les préférences !"
 
-#: Controller/SettingsController.php:126
+#: Controller/SettingsController.php:131
 msgid "Cache cleared!"
 msgstr "Cache nettoyé !"
 
-#: Controller/SettingsController.php:159
+#: Controller/SettingsController.php:164
 msgid "All entries have been deleted !"
 msgstr "Toutes les entrées ont été supprimées !"
 
-#: Controller/SettingsController.php:162
+#: Controller/SettingsController.php:167
 msgid "Unable to clean the database!"
 msgstr "Impossible de nettoyer la base de donnée !"
 
@@ -169,15 +169,15 @@ msgstr "Impossible de nettoyer la base de donnée !"
 msgid "Please define a root path."
 msgstr "Veuillez renseigner l'emplacement de la librairie."
 
-#: Controller/SongsController.php:275;384;427;513
+#: Controller/SongsController.php:283;393;436;522
 msgid "Oops!"
 msgstr "Oups !"
 
-#: Controller/SongsController.php:275;384;427
+#: Controller/SongsController.php:283;393;436
 msgid "The database is empty..."
 msgstr "La base de données est vide..."
 
-#: Controller/SongsController.php:513
+#: Controller/SongsController.php:522
 msgid "No results."
 msgstr "Pas de résultat."
 
@@ -417,6 +417,43 @@ msgstr "Votre compte ("
 msgid "Log me in"
 msgstr "Connexion"
 
+#: View/Installers/docker.ctp:3
+msgid "Sonerezh on Docker"
+msgstr "Sonerezh sur Docker"
+
+#: View/Installers/docker.ctp:6 View/Installers/index.ctp:23
+msgid ""
+"Welcome on the Sonerezh's installation page. Just fill in the information "
+"below and you'll be on your way to listening to your favorite songs!"
+msgstr ""
+"Bienvenue sur la page d'installation de Sonerezh. Remplissez juste les "
+"information ci-dessous et vous pourrez écouter vos musiques préférées !"
+
+#: View/Installers/docker.ctp:9 View/Installers/index.ctp:85
+msgid "Information needed"
+msgstr "Informations requises"
+
+#: View/Installers/docker.ctp:13 View/Installers/index.ctp:89
+msgid ""
+"Please provide the following information. Don't worry, you can always change "
+"these settings later."
+msgstr ""
+"Veuillez renseigner les informations suivantes. Vous pourrez toujours les "
+"changer plus tard."
+
+#: View/Installers/docker.ctp:31 View/Installers/index.ctp:96
+#: View/Users/login.ctp:7 View/Users/reset_password.ctp:11
+msgid "Password"
+msgstr "Mot de passe"
+
+#: View/Installers/docker.ctp:31 View/Installers/index.ctp:96
+msgid "Password (twice)"
+msgstr "Mot de passe (deux fois)"
+
+#: View/Installers/docker.ctp:32 View/Installers/index.ctp:97
+msgid "Confirm your password"
+msgstr "Confirmez votre mot de passe"
+
 #: View/Installers/index.ctp:5
 msgid "Select a database type"
 msgstr "Sélectionnez un type de base de données"
@@ -424,14 +461,6 @@ msgstr "Sélectionnez un type de base de données"
 #: View/Installers/index.ctp:20
 msgid "Sonerezh"
 msgstr "Sonerezh"
-
-#: View/Installers/index.ctp:23
-msgid ""
-"Welcome on the Sonerezh's installation page. Just fill in the information "
-"below and you'll be on your way to listening to your favorite songs!"
-msgstr ""
-"Bienvenue sur la page d'installation de Sonerezh. Remplissez juste les "
-"information ci-dessous et vous pourrez écouter vos musiques préférées !"
 
 #: View/Installers/index.ctp:26
 msgid "Requirements"
@@ -483,31 +512,6 @@ msgstr "Laisser vide si aucun"
 #: View/Installers/index.ctp:77
 msgid "Prefix (optional)"
 msgstr "Préfixe (optionnel)"
-
-#: View/Installers/index.ctp:85
-msgid "Information needed"
-msgstr "Information obligatoire"
-
-#: View/Installers/index.ctp:89
-msgid ""
-"Please provide the following information. Don't worry, you can always change "
-"these settings later."
-msgstr ""
-"Veuillez renseigner les informations suivantes. Vous pourrez toujours les "
-"changer plus tard."
-
-#: View/Installers/index.ctp:96 View/Users/login.ctp:7
-#: View/Users/reset_password.ctp:11
-msgid "Password"
-msgstr "Mot de passe"
-
-#: View/Installers/index.ctp:96
-msgid "Password (twice)"
-msgstr "Mot de passe (deux fois)"
-
-#: View/Installers/index.ctp:97
-msgid "Confirm your password"
-msgstr "Confirmez votre mot de passe"
 
 #: View/Layouts/default.ctp:35
 msgid "Remove from queue"
@@ -704,11 +708,11 @@ msgstr "Cache audio"
 msgid "Play album"
 msgstr "Lire l'album"
 
-#: View/Songs/albums.ctp:6
+#: View/Songs/albums.ctp:7
 msgid "Recently added"
 msgstr "Ajoutés récemment"
 
-#: View/Songs/albums.ctp:43
+#: View/Songs/albums.ctp:45
 msgid "All albums"
 msgstr "Albums"
 

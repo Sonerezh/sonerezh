@@ -13,7 +13,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: Controller/AppController.php:70
+#: Controller/AppController.php:74
 msgid "Sonerezh is already installed. Remove or rename app/Config/database.php to run the installation again."
 msgstr ""
 
@@ -69,19 +69,19 @@ msgstr ""
 msgid "is not a regular file."
 msgstr ""
 
-#: Controller/InstallersController.php:184
+#: Controller/InstallersController.php:184;242
 msgid "Could not connect to database"
 msgstr ""
 
-#: Controller/InstallersController.php:206
+#: Controller/InstallersController.php:206;266
 msgid "Passwords do not match."
 msgstr ""
 
-#: Controller/InstallersController.php:213
+#: Controller/InstallersController.php:213;273
 msgid "Installation successful!"
 msgstr ""
 
-#: Controller/InstallersController.php:215
+#: Controller/InstallersController.php:215;275
 msgid "Unable to save your data."
 msgstr ""
 
@@ -137,15 +137,15 @@ msgstr ""
 msgid "Unable to save settings!"
 msgstr ""
 
-#: Controller/SettingsController.php:126
+#: Controller/SettingsController.php:131
 msgid "Cache cleared!"
 msgstr ""
 
-#: Controller/SettingsController.php:159
+#: Controller/SettingsController.php:164
 msgid "All entries have been deleted !"
 msgstr ""
 
-#: Controller/SettingsController.php:162
+#: Controller/SettingsController.php:167
 msgid "Unable to clean the database!"
 msgstr ""
 
@@ -153,15 +153,15 @@ msgstr ""
 msgid "Please define a root path."
 msgstr ""
 
-#: Controller/SongsController.php:275;384;427;513
+#: Controller/SongsController.php:283;393;436;522
 msgid "Oops!"
 msgstr ""
 
-#: Controller/SongsController.php:275;384;427
+#: Controller/SongsController.php:283;393;436
 msgid "The database is empty..."
 msgstr ""
 
-#: Controller/SongsController.php:513
+#: Controller/SongsController.php:522
 msgid "No results."
 msgstr ""
 
@@ -415,16 +415,48 @@ msgstr ""
 msgid "Log me in"
 msgstr ""
 
+#: View/Installers/docker.ctp:3
+msgid "Sonerezh on Docker"
+msgstr ""
+
+#: View/Installers/docker.ctp:6
+#: View/Installers/index.ctp:23
+msgid "Welcome on the Sonerezh's installation page. Just fill in the information below and you'll be on your way to listening to your favorite songs!"
+msgstr ""
+
+#: View/Installers/docker.ctp:9
+#: View/Installers/index.ctp:85
+msgid "Information needed"
+msgstr ""
+
+#: View/Installers/docker.ctp:13
+#: View/Installers/index.ctp:89
+msgid "Please provide the following information. Don't worry, you can always change these settings later."
+msgstr ""
+
+#: View/Installers/docker.ctp:31
+#: View/Installers/index.ctp:96
+#: View/Users/login.ctp:7
+#: View/Users/reset_password.ctp:11
+msgid "Password"
+msgstr ""
+
+#: View/Installers/docker.ctp:31
+#: View/Installers/index.ctp:96
+msgid "Password (twice)"
+msgstr ""
+
+#: View/Installers/docker.ctp:32
+#: View/Installers/index.ctp:97
+msgid "Confirm your password"
+msgstr ""
+
 #: View/Installers/index.ctp:5
 msgid "Select a database type"
 msgstr ""
 
 #: View/Installers/index.ctp:20
 msgid "Sonerezh"
-msgstr ""
-
-#: View/Installers/index.ctp:23
-msgid "Welcome on the Sonerezh's installation page. Just fill in the information below and you'll be on your way to listening to your favorite songs!"
 msgstr ""
 
 #: View/Installers/index.ctp:26
@@ -469,28 +501,6 @@ msgstr ""
 
 #: View/Installers/index.ctp:77
 msgid "Prefix (optional)"
-msgstr ""
-
-#: View/Installers/index.ctp:85
-msgid "Information needed"
-msgstr ""
-
-#: View/Installers/index.ctp:89
-msgid "Please provide the following information. Don't worry, you can always change these settings later."
-msgstr ""
-
-#: View/Installers/index.ctp:96
-#: View/Users/login.ctp:7
-#: View/Users/reset_password.ctp:11
-msgid "Password"
-msgstr ""
-
-#: View/Installers/index.ctp:96
-msgid "Password (twice)"
-msgstr ""
-
-#: View/Installers/index.ctp:97
-msgid "Confirm your password"
 msgstr ""
 
 #: View/Layouts/default.ctp:35
@@ -676,11 +686,11 @@ msgstr ""
 msgid "Play album"
 msgstr ""
 
-#: View/Songs/albums.ctp:6
+#: View/Songs/albums.ctp:7
 msgid "Recently added"
 msgstr ""
 
-#: View/Songs/albums.ctp:43
+#: View/Songs/albums.ctp:45
 msgid "All albums"
 msgstr ""
 

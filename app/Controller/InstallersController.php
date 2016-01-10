@@ -175,7 +175,7 @@ class InstallersController extends AppController {
                 }
             }
 
-            // Check database connexion
+            // Check database connection
             try {
                 $db_connection = ConnectionManager::getDataSource('default');
                 $db_connection->connect();
@@ -221,6 +221,64 @@ class InstallersController extends AppController {
         }
     }
 
+    /**
+     * This function is used to install Sonerezh on Docker
+     */
+    public function docker() {
+        $this->loadModel('User');
+        $this->loadModel('Setting');
+        $this->User->useTable = false;
+        $this->User->useTable = false;
+        if ($this->Toolbar) {
+            unset($this->Toolbar->panels['sql_log']);
+        }
+
+        if ($this->request->is('post')) {
+            // Check database connection
+            try {
+                $db_connection = ConnectionManager::getDataSource('default');
+                $db_connection->connect();
+            } catch (Exception $e) {
+                $this->Session->setFlash(__('Could not connect to database'), 'flash_error');
+                return;
+            }
+
+            // Populate Sonerezh database
+            // Export schema
+            $schema_shell = new SchemaShell();
+            $schema_shell->params = array('connection' => 'default', 'file' => 'sonerezh.php', 'yes' => 1, 'name' => 'Sonerezh');
+            $schema_shell->startup();
+            $schema_shell->create();
+
+            // Save first user and firsts settings
+            $this->User->useTable = 'users';
+            $this->Setting->useTable = 'settings';
+
+            // The first user is an admin
+            $this->request->data['User']['role'] = 'admin';
+            // Enable auto-conversion
+            $this->request->data['Setting']['enable_auto_conv'] = true;
+            // Force music path to /music
+            $this->request->data['Setting']['Rootpath'] = array(array('rootpath' => '/music'));
+
+            if ($this->request->data['User']['password'] != $this->request->data['User']['confirm_password']) {
+                $user = false;
+                $this->User->validationErrors["password"][] = __("Passwords do not match.");
+            } else {
+                $user = $this->User->save($this->request->data['User']);
+            }
+            $setting = $this->Setting->saveAssociated($this->request->data['Setting']);
+
+            if ($user && $setting) {
+                $this->Session->setFlash(__('Installation successful!'), 'flash_success');
+            } else {
+                $this->Session->setFlash(__('Unable to save your data.'), 'flash_error');
+                return;
+            }
+
+            $this->redirect(array('controller' => 'songs', 'action' => 'import'));
+        }
+    }
 
     private function __generateCipherKey() {
         return $this->__commonRandom('34567890', 40);

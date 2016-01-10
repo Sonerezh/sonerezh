@@ -118,3 +118,4 @@ define('SONEREZH_VERSION', 'v1.0.0-beta2');
 define('THUMBNAILS_DIR', 'thumbnails');
 define('RESIZED_DIR', IMAGES.'resized'.DS);
 define('AVATARS_DIR', 'avatars');
+define('DOCKER', false);

@@ -100,7 +100,12 @@ class SettingsController extends AppController {
 
         $db = $this->Setting->getDataSource();
         $db_source = explode('/', $db->config['datasource']);
-        $stats['db_source'] = $db_source[1];
+        $sonerezh_docker = ', ';
+        if (DOCKER) {
+            $sonerezh_docker = ' on Docker, ';
+        }
+
+        $stats['sonerezh_version'] = 'Sonerezh ' . SONEREZH_VERSION . $sonerezh_docker . $db_source[1];
 
         $this->set(compact('stats', 'avconv'));
     }
