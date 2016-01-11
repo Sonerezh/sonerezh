@@ -112,6 +112,10 @@ nav .search .search-input{
     padding: 10px 15px;
 }
 
+.navbar-fixed-top .navbar-collapse {
+    max-height: unset;
+}
+
 /***
  * Player
  *********************************/
