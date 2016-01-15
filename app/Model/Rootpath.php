@@ -8,11 +8,11 @@ class Rootpath extends AppModel {
         'rootpath'	=> array(
             'pathExists'	=> array(
                 'rule'			=> 'pathExists',
-                'message'		=> 'Invalid root path'
+                'message'		=> "The music library's directory does not exist."
             ),
             'isReadable'	=> array(
                 'rule'			=> 'isReadable',
-                'message'		=> 'Root path folder is not readable'
+                'message'		=> "The music library's directory is not readable."
             ),
         )
     );

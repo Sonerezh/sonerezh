@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Sonerezh 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2016-01-09 16:18+0100\n"
+"PO-Revision-Date: 2016-01-15 22:32+0100\n"
 "Last-Translator: Guillaume Leduc <hey@sonerezh.bzh>\n"
 "Language-Team:  <hey@sonerezh.bzh>\n"
 "Language: French\n"
@@ -165,19 +165,19 @@ msgstr "Toutes les entrées ont été supprimées !"
 msgid "Unable to clean the database!"
 msgstr "Impossible de nettoyer la base de donnée !"
 
-#: Controller/SongsController.php:149
+#: Controller/SongsController.php:144
 msgid "Please define a root path."
 msgstr "Veuillez renseigner l'emplacement de la librairie."
 
-#: Controller/SongsController.php:283;393;436;522
+#: Controller/SongsController.php:279;389;432;518
 msgid "Oops!"
 msgstr "Oups !"
 
-#: Controller/SongsController.php:283;393;436
+#: Controller/SongsController.php:279;389;432
 msgid "The database is empty..."
 msgstr "La base de données est vide..."
 
-#: Controller/SongsController.php:522
+#: Controller/SongsController.php:518
 msgid "No results."
 msgstr "Pas de résultat."
 
@@ -712,7 +712,7 @@ msgstr "Lire l'album"
 msgid "Recently added"
 msgstr "Ajoutés récemment"
 
-#: View/Songs/albums.ctp:45
+#: View/Songs/albums.ctp:46
 msgid "All albums"
 msgstr "Albums"
 
@@ -875,12 +875,12 @@ msgid "Reset my password"
 msgstr "Réinitialiser mon mot de passe"
 
 #: Model/Rootpath.php:validation for field rootpath
-msgid "Invalid root path"
-msgstr "Dossier invalide"
+msgid "The music library's directory does not exist."
+msgstr "Le dossier de l'audiothèque n'existe pas."
 
 #: Model/Rootpath.php:validation for field rootpath
-msgid "Root path folder is not readable"
-msgstr "Le dossier racine de l'application n'est pas accessible en lecture"
+msgid "The music library's directory is not readable."
+msgstr "Le dossier de l'audiothèque n'est pas accessible en lecture."
 
 #: Model/Setting.php:validation for field convert_to
 msgid "Wrong conversion destination!"
@@ -941,6 +941,9 @@ msgstr "Une erreur est survenue lors de l'envoi."
 #: Model/User.php:validation for field avatar
 msgid "Your avatar must be in a correct format (JPEG, PNG, GIF)."
 msgstr "Votre avatar doit être au format JPEG, PNG ou GIF."
+
+#~ msgid "Invalid root path"
+#~ msgstr "Dossier invalide"
 
 #~ msgid "Add to playlist"
 #~ msgstr "Ajouter à la liste de lecture"

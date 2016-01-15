@@ -149,19 +149,19 @@ msgstr ""
 msgid "Unable to clean the database!"
 msgstr ""
 
-#: Controller/SongsController.php:149
+#: Controller/SongsController.php:144
 msgid "Please define a root path."
 msgstr ""
 
-#: Controller/SongsController.php:283;393;436;522
+#: Controller/SongsController.php:279;389;432;518
 msgid "Oops!"
 msgstr ""
 
-#: Controller/SongsController.php:283;393;436
+#: Controller/SongsController.php:279;389;432
 msgid "The database is empty..."
 msgstr ""
 
-#: Controller/SongsController.php:522
+#: Controller/SongsController.php:518
 msgid "No results."
 msgstr ""
 
@@ -690,7 +690,7 @@ msgstr ""
 msgid "Recently added"
 msgstr ""
 
-#: View/Songs/albums.ctp:45
+#: View/Songs/albums.ctp:46
 msgid "All albums"
 msgstr ""
 
@@ -850,11 +850,11 @@ msgid "Reset my password"
 msgstr ""
 
 #: Model/Rootpath.php:validation for field rootpath
-msgid "Invalid root path"
+msgid "The music library's directory does not exist."
 msgstr ""
 
 #: Model/Rootpath.php:validation for field rootpath
-msgid "Root path folder is not readable"
+msgid "The music library's directory is not readable."
 msgstr ""
 
 #: Model/Setting.php:validation for field convert_to
