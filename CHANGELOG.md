@@ -1,5 +1,5 @@
-Changes with 1.0.0-stable (under development)
----------------------------------------------
+Changes with 1.0.0
+------------------
 New features:
 * Docker compatibility
 * The first row on the album view shows the 6 latest albums added
