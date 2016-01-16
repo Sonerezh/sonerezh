@@ -233,6 +233,20 @@ class InstallersController extends AppController {
             unset($this->Toolbar->panels['sql_log']);
         }
 
+        if ($this->request->is('get')) {
+            // Generate new security ciphers
+            $core_config_file = new File(APP.'Config'.DS.'core.php');
+            $core_config_file->replaceText(
+                array(
+                    Configure::read('Security.cipherSeed'),
+                    Configure::read('Security.salt')),
+                array(
+                    $this->__generateCipherKey(),
+                    $this->__generateSalt()
+                )
+            );
+        }
+
         if ($this->request->is('post')) {
             // Check database connection
             try {
@@ -281,7 +295,7 @@ class InstallersController extends AppController {
     }
 
     private function __generateCipherKey() {
-        return $this->__commonRandom('34567890', 40);
+        return $this->__commonRandom('1234567890', 40);
     }
 
     private function __generateSalt() {
