@@ -141,7 +141,7 @@ class InstallersController extends AppController {
                 $db_config_array['persistent'] = false;
                 $db_config_array['encoding'] = 'utf8';
             } else {
-                $this->Session->setFlash(__('Wrong datasource.'), 'flash_error');
+                $this->Flash->error(__('Wrong datasource.'));
                 return;
             }
 
@@ -155,7 +155,7 @@ class InstallersController extends AppController {
                 $db_config_data .= '}';
                 $db_config_file->write($db_config_data);
             } else {
-                $this->Session->setFlash(__('Unable to write configuration file.'), 'flash_error');
+                $this->Flash->error(__('Unable to write configuration file.'));
                 return;
             }
 
@@ -166,11 +166,11 @@ class InstallersController extends AppController {
                 if (!file_exists($sqlite_path)) {
                     $sqlite_file = new File($sqlite_path);
                     if (!$sqlite_file->create()) {
-                        $this->Session->setFlash(__('Unable to create the SQlite database file.'), 'flash_error');
+                        $this->Flash->error(__('Unable to create the SQlite database file.'));
                         return;
                     }
                 } elseif (!is_file($sqlite_path)) {
-                    $this->Session->setFlash($sqlite_path . ' ' . __('is not a regular file.'), 'flash_error');
+                    $this->Flash->error($sqlite_path . ' ' . __('is not a regular file.'));
                     return;
                 }
             }
@@ -181,7 +181,7 @@ class InstallersController extends AppController {
                 $db_connection->connect();
             } catch (Exception $e) {
                 $db_config_file->delete();
-                $this->Session->setFlash(__('Could not connect to database'), 'flash_error');
+                $this->Flash->error(__('Could not connect to database'));
                 return;
             }
 
@@ -210,9 +210,9 @@ class InstallersController extends AppController {
             $setting = $this->Setting->saveAssociated($this->request->data['Setting']);
 
             if ($user && $setting) {
-                $this->Session->setFlash(__('Installation successful!'), 'flash_success');
+                $this->Flash->success(__('Installation successful!'));
             } else {
-                $this->Session->setFlash(__('Unable to save your data.'), 'flash_error');
+                $this->Flash->error(__('Unable to save your data.'));
                 $db_config_file->delete();
                 return;
             }
@@ -253,7 +253,7 @@ class InstallersController extends AppController {
                 $db_connection = ConnectionManager::getDataSource('default');
                 $db_connection->connect();
             } catch (Exception $e) {
-                $this->Session->setFlash(__('Could not connect to database'), 'flash_error');
+                $this->Flash->error(__('Could not connect to the database'));
                 return;
             }
 
@@ -284,9 +284,9 @@ class InstallersController extends AppController {
             $setting = $this->Setting->saveAssociated($this->request->data['Setting']);
 
             if ($user && $setting) {
-                $this->Session->setFlash(__('Installation successful!'), 'flash_success');
+                $this->Flash->success(__('Installation successful!'));
             } else {
-                $this->Session->setFlash(__('Unable to save your data.'), 'flash_error');
+                $this->Flash->error(__('Unable to save your data.'));
                 return;
             }
 

@@ -120,7 +120,7 @@ class PaginatorHelper extends AppHelper {
  * Gets the current paging parameters from the resultset for the given model
  *
  * @param string $model Optional model name. Uses the default if none is specified.
- * @return array|null The array of paging parameters for the paginated resultset.
+ * @return array The array of paging parameters for the paginated resultset.
  * @link http://book.cakephp.org/2.0/en/core-libraries/helpers/paginator.html#PaginatorHelper::params
  */
 	public function params($model = null) {
@@ -128,7 +128,14 @@ class PaginatorHelper extends AppHelper {
 			$model = $this->defaultModel();
 		}
 		if (!isset($this->request->params['paging']) || empty($this->request->params['paging'][$model])) {
-			return null;
+			return array(
+				'prevPage' => false,
+				'nextPage' => true,
+				'paramType' => 'named',
+				'pageCount' => 1,
+				'options' => array(),
+				'page' => 1
+			);
 		}
 		return $this->request->params['paging'][$model];
 	}
@@ -973,25 +980,26 @@ class PaginatorHelper extends AppHelper {
  * ### Options:
  *
  * - `model` The model to use defaults to PaginatorHelper::defaultModel()
- * - `block` The block name to append the output to, or false/absenst to return as a string
+ * - `block` The block name to append the output to, or false/absent to return as a string
  *
- * @param array $options Array of options
- * @return string|void Meta links
+ * @param array $options Array of options.
+ * @return string|null Meta links.
  */
 	public function meta($options = array()) {
 		$model = isset($options['model']) ? $options['model'] : null;
 		$params = $this->params($model);
+		$urlOptions = isset($this->options['url']) ? $this->options['url'] : array();
 		$links = array();
 		if ($this->hasPrev()) {
 			$links[] = $this->Html->meta(array(
 				'rel' => 'prev',
-				'link' => $this->url(array('page' => $params['page'] - 1), true)
+				'link' => $this->url(array_merge($urlOptions, array('page' => $params['page'] - 1)), true)
 			));
 		}
 		if ($this->hasNext()) {
 			$links[] = $this->Html->meta(array(
 				'rel' => 'next',
-				'link' => $this->url(array('page' => $params['page'] + 1), true)
+				'link' => $this->url(array_merge($urlOptions, array('page' => $params['page'] + 1)), true)
 			));
 		}
 		$out = implode($links);

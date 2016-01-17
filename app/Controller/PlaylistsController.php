@@ -61,9 +61,9 @@ class PlaylistsController extends AppController {
             $this->Playlist->create();
 
             if ($this->Playlist->save($this->request->data)) {
-                $this->Session->setFlash(__('Playlist successfully created!'), 'flash_success');
+                $this->Flash->success(__('Playlist successfully created!'));
             } else {
-                $this->Session->setFlash(__('Unable to create the playlist.'), 'flash_error');
+                $this->Flash->error(__('Unable to create the playlist.'));
             }
 
             $this->redirect(array('action' => 'index'));
@@ -90,9 +90,9 @@ class PlaylistsController extends AppController {
             $this->Playlist->id = $id;
 
             if ($this->Playlist->save($this->request->data)) {
-                $this->Session->setFlash(__('Playlist successfully renamed'), 'flash_success');
+                $this->Flash->success(__('Playlist successfully renamed'));
             } else {
-                $this->Session->setFlash(__('Unable to rename this playlist'), 'flash_error');
+                $this->Flash->error(__('Unable to rename this playlist'));
             }
 
             $this->redirect(array('controller' => 'playlists', 'action' => 'index'));
@@ -114,9 +114,9 @@ class PlaylistsController extends AppController {
         $playlist = $this->Playlist->read(null, $id);
 
         if ($this->Playlist->delete($id)) {
-            $this->Session->setFlash(__('Playlist "'.$playlist['Playlist']['title'].'" successfully deleted.'), 'flash_success');
+            $this->Flash->success(__('Playlist "'.$playlist['Playlist']['title'].'" successfully deleted.'));
         } else {
-            $this->Session->setFlash(__('Unable to remove the playlist').' '.$playlist['Playlist']['title'], 'flash_error');
+            $this->Flash->error(__('Unable to remove the playlist').' '.$playlist['Playlist']['title']);
         }
         return $this->redirect(array('action' => 'index'));
     }

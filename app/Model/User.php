@@ -26,8 +26,8 @@ class User extends AppModel {
                 'required'  => true,
                 'message'   => 'Login already used.'
             ),
-            'notEmpty'  => array(
-                'rule'      => 'notEmpty',
+            'notBlank'  => array(
+                'rule'      => 'notBlank',
                 'required'  => true,
                 'message'   => 'Login cannot be empty.'
             )
@@ -38,14 +38,14 @@ class User extends AppModel {
                 'required'  => true,
                 'message'   => 'Password must be at least 8 characters long.'
             ),
-            'notEmpty'  => array(
-                'rule'      => 'notEmpty',
+            'notBlank'  => array(
+                'rule'      => 'notBlank',
                 'required'  => true
             )
         ),
         'confirm_password' => array(
-            'notEmpty' => array(
-                'rule'      => 'notEmpty',
+            'notBlank' => array(
+                'rule'      => 'notBlank',
                 'message'   => 'Please confirm the new password',
                 'required'  => true
             ),

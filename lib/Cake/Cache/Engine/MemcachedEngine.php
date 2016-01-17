@@ -185,7 +185,7 @@ class MemcachedEngine extends CacheEngine {
  * @return array Array containing host, port
  */
 	protected function _parseServerString($server) {
-		if ($server[0] === 'u') {
+		if (strpos($server, 'unix://') === 0) {
 			return array($server, 0);
 		}
 		if (substr($server, 0, 1) === '[') {
@@ -273,7 +273,8 @@ class MemcachedEngine extends CacheEngine {
  *
  * @param bool $check If true no deletes will occur and instead CakePHP will rely
  *   on key TTL values.
- * @return bool True if the cache was successfully cleared, false otherwise
+ * @return bool True if the cache was successfully cleared, false otherwise. Will
+ *   also return false if you are using a binary protocol.
  */
 	public function clear($check) {
 		if ($check) {
@@ -281,6 +282,9 @@ class MemcachedEngine extends CacheEngine {
 		}
 
 		$keys = $this->_Memcached->getAllKeys();
+		if ($keys === false) {
+			return false;
+		}
 
 		foreach ($keys as $key) {
 			if (strpos($key, $this->settings['prefix']) === 0) {

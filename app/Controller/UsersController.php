@@ -49,9 +49,9 @@ class UsersController extends AppController {
         if ($this->request->is('post')) {
             $this->User->create();
             if ($this->User->save($this->request->data)) {
-                $this->Session->setFlash(__('A new user has been created!'), 'flash_success');
+                $this->Flash->success(__('A new user has been created!'));
             } else {
-                $this->Session->setFlash(__('Unable to create a user. Make sure its email is not already used and his password is at least 8 characters long.'), 'flash_error');
+                $this->Flash->error(__('Unable to create a user. Make sure its email is not already used and his password is at least 8 characters long.'));
             }
             $this->redirect(array('action' => 'index'));
         }
@@ -70,9 +70,9 @@ class UsersController extends AppController {
 
         if ($this->request->is(array('post', 'put'))) {
             if ($this->User->save($this->request->data)) {
-                $this->Session->setFlash(__('User '.$id.' ('.$this->request->data['User']['email'].') has been successfully updated!'), 'flash_success');
+                $this->Flash->success(__('User '.$id.' ('.$this->request->data['User']['email'].') has been successfully updated!'));
             } else {
-                $this->Session->setFlash(__('Something went wrong!'), 'flash_error');
+                $this->Flash->error(__('Something went wrong!'));
             }
         }
         $user = $this->User->findById($id);
@@ -92,7 +92,7 @@ class UsersController extends AppController {
         $user = $this->User->findById($id);
 
         if ($this->User->delete($id)) {
-            $this->Session->setFlash(__('User '.$id.' ('.$user['User']['email'].') has been successfully deleted!'), 'flash_success');
+            $this->Flash->success(__('User '.$id.' ('.$user['User']['email'].') has been successfully deleted!'));
         }
         $this->redirect($this->referer());
     }
@@ -111,11 +111,11 @@ class UsersController extends AppController {
         if (file_exists($avatar)) {
             unlink($avatar);           
             if ($this->User->saveField('avatar', null)) {
-                $this->Session->setFlash(__('Avatar has been successfully removed!'), 'flash_success');
+                $this->Flash->success(__('Avatar has been successfully removed!'));
                 $this->redirect(array('action' => 'edit/'.$id));
             }
         } else {
-            $this->Session->setFlash(__('Something went wrong!'), 'flash_error');
+            $this->Flash->error(__('Something went wrong!'));
             $this->redirect(array('action' => 'edit/'.$id));
         }
     }
@@ -138,7 +138,7 @@ class UsersController extends AppController {
                 }
                 return $this->redirect($this->Auth->redirectUrl());
             } else {
-                $this->Session->setFlash(__('Wrong credentials!'), 'flash_error');
+                $this->Flash->error(__('Wrong credentials!'));
             }
         }
 	}
@@ -163,7 +163,7 @@ class UsersController extends AppController {
             }
 
             if (empty($user)) {
-                $this->Session->setFlash(__('Unable to find your account'), 'flash_error');
+                $this->Flash->error(__('Unable to find your account'));
                 $this->redirect(array('action' => 'login'));
             }
 
@@ -187,9 +187,9 @@ class UsersController extends AppController {
                 $this->User->getEventManager()->attach($usersEventListener);
                 $this->User->getEventManager()->dispatch($event);
 
-                $this->Session->setFlash(__('Email successfully sent.'), 'flash_success');
+                $this->Flash->success(__('Email successfully sent.'));
             } else {
-                $this->Session->setFlash(__('Unable to generate a token.'), 'flash_error');
+                $this->Flash->error(__('Unable to generate a token.'));
             }
             $this->redirect(array('action' => 'login'));
         }
@@ -201,7 +201,7 @@ class UsersController extends AppController {
         $token = isset($this->request->query['t']) ? $this->request->query['t'] : null;
 
         if (!$token) {
-            $this->Session->setFlash(__('You need to provide a token.'), 'flash_error');
+            $this->Flash->error(__('You need to provide a token.'));
             $this->redirect(array('action' => 'login'));
         }
 
@@ -209,14 +209,14 @@ class UsersController extends AppController {
         $binary_token = $this->UrlComponent->base64url_decode($token);
 
         if (!$binary_token) {
-            $this->Session->setFlash(__('Unable to decode your token.'), 'flash_error');
+            $this->Flash->error(__('Unable to decode your token.'));
             $this->redirect(array('action' => 'login'));
         }
 
         $token_data = @unpack('Iid/Sdate/Sentropy/Lpassword_crc32', $binary_token);
 
         if (!$token_data) {
-            $this->Session->setFlash(__('Unable to read your token.'), 'flash_error');
+            $this->Flash->error(__('Unable to read your token.'));
             $this->redirect(array('action' => 'login'));
         }
 
@@ -226,7 +226,7 @@ class UsersController extends AppController {
         $today = date('y-n-d');
 
         if ($token_date != $today) {
-            $this->Session->setFlash(__('The token has expired.'), 'flash_error');
+            $this->Flash->error(__('The token has expired.'));
             $this->redirect(array('action' => 'login'));
         }
 
@@ -237,10 +237,10 @@ class UsersController extends AppController {
         ));
 
         if (empty($user)) {
-            $this->Session->setFlash(__('Unable to find your account.'), 'flash_error');
+            $this->Flash->error(__('Unable to find your account.'));
             $this->redirect(array('action' => 'login'));
         } elseif (crc32($user['User']['password']) != $token_data['password_crc32']) {
-            $this->Session->setFlash(__('Wrong token.'), 'flash_error');
+            $this->Flash->errror(__('Wrong token.'));
             $this->redirect(array('action' => 'login'));
         }
 
@@ -251,10 +251,10 @@ class UsersController extends AppController {
             $user['User']['confirm_password'] = $this->request->data['User']['confirm_password'];
 
             if ($this->User->save($user)) {
-                $this->Session->setFlash(__('Your password has been updated.'), 'flash_success');
+                $this->Flash->success(__('Your password has been updated.'));
                 $this->redirect(array('action' => 'login'));
             } else {
-                $this->Session->setFlash(__('Unable to update your password.'), 'flash_error');
+                $this->Flash->error(__('Unable to update your password.'));
             }
         }
     }

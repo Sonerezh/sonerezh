@@ -72,13 +72,13 @@ class CakeTimeTest extends CakeTestCase {
  */
 	public function testToQuarter() {
 		$result = $this->Time->toQuarter('2007-12-25');
-		$this->assertEquals(4, $result);
+		$this->assertSame(4, $result);
 
 		$result = $this->Time->toQuarter('2007-9-25');
-		$this->assertEquals(3, $result);
+		$this->assertSame(3, $result);
 
 		$result = $this->Time->toQuarter('2007-3-25');
-		$this->assertEquals(1, $result);
+		$this->assertSame(1, $result);
 
 		$result = $this->Time->toQuarter('2007-3-25', true);
 		$this->assertEquals(array('2007-01-01', '2007-03-31'), $result);
@@ -1075,12 +1075,12 @@ class CakeTimeTest extends CakeTestCase {
 	}
 
 /**
- * test convert %e on windows.
+ * test convert %e on Windows.
  *
  * @return void
  */
 	public function testConvertPercentE() {
-		$this->skipIf(DIRECTORY_SEPARATOR !== '\\', 'Cannot run windows tests on non-windows OS.');
+		$this->skipIf(DIRECTORY_SEPARATOR !== '\\', 'Cannot run Windows tests on non-Windows OS.');
 
 		$time = strtotime('Thu Jan 14 11:43:39 2010');
 		$result = $this->Time->convertSpecifiers('%e', $time);

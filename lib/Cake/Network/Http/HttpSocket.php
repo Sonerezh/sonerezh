@@ -361,8 +361,6 @@ class HttpSocket extends CakeSocket {
 			return false;
 		}
 
-		$this->_configContext($this->request['uri']['host']);
-
 		$this->request['raw'] = '';
 		if ($this->request['line'] !== false) {
 			$this->request['raw'] = $this->request['line'];
@@ -374,11 +372,13 @@ class HttpSocket extends CakeSocket {
 
 		$this->request['raw'] .= "\r\n";
 		$this->request['raw'] .= $this->request['body'];
+
+		// SSL context is set during the connect() method.
 		$this->write($this->request['raw']);
 
 		$response = null;
 		$inHeader = true;
-		while ($data = $this->read()) {
+		while (($data = $this->read()) !== false) {
 			if ($this->_contentResource) {
 				if ($inHeader) {
 					$response .= $data;
@@ -652,6 +652,7 @@ class HttpSocket extends CakeSocket {
 		}
 		$this->config['host'] = $this->_proxy['host'];
 		$this->config['port'] = $this->_proxy['port'];
+		$this->config['proxy'] = true;
 
 		if (empty($this->_proxy['method']) || !isset($this->_proxy['user'], $this->_proxy['pass'])) {
 			return;
@@ -667,6 +668,13 @@ class HttpSocket extends CakeSocket {
 			throw new SocketException(__d('cake_dev', 'The %s does not support proxy authentication.', $authClass));
 		}
 		call_user_func_array("$authClass::proxyAuthentication", array($this, &$this->_proxy));
+
+		if (!empty($this->request['header']['Proxy-Authorization'])) {
+			$this->config['proxyauth'] = $this->request['header']['Proxy-Authorization'];
+			if ($this->request['uri']['scheme'] === 'https') {
+				$this->request['header'] = Hash::remove($this->request['header'], 'Proxy-Authorization');
+			}
+		}
 	}
 
 /**
@@ -697,33 +705,6 @@ class HttpSocket extends CakeSocket {
 		$this->config = Hash::merge($this->config, $config);
 		$this->config = Hash::merge($this->config, array_intersect_key($this->config['request']['uri'], $this->config));
 		return true;
-	}
-
-/**
- * Configure the socket's context. Adds in configuration
- * that can not be declared in the class definition.
- *
- * @param string $host The host you're connecting to.
- * @return void
- */
-	protected function _configContext($host) {
-		foreach ($this->config as $key => $value) {
-			if (substr($key, 0, 4) !== 'ssl_') {
-				continue;
-			}
-			$contextKey = substr($key, 4);
-			if (empty($this->config['context']['ssl'][$contextKey])) {
-				$this->config['context']['ssl'][$contextKey] = $value;
-			}
-			unset($this->config[$key]);
-		}
-		if (empty($this->config['context']['ssl']['cafile'])) {
-			$this->config['context']['ssl']['cafile'] = CAKE . 'Config' . DS . 'cacert.pem';
-		}
-		if (!empty($this->config['context']['ssl']['verify_host'])) {
-			$this->config['context']['ssl']['CN_match'] = $host;
-		}
-		unset($this->config['context']['ssl']['verify_host']);
 	}
 
 /**
@@ -926,7 +907,7 @@ class HttpSocket extends CakeSocket {
 
 		$request['uri'] = $this->_parseUri($request['uri']);
 		$request += array('method' => 'GET');
-		if (!empty($this->_proxy['host'])) {
+		if (!empty($this->_proxy['host']) && $request['uri']['scheme'] !== 'https') {
 			$request['uri'] = $this->_buildUri($request['uri'], '%scheme://%host:%port/%path?%query');
 		} else {
 			$request['uri'] = $this->_buildUri($request['uri'], '/%path?%query');
