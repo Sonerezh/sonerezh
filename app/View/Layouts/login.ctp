@@ -19,7 +19,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
-                    <?php echo $this->Session->flash(); ?>
+                    <?php echo $this->Flash->render(); ?>
                 </div>
             </div>
             <div class="row" id="content">
