@@ -49,7 +49,9 @@ class UsersController extends AppController {
         if ($this->request->is('post')) {
             $this->User->create();
             if ($this->User->save($this->request->data)) {
-                $this->Flash->success(__('A new user has been created!'));
+                $this->Flash->success(__('User created: '), array(
+                    'params' => array($this->request->data['User']['email'])
+                ));
             } else {
                 $this->Flash->error(__('Unable to create a user. Make sure its email is not already used and his password is at least 8 characters long.'));
             }
@@ -70,7 +72,9 @@ class UsersController extends AppController {
 
         if ($this->request->is(array('post', 'put'))) {
             if ($this->User->save($this->request->data)) {
-                $this->Flash->success(__('User '.$id.' ('.$this->request->data['User']['email'].') has been successfully updated!'));
+                $this->Flash->success(__('User updated: '), array(
+                    'params' => array($this->request->data['User']['email'])
+                ));
             } else {
                 $this->Flash->error(__('Something went wrong!'));
             }
@@ -92,7 +96,9 @@ class UsersController extends AppController {
         $user = $this->User->findById($id);
 
         if ($this->User->delete($id)) {
-            $this->Flash->success(__('User '.$id.' ('.$user['User']['email'].') has been successfully deleted!'));
+            $this->Flash->success(__('User deleted: '), array(
+                'params' => array($user['User']['email'])
+            ));
         }
         $this->redirect($this->referer());
     }

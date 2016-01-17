@@ -170,7 +170,9 @@ class InstallersController extends AppController {
                         return;
                     }
                 } elseif (!is_file($sqlite_path)) {
-                    $this->Flash->error($sqlite_path . ' ' . __('is not a regular file.'));
+                    $this->Flash->error(__('This is not a regular file: '), array(
+                        'params' => array($sqlite_path)
+                    ));
                     return;
                 }
             }
