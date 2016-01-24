@@ -37,7 +37,7 @@ class CakeTestSuiteDispatcher {
 		'codeCoverage' => false,
 		'case' => null,
 		'core' => false,
-		'app' => true,
+		'app' => false,
 		'plugin' => null,
 		'output' => 'html',
 		'show' => 'groups',
@@ -254,7 +254,7 @@ class CakeTestSuiteDispatcher {
 		restore_error_handler();
 
 		try {
-			self::time();
+			static::time();
 			$command = new CakeTestSuiteCommand('CakeTestLoader', $commandArgs);
 			$command->run($options);
 		} catch (MissingConnectionException $exception) {
@@ -287,7 +287,7 @@ class CakeTestSuiteDispatcher {
  * @return string formatted date
  */
 	public static function date($format) {
-		return date($format, self::time());
+		return date($format, static::time());
 	}
 
 }

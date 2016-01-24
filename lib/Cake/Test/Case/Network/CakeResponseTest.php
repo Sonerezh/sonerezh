@@ -373,7 +373,7 @@ class CakeResponseTest extends CakeTestCase {
  * @return void
  */
 	public function testCompress() {
-		if (php_sapi_name() !== 'cli') {
+		if (PHP_SAPI !== 'cli') {
 			$this->markTestSkipped('The response compression can only be tested in cli.');
 		}
 
@@ -404,7 +404,7 @@ class CakeResponseTest extends CakeTestCase {
 	public function testHttpCodes() {
 		$response = new CakeResponse();
 		$result = $response->httpCodes();
-		$this->assertEquals(40, count($result));
+		$this->assertEquals(41, count($result));
 
 		$result = $response->httpCodes(100);
 		$expected = array(100 => 'Continue');
@@ -417,7 +417,7 @@ class CakeResponseTest extends CakeTestCase {
 
 		$result = $response->httpCodes($codes);
 		$this->assertTrue($result);
-		$this->assertEquals(42, count($response->httpCodes()));
+		$this->assertEquals(43, count($response->httpCodes()));
 
 		$result = $response->httpCodes(381);
 		$expected = array(381 => 'Unicorn Moved');
@@ -426,7 +426,7 @@ class CakeResponseTest extends CakeTestCase {
 		$codes = array(404 => 'Sorry Bro');
 		$result = $response->httpCodes($codes);
 		$this->assertTrue($result);
-		$this->assertEquals(42, count($response->httpCodes()));
+		$this->assertEquals(43, count($response->httpCodes()));
 
 		$result = $response->httpCodes(404);
 		$expected = array(404 => 'Sorry Bro');
@@ -491,7 +491,7 @@ class CakeResponseTest extends CakeTestCase {
 		if (!extension_loaded("zlib")) {
 			$this->markTestSkipped('Skipping further tests for outputCompressed as zlib extension is not loaded');
 		}
-		if (php_sapi_name() !== 'cli') {
+		if (PHP_SAPI !== 'cli') {
 			$this->markTestSkipped('Testing outputCompressed method with compression enabled done only in cli');
 		}
 
@@ -566,7 +566,7 @@ class CakeResponseTest extends CakeTestCase {
 		$response->send();
 
 		ob_start();
-		$response = $this->getMock('CakeResponse', array('_sendHeader', '_sendContent'));
+		$this->getMock('CakeResponse', array('_sendHeader', '_sendContent'));
 		$goofyOutput = 'I am goofily sending output in the controller';
 		echo $goofyOutput;
 		$response = $this->getMock('CakeResponse', array('_sendHeader', '_sendContent'));
@@ -1167,14 +1167,40 @@ class CakeResponseTest extends CakeTestCase {
 	}
 
 /**
- * test file with ..
+ * test file with ../
  *
  * @expectedException NotFoundException
+ * @expectedExceptionMessage The requested file contains `..` and will not be read.
  * @return void
  */
-	public function testFileWithPathTraversal() {
+	public function testFileWithForwardSlashPathTraversal() {
 		$response = new CakeResponse();
 		$response->file('my/../cat.gif');
+	}
+
+/**
+ * test file with ..\
+ *
+ * @expectedException NotFoundException
+ * @expectedExceptionMessage The requested file contains `..` and will not be read.
+ * @return void
+ */
+	public function testFileWithBackwardSlashPathTraversal() {
+		$response = new CakeResponse();
+		$response->file('my\..\cat.gif');
+	}
+
+/**
+ * Although unlikely, a file may contain dots in its filename.
+ * This should be allowed, as long as the dots doesn't specify a path (../ or ..\)
+ *
+ * @expectedException NotFoundException
+ * @execptedExceptionMessageRegExp #The requested file .+my/Some..cat.gif was not found or not readable#
+ * @return void
+ */
+	public function testFileWithDotsInFilename() {
+		$response = new CakeResponse();
+		$response->file('my/Some..cat.gif');
 	}
 
 /**
@@ -1720,7 +1746,7 @@ class CakeResponseTest extends CakeTestCase {
 		);
 
 		$this->assertEquals(416, $response->statusCode());
-		$result = $response->send();
+		$response->send();
 	}
 
 /**
@@ -1761,7 +1787,7 @@ class CakeResponseTest extends CakeTestCase {
 		);
 
 		ob_start();
-		$result = $response->send();
+		$response->send();
 		ob_get_clean();
 	}
 
@@ -1850,7 +1876,7 @@ class CakeResponseTest extends CakeTestCase {
 		);
 
 		$this->assertEquals(416, $response->statusCode());
-		$result = $response->send();
+		$response->send();
 	}
 
 /**

@@ -20,7 +20,7 @@ class PlaylistMembershipsController extends AppController {
 
             // Verify that Playlist.id is correct
             if (empty($this->request->data['Playlist']['id']) && empty($this->request->data['Playlist']['title'])) {
-                $this->Session->setFlash(__('You must specify a valid playlist'), 'flash_error');
+                $this->Flash->error(__('You must specify a valid playlist'));
                 return $this->redirect($this->referer());
             }
 
@@ -30,7 +30,7 @@ class PlaylistMembershipsController extends AppController {
                 $playlist = $this->PlaylistMembership->Playlist->exists($this->request->data['Playlist']['id']);
 
                 if (empty($playlist)) {
-                    $this->Session->setFlash(__('You must specify a valid playlist'), 'flash_error');
+                    $this->Flash->error(__('You must specify a valid playlist'));
                     return $this->redirect($this->referer());
                 }
 
@@ -83,9 +83,9 @@ class PlaylistMembershipsController extends AppController {
 
             // Save data
             if ($this->PlaylistMembership->Playlist->saveAll($data, array('deep' => true))) {
-                $this->Session->setFlash(__('Song successfully added to playlist'), 'flash_success');
+                $this->Flash->success(__('Song successfully added to playlist'));
             } else {
-                $this->Session->setFlash(__('Unable to add the song'), 'flash_error');
+                $this->Flash->error(__('Unable to add the song'));
             }
 
             $this->PlaylistMembership->Playlist->recursive = 0;
@@ -108,7 +108,7 @@ class PlaylistMembershipsController extends AppController {
     public function remove($id) {
         $this->PlaylistMembership->read(null, $id);
         if ($this->PlaylistMembership->delete($id)) {
-            $this->Session->setFlash(__('Song successfully removed from playlist'), 'flash_success');
+            $this->Flash->success(__('Song successfully removed from playlist'));
             $this->redirect($this->referer());
         }
     }

@@ -1,5 +1,11 @@
-Changes with 1.0.0-stable (under development)
----------------------------------------------
+Changes with 1.1.0
+------------------
+Improvements:
+* #148: Upgrade CakePHP to 2.7
+* Upgrade Twitter Bootstrap to 3.3.6
+
+Changes with 1.0.0
+------------------
 New features:
 * Docker compatibility
 * The first row on the album view shows the 6 latest albums added

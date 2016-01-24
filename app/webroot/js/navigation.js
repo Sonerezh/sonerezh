@@ -35,10 +35,12 @@ $(function(){
                     $('title').text(response[1].title);
                 }
                 $('head').append(response[0].css);
-                if(response[2].flash.length){
+
+                if (response[2].flash != null && response[2].flash.length) {
                     $('#flash').html(response[2].flash);
                     animateFlash();
                 }
+
                 if(response[2].html.length){
                     $(document).scrollTop(0);
                     $('#content').html(response[2].html);

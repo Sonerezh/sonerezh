@@ -81,15 +81,15 @@ class Contact extends CakeTestModel {
 		'non_existing' => array(),
 		'idontexist' => array(),
 		'imrequired' => array('rule' => array('between', 5, 30), 'allowEmpty' => false),
-		'imrequiredonupdate' => array('notEmpty' => array('rule' => 'alphaNumeric', 'on' => 'update')),
+		'imrequiredonupdate' => array('notBlank' => array('rule' => 'alphaNumeric', 'on' => 'update')),
 		'imrequiredoncreate' => array('required' => array('rule' => 'alphaNumeric', 'on' => 'create')),
 		'imrequiredonboth' => array(
 			'required' => array('rule' => 'alphaNumeric'),
 		),
-		'string_required' => 'notEmpty',
+		'string_required' => 'notBlank',
 		'imalsorequired' => array('rule' => 'alphaNumeric', 'allowEmpty' => false),
-		'imrequiredtoo' => array('rule' => 'notEmpty'),
-		'required_one' => array('required' => array('rule' => array('notEmpty'))),
+		'imrequiredtoo' => array('rule' => 'notBlank'),
+		'required_one' => array('required' => array('rule' => array('notBlank'))),
 		'imnotrequired' => array('required' => false, 'rule' => 'alphaNumeric', 'allowEmpty' => true),
 		'imalsonotrequired' => array(
 			'alpha' => array('rule' => 'alphaNumeric', 'allowEmpty' => true),
@@ -353,6 +353,7 @@ class ValidateUser extends CakeTestModel {
 		'email' => array('type' => 'string', 'null' => '', 'default' => '', 'length' => '255'),
 		'balance' => array('type' => 'float', 'null' => false, 'length' => '5,2'),
 		'cost_decimal' => array('type' => 'decimal', 'null' => false, 'length' => '6,3'),
+		'null_decimal' => array('type' => 'decimal', 'null' => false, 'length' => null),
 		'ratio' => array('type' => 'decimal', 'null' => false, 'length' => '10,6'),
 		'population' => array('type' => 'decimal', 'null' => false, 'length' => '15,0'),
 		'created' => array('type' => 'date', 'null' => '1', 'default' => '', 'length' => ''),
@@ -782,7 +783,6 @@ class FormHelperTest extends CakeTestCase {
 				'type' => 'text',
 				'name' => 'data[ValidateUser][cost_decimal]',
 				'id' => 'ValidateUserCostDecimal',
-				'maxlength' => 6,
 			)),
 			'/div'
 		);
@@ -1289,6 +1289,30 @@ class FormHelperTest extends CakeTestCase {
 			'/div'
 		);
 		$this->assertTags($result, $expected);
+	}
+
+/**
+ * Test that a hidden field followed by a visible field
+ * undoes the hidden field locking.
+ *
+ * @return void
+ */
+	public function testSecuredInputDuplicate() {
+		$this->Form->request['_Token'] = array('key' => 'testKey');
+		$this->assertEquals(array(), $this->Form->fields);
+
+		$this->Form->input('text_val', array(
+			'type' => 'hidden',
+			'value' => 'some text',
+		));
+		$expected = array('text_val' => 'some text');
+		$this->assertEquals($expected, $this->Form->fields);
+
+		$this->Form->input('text_val', array(
+			'type' => 'text',
+		));
+		$expected = array('text_val');
+		$this->assertEquals($expected, $this->Form->fields);
 	}
 
 /**
@@ -2022,6 +2046,17 @@ class FormHelperTest extends CakeTestCase {
 		);
 		$this->assertTags($result, $expected);
 
+		$result = $this->Form->input('ValidateUser.null_decimal');
+		$expected = array(
+			'div' => array('class'),
+			'label' => array('for'),
+			'Null Decimal',
+			'/label',
+			'input' => array('name', 'type' => 'number', 'step' => 'any', 'id'),
+			'/div',
+		);
+		$this->assertTags($result, $expected);
+
 		$result = $this->Form->input('ValidateUser.ratio');
 		$expected = array(
 			'div' => array('class'),
@@ -2519,6 +2554,61 @@ class FormHelperTest extends CakeTestCase {
 	}
 
 /**
+ * Test interval + value near the hour roll over.
+ *
+ * @return void
+ */
+	public function testTimeValueWithInterval() {
+		$result = $this->Form->input('Model.start_time', array(
+			'type' => 'time',
+			'interval' => 15,
+			'value' => array('hour' => '3', 'min' => '57', 'meridian' => 'pm')
+		));
+		$this->assertContains('<option value="04" selected="selected">4</option>', $result);
+		$this->assertContains('<option value="00" selected="selected">00</option>', $result);
+		$this->assertContains('<option value="pm" selected="selected">pm</option>', $result);
+
+		$result = $this->Form->input('Model.start_time', array(
+			'type' => 'time',
+			'interval' => 15,
+			'value' => '2012-10-23 15:57:00'
+		));
+		$this->assertContains('<option value="04" selected="selected">4</option>', $result);
+		$this->assertContains('<option value="00" selected="selected">00</option>', $result);
+		$this->assertContains('<option value="pm" selected="selected">pm</option>', $result);
+
+		$result = $this->Form->input('Model.start_time', array(
+			'timeFormat' => 24,
+			'type' => 'time',
+			'interval' => 15,
+			'value' => '15:57'
+		));
+		$this->assertContains('<option value="16" selected="selected">16</option>', $result);
+		$this->assertContains('<option value="00" selected="selected">00</option>', $result);
+
+		$result = $this->Form->input('Model.start_time', array(
+			'timeFormat' => 24,
+			'type' => 'time',
+			'interval' => 15,
+			'value' => '23:57'
+		));
+		$this->assertContains('<option value="00" selected="selected">0</option>', $result);
+		$this->assertContains('<option value="00" selected="selected">00</option>', $result);
+
+		$result = $this->Form->input('Model.created', array(
+			'timeFormat' => 24,
+			'type' => 'datetime',
+			'interval' => 15,
+			'value' => '2012-09-30 23:56'
+		));
+		$this->assertContains('<option value="2012" selected="selected">2012</option>', $result);
+		$this->assertContains('<option value="10" selected="selected">October</option>', $result);
+		$this->assertContains('<option value="01" selected="selected">1</option>', $result);
+		$this->assertContains('<option value="00" selected="selected">0</option>', $result);
+		$this->assertContains('<option value="00" selected="selected">00</option>', $result);
+	}
+
+/**
  * Test time with selected values around 12:xx:xx
  *
  * @return void
@@ -2549,6 +2639,43 @@ class FormHelperTest extends CakeTestCase {
 			'timeFormat' => 12,
 			'interval' => 15,
 			'selected' => '12:15:00'
+		));
+		$this->assertContains('<option value="12" selected="selected">12</option>', $result);
+		$this->assertContains('<option value="15" selected="selected">15</option>', $result);
+		$this->assertContains('<option value="pm" selected="selected">pm</option>', $result);
+	}
+
+/**
+ * Test time with selected values around 12:xx:xx
+ *
+ * @return void
+ */
+	public function testTimeValueWithIntervalTwelve() {
+		$result = $this->Form->input('Model.start_time', array(
+			'type' => 'time',
+			'timeFormat' => 12,
+			'interval' => 15,
+			'value' => '00:00:00'
+		));
+		$this->assertContains('<option value="12" selected="selected">12</option>', $result);
+		$this->assertContains('<option value="00" selected="selected">00</option>', $result);
+		$this->assertContains('<option value="am" selected="selected">am</option>', $result);
+
+		$result = $this->Form->input('Model.start_time', array(
+			'type' => 'time',
+			'timeFormat' => 12,
+			'interval' => 15,
+			'value' => '12:00:00'
+		));
+		$this->assertContains('<option value="12" selected="selected">12</option>', $result);
+		$this->assertContains('<option value="00" selected="selected">00</option>', $result);
+		$this->assertContains('<option value="pm" selected="selected">pm</option>', $result);
+
+		$result = $this->Form->input('Model.start_time', array(
+			'type' => 'time',
+			'timeFormat' => 12,
+			'interval' => 15,
+			'value' => '12:15:00'
 		));
 		$this->assertContains('<option value="12" selected="selected">12</option>', $result);
 		$this->assertContains('<option value="15" selected="selected">15</option>', $result);
@@ -3624,9 +3751,9 @@ class FormHelperTest extends CakeTestCase {
 		);
 		$this->assertTags($result, $expected);
 
-		$Contact->validationErrors['field'] = array('notEmpty', 'email', 'Something else');
+		$Contact->validationErrors['field'] = array('notBlank', 'email', 'Something else');
 		$result = $this->Form->error('Contact.field', array(
-			'notEmpty' => 'Cannot be empty',
+			'notBlank' => 'Cannot be empty',
 			'email' => 'No good!'
 		));
 		$expected = array(
@@ -3641,13 +3768,13 @@ class FormHelperTest extends CakeTestCase {
 		$this->assertTags($result, $expected);
 
 		// Testing error messages list options
-		$Contact->validationErrors['field'] = array('notEmpty', 'email');
+		$Contact->validationErrors['field'] = array('notBlank', 'email');
 
 		$result = $this->Form->error('Contact.field', null, array('listOptions' => 'ol'));
 		$expected = array(
 			'div' => array('class' => 'error-message'),
 				'ol' => array(),
-					'<li', 'notEmpty', '/li',
+					'<li', 'notBlank', '/li',
 					'<li', 'email', '/li',
 				'/ol',
 			'/div'
@@ -3658,7 +3785,7 @@ class FormHelperTest extends CakeTestCase {
 		$expected = array(
 			'div' => array('class' => 'error-message'),
 				'ol' => array(),
-					'<li', 'notEmpty', '/li',
+					'<li', 'notBlank', '/li',
 					'<li', 'email', '/li',
 				'/ol',
 			'/div'
@@ -3676,7 +3803,7 @@ class FormHelperTest extends CakeTestCase {
 		$expected = array(
 			'div' => array('class' => 'error-message'),
 				'ul' => array('class' => 'ul-class'),
-					array('li' => array('class' => 'li-class')), 'notEmpty', '/li',
+					array('li' => array('class' => 'li-class')), 'notBlank', '/li',
 					array('li' => array('class' => 'li-class')), 'email', '/li',
 				'/ul',
 			'/div'
@@ -3901,6 +4028,25 @@ class FormHelperTest extends CakeTestCase {
 			'third',
 			'/label',
 			'/fieldset'
+		);
+		$this->assertTags($result, $expected);
+
+		$result = $this->Form->radio(
+			'Model.multibyte',
+			array('男性' => '男性')
+		);
+		$expected = array(
+			'input' => array(
+				'type' => 'hidden', 'name' => 'data[Model][multibyte]',
+				'id' => 'ModelMultibyte_', 'value' => '',
+			),
+			array('input' => array(
+				'type' => 'radio', 'name' => 'data[Model][multibyte]',
+				'id' => 'ModelMultibyte男性', 'value' => '男性')
+			),
+			array('label' => array('for' => 'ModelMultibyte男性')),
+			'男性',
+			'/label',
 		);
 		$this->assertTags($result, $expected);
 	}
@@ -4412,6 +4558,34 @@ class FormHelperTest extends CakeTestCase {
 			'hiddenField' => false
 		));
 		$this->assertTextNotContains('"Model1Field"', $result);
+	}
+
+/**
+ * Test that radio() accepts a deep array for options
+ *
+ * @return void
+ */
+	public function testRadioOptionsArray() {
+		$result = $this->Form->input('Model.field', array(
+			'type' => 'radio',
+			'legend' => false,
+			'div' => false,
+			'options' => array(
+				'1' => array('name' => 'Option A', 'title' => 'A Title'),
+				'2' => array('name' => 'Option B', 'data-foo' => 'bar'))
+		));
+		$expected = array(
+			array('input' => array('type' => 'hidden', 'name' => 'data[Model][field]', 'id' => 'ModelField_', 'value' => '')),
+			array('input' => array('type' => 'radio', 'name' => 'data[Model][field]', 'id' => 'ModelField1', 'value' => '1', 'title' => 'A Title')),
+			array('label' => array('for' => 'ModelField1')),
+			'Option A',
+			'/label',
+			array('input' => array('type' => 'radio', 'name' => 'data[Model][field]', 'id' => 'ModelField2', 'value' => '2', 'data-foo' => 'bar')),
+			array('label' => array('for' => 'ModelField2')),
+			'Option B',
+			'/label'
+		);
+		$this->assertTags($result, $expected);
 	}
 
 /**
@@ -7432,6 +7606,53 @@ class FormHelperTest extends CakeTestCase {
 	}
 
 /**
+ * testInputDate method
+ *
+ * Test various inputs with type date and different option attributes.
+ *
+ * @return void
+ */
+	public function testInputDateOptions() {
+		$this->Form->create('User');
+
+		$result = $this->Form->input('date',
+			array(
+				'label' => false,
+				'type' => 'day',
+				'class' => 'form-control'
+			)
+		);
+		$this->assertContains('class="form-control"', $result);
+
+		$result = $this->Form->input('date',
+			array(
+				'label' => false,
+				'type' => 'month',
+				'class' => 'form-control'
+			)
+		);
+		$this->assertContains('class="form-control"', $result);
+
+		$result = $this->Form->input('date',
+			array(
+				'label' => false,
+				'type' => 'year',
+				'class' => 'form-control'
+			)
+		);
+		$this->assertContains('class="form-control"', $result);
+
+		$result = $this->Form->input('date',
+			array(
+				'label' => false,
+				'type' => 'hour',
+				'class' => 'form-control'
+			)
+		);
+		$this->assertContains('class="form-control"', $result);
+	}
+
+/**
  * testInputDateMaxYear method
  *
  * Let's say we want to only allow users born from 2006 to 2008 to register
@@ -8643,6 +8864,7 @@ class FormHelperTest extends CakeTestCase {
 			'escape' => false,
 			'url' => array(
 				'action' => 'edit',
+				'0',
 				'myparam'
 			)
 		));
@@ -8650,7 +8872,7 @@ class FormHelperTest extends CakeTestCase {
 			'form' => array(
 				'id' => 'ContactAddForm',
 				'method' => 'post',
-				'action' => '/contacts/edit/myparam',
+				'action' => '/contacts/edit/0/myparam',
 				'accept-charset' => $encoding
 			),
 			'div' => array('style' => 'display:none;'),
@@ -8668,8 +8890,8 @@ class FormHelperTest extends CakeTestCase {
 	public function testCreateNoErrorsWithMockModel() {
 		$encoding = strtolower(Configure::read('App.encoding'));
 		$ContactMock = $this->getMockBuilder('Contact')
-				->disableOriginalConstructor()
-				->getMock();
+			->disableOriginalConstructor()
+			->getMock();
 		ClassRegistry::removeObject('Contact');
 		ClassRegistry::addObject('Contact', $ContactMock);
 		$result = $this->Form->create('Contact', array('type' => 'GET'));
@@ -9023,7 +9245,7 @@ class FormHelperTest extends CakeTestCase {
  * @return void
  */
 	public function testFormInputRequiredDetectionModelValidator() {
-		ClassRegistry::getObject('ContactTag')->validator()->add('iwillberequired', 'required', array('rule' => 'notEmpty'));
+		ClassRegistry::getObject('ContactTag')->validator()->add('iwillberequired', 'required', array('rule' => 'notBlank'));
 
 		$this->Form->create('ContactTag');
 		$result = $this->Form->input('ContactTag.iwillberequired');

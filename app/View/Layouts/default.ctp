@@ -127,7 +127,7 @@
 </section>
 
 <div id="flash">
-    <?php echo $this->Session->flash(); ?>
+    <?php echo $this->Flash->render(); ?>
 </div>
 
 <div class="container">

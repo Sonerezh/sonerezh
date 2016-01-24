@@ -25,6 +25,6 @@
     "url": "<?php echo $this->request->here(); ?>"
 },
 {
-    "flash": <?php echo json_encode($this->Session->flash()); ?>,
+    "flash": <?php echo json_encode($this->Flash->render()); ?>,
     "html": <?php echo json_encode($this->fetch('content')); ?>
 }]

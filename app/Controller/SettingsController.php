@@ -37,10 +37,10 @@ class SettingsController extends AppController {
                 $this->Setting->Rootpath->deleteAll(array('Rootpath.id' => $deleteRootpaths));
                 $this->request->data = $this->Setting->find('first');
                 $this->_saveRootpathsInSession($this->request->data['Rootpath']);
-                $this->Session->setFlash(__('Settings saved !'), 'flash_success');
+                $this->Flash->success(__('Settings saved !'));
 
             } else {
-                $this->Session->setFlash(__('Unable to save settings!'), 'flash_error');
+                $this->Flash->error(__('Unable to save settings!'));
             }
         }
 
@@ -128,7 +128,7 @@ class SettingsController extends AppController {
         $dir = new Folder(RESIZED_DIR);
         $dir->delete();
         $this->Song->updateAll(array('path' => null));
-        $this->Session->setFlash('<strong>Yeah! </strong>'.__('Cache cleared!'), 'flash_success');
+        $this->Flash->success('<strong>Yeah! </strong>'.__('Cache cleared!'));
         $this->redirect(array('controller' => 'settings', 'action' => 'index'));
     }
 
@@ -161,10 +161,10 @@ class SettingsController extends AppController {
                 $file->delete();
             }
 
-            $this->Session->setFlash(__('All entries have been deleted !'), 'flash_success');
+            $this->Flash->success(__('All entries have been deleted !'));
             return $this->redirect(array('action' => 'index'));
         } catch (Exception $e) {
-            $this->Session->setFlash(__('Unable to clean the database!'), 'flash_error');
+            $this->Flash->success(__('Unable to clean the database!'));
             return $this->redirect(array('action' => 'index'));
         }
     }

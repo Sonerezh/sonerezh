@@ -53,7 +53,8 @@ class AppController extends Controller {
             ),
             'authorize' => array('Controller'),
             'unauthorizedRedirect' => array('controller' => 'songs', 'action' => 'index')
-        )
+        ),
+        'Flash'
     );
 
     public function isAuthorized($user) {
@@ -71,7 +72,7 @@ class AppController extends Controller {
                 $this->redirect(array('controller' => 'installers', 'action' => 'index'));
             }
         } elseif ($this->request->params['controller'] == 'installers' && $this->__isInstalled()) {
-            $this->Session->setFlash(__('Sonerezh is already installed. Remove or rename app/Config/database.php to run the installation again.'), 'flash_info');
+            $this->Flash->info(__('Sonerezh is already installed. Remove or rename app/Config/database.php to run the installation again.'));
             $this->redirect(array('controller' => 'songs', 'action' => 'index'));
         }
 

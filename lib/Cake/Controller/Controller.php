@@ -189,7 +189,7 @@ class Controller extends Object implements CakeEventListener {
  * @var array
  * @link http://book.cakephp.org/2.0/en/controllers/components.html
  */
-	public $components = array('Session');
+	public $components = array('Session', 'Flash');
 
 /**
  * The name of the View class this controller sends output to.
@@ -514,12 +514,12 @@ class Controller extends Object implements CakeEventListener {
 			!$method->isPublic() ||
 			!in_array($method->name, $this->methods)
 		);
-		$prefixes = Router::prefixes();
+		$prefixes = array_map('strtolower', Router::prefixes());
 
 		if (!$privateAction && !empty($prefixes)) {
 			if (empty($request->params['prefix']) && strpos($request->params['action'], '_') > 0) {
 				list($prefix) = explode('_', $request->params['action']);
-				$privateAction = in_array($prefix, $prefixes);
+				$privateAction = in_array(strtolower($prefix), $prefixes);
 			}
 		}
 		return $privateAction;

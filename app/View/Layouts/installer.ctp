@@ -23,7 +23,7 @@
 
 <div class="container">
     <div id="flash">
-        <?php echo $this->Session->flash(); ?>
+        <?php echo $this->Flash->render(); ?>
     </div>
     <div class="row" id="content">
         <?php echo $this->fetch('content'); ?>

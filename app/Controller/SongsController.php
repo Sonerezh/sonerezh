@@ -141,7 +141,7 @@ class SongsController extends AppController {
             if ($settings) {
                 $paths = $settings['Rootpath'];
             } else {
-                $this->Session->setFlash(__('Please define a root path.'), 'flash_error');
+                $this->Flash->error(__('Please define a root path.'));
                 $this->redirect(array('controller' => 'settings', 'action' => 'index'));
             }
 
@@ -276,7 +276,7 @@ class SongsController extends AppController {
         }
 
         if (empty($songs)) {
-            $this->Session->setFlash('<strong>'.__('Oops!').'</strong> '.__('The database is empty...'), 'flash_info');
+            $this->Flash->info('<strong>'.__('Oops!').'</strong> '.__('The database is empty...'));
         }
 
         $this->set(compact('songs', 'playlists', 'latests'));
@@ -386,7 +386,7 @@ class SongsController extends AppController {
         }
 
         if (empty($parsed)) {
-            $this->Session->setFlash("<strong>".__('Oops!')."</strong> ".__('The database is empty...'), 'flash_info');
+            $this->Flash->info("<strong>".__('Oops!')."</strong> ".__('The database is empty...'));
         }
         $this->set(array('songs' => $parsed, 'playlists' => $playlists));
     }
@@ -429,7 +429,7 @@ class SongsController extends AppController {
         $songs = $this->SortComponent->sortByBand($songs);
 
         if (empty($songs)) {
-            $this->Session->setFlash("<strong>".__('Oops!')."</strong> ".__('The database is empty...'), 'flash_info');
+            $this->Flash->info("<strong>".__('Oops!')."</strong> ".__('The database is empty...'));
         }
 
         $this->set(compact('songs', 'playlists'));
@@ -515,7 +515,7 @@ class SongsController extends AppController {
             }
 
             if (empty($parsed)) {
-                $this->Session->setFlash("<strong>".__('Oops!')."</strong> ".__('No results.'), 'flash_error');
+                $this->Flash->error("<strong>".__('Oops!')."</strong> ".__('No results.'));
             }
             $this->set('songs', $parsed);
         }
