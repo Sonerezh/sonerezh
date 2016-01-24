@@ -157,15 +157,15 @@ msgstr ""
 msgid "Please define a root path."
 msgstr ""
 
-#: Controller/SongsController.php:279;389;432;518
+#: Controller/SongsController.php:290;400;443;529
 msgid "Oops!"
 msgstr ""
 
-#: Controller/SongsController.php:279;389;432
+#: Controller/SongsController.php:290;400;443
 msgid "The database is empty..."
 msgstr ""
 
-#: Controller/SongsController.php:518
+#: Controller/SongsController.php:529
 msgid "No results."
 msgstr ""
 
@@ -333,7 +333,6 @@ msgstr ""
 
 #: View/Elements/admin_navbar.ctp:13
 #: View/Settings/index.ctp:116
-#: View/Songs/import.ctp:32
 msgid "Database update"
 msgstr ""
 
@@ -702,9 +701,43 @@ msgstr ""
 msgid "All albums"
 msgstr ""
 
-#: View/Songs/import.ctp:35
-msgid "Sonerezh is currently updating the database. Please be patient, it may take a few minutes..."
+#: View/Songs/import.ctp:27
+msgid "Import successfully done"
 msgstr ""
+
+#: View/Songs/import.ctp:49
+msgid "Import currently running. Please do not leave the page."
+msgstr ""
+
+#: View/Songs/import.ctp:50
+msgid "Running..."
+msgstr ""
+
+#: View/Songs/import.ctp:57
+msgid "Update the music collection"
+msgstr ""
+
+#: View/Songs/import.ctp:62
+msgid "are ready to be imported"
+msgstr ""
+
+#: View/Songs/import.ctp:73
+msgid "Last import:"
+msgstr ""
+
+#: View/Songs/import.ctp:78
+msgid "Start Import"
+msgstr ""
+
+#: View/Songs/import.ctp:86
+msgid "All the songs have already been imported"
+msgstr ""
+
+#: View/Songs/import.ctp:62
+msgid " %s song "
+msgid_plural " %s songs "
+msgstr[0] ""
+msgstr[1] ""
 
 #: View/Songs/search.ctp:4
 msgid "Looking for"

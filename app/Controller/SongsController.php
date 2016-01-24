@@ -155,29 +155,40 @@ class SongsController extends AppController {
             $existingSongs = $this->Song->find('list', array(
                 'fields' => array('Song.id', 'Song.source_path')
             ));
-            $new = array_merge(array_diff($songs, $existingSongs));
-            $this->Session->write('song_list', $new);
 
+            $new = array_merge(array_diff($songs, $existingSongs));
+            $this->Session->write('import_list', $new);
             $this->set('newSongsTotal', count($new));
+
         } elseif ($this->request->is("post")) {
-            $songs = $this->Session->read('song_list');
+            $this->viewClass = 'Json';
+
+            $songs = $this->Session->read('import_list');
             $imported = array();
             $count = 0;
+
             foreach ($songs as $song) {
                 $imported[] = $song;
                 $this->_importSong($song);
+
                 if ($count >= 100) break;
                 $count++;
             }
+
             if ($count) {
                 $settings['Setting']['sync_token'] = time();
                 $this->Setting->save($settings);
             }
-            echo $settings['Setting']['sync_token'];
+
+            $sync_token = $settings['Setting']['sync_token'];
+            // end($imported) returns an absolute path
+            $last_import = end(explode('/', end($imported)));
+
             $diff = array_diff($songs, $imported);
-            $this->Session->write('song_list', $diff);
-            $this->layout = null;
-            $this->render(false);
+            $this->Session->write('import_list', $diff);
+
+            $this->set(compact('sync_token', 'last_import'));
+            $this->set('_serialize', array('sync_token', 'last_import'));
         }
     }
 
