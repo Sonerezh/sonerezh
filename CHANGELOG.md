@@ -4,6 +4,9 @@ Improvements:
 * #148: Upgrade CakePHP to 2.7
 * Upgrade Twitter Bootstrap to 3.3.6
 
+Bug / Security fixes:
+* PR #158: Typo fix (Thanks to MightyCreak)
+
 Changes with 1.0.0
 ------------------
 New features:
