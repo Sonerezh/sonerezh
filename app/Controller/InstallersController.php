@@ -77,7 +77,7 @@ class InstallersController extends AppController {
                     }
 
                 } else {
-                    $requirements[$driver] = array('label' => 'warning', 'message' => $driver . ' ' . __('is required if you wan to use Sonerezh with ') . $driver);
+                    $requirements[$driver] = array('label' => 'warning', 'message' => $driver . ' ' . __('is required if you want to use Sonerezh with ') . $driver);
                 }
             }
         }
