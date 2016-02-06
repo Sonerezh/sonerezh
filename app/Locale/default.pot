@@ -42,7 +42,7 @@ msgid "driver is installed."
 msgstr ""
 
 #: Controller/InstallersController.php:80
-msgid "is required if you wan to use Sonerezh with "
+msgid "is required if you want to use Sonerezh with "
 msgstr ""
 
 #: Controller/InstallersController.php:88;97
