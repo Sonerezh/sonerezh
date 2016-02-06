@@ -1,7 +1,7 @@
 <?php echo $this->start('script'); ?>
 <script type="text/javascript">
-    var newSongsTotal = <?php echo $newSongsTotal; ?>;
-    var newSongSaved = 0;
+    var files_count = <?php echo $files_count; ?>;
+    var files_imported = 0;
     var lastResponse = "";
     var noOutput = false;
     function ajaxImport() {
@@ -10,33 +10,41 @@
             if (xhr.readyState == 4) {
 
                 var sync_token = 0;
-                var last_import = '';
-                newSongSaved += 100;
+                files_imported += 100;
 
                 try {
-                    var json_res = JSON.parse(xhr.response);
-                    sync_token = json_res['sync_token'];
-                    last_import = json_res['last_import'];
+                    var res = JSON.parse(xhr.response);
+                    sync_token = res['sync_token'];
                 } catch (error) {
                     console.log('Unable to parse response: ' + error);
                 }
 
-                if (newSongSaved >= newSongsTotal) {
+                if (files_imported >= files_count) {
 
                     $('#import-panel').removeClass('panel-primary').addClass('panel-success');
                     $('#import-panel-header').text("<?php echo __('Import successfully done'); ?>");
                     $('#import-progress-bar').toggleClass('progress-bar-striped progress-bar-success').css('width', '100%').text('100%');
                     $('#import-panel-footer').remove();
 
-                    songsManager.sync(json_res['sync_token']);
+                    songsManager.sync(res['sync_token']);
 
                 } else {
 
-                    var percentage = Math.round(newSongSaved * 100 / newSongsTotal);
+                    var percentage = Math.round(files_imported * 100 / files_count);
                     $('#import-progress-bar').css('width', percentage + '%').text(percentage + '%');
                     $('#import-last-label').removeClass('hidden');
-                    $('#import-last').text(last_import);
+
+                    var fullpath_last_import = res['import_result'][res['import_result'].length - 1]['file']
+                    var splitted_lat_import = fullpath_last_import.split('/');
+                    $('#import-last').text(splitted_lat_import[splitted_lat_import.length - 1]);
                     ajaxImport();
+                }
+
+                for (var i = 0, len = res['import_result'].length; i < len; i++) {
+                    if (res['import_result'][i]['status'] == 'WARN') {
+                        $('#accordion-warn').removeClass('hidden');
+                        $('#warn-logs').append('[' + res['import_result'][i]['file'] + '] ' + res['import_result'][i]['message'] + '<br />');
+                    }
                 }
             }
         };
@@ -50,16 +58,17 @@
         $('#start-import-btn').addClass('disabled').text("<?php echo __('Running...'); ?>");
         ajaxImport();
     });
+
 </script>
 <?php echo $this->end(); ?>
 
 <div class="col-lg-12">
     <h3><?php echo __('Update the music collection'); ?></h3>
     <hr />
-    <?php if ($newSongsTotal > 0): ?>
+    <?php if ($files_count > 0): ?>
     <div class="panel panel-primary" id="import-panel">
         <div class="panel-heading" id="import-panel-header">
-            <?php echo __n(" %s song ", " %s songs ", $newSongsTotal, $newSongsTotal) . __('are ready to be imported'); ?>
+            <?php echo __('Found ' . __n("%s song ", "%s songs ", $files_count, $files_count) . '(' . $diff_count . ' already imported)'); ?>
         </div>
         <div class="panel-body">
             <div class="progress" style="margin-bottom: 0px;">
@@ -79,6 +88,20 @@
                 </button>
             </div>
             <div class="clearfix"></div>
+        </div>
+    </div>
+    <div class="panel-group hidden" id="accordion-warn" role="tablist" aria-multiselectable="true">
+        <div class="panel panel-warning">
+            <div class="panel-heading" role="tab" id="headingOne">
+                <h4 class="panel-title">
+                    <a class="no-ajax" role="button" data-toggle="collapse" data-parent="#accordion-warn" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                        <?php echo __('Warning logs'); ?>
+                    </a>
+                </h4>
+            </div>
+            <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                <p style="font-family: monospace;" id="warn-logs"></p>
+            </div>
         </div>
     </div>
     <?php else: ?>
