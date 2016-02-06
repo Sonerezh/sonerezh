@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Sonerezh 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2016-01-15 22:32+0100\n"
+"PO-Revision-Date: 2016-01-17 18:05+0100\n"
 "Last-Translator: Guillaume Leduc <hey@sonerezh.bzh>\n"
 "Language-Team:  <hey@sonerezh.bzh>\n"
 "Language: French\n"
@@ -17,7 +17,7 @@ msgstr ""
 "X-Loco-Target-Locale: zz_ZZ\n"
 "X-Generator: Poedit 1.5.4\n"
 
-#: Controller/AppController.php:74
+#: Controller/AppController.php:75
 msgid ""
 "Sonerezh is already installed. Remove or rename app/Config/database.php to "
 "run the installation again."
@@ -58,8 +58,8 @@ msgid "driver is installed."
 msgstr "pilote est installé."
 
 #: Controller/InstallersController.php:80
-msgid "is required if you wan to use Sonerezh with "
-msgstr "est requis si vous souhaitez utiliser Sonerezh avec"
+msgid "is required if you want to use Sonerezh with "
+msgstr "est requis si vous souhaitez utiliser Sonerezh avec "
 
 #: Controller/InstallersController.php:88;97
 msgid "is writable"
@@ -82,24 +82,28 @@ msgid "Unable to create the SQlite database file."
 msgstr "Impossible de créer le fichier SQlite."
 
 #: Controller/InstallersController.php:173
-msgid "is not a regular file."
-msgstr "n'est pas un fichier."
+msgid "This is not a regular file: "
+msgstr "Ceci n'est pas un fichier : "
 
-#: Controller/InstallersController.php:184;242
+#: Controller/InstallersController.php:186
 msgid "Could not connect to database"
 msgstr "Connexion à la base de données impossible"
 
-#: Controller/InstallersController.php:206;266
+#: Controller/InstallersController.php:208;282
 msgid "Passwords do not match."
 msgstr "Les mots de passe ne correspondent pas."
 
-#: Controller/InstallersController.php:213;273
+#: Controller/InstallersController.php:215;289
 msgid "Installation successful!"
 msgstr "Installation réussie !"
 
-#: Controller/InstallersController.php:215;275
+#: Controller/InstallersController.php:217;291
 msgid "Unable to save your data."
 msgstr "Impossible de sauvegarder vos données."
+
+#: Controller/InstallersController.php:258
+msgid "Could not connect to the database"
+msgstr "La connexion à la base de données à échouée"
 
 #: Controller/PlaylistMembershipsController.php:23;33
 msgid "You must specify a valid playlist"
@@ -118,32 +122,32 @@ msgid "Song successfully removed from playlist"
 msgstr "Piste supprimée de la liste de lecture"
 
 #: Controller/PlaylistsController.php:64
-msgid "Playlist successfully created!"
-msgstr "Liste de lecture créée avec succès !"
+msgid "Playlist created: "
+msgstr "Liste de lecture créé : "
 
-#: Controller/PlaylistsController.php:66
-msgid "Unable to create the playlist."
-msgstr "Impossible de créer la liste de lecture."
+#: Controller/PlaylistsController.php:68
+msgid "Unable to create the playlist: "
+msgstr "Impossible de créer la liste de lecture : "
 
-#: Controller/PlaylistsController.php:80;86
+#: Controller/PlaylistsController.php:84;90
 msgid "Invalid playlist ID"
 msgstr "Identifiant de liste de lecture invalide"
 
-#: Controller/PlaylistsController.php:93
-msgid "Playlist successfully renamed"
-msgstr "Liste de lecture renommée avec succès"
+#: Controller/PlaylistsController.php:97
+msgid "Playlist renamed: "
+msgstr "Liste de lecture renommée : "
 
-#: Controller/PlaylistsController.php:95
-msgid "Unable to rename this playlist"
-msgstr "Impossible de renommer cette liste de lecture"
+#: Controller/PlaylistsController.php:101
+msgid "Unable to rename the playlist: "
+msgstr "Impossible de renommer la liste de lecture : "
 
-#: Controller/PlaylistsController.php:117
-msgid "Playlist \""
-msgstr "Liste de lecture \""
+#: Controller/PlaylistsController.php:125
+msgid "Playlist deleted: "
+msgstr "Liste de lecture supprimée : "
 
-#: Controller/PlaylistsController.php:119
-msgid "Unable to remove the playlist"
-msgstr "Impossible de renommer la liste de lecture"
+#: Controller/PlaylistsController.php:129
+msgid "Unable to delete the playlist: "
+msgstr "Impossible de supprimer la liste de lecture : "
 
 #: Controller/SettingsController.php:40
 msgid "Settings saved !"
@@ -182,10 +186,10 @@ msgid "No results."
 msgstr "Pas de résultat."
 
 #: Controller/UsersController.php:52
-msgid "A new user has been created!"
-msgstr "Un nouvel utilisateur a été créé !"
+msgid "User created: "
+msgstr "Utilisateur créé : "
 
-#: Controller/UsersController.php:54
+#: Controller/UsersController.php:56
 msgid ""
 "Unable to create a user. Make sure its email is not already used and his "
 "password is at least 8 characters long."
@@ -193,68 +197,72 @@ msgstr ""
 "Impossible de créer l'utilisateur. Assurez-vous que cet email ne soit pas "
 "déjà utilisé et que son mot de passe fasse au moins 8 caractères."
 
-#: Controller/UsersController.php:68
+#: Controller/UsersController.php:70
 msgid "Invalid user"
 msgstr "Utilisateur invalide"
 
-#: Controller/UsersController.php:73;95
-msgid "User "
-msgstr "Utilisateur "
+#: Controller/UsersController.php:75
+msgid "User updated: "
+msgstr "Utilisateur mis à jour : "
 
-#: Controller/UsersController.php:75;118 Model/Setting.php:validation for
+#: Controller/UsersController.php:79;124 Model/Setting.php:validation for
 #: field enable_auto_conv;validation enable_mail_notification
 msgid "Something went wrong!"
 msgstr "Une erreur est survenue !"
 
-#: Controller/UsersController.php:114
+#: Controller/UsersController.php:99
+msgid "User deleted: "
+msgstr "Utilisateur supprimé : "
+
+#: Controller/UsersController.php:120
 msgid "Avatar has been successfully removed!"
 msgstr "Avatar supprimé avec succès !"
 
-#: Controller/UsersController.php:141
+#: Controller/UsersController.php:147
 msgid "Wrong credentials!"
 msgstr "Identifiants incorrects !"
 
-#: Controller/UsersController.php:166
+#: Controller/UsersController.php:172
 msgid "Unable to find your account"
 msgstr "Impossible retrouver votre compte"
 
-#: Controller/UsersController.php:190
+#: Controller/UsersController.php:196
 msgid "Email successfully sent."
 msgstr "Email envoyé avec succès."
 
-#: Controller/UsersController.php:192
+#: Controller/UsersController.php:198
 msgid "Unable to generate a token."
 msgstr "Impossible de générer un jeton."
 
-#: Controller/UsersController.php:204
+#: Controller/UsersController.php:210
 msgid "You need to provide a token."
 msgstr "Vous devez fournir un jeton."
 
-#: Controller/UsersController.php:212
+#: Controller/UsersController.php:218
 msgid "Unable to decode your token."
 msgstr "Impossible de décoder votre jeton."
 
-#: Controller/UsersController.php:219
+#: Controller/UsersController.php:225
 msgid "Unable to read your token."
 msgstr "Impossible de lire vote jeton."
 
-#: Controller/UsersController.php:229
+#: Controller/UsersController.php:235
 msgid "The token has expired."
 msgstr "Le jeton a expiré."
 
-#: Controller/UsersController.php:240
+#: Controller/UsersController.php:246
 msgid "Unable to find your account."
 msgstr "Impossible de retrouver votre compte."
 
-#: Controller/UsersController.php:243
+#: Controller/UsersController.php:249
 msgid "Wrong token."
 msgstr "Jeton erroné."
 
-#: Controller/UsersController.php:254
+#: Controller/UsersController.php:260
 msgid "Your password has been updated."
 msgstr "Votre mot de passe a été mis à jour."
 
-#: Controller/UsersController.php:257
+#: Controller/UsersController.php:263
 msgid "Unable to update your password."
 msgstr "Impossible de mettre à jour votre mot de passe."
 
@@ -911,7 +919,7 @@ msgid "Password must be at least 8 characters long."
 msgstr "Le mot de passe doit contenir au moins 8 caractères."
 
 #: Model/User.php:validation for field password
-msgid "notEmpty"
+msgid "notBlank"
 msgstr ""
 
 #: Model/User.php:validation for field confirm_password
@@ -941,6 +949,21 @@ msgstr "Une erreur est survenue lors de l'envoi."
 #: Model/User.php:validation for field avatar
 msgid "Your avatar must be in a correct format (JPEG, PNG, GIF)."
 msgstr "Votre avatar doit être au format JPEG, PNG ou GIF."
+
+#~ msgid "Playlist successfully created!"
+#~ msgstr "Liste de lecture créée avec succès !"
+
+#~ msgid "Playlist \""
+#~ msgstr "Liste de lecture \""
+
+#~ msgid "Unable to remove the playlist"
+#~ msgstr "Impossible de renommer la liste de lecture"
+
+#~ msgid "A new user has been created!"
+#~ msgstr "Un nouvel utilisateur a été créé !"
+
+#~ msgid "User "
+#~ msgstr "Utilisateur "
 
 #~ msgid "Invalid root path"
 #~ msgstr "Dossier invalide"

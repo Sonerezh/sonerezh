@@ -198,7 +198,7 @@ class HashTest extends CakeTestCase {
 		$result = Hash::get($data, '1');
 		$this->assertEquals('def', $result);
 
-		$data = self::articleData();
+		$data = static::articleData();
 
 		$result = Hash::get(array(), '1.Article.title');
 		$this->assertNull($result);
@@ -240,6 +240,19 @@ class HashTest extends CakeTestCase {
 	}
 
 /**
+ * Test testGetNullPath()
+ *
+ * @return void
+ */
+	public function testGetNullPath() {
+		$result = Hash::get(array('one' => 'two'), null, '-');
+		$this->assertEquals('-', $result);
+
+		$result = Hash::get(array('one' => 'two'), '', '-');
+		$this->assertEquals('-', $result);
+	}
+
+/**
  * Test dimensions.
  *
  * @return void
@@ -275,42 +288,37 @@ class HashTest extends CakeTestCase {
  * @return void
  */
 	public function testMaxDimensions() {
+		$data = array();
+		$result = Hash::maxDimensions($data);
+		$this->assertEquals(0, $result);
+
+		$data = array('a', 'b');
+		$result = Hash::maxDimensions($data);
+		$this->assertEquals(1, $result);
+
 		$data = array('1' => '1.1', '2', '3' => array('3.1' => '3.1.1'));
 		$result = Hash::maxDimensions($data);
 		$this->assertEquals($result, 2);
 
-		$data = array('1' => array('1.1' => '1.1.1'), '2', '3' => array('3.1' => array('3.1.1' => '3.1.1.1')));
+		$data = array(
+			'1' => array('1.1' => '1.1.1'),
+			'2',
+			'3' => array('3.1' => array('3.1.1' => '3.1.1.1'))
+		);
 		$result = Hash::maxDimensions($data);
 		$this->assertEquals($result, 3);
 
 		$data = array(
-			'1' => array('1.1' => '1.1.1'),
-			array('2' => array('2.1' => array('2.1.1' => '2.1.1.1'))),
-			'3' => array('3.1' => array('3.1.1' => '3.1.1.1'))
-		);
-		$result = Hash::maxDimensions($data);
-		$this->assertEquals($result, 4);
-
-		$data = array(
-			'1' => array('1.1' => '1.1.1'),
-			array('2' => array('2.1' => array('2.1.1' => array('2.1.1.1')))),
-			'3' => array('3.1' => array('3.1.1' => '3.1.1.1'))
-		);
-		$result = Hash::maxDimensions($data);
-		$this->assertEquals($result, 5);
-
-		$data = array(
-			'1' => array('1.1' => '1.1.1'),
-			array('2' => array('2.1' => array('2.1.1' => array('2.1.1.1' => '2.1.1.1.1')))),
-			'3' => array('3.1' => array('3.1.1' => '3.1.1.1'))
-		);
-		$result = Hash::maxDimensions($data);
-		$this->assertEquals($result, 5);
-
-		$data = array(
-			'1' => array('1.1' => '1.1.1'),
-			array('2' => array('2.1' => array('2.1.1' => array('2.1.1.1' => '2.1.1.1.1')))),
-			'3' => array('3.1' => array('3.1.1' => '3.1.1.1'))
+			'1' => array(
+				'1.1' => '1.1.1',
+				'1.2' => array(
+					'1.2.1' => array(
+						'1.2.1.1',
+						array('1.2.2.1')
+					)
+				)
+			),
+			'2' => array('2.1' => '2.1.1')
 		);
 		$result = Hash::maxDimensions($data);
 		$this->assertEquals($result, 5);
@@ -700,7 +708,7 @@ class HashTest extends CakeTestCase {
  * @return void
  */
 	public function testExtractBasic() {
-		$data = self::articleData();
+		$data = static::articleData();
 
 		$result = Hash::extract($data, '');
 		$this->assertEquals($data, $result);
@@ -721,7 +729,7 @@ class HashTest extends CakeTestCase {
  * @return void
  */
 	public function testExtractNumericKey() {
-		$data = self::articleData();
+		$data = static::articleData();
 		$result = Hash::extract($data, '{n}.Article.title');
 		$expected = array(
 			'First Article', 'Second Article',
@@ -800,7 +808,7 @@ class HashTest extends CakeTestCase {
  * @return void
  */
 	public function testExtractStringKey() {
-		$data = self::articleData();
+		$data = static::articleData();
 		$result = Hash::extract($data, '{n}.{s}.user');
 		$expected = array(
 			'mariano',
@@ -816,12 +824,38 @@ class HashTest extends CakeTestCase {
 	}
 
 /**
+ * Test wildcard matcher
+ *
+ * @return void
+ */
+	public function testExtractWildcard() {
+		$data = array(
+			'02000009C5560001' => array('name' => 'Mr. Alphanumeric'),
+			'2300000918020101' => array('name' => 'Mr. Numeric'),
+			'390000096AB30001' => array('name' => 'Mrs. Alphanumeric'),
+			'stuff' => array('name' => 'Ms. Word'),
+			123 => array('name' => 'Mr. Number'),
+			true => array('name' => 'Ms. Bool'),
+		);
+		$result = Hash::extract($data, '{*}.name');
+		$expected = array(
+			'Mr. Alphanumeric',
+			'Mr. Numeric',
+			'Mrs. Alphanumeric',
+			'Ms. Word',
+			'Mr. Number',
+			'Ms. Bool',
+		);
+		$this->assertEquals($expected, $result);
+	}
+
+/**
  * Test the attribute presense selector.
  *
  * @return void
  */
 	public function testExtractAttributePresence() {
-		$data = self::articleData();
+		$data = static::articleData();
 
 		$result = Hash::extract($data, '{n}.Article[published]');
 		$expected = array($data[1]['Article']);
@@ -838,7 +872,7 @@ class HashTest extends CakeTestCase {
  * @return void
  */
 	public function testExtractAttributeEquality() {
-		$data = self::articleData();
+		$data = static::articleData();
 
 		$result = Hash::extract($data, '{n}.Article[id=3]');
 		$expected = array($data[2]['Article']);
@@ -923,7 +957,7 @@ class HashTest extends CakeTestCase {
  * @return void
  */
 	public function testExtractAttributeComparison() {
-		$data = self::articleData();
+		$data = static::articleData();
 
 		$result = Hash::extract($data, '{n}.Comment.{n}[user_id > 2]');
 		$expected = array($data[0]['Comment'][1]);
@@ -952,7 +986,7 @@ class HashTest extends CakeTestCase {
  * @return void
  */
 	public function testExtractAttributeMultiple() {
-		$data = self::articleData();
+		$data = static::articleData();
 
 		$result = Hash::extract($data, '{n}.Comment.{n}[user_id > 2][id=1]');
 		$this->assertEmpty($result);
@@ -969,7 +1003,7 @@ class HashTest extends CakeTestCase {
  * @return void
  */
 	public function testExtractAttributePattern() {
-		$data = self::articleData();
+		$data = static::articleData();
 
 		$result = Hash::extract($data, '{n}.Article[title=/^First/]');
 		$expected = array($data[0]['Article']);
@@ -1392,7 +1426,7 @@ class HashTest extends CakeTestCase {
  * @return void
  */
 	public function testInsertMulti() {
-		$data = self::articleData();
+		$data = static::articleData();
 
 		$result = Hash::insert($data, '{n}.Article.insert', 'value');
 		$this->assertEquals('value', $result[0]['Article']['insert']);
@@ -1518,7 +1552,7 @@ class HashTest extends CakeTestCase {
  * @return void
  */
 	public function testRemoveMulti() {
-		$data = self::articleData();
+		$data = static::articleData();
 
 		$result = Hash::remove($data, '{n}.Article.title');
 		$this->assertFalse(isset($result[0]['Article']['title']));
@@ -1585,7 +1619,7 @@ class HashTest extends CakeTestCase {
 		$result = Hash::combine(array(), '{n}.User.id', '{n}.User.Data');
 		$this->assertTrue(empty($result));
 
-		$a = self::userData();
+		$a = static::userData();
 
 		$result = Hash::combine($a, '{n}.User.id');
 		$expected = array(2 => null, 14 => null, 25 => null);
@@ -1644,7 +1678,7 @@ class HashTest extends CakeTestCase {
  * @return void
  */
 	public function testCombineWithGroupPath() {
-		$a = self::userData();
+		$a = static::userData();
 
 		$result = Hash::combine($a, '{n}.User.id', '{n}.User.Data', '{n}.User.group_id');
 		$expected = array(
@@ -1701,7 +1735,7 @@ class HashTest extends CakeTestCase {
  * @return void
  */
 	public function testCombineWithFormatting() {
-		$a = self::userData();
+		$a = static::userData();
 
 		$result = Hash::combine(
 			$a,
@@ -1767,7 +1801,7 @@ class HashTest extends CakeTestCase {
  * @return void
  */
 	public function testFormat() {
-		$data = self::userData();
+		$data = static::userData();
 
 		$result = Hash::format(
 			$data,
@@ -1827,7 +1861,7 @@ class HashTest extends CakeTestCase {
  * @return void
  */
 	public function testMap() {
-		$data = self::articleData();
+		$data = static::articleData();
 
 		$result = Hash::map($data, '{n}.Article.id', array($this, 'mapCallback'));
 		$expected = array(2, 4, 6, 8, 10);
@@ -1840,7 +1874,7 @@ class HashTest extends CakeTestCase {
  * @return void
  */
 	public function testApply() {
-		$data = self::articleData();
+		$data = static::articleData();
 
 		$result = Hash::apply($data, '{n}.Article.id', 'array_sum');
 		$this->assertEquals(15, $result);
@@ -1852,7 +1886,7 @@ class HashTest extends CakeTestCase {
  * @return void
  */
 	public function testReduce() {
-		$data = self::articleData();
+		$data = static::articleData();
 
 		$result = Hash::reduce($data, '{n}.Article.id', array($this, 'reduceCallback'));
 		$this->assertEquals(15, $result);

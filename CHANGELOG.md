@@ -1,3 +1,9 @@
+Changes with 1.1.0
+------------------
+Improvements:
+* #148: Upgrade CakePHP to 2.7
+* Upgrade Twitter Bootstrap to 3.3.6
+
 Changes with 1.0.0
 ------------------
 New features:

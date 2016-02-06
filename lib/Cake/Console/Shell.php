@@ -500,6 +500,19 @@ class Shell extends Object {
 	}
 
 /**
+ * Safely access the values in $this->params.
+ *
+ * @param string $name The name of the parameter to get.
+ * @return string|bool|null Value. Will return null if it doesn't exist.
+ */
+	public function param($name) {
+		if (!isset($this->params[$name])) {
+			return null;
+		}
+		return $this->params[$name];
+	}
+
+/**
  * Prompts the user for input, and returns it.
  *
  * @param string $prompt Prompt text.
@@ -583,11 +596,11 @@ class Shell extends Object {
  * @param string $text Text the text to format.
  * @param string|int|array $options Array of options to use, or an integer to wrap the text to.
  * @return string Wrapped / indented text
- * @see String::wrap()
+ * @see CakeText::wrap()
  * @link http://book.cakephp.org/2.0/en/console-and-shells.html#Shell::wrapText
  */
 	public function wrapText($text, $options = array()) {
-		return String::wrap($text, $options);
+		return CakeText::wrap($text, $options);
 	}
 
 /**

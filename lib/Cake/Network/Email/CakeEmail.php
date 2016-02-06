@@ -17,7 +17,7 @@
 App::uses('Multibyte', 'I18n');
 App::uses('AbstractTransport', 'Network/Email');
 App::uses('File', 'Utility');
-App::uses('String', 'Utility');
+App::uses('CakeText', 'Utility');
 App::uses('View', 'View');
 
 /**
@@ -337,6 +337,13 @@ class CakeEmail {
 	protected $_configClass = 'EmailConfig';
 
 /**
+ * An instance of the EmailConfig class can be set here
+ *
+ * @var string
+ */
+	protected $_configInstance;
+
+/**
  * Constructor
  *
  * @param array|string $config Array of configs, or string to load configs from email.php
@@ -353,6 +360,11 @@ class CakeEmail {
 
 		if ($config) {
 			$this->config($config);
+		} elseif (config('email') && class_exists($this->_configClass)) {
+			$this->_configInstance = new $this->_configClass();
+			if (isset($this->_configInstance->default)) {
+				$this->config('default');
+			}
 		}
 		if (empty($this->headerCharset)) {
 			$this->headerCharset = $this->charset;
@@ -769,14 +781,14 @@ class CakeEmail {
 
 		$headers += $this->_headers;
 		if (!isset($headers['X-Mailer'])) {
-			$headers['X-Mailer'] = self::EMAIL_CLIENT;
+			$headers['X-Mailer'] = static::EMAIL_CLIENT;
 		}
 		if (!isset($headers['Date'])) {
 			$headers['Date'] = date(DATE_RFC2822);
 		}
 		if ($this->_messageId !== false) {
 			if ($this->_messageId === true) {
-				$headers['Message-ID'] = '<' . str_replace('-', '', String::UUID()) . '@' . $this->_domain . '>';
+				$headers['Message-ID'] = '<' . str_replace('-', '', CakeText::UUID()) . '@' . $this->_domain . '>';
 			} else {
 				$headers['Message-ID'] = $this->_messageId;
 			}
@@ -1101,9 +1113,9 @@ class CakeEmail {
  */
 	public function message($type = null) {
 		switch ($type) {
-			case self::MESSAGE_HTML:
+			case static::MESSAGE_HTML:
 				return $this->_htmlMessage;
-			case self::MESSAGE_TEXT:
+			case static::MESSAGE_TEXT:
 				return $this->_textMessage;
 		}
 		return $this->_message;
@@ -1223,14 +1235,16 @@ class CakeEmail {
  */
 	protected function _applyConfig($config) {
 		if (is_string($config)) {
-			if (!class_exists($this->_configClass) && !config('email')) {
-				throw new ConfigureException(__d('cake_dev', '%s not found.', APP . 'Config' . DS . 'email.php'));
+			if (!$this->_configInstance) {
+				if (!class_exists($this->_configClass) && !config('email')) {
+					throw new ConfigureException(__d('cake_dev', '%s not found.', APP . 'Config' . DS . 'email.php'));
+				}
+				$this->_configInstance = new $this->_configClass();
 			}
-			$configs = new $this->_configClass();
-			if (!isset($configs->{$config})) {
+			if (!isset($this->_configInstance->{$config})) {
 				throw new ConfigureException(__d('cake_dev', 'Unknown email configuration "%s".', $config));
 			}
-			$config = $configs->{$config};
+			$config = $this->_configInstance->{$config};
 		}
 		$this->_config = $config + $this->_config;
 		if (!empty($config['charset'])) {
@@ -1301,7 +1315,7 @@ class CakeEmail {
 		$this->headerCharset = null;
 		$this->_attachments = array();
 		$this->_config = array();
-		$this->_emailPattern = self::EMAIL_PATTERN;
+		$this->_emailPattern = static::EMAIL_PATTERN;
 		return $this;
 	}
 
@@ -1421,7 +1435,7 @@ class CakeEmail {
 				$tmpLine .= $char;
 				$tmpLineLength++;
 				if ($tmpLineLength === $wrapLength) {
-					$nextChar = $line[$i + 1];
+					$nextChar = isset($line[$i + 1]) ? $line[$i + 1] : '';
 					if ($nextChar === ' ' || $nextChar === '<') {
 						$formatted[] = trim($tmpLine);
 						$tmpLine = '';

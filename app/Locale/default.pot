@@ -13,7 +13,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: Controller/AppController.php:74
+#: Controller/AppController.php:75
 msgid "Sonerezh is already installed. Remove or rename app/Config/database.php to run the installation again."
 msgstr ""
 
@@ -42,7 +42,7 @@ msgid "driver is installed."
 msgstr ""
 
 #: Controller/InstallersController.php:80
-msgid "is required if you wan to use Sonerezh with "
+msgid "is required if you want to use Sonerezh with "
 msgstr ""
 
 #: Controller/InstallersController.php:88;97
@@ -66,23 +66,27 @@ msgid "Unable to create the SQlite database file."
 msgstr ""
 
 #: Controller/InstallersController.php:173
-msgid "is not a regular file."
+msgid "This is not a regular file: "
 msgstr ""
 
-#: Controller/InstallersController.php:184;242
+#: Controller/InstallersController.php:186
 msgid "Could not connect to database"
 msgstr ""
 
-#: Controller/InstallersController.php:206;266
+#: Controller/InstallersController.php:208;282
 msgid "Passwords do not match."
 msgstr ""
 
-#: Controller/InstallersController.php:213;273
+#: Controller/InstallersController.php:215;289
 msgid "Installation successful!"
 msgstr ""
 
-#: Controller/InstallersController.php:215;275
+#: Controller/InstallersController.php:217;291
 msgid "Unable to save your data."
+msgstr ""
+
+#: Controller/InstallersController.php:258
+msgid "Could not connect to the database"
 msgstr ""
 
 #: Controller/PlaylistMembershipsController.php:23;33
@@ -102,31 +106,31 @@ msgid "Song successfully removed from playlist"
 msgstr ""
 
 #: Controller/PlaylistsController.php:64
-msgid "Playlist successfully created!"
+msgid "Playlist created: "
 msgstr ""
 
-#: Controller/PlaylistsController.php:66
-msgid "Unable to create the playlist."
+#: Controller/PlaylistsController.php:68
+msgid "Unable to create the playlist: "
 msgstr ""
 
-#: Controller/PlaylistsController.php:80;86
+#: Controller/PlaylistsController.php:84;90
 msgid "Invalid playlist ID"
 msgstr ""
 
-#: Controller/PlaylistsController.php:93
-msgid "Playlist successfully renamed"
+#: Controller/PlaylistsController.php:97
+msgid "Playlist renamed: "
 msgstr ""
 
-#: Controller/PlaylistsController.php:95
-msgid "Unable to rename this playlist"
+#: Controller/PlaylistsController.php:101
+msgid "Unable to rename the playlist: "
 msgstr ""
 
-#: Controller/PlaylistsController.php:117
-msgid "Playlist \""
+#: Controller/PlaylistsController.php:125
+msgid "Playlist deleted: "
 msgstr ""
 
-#: Controller/PlaylistsController.php:119
-msgid "Unable to remove the playlist"
+#: Controller/PlaylistsController.php:129
+msgid "Unable to delete the playlist: "
 msgstr ""
 
 #: Controller/SettingsController.php:40
@@ -166,75 +170,79 @@ msgid "No results."
 msgstr ""
 
 #: Controller/UsersController.php:52
-msgid "A new user has been created!"
+msgid "User created: "
 msgstr ""
 
-#: Controller/UsersController.php:54
+#: Controller/UsersController.php:56
 msgid "Unable to create a user. Make sure its email is not already used and his password is at least 8 characters long."
 msgstr ""
 
-#: Controller/UsersController.php:68
+#: Controller/UsersController.php:70
 msgid "Invalid user"
 msgstr ""
 
-#: Controller/UsersController.php:73;95
-msgid "User "
+#: Controller/UsersController.php:75
+msgid "User updated: "
 msgstr ""
 
-#: Controller/UsersController.php:75;118
+#: Controller/UsersController.php:79;124
 #: Model/Setting.php:validation for field enable_auto_conv;validation for field enable_mail_notification
 msgid "Something went wrong!"
 msgstr ""
 
-#: Controller/UsersController.php:114
+#: Controller/UsersController.php:99
+msgid "User deleted: "
+msgstr ""
+
+#: Controller/UsersController.php:120
 msgid "Avatar has been successfully removed!"
 msgstr ""
 
-#: Controller/UsersController.php:141
+#: Controller/UsersController.php:147
 msgid "Wrong credentials!"
 msgstr ""
 
-#: Controller/UsersController.php:166
+#: Controller/UsersController.php:172
 msgid "Unable to find your account"
 msgstr ""
 
-#: Controller/UsersController.php:190
+#: Controller/UsersController.php:196
 msgid "Email successfully sent."
 msgstr ""
 
-#: Controller/UsersController.php:192
+#: Controller/UsersController.php:198
 msgid "Unable to generate a token."
 msgstr ""
 
-#: Controller/UsersController.php:204
+#: Controller/UsersController.php:210
 msgid "You need to provide a token."
 msgstr ""
 
-#: Controller/UsersController.php:212
+#: Controller/UsersController.php:218
 msgid "Unable to decode your token."
 msgstr ""
 
-#: Controller/UsersController.php:219
+#: Controller/UsersController.php:225
 msgid "Unable to read your token."
 msgstr ""
 
-#: Controller/UsersController.php:229
+#: Controller/UsersController.php:235
 msgid "The token has expired."
 msgstr ""
 
-#: Controller/UsersController.php:240
+#: Controller/UsersController.php:246
 msgid "Unable to find your account."
 msgstr ""
 
-#: Controller/UsersController.php:243
+#: Controller/UsersController.php:249
 msgid "Wrong token."
 msgstr ""
 
-#: Controller/UsersController.php:254
+#: Controller/UsersController.php:260
 msgid "Your password has been updated."
 msgstr ""
 
-#: Controller/UsersController.php:257
+#: Controller/UsersController.php:263
 msgid "Unable to update your password."
 msgstr ""
 
@@ -882,7 +890,7 @@ msgid "Password must be at least 8 characters long."
 msgstr ""
 
 #: Model/User.php:validation for field password
-msgid "notEmpty"
+msgid "notBlank"
 msgstr ""
 
 #: Model/User.php:validation for field confirm_password

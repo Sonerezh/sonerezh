@@ -113,7 +113,7 @@ nav .search .search-input{
 }
 
 .navbar-fixed-top .navbar-collapse {
-    max-height: unset;
+    max-height: none;
 }
 
 /***

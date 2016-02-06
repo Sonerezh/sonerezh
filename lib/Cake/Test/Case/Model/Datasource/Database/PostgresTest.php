@@ -318,8 +318,8 @@ class PostgresTest extends CakeTestCase {
 		$this->assertEquals("0", $this->Dbo->value('0', 'integer'));
 		$this->assertEquals('NULL', $this->Dbo->value('', 'integer'));
 		$this->assertEquals('NULL', $this->Dbo->value('', 'float'));
-		$this->assertEquals("NULL", $this->Dbo->value('', 'integer', false));
-		$this->assertEquals("NULL", $this->Dbo->value('', 'float', false));
+		$this->assertEquals('""', $this->Dbo->value('', 'integer', false));
+		$this->assertEquals('""', $this->Dbo->value('', 'float', false));
 		$this->assertEquals("'0.0'", $this->Dbo->value('0.0', 'float'));
 
 		$this->assertEquals("'TRUE'", $this->Dbo->value('t', 'boolean'));
@@ -490,6 +490,10 @@ class PostgresTest extends CakeTestCase {
 		$this->assertSame(' WHERE "name" ~* \'[a-z_]+\'', $this->Dbo->conditions(array('name ~*' => '[a-z_]+')));
 		$this->assertSame(' WHERE "name" !~ \'[a-z_]+\'', $this->Dbo->conditions(array('name !~' => '[a-z_]+')));
 		$this->assertSame(' WHERE "name" !~* \'[a-z_]+\'', $this->Dbo->conditions(array('name !~*' => '[a-z_]+')));
+		$this->assertSame(
+			' WHERE EXTRACT( \'YEAR\' FROM "User"."birthday" ) = 2015',
+			$this->Dbo->conditions(array('EXTRACT( \'YEAR\' FROM User.birthday )' => 2015))
+		);
 	}
 
 /**
@@ -729,6 +733,42 @@ class PostgresTest extends CakeTestCase {
 		$query = $this->Dbo->alterSchema($New->compare($Old));
 		$result = $this->Dbo->query($query);
 		$this->Dbo->query($this->Dbo->dropSchema($Old));
+	}
+
+/**
+ * Test the alterSchema changing text to integer
+ *
+ * @return void
+ */
+	public function testAlterSchemaTextToIntegerField() {
+		$default = array(
+			'connection' => 'test',
+			'name' => 'TextField',
+			'text_fields' => array(
+				'id' => array('type' => 'integer', 'key' => 'primary'),
+				'name' => array('type' => 'string', 'length' => 50),
+				'active' => array('type' => 'text', 'null' => false),
+			)
+		);
+		$Old = new CakeSchema($default);
+		$result = $this->Dbo->query($this->Dbo->createSchema($Old));
+		$this->assertTrue($result);
+
+		$modified = $default;
+		$modified['text_fields']['active'] = array('type' => 'integer', 'null' => true);
+
+		$New = new CakeSchema($modified);
+		$this->Dbo->query($this->Dbo->alterSchema($New->compare($Old)));
+		$result = $this->Dbo->describe('text_fields');
+
+		$this->Dbo->query($this->Dbo->dropSchema($Old));
+		$expected = array(
+			'type' => 'integer',
+			'null' => true,
+			'default' => null,
+			'length' => null,
+		);
+		$this->assertEquals($expected, $result['active']);
 	}
 
 /**

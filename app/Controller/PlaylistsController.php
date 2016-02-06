@@ -61,9 +61,13 @@ class PlaylistsController extends AppController {
             $this->Playlist->create();
 
             if ($this->Playlist->save($this->request->data)) {
-                $this->Session->setFlash(__('Playlist successfully created!'), 'flash_success');
+                $this->Flash->success(__('Playlist created: '), array(
+                    'params' => array($this->request->data['Playlist']['title'])
+                ));
             } else {
-                $this->Session->setFlash(__('Unable to create the playlist.'), 'flash_error');
+                $this->Flash->error(__('Unable to create the playlist: '), array(
+                    'params' => array($this->request->data['Playlist']['title'])
+                ));
             }
 
             $this->redirect(array('action' => 'index'));
@@ -90,9 +94,13 @@ class PlaylistsController extends AppController {
             $this->Playlist->id = $id;
 
             if ($this->Playlist->save($this->request->data)) {
-                $this->Session->setFlash(__('Playlist successfully renamed'), 'flash_success');
+                $this->Flash->success(__('Playlist renamed: '), array(
+                    'params' => array($this->request->data['Playlist']['title'])
+                ));
             } else {
-                $this->Session->setFlash(__('Unable to rename this playlist'), 'flash_error');
+                $this->Flash->error(__('Unable to rename the playlist: '), array(
+                    'params' => array($this->request->data['Playlist']['title'])
+                ));
             }
 
             $this->redirect(array('controller' => 'playlists', 'action' => 'index'));
@@ -114,9 +122,13 @@ class PlaylistsController extends AppController {
         $playlist = $this->Playlist->read(null, $id);
 
         if ($this->Playlist->delete($id)) {
-            $this->Session->setFlash(__('Playlist "'.$playlist['Playlist']['title'].'" successfully deleted.'), 'flash_success');
+            $this->Flash->success(__('Playlist deleted: '), array(
+                'params' => array($playlist['Playlist']['title'])
+            ));
         } else {
-            $this->Session->setFlash(__('Unable to remove the playlist').' '.$playlist['Playlist']['title'], 'flash_error');
+            $this->Flash->error(__('Unable to delete the playlist: '), array(
+                'params' => array($playlist['Playlist']['title'])
+            ));
         }
         return $this->redirect(array('action' => 'index'));
     }
