@@ -7,7 +7,7 @@
     </tr>
     <tr width="630">
         <td style="padding-top: 25px;">
-            <?php echo __('Hi, you receive this email because you asked for reset your password on Sonerezh.'); ?>
+            <?php echo __('Hi, you receive this email because you\'ve requested a password reset on Sonerezh.'); ?>
             <?php echo __('Please follow this ').$this->Html->link(__('link'), array(
                     'controller' => 'users',
                     'action' => 'resetPassword',
