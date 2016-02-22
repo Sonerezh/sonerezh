@@ -5,7 +5,7 @@ Improvements:
 * Upgrade Twitter Bootstrap to 3.3.6
 
 Bug / Security fixes:
-* PR #158: Typo fix (Thanks to MightyCreak)
+* PRs #158 #162: Typo fix (Thanks to MightyCreak and nodiscc)
 
 Changes with 1.0.0
 ------------------
