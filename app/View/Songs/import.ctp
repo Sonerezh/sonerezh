@@ -1,6 +1,6 @@
 <?php echo $this->start('script'); ?>
 <script type="text/javascript">
-    var files_count = <?php echo $files_count; ?>;
+    var files_count = <?php echo $to_import_count; ?>;
     var files_imported = 0;
     var lastResponse = "";
     var noOutput = false;
@@ -65,10 +65,10 @@
 <div class="col-lg-12">
     <h3><?php echo __('Update the music collection'); ?></h3>
     <hr />
-    <?php if ($files_count > 0): ?>
+    <?php if ($to_import_count > 0): ?>
     <div class="panel panel-primary" id="import-panel">
         <div class="panel-heading" id="import-panel-header">
-            <?php echo __('Found ' . __n("%s song ", "%s songs ", $files_count, $files_count) . '(' . $diff_count . ' already imported)'); ?>
+            <?php echo __n("%s song detected ", "%s songs detected ", $to_import_count, $to_import_count) . '(' . $diff_count . __(' already imported)'); ?>
         </div>
         <div class="panel-body">
             <div class="progress" style="margin-bottom: 0px;">

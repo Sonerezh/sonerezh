@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Sonerezh 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2016-01-24 20:06+0100\n"
+"PO-Revision-Date: 2016-02-23 21:25+0100\n"
 "Last-Translator: Guillaume Leduc <hey@sonerezh.bzh>\n"
 "Language-Team:  <hey@sonerezh.bzh>\n"
 "Language: French\n"
@@ -169,19 +169,25 @@ msgstr "Toutes les entrées ont été supprimées !"
 msgid "Unable to clean the database!"
 msgstr "Impossible de nettoyer la base de donnée !"
 
-#: Controller/SongsController.php:144
+#: Controller/SongsController.php:36
 msgid "Please define a root path."
 msgstr "Veuillez renseigner l'emplacement de la librairie."
 
-#: Controller/SongsController.php:290;400;443;529
+#: Controller/SongsController.php:74
+msgid "Unable to save the song metadata to the database"
+msgstr ""
+"Impossible de sauvegarder les métadonnées de la chanson dans la base de "
+"données"
+
+#: Controller/SongsController.php:198;308;351;437
 msgid "Oops!"
 msgstr "Oups !"
 
-#: Controller/SongsController.php:290;400;443
+#: Controller/SongsController.php:198;308;351
 msgid "The database is empty..."
 msgstr "La base de données est vide..."
 
-#: Controller/SongsController.php:529
+#: Controller/SongsController.php:437
 msgid "No results."
 msgstr "Pas de résultat."
 
@@ -394,7 +400,7 @@ msgstr "Réinitialisez votre mot de passe"
 
 #: View/Emails/html/send_token.ctp:10
 msgid ""
-"Hi, you receive this email because you asked for reset your password on "
+"Hi, you receive this email because you've requested a password reset on "
 "Sonerezh."
 msgstr ""
 "Salutations, vous recevez cet email car vous avez demandé la "
@@ -723,43 +729,47 @@ msgstr "Ajoutés récemment"
 msgid "All albums"
 msgstr "Albums"
 
-#: View/Songs/import.ctp:27
+#: View/Songs/import.ctp:25
 msgid "Import successfully done"
 msgstr "Import réalisé avec succès"
 
-#: View/Songs/import.ctp:49
+#: View/Songs/import.ctp:57
 msgid "Import currently running. Please do not leave the page."
 msgstr "Importation en cours. Merci de ne pas quitter la page."
 
-#: View/Songs/import.ctp:50
+#: View/Songs/import.ctp:58
 msgid "Running..."
 msgstr "En cours..."
 
-#: View/Songs/import.ctp:57
+#: View/Songs/import.ctp:66
 msgid "Update the music collection"
 msgstr "Mise à jour de la collection"
 
-#: View/Songs/import.ctp:62
-msgid "are ready to be imported"
-msgstr "sont prêtes à être importées"
+#: View/Songs/import.ctp:71
+msgid " already imported)"
+msgstr " déjà importée(s))"
 
-#: View/Songs/import.ctp:73
+#: View/Songs/import.ctp:82
 msgid "Last import:"
 msgstr "Dernier import :"
 
-#: View/Songs/import.ctp:78
+#: View/Songs/import.ctp:87
 msgid "Start Import"
 msgstr "Démarrer l'import"
 
-#: View/Songs/import.ctp:86
+#: View/Songs/import.ctp:98
+msgid "Warning logs"
+msgstr "Avertissements"
+
+#: View/Songs/import.ctp:109
 msgid "All the songs have already been imported"
 msgstr "Toutes les pistes ont déjà été importées"
 
-#: View/Songs/import.ctp:62
-msgid " %s song "
-msgid_plural " %s songs "
-msgstr[0] "%s piste "
-msgstr[1] "%s pistes "
+#: View/Songs/import.ctp:71
+msgid "%s song detected "
+msgid_plural "%s songs detected "
+msgstr[0] "%s piste détectée "
+msgstr[1] "%s pistes détectées "
 
 #: View/Songs/search.ctp:4
 msgid "Looking for"

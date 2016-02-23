@@ -153,19 +153,23 @@ msgstr ""
 msgid "Unable to clean the database!"
 msgstr ""
 
-#: Controller/SongsController.php:144
+#: Controller/SongsController.php:36
 msgid "Please define a root path."
 msgstr ""
 
-#: Controller/SongsController.php:290;400;443;529
+#: Controller/SongsController.php:74
+msgid "Unable to save the song metadata to the database"
+msgstr ""
+
+#: Controller/SongsController.php:198;308;351;437
 msgid "Oops!"
 msgstr ""
 
-#: Controller/SongsController.php:290;400;443
+#: Controller/SongsController.php:198;308;351
 msgid "The database is empty..."
 msgstr ""
 
-#: Controller/SongsController.php:529
+#: Controller/SongsController.php:437
 msgid "No results."
 msgstr ""
 
@@ -395,7 +399,7 @@ msgid "Reset your password"
 msgstr ""
 
 #: View/Emails/html/send_token.ctp:10
-msgid "Hi, you receive this email because you asked for reset your password on Sonerezh."
+msgid "Hi, you receive this email because you've requested a password reset on Sonerezh."
 msgstr ""
 
 #: View/Emails/html/send_token.ctp:11
@@ -701,41 +705,45 @@ msgstr ""
 msgid "All albums"
 msgstr ""
 
-#: View/Songs/import.ctp:27
+#: View/Songs/import.ctp:25
 msgid "Import successfully done"
 msgstr ""
 
-#: View/Songs/import.ctp:49
+#: View/Songs/import.ctp:57
 msgid "Import currently running. Please do not leave the page."
 msgstr ""
 
-#: View/Songs/import.ctp:50
+#: View/Songs/import.ctp:58
 msgid "Running..."
 msgstr ""
 
-#: View/Songs/import.ctp:57
+#: View/Songs/import.ctp:66
 msgid "Update the music collection"
 msgstr ""
 
-#: View/Songs/import.ctp:62
-msgid "are ready to be imported"
+#: View/Songs/import.ctp:71
+msgid " already imported)"
 msgstr ""
 
-#: View/Songs/import.ctp:73
+#: View/Songs/import.ctp:82
 msgid "Last import:"
 msgstr ""
 
-#: View/Songs/import.ctp:78
+#: View/Songs/import.ctp:87
 msgid "Start Import"
 msgstr ""
 
-#: View/Songs/import.ctp:86
+#: View/Songs/import.ctp:98
+msgid "Warning logs"
+msgstr ""
+
+#: View/Songs/import.ctp:109
 msgid "All the songs have already been imported"
 msgstr ""
 
-#: View/Songs/import.ctp:62
-msgid " %s song "
-msgid_plural " %s songs "
+#: View/Songs/import.ctp:71
+msgid "%s song detected "
+msgid_plural "%s songs detected "
 msgstr[0] ""
 msgstr[1] ""
 

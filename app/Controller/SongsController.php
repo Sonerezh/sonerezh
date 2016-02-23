@@ -56,7 +56,7 @@ class SongsController extends AppController {
             $found_count = count($found);
             $diff_count = $found_count - $to_import_count;
             $this->Session->write('to_import', $to_import);
-            $this->set(compact('files_count', 'diff_count'));
+            $this->set(compact('to_import_count', 'diff_count'));
         } elseif ($this->request->is('post')) {
             $this->viewClass = 'Json';
             $to_import = $this->Session->read('to_import');
