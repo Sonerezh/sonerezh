@@ -12,113 +12,6 @@ class SongsController extends AppController {
     }
 
     /**
-     * Extract and import metadata in database.
-     * Sonerezh uses the Getid3 PHP media file parser to extract useful information from MP3 & other multimedia formats.
-     *
-     * @link http://getid3.sourceforge.net/
-     * @see SongsController::import
-     */
-    protected function _importSong($song) {
-
-       //$song = $this->request->query['path'];
-        $getID3 = new getID3();
-        $songInfo = $getID3->analyze($song);
-        getid3_lib::CopyTagsToComments($songInfo);
-        $newSong = array();
-
-        // Parse file metadata to $newSong array.
-        if (isset($songInfo['comments'])) {
-            if (!empty($songInfo['comments']['title'])) {
-                $title_array_length = count($songInfo['comments']['title']);
-                $newSong['title'] = $songInfo['comments']['title'][$title_array_length - 1];
-            } elseif (!empty($songInfo['filename'])) {
-                $newSong['title'] = $songInfo['filename'];
-            } else {
-                $newSong['title'] = $song;
-            }
-
-            if (!empty($songInfo['comments']['artist'])) {
-                $artist_array_length = count($songInfo['comments']['artist']);
-                $newSong['artist'] = $songInfo['comments']['artist'][$artist_array_length - 1];
-            } else {
-                $newSong['artist'] = 'Unknown Artist';
-            }
-
-            if (!empty($songInfo['comments']['band'])) { // MP3 ID3 Tag
-                $band_array_length = count($songInfo['comments']['band']);
-                $newSong['band'] = $songInfo['comments']['band'][$band_array_length - 1];
-            } elseif (!empty($songInfo['comments']['ensemble'])) { // OGG Tag
-                $newSong['band'] = $songInfo['comments']['ensemble'][0];
-            } elseif (!empty($songInfo['comments']['albumartist'])) { // OGG / FLAC Tag
-                $newSong['band'] = $songInfo['comments']['albumartist'][0];
-            } elseif (!empty($songInfo['comments']['album artist'])) { // OGG / FLAC Tag
-                $newSong['band'] = $songInfo['comments']['album artist'];
-            }
-
-            if (!empty($songInfo['comments']['album'])) {
-                $album_array_length = count($songInfo['comments']['album']);
-                $newSong['album'] = $songInfo['comments']['album'][$album_array_length - 1];
-            } else {
-                $newSong['album'] = 'Unknown Album';
-            }
-
-            if (!empty($songInfo['comments']['track_number'])) { // MP3 Tag
-                $track_number_array = explode('/', (string)$songInfo['comments']['track_number'][0]);
-                $newSong['track_number'] = intval($track_number_array[0]);
-            } elseif (!empty($songInfo['comments']['tracknumber'])) { // OGG Tag
-                $newSong['track_number'] = intval($songInfo['comments']['tracknumber'][0]);
-            }
-
-            if (!empty($songInfo['playtime_string'])) {
-                $newSong['playtime'] = $songInfo['playtime_string'];
-            }
-
-            if (!empty($songInfo['comments']['year'])) {
-                $newSong['year'] = intval($songInfo['comments']['year'][0]);
-            }
-
-            if (!empty($songInfo['comments']['part_of_a_set'])) { // MP3 Tag
-                $newSong['disc'] = $songInfo['comments']['part_of_a_set'][0];
-            } elseif (!empty($songInfo['comments']['discnumber'])) { // OGG Tag
-                $newSong['disc'] = $songInfo['comments']['discnumber'][0];
-            }
-
-            if (!empty($songInfo['comments']['genre'])) {
-                $genre_array_length = count($songInfo['comments']['genre']);
-                $newSong['genre'] = $songInfo['comments']['genre'][$genre_array_length - 1];
-            }
-
-            if (isset($songInfo['comments']['picture'])) {
-                if (isset($songInfo['comments']['picture'][0]['image_mime'])) {
-                    $mime = preg_split('/\//', $songInfo['comments']['picture'][0]['image_mime']);
-                    $extension = $mime[1];
-                } else {
-                    $extension = 'jpg';
-                }
-
-                $name = md5($newSong['artist'].$newSong['album']);
-                $path = IMAGES.THUMBNAILS_DIR.DS.$name.'.'.$extension;
-
-                if (!file_exists($path)) {
-                    if (!file_exists(IMAGES.THUMBNAILS_DIR)) {
-                        new Folder(IMAGES.THUMBNAILS_DIR, true, 0777);
-                    }
-                    $file = fopen($path, "w");
-                    fwrite($file, $songInfo['comments']['picture'][0]['data']);
-                    fclose($file);
-                }
-                $newSong['cover'] = $name.'.'.$extension;
-            }
-
-            $newSong['source_path'] = $song;
-            $this->Song->create();
-            $this->Song->save($newSong);
-        }
-
-        return $newSong['title'];
-    }
-
-    /**
      * The import view function.
      * The function does the following action:
      *      - Check the root path,
@@ -129,15 +22,14 @@ class SongsController extends AppController {
      * @see SongsController::_importSong
      */
     public function import() {
-        App::import('Vendor', 'Getid3/getid3');
         App::uses('Folder', 'Utility');
+        App::uses('SongManager', 'SongManager');
 
         $this->loadModel('Setting');
         $this->Setting->contain('Rootpath');
         $settings = $this->Setting->find('first');
 
-        if ($this->request->is("get")) {
-
+        if ($this->request->is('get')) {
             if ($settings) {
                 $paths = $settings['Rootpath'];
             } else {
@@ -145,39 +37,66 @@ class SongsController extends AppController {
                 $this->redirect(array('controller' => 'settings', 'action' => 'index'));
             }
 
-            $songs = array();
+            // The files found via Folder->findRecursive()
+            $found = array();
 
             foreach ($paths as $path) {
                 $dir = new Folder($path['rootpath']);
-                $songs = array_merge($songs, $dir->findRecursive('^.*\.(mp3|ogg|flac|aac)$'));
+                $found = array_merge($found, $dir->findRecursive('^.*\.(mp3|ogg|flac|aac)$'));
             }
 
-            $existingSongs = $this->Song->find('list', array(
+            // The files already imported
+            $already_imported = $this->Song->find('list', array(
                 'fields' => array('Song.id', 'Song.source_path')
             ));
-            $new = array_merge(array_diff($songs, $existingSongs));
-            $this->Session->write('song_list', $new);
 
-            $this->set('newSongsTotal', count($new));
-        } elseif ($this->request->is("post")) {
-            $songs = $this->Session->read('song_list');
+            // The difference between $found and $already_imported
+            $to_import = array_merge(array_diff($found, $already_imported));
+            $to_import_count = count($to_import);
+            $found_count = count($found);
+            $diff_count = $found_count - $to_import_count;
+            $this->Session->write('to_import', $to_import);
+            $this->set(compact('to_import_count', 'diff_count'));
+        } elseif ($this->request->is('post')) {
+            $this->viewClass = 'Json';
+            $to_import = $this->Session->read('to_import');
             $imported = array();
-            $count = 0;
-            foreach ($songs as $song) {
-                $imported[] = $song;
-                $this->_importSong($song);
-                if ($count >= 100) break;
-                $count++;
+            $import_result = array();
+
+            $i = 0;
+            foreach ($to_import as $file) {
+                $song_manager = new SongManager($file);
+                $parse_result = $song_manager->parseMetadata();
+
+                $this->Song->create();
+                if (!$this->Song->save($parse_result['data'])) {
+                    $import_result[$file]['status'] = 'ERR';
+                    $import_result[$file]['message'] = __('Unable to save the song metadata to the database');
+                } else {
+                    unset($parse_result['data']);
+                    $import_result[$i]['file'] = $file;
+                    $import_result[$i]['status'] = $parse_result['status'];
+                    $import_result[$i]['message'] = $parse_result['message'];
+                }
+
+                if ($i >= 100) {
+                    break;
+                }
+
+                $imported [] = $file;
+                $i++;
             }
-            if ($count) {
+
+            if ($i) {
                 $settings['Setting']['sync_token'] = time();
                 $this->Setting->save($settings);
             }
-            echo $settings['Setting']['sync_token'];
-            $diff = array_diff($songs, $imported);
-            $this->Session->write('song_list', $diff);
-            $this->layout = null;
-            $this->render(false);
+
+            $sync_token = $settings['Setting']['sync_token'];
+            $diff = array_diff($to_import, $imported);
+            $this->Session->write('to_import', $diff);
+            $this->set(compact('sync_token', 'import_result'));
+            $this->set('_serialize', array('sync_token', 'import_result'));
         }
     }
 

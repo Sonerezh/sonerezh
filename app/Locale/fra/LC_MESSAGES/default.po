@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Sonerezh 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2016-01-17 18:05+0100\n"
+"PO-Revision-Date: 2016-02-23 21:25+0100\n"
 "Last-Translator: Guillaume Leduc <hey@sonerezh.bzh>\n"
 "Language-Team:  <hey@sonerezh.bzh>\n"
 "Language: French\n"
@@ -169,19 +169,25 @@ msgstr "Toutes les entrées ont été supprimées !"
 msgid "Unable to clean the database!"
 msgstr "Impossible de nettoyer la base de donnée !"
 
-#: Controller/SongsController.php:144
+#: Controller/SongsController.php:36
 msgid "Please define a root path."
 msgstr "Veuillez renseigner l'emplacement de la librairie."
 
-#: Controller/SongsController.php:279;389;432;518
+#: Controller/SongsController.php:74
+msgid "Unable to save the song metadata to the database"
+msgstr ""
+"Impossible de sauvegarder les métadonnées de la chanson dans la base de "
+"données"
+
+#: Controller/SongsController.php:198;308;351;437
 msgid "Oops!"
 msgstr "Oups !"
 
-#: Controller/SongsController.php:279;389;432
+#: Controller/SongsController.php:198;308;351
 msgid "The database is empty..."
 msgstr "La base de données est vide..."
 
-#: Controller/SongsController.php:518
+#: Controller/SongsController.php:437
 msgid "No results."
 msgstr "Pas de résultat."
 
@@ -337,7 +343,6 @@ msgid "Search"
 msgstr "Rechercher"
 
 #: View/Elements/admin_navbar.ctp:13 View/Settings/index.ctp:116
-#: View/Songs/import.ctp:32
 msgid "Database update"
 msgstr "Mettre à jour la base"
 
@@ -395,7 +400,7 @@ msgstr "Réinitialisez votre mot de passe"
 
 #: View/Emails/html/send_token.ctp:10
 msgid ""
-"Hi, you receive this email because you asked for reset your password on "
+"Hi, you receive this email because you've requested a password reset on "
 "Sonerezh."
 msgstr ""
 "Salutations, vous recevez cet email car vous avez demandé la "
@@ -724,13 +729,47 @@ msgstr "Ajoutés récemment"
 msgid "All albums"
 msgstr "Albums"
 
-#: View/Songs/import.ctp:35
-msgid ""
-"Sonerezh is currently updating the database. Please be patient, it may take "
-"a few minutes..."
-msgstr ""
-"Sonerezh met à jour la base de données. Merci de votre patience, cela peut "
-"prendre plusieurs minutes..."
+#: View/Songs/import.ctp:25
+msgid "Import successfully done"
+msgstr "Import réalisé avec succès"
+
+#: View/Songs/import.ctp:57
+msgid "Import currently running. Please do not leave the page."
+msgstr "Importation en cours. Merci de ne pas quitter la page."
+
+#: View/Songs/import.ctp:58
+msgid "Running..."
+msgstr "En cours..."
+
+#: View/Songs/import.ctp:66
+msgid "Update the music collection"
+msgstr "Mise à jour de la collection"
+
+#: View/Songs/import.ctp:71
+msgid " already imported)"
+msgstr " déjà importée(s))"
+
+#: View/Songs/import.ctp:82
+msgid "Last import:"
+msgstr "Dernier import :"
+
+#: View/Songs/import.ctp:87
+msgid "Start Import"
+msgstr "Démarrer l'import"
+
+#: View/Songs/import.ctp:98
+msgid "Warning logs"
+msgstr "Avertissements"
+
+#: View/Songs/import.ctp:109
+msgid "All the songs have already been imported"
+msgstr "Toutes les pistes ont déjà été importées"
+
+#: View/Songs/import.ctp:71
+msgid "%s song detected "
+msgid_plural "%s songs detected "
+msgstr[0] "%s piste détectée "
+msgstr[1] "%s pistes détectées "
 
 #: View/Songs/search.ctp:4
 msgid "Looking for"
@@ -949,6 +988,13 @@ msgstr "Une erreur est survenue lors de l'envoi."
 #: Model/User.php:validation for field avatar
 msgid "Your avatar must be in a correct format (JPEG, PNG, GIF)."
 msgstr "Votre avatar doit être au format JPEG, PNG ou GIF."
+
+#~ msgid ""
+#~ "Sonerezh is currently updating the database. Please be patient, it may "
+#~ "take a few minutes..."
+#~ msgstr ""
+#~ "Sonerezh met à jour la base de données. Merci de votre patience, cela "
+#~ "peut prendre plusieurs minutes..."
 
 #~ msgid "Playlist successfully created!"
 #~ msgstr "Liste de lecture créée avec succès !"
