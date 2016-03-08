@@ -147,6 +147,21 @@ class CakeRequestTest extends CakeTestCase {
 	}
 
 /**
+ * Test the content type method.
+ * 
+ * @return void
+ */
+	public function testContentType() {
+		$_SERVER['HTTP_CONTENT_TYPE'] = 'application/json';
+		$request = new CakeRequest('/', false);
+		$this->assertEquals('application/json', $request->contentType());
+
+		$_SERVER['CONTENT_TYPE'] = 'application/xml';
+		$request = new CakeRequest('/', false);
+		$this->assertEquals('application/xml', $request->contentType(), 'prefer non http header.');
+	}
+
+/**
  * Test construction
  *
  * @return void
@@ -1362,7 +1377,6 @@ class CakeRequestTest extends CakeTestCase {
  * - index.php/apples/
  * - index.php/bananas/eat/tasty_banana
  *
- * @link https://cakephp.lighthouseapp.com/projects/42648-cakephp/tickets/3318
  * @return void
  */
 	public function testBaseUrlWithModRewriteAndIndexPhp() {
@@ -2442,6 +2456,24 @@ XML;
 
 		$this->setExpectedException('MethodNotAllowedException');
 		$request->allowMethod('POST');
+	}
+
+/**
+ * Tests that overriding the method to GET will clean all request
+ * data, to better simulate a GET request.
+ *
+ * @return void
+ */
+	public function testMethodOverrideEmptyData() {
+		$_POST = array('_method' => 'GET', 'foo' => 'bar');
+		$_SERVER['REQUEST_METHOD'] = 'PUT';
+		$request = new CakeRequest('/posts/edit/1');
+		$this->assertEmpty($request->data);
+
+		$_POST = array('foo' => 'bar');
+		$_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE'] = 'GET';
+		$request = new CakeRequest('/posts/edit/1');
+		$this->assertEmpty($request->data);
 	}
 
 /**

@@ -143,7 +143,7 @@ class CakeSession {
 	public static function init($base = null) {
 		static::$time = time();
 
-		if (env('HTTP_USER_AGENT')) {
+		if (env('HTTP_USER_AGENT') && !static::$_userAgent) {
 			static::$_userAgent = md5(env('HTTP_USER_AGENT') . Configure::read('Security.salt'));
 		}
 
@@ -202,7 +202,6 @@ class CakeSession {
 
 		$id = static::id();
 		static::_startSession();
-
 		if (!$id && static::started()) {
 			static::_checkValid();
 		}
@@ -218,6 +217,9 @@ class CakeSession {
  * @return bool True if session has been started.
  */
 	public static function started() {
+		if (function_exists('session_status')) {
+			return isset($_SESSION) && (session_status() === PHP_SESSION_ACTIVE);
+		}
 		return isset($_SESSION) && session_id();
 	}
 
@@ -345,12 +347,13 @@ class CakeSession {
  * @return bool
  */
 	protected static function _validAgentAndTime() {
-		$config = static::read('Config');
+		$userAgent = static::read('Config.userAgent');
+		$time = static::read('Config.time');
 		$validAgent = (
 			Configure::read('Session.checkAgent') === false ||
-			isset($config['userAgent']) && static::$_userAgent === $config['userAgent']
+			isset($userAgent) && static::$_userAgent === $userAgent
 		);
-		return ($validAgent && static::$time <= $config['time']);
+		return ($validAgent && static::$time <= $time);
 	}
 
 /**
@@ -461,7 +464,12 @@ class CakeSession {
 		}
 
 		if (static::started()) {
+			if (session_id() && static::_hasSession()) {
+				session_write_close();
+				session_start();
+			}
 			session_destroy();
+			unset($_COOKIE[static::_cookieName()]);
 		}
 
 		$_SESSION = null;
@@ -534,6 +542,10 @@ class CakeSession {
 		if (!isset($sessionConfig['ini']['session.cookie_httponly'])) {
 			$sessionConfig['ini']['session.cookie_httponly'] = 1;
 		}
+		// For IE<=8
+		if (!isset($sessionConfig['cacheLimiter'])) {
+			$sessionConfig['cacheLimiter'] = 'must-revalidate';
+		}
 
 		if (empty($_SESSION)) {
 			if (!empty($sessionConfig['ini']) && is_array($sessionConfig['ini'])) {
@@ -584,7 +596,7 @@ class CakeSession {
  * @return bool
  */
 	protected static function _hasSession() {
-		return static::started() || isset($_COOKIE[static::_cookieName()]);
+		return static::started() || isset($_COOKIE[static::_cookieName()]) || (PHP_SAPI === 'cli' || PHP_SAPI === 'phpdbg');
 	}
 
 /**
@@ -689,8 +701,10 @@ class CakeSession {
 				$_SESSION = array();
 			}
 		} else {
-			// For IE<=8
-			session_cache_limiter("must-revalidate");
+			$limit = Configure::read('Session.cacheLimiter');
+			if (!empty($limit)) {
+				session_cache_limiter($limit);
+			}
 			session_start();
 		}
 		return true;
@@ -750,10 +764,14 @@ class CakeSession {
 		if (session_id() === '') {
 			return;
 		}
-		if (isset($_COOKIE[session_name()])) {
+		if (isset($_COOKIE[static::_cookieName()])) {
 			setcookie(Configure::read('Session.cookie'), '', time() - 42000, static::$path);
 		}
-		session_regenerate_id(true);
+		if (!headers_sent()) {
+			session_write_close();
+			session_start();
+			session_regenerate_id(true);
+		}
 	}
 
 /**
