@@ -71,7 +71,7 @@
 <div class="modal fade" id="newUserModal" tabindex="-1" role="dialog" aria-labelledby="newUserModal" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <?php echo $this->Form->create('User', array('action' => 'add')); ?>
+            <?php echo $this->Form->create('User', array('url' => array('controller' => 'users', 'action' => 'add'))); ?>
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title"><?php echo __('Create a user'); ?></h4>

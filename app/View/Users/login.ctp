@@ -24,7 +24,7 @@
 <div class="modal fade" id="forgot-password" tabindex="-1" role="dialog" aria-labelledby="forgot-password-modal" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <?php echo $this->Form->create('User', array('action' => 'setResetPasswordToken')); ?>
+            <?php echo $this->Form->create('User', array('url' => array('controller' => 'users', 'action' => 'setResetPasswordToken'))); ?>
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title"><?php echo __('Retrieve my password'); ?></h4>

@@ -141,7 +141,7 @@
 <div id="add-playlist-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="addPlaylistModal" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <?php echo $this->Form->create('Playlist', array('action' => 'add')); ?>
+            <?php echo $this->Form->create('Playlist', array('url' => array('controller' => 'playlists', 'action' => 'add'))); ?>
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 <h4 class="modal-title"><?php echo __('Create a playlist'); ?></h4>
@@ -163,7 +163,7 @@
         <div id="<?php echo 'edit-playlist-'.$id.'-modal'; ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="editPlaylistModal" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <?php echo $this->Form->create('Playlist', array('action' => 'edit/'.$id)); ?>
+                    <?php echo $this->Form->create('Playlist', array('url' => array('controller' => 'playlists', 'action' => 'edit', $id))); ?>
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                         <h4 class="modal-title"><?php echo __('Rename a playlist'); ?></h4>
