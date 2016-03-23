@@ -26,6 +26,7 @@ $(function(){
             success: function(response){
                 $('.modal').modal('hide');
                 $('body').removeClass('modal-open');
+                $('.modal-backdrop').remove();
 
                 if(pushState){
                     history.pushState({url: response[1].url}, null, response[1].url);
