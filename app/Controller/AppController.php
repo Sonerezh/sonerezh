@@ -41,6 +41,9 @@ class AppController extends Controller {
             'time' => '7 Days',
             'httpOnly' => true
         ),
+        'Security' => array(
+            'csrfExpires' => '+1 hour'
+        ),
         'DebugKit.Toolbar',
         'Image',
         'Paginator',
@@ -62,6 +65,11 @@ class AppController extends Controller {
     }
 
     public function beforeFilter() {
+
+        if (isset($this->request->query['ajax'])) {
+            unset($this->request->query['ajax']);
+        }
+
         if ($this->request->is('ajax')) {
             $this->response->type("application/json");
             $this->layout = "ajax";
@@ -98,13 +106,6 @@ class AppController extends Controller {
         }
 
         $this->__setLanguage();
-    }
-
-    public function beforeRender() {
-        parent::beforeRender();
-        if (isset($this->request->query['ajax'])) {
-            unset($this->request->query['ajax']);
-        }
     }
 
     public function redirect($url, $status = null, $exit = true) {
