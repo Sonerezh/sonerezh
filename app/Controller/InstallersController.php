@@ -110,20 +110,7 @@ class InstallersController extends AppController {
             unset($this->Toolbar->panels['sql_log']);
         }
 
-        if ($this->request->is('get') && $is_core_writable) {
-            // Update Security settings
-            $core_config_file = new File(APP.'Config'.DS.'core.php');
-            $core_config_file->replaceText(
-                array(
-                    Configure::read('Security.cipherSeed'),
-                    Configure::read('Security.salt')),
-                array(
-                    $this->__generateCipherKey(),
-                    $this->__generateSalt()
-                )
-            );
-        }
-        elseif ($this->request->is('post')) {
+        if ($this->request->is('post')) {
 
             $datasources = array('Database/Mysql', 'Database/Postgres', 'Database/Sqlite');
 
@@ -219,6 +206,19 @@ class InstallersController extends AppController {
                 return;
             }
 
+            $core_config_file = new File(APP.'Config'.DS.'core.php');
+            $core_config_file->replaceText(
+                array(
+                    Configure::read('Security.cipherSeed'),
+                    Configure::read('Security.salt')
+                ),
+                array(
+                    $this->__generateCipherKey(),
+                    $this->__generateSalt()
+                )
+            );
+            $this->Cookie->destroy();
+
             $this->redirect(array('controller' => 'songs', 'action' => 'import'));
         }
     }
@@ -233,20 +233,6 @@ class InstallersController extends AppController {
         $this->User->useTable = false;
         if ($this->Toolbar) {
             unset($this->Toolbar->panels['sql_log']);
-        }
-
-        if ($this->request->is('get')) {
-            // Generate new security ciphers
-            $core_config_file = new File(APP.'Config'.DS.'core.php');
-            $core_config_file->replaceText(
-                array(
-                    Configure::read('Security.cipherSeed'),
-                    Configure::read('Security.salt')),
-                array(
-                    $this->__generateCipherKey(),
-                    $this->__generateSalt()
-                )
-            );
         }
 
         if ($this->request->is('post')) {
@@ -291,6 +277,18 @@ class InstallersController extends AppController {
                 $this->Flash->error(__('Unable to save your data.'));
                 return;
             }
+
+            $core_config_file = new File(APP.'Config'.DS.'core.php');
+            $core_config_file->replaceText(
+                array(
+                    Configure::read('Security.cipherSeed'),
+                    Configure::read('Security.salt')),
+                array(
+                    $this->__generateCipherKey(),
+                    $this->__generateSalt()
+                )
+            );
+            $this->Cookie->destroy();
 
             $this->redirect(array('controller' => 'songs', 'action' => 'import'));
         }
