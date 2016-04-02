@@ -1,11 +1,22 @@
 Changes with 1.1.0
 ------------------
+New features:
+* The import function has been entirely refactored
+* New CLI to import your music
+
 Improvements:
-* #148: Upgrade CakePHP to 2.7
+* #148: Upgrade CakePHP to 2.8
 * Upgrade Twitter Bootstrap to 3.3.6
+* Import view with debug report if warnings or errors happened
+* PHP7 support
 
 Bug / Security fixes:
-* PRs #158 #162: Typo fix (Thanks to MightyCreak and nodiscc)
+* PRs #158 #159 #162: Typo fix (Thanks to MightyCreak,NumEricR and nodiscc)
+* Fix #161: CSRF vulnerability
+* Fix #155: Fatal error with getID3 lib and PHP7
+* Fix #106: Too many files to import?
+* Fix #51: Import bugs
+* Other bugfixes
 
 Changes with 1.0.0
 ------------------
