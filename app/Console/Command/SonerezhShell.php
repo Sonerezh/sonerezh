@@ -42,6 +42,8 @@ class SonerezhShell extends AppShell {
                 $found = $path->findRecursive('^.*\.(mp3|ogg|flac|aac)$');
             } else {
                 $found = $path->find('^.*\.(mp3|ogg|flac|aac)$');
+                // The Folder::find() method does not return the absolute path of each file, we need to add it:
+                $found = preg_filter('/^/', $path->path, $found);
             }
 
         } elseif (file_exists($path)) {
