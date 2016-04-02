@@ -32,8 +32,7 @@ class SongManager {
 
         // Song title
         if (!empty($file_infos['comments']['title'])) {
-            $array_length = count($file_infos['comments']['title']);
-            $metadata['title'] = $file_infos['comments']['title'][$array_length - 1];
+            $metadata['title'] = end($file_infos['comments']['title']);
         } elseif (!empty($file_infos['filename'])) {
             $metadata['title'] = $file_infos['filename'];
         } else {
@@ -42,49 +41,40 @@ class SongManager {
 
         // Song artist
         if (!empty($file_infos['comments']['artist'])) {
-            $array_length = count($file_infos['comments']['artist']);
-            $metadata['artist'] = $file_infos['comments']['artist'][$array_length - 1];
+            $metadata['artist'] = end($file_infos['comments']['artist']);
         } else {
             $metadata['artist'] = 'Unknown artist';
         }
 
         // Song band
         if (!empty($file_infos['comments']['band'])) {              // MP3 Tag
-            $array_length = count($file_infos['comments']['band']);
-            $metadata['band'] = $file_infos['comments']['band'][$array_length - 1];
+            $metadata['band'] = end($file_infos['comments']['band']);
         } elseif (!empty($file_infos['comments']['ensemble'])) {    // OGG Tag
-            $array_length = count($file_infos['comments']['ensemble']);
-            $metadata['band'] = $file_infos['comments']['ensemble'][$array_length - 1];
+            $metadata['band'] = end($file_infos['comments']['ensemble']);
         } elseif (!empty($file_infos['comments']['albumartist'])) { // OGG/FLAC Tag
-            $array_length = count($file_infos['comments']['albumartist']);
-            $metadata['band'] = $file_infos['comments']['albumartist'][$array_length - 1];
+            $metadata['band'] = end($file_infos['comments']['albumartist']);
         } elseif (!empty($file_infos['comments']['album artist'])) {// OGG/FLAC Tag
-            $array_length = count($file_infos['comments']['album artist']);
-            $metadata['band'] = $file_infos['comments']['album artist'][$array_length - 1];
+            $metadata['band'] = end($file_infos['comments']['album artist']);
         } else {
             $metadata['band'] = $metadata['artist'];
         }
 
         // Song album
         if (!empty($file_infos['comments']['album'])) {
-            $array_length = count($file_infos['comments']['album']);
-            $metadata['album'] = $file_infos['comments']['album'][$array_length - 1];
+            $metadata['album'] = end($file_infos['comments']['album']);
         } else {
             $metadata['album'] = 'Unknown album';
         }
 
         // Song track number
         if (!empty($file_infos['comments']['track'])) {              // MP3 Tag
-            $array_length = count($file_infos['comments']['track']);
-            $metadata['track_number'] = (string)$file_infos['comments']['track'][$array_length -1];
+            $metadata['track_number'] = (string)end($file_infos['comments']['track']);
         } elseif (!empty($file_infos['comments']['track_number'])) { // MP3 Tag
-            $array_length = count($file_infos['comments']['track_number']);
             // Some tags look like '1/10'
-            $track_number = explode('/', (string)$file_infos['comments']['track_number'][$array_length -1]);
+            $track_number = explode('/', (string)end($file_infos['comments']['track_number']));
             $metadata['track_number'] = intval($track_number[0]);
         } elseif(!empty($file_infos['comments']['tracknumber'])){   // OGG Tag
-            $array_length = count($file_infos['comments']['tracknumber']);
-            $metadata['track_number'] = $file_infos['comments']['tracknumber'][$array_length - 1];
+            $metadata['track_number'] = end($file_infos['comments']['tracknumber']);
         }
 
         // Song playtime
@@ -94,23 +84,19 @@ class SongManager {
 
         // Song year
         if (!empty($file_infos['comments']['year'])) {
-            $array_length = count($file_infos['comments']['year']);
-            $metadata['year'] = $file_infos['comments']['year'][$array_length - 1];
+            $metadata['year'] = end($file_infos['comments']['year']);
         }
 
         // Song set
         if (!empty($file_infos['comments']['part_of_a_set'])) {     // MP3 Tag
-            $array_length = count($file_infos['comments']['part_of_a_set']);
-            $metadata['part_of_a_set'] = $file_infos['comments']['part_of_a_set'][$array_length - 1];
+            $metadata['part_of_a_set'] = end($file_infos['comments']['part_of_a_set']);
         } elseif (!empty($file_infos['comments']['discnumber'])) {  // OGG Tag
-            $array_length = count($file_infos['comments']['discnumber']);
-            $metadata['part_of_a_set'] = $file_infos['comments']['discnumber'][$array_length - 1];
+            $metadata['part_of_a_set'] = end($file_infos['comments']['discnumber']);
         }
 
         // Song genre
         if (!empty($file_infos['comments']['genre'])) {
-            $array_length = count($file_infos['comments']['genre']);
-            $metadata['genre'] = $file_infos['comments']['genre'][$array_length - 1];
+            $metadata['genre'] = end($file_infos['comments']['genre']);
         }
 
         // Song cover
