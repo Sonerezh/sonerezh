@@ -13,7 +13,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: Controller/AppController.php:75
+#: Controller/AppController.php:83
 msgid "Sonerezh is already installed. Remove or rename app/Config/database.php to run the installation again."
 msgstr ""
 
@@ -53,39 +53,39 @@ msgstr ""
 msgid "is not writable"
 msgstr ""
 
-#: Controller/InstallersController.php:144
+#: Controller/InstallersController.php:131
 msgid "Wrong datasource."
 msgstr ""
 
-#: Controller/InstallersController.php:158
+#: Controller/InstallersController.php:145
 msgid "Unable to write configuration file."
 msgstr ""
 
-#: Controller/InstallersController.php:169
+#: Controller/InstallersController.php:156
 msgid "Unable to create the SQlite database file."
 msgstr ""
 
-#: Controller/InstallersController.php:173
+#: Controller/InstallersController.php:160
 msgid "This is not a regular file: "
 msgstr ""
 
-#: Controller/InstallersController.php:186
+#: Controller/InstallersController.php:173
 msgid "Could not connect to database"
 msgstr ""
 
-#: Controller/InstallersController.php:208;282
+#: Controller/InstallersController.php:195;268
 msgid "Passwords do not match."
 msgstr ""
 
-#: Controller/InstallersController.php:215;289
+#: Controller/InstallersController.php:202;275
 msgid "Installation successful!"
 msgstr ""
 
-#: Controller/InstallersController.php:217;291
+#: Controller/InstallersController.php:204;277
 msgid "Unable to save your data."
 msgstr ""
 
-#: Controller/InstallersController.php:258
+#: Controller/InstallersController.php:244
 msgid "Could not connect to the database"
 msgstr ""
 
@@ -722,26 +722,30 @@ msgid "Update the music collection"
 msgstr ""
 
 #: View/Songs/import.ctp:71
-msgid " already imported)"
+msgid "Have a huge collection? You might be interested in the CLI tool"
 msgstr ""
 
 #: View/Songs/import.ctp:82
+msgid " already imported)"
+msgstr ""
+
+#: View/Songs/import.ctp:93
 msgid "Last import:"
 msgstr ""
 
-#: View/Songs/import.ctp:87
+#: View/Songs/import.ctp:98
 msgid "Start Import"
 msgstr ""
 
-#: View/Songs/import.ctp:98
+#: View/Songs/import.ctp:109
 msgid "Warning logs"
 msgstr ""
 
-#: View/Songs/import.ctp:109
+#: View/Songs/import.ctp:120
 msgid "All the songs have already been imported"
 msgstr ""
 
-#: View/Songs/import.ctp:71
+#: View/Songs/import.ctp:82
 msgid "%s song detected "
 msgid_plural "%s songs detected "
 msgstr[0] ""

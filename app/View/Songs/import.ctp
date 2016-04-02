@@ -66,47 +66,58 @@
     <h3><?php echo __('Update the music collection'); ?></h3>
     <hr />
     <?php if ($to_import_count > 0): ?>
-    <div class="panel panel-primary" id="import-panel">
-        <div class="panel-heading" id="import-panel-header">
-            <?php echo __n("%s song detected ", "%s songs detected ", $to_import_count, $to_import_count) . '(' . $diff_count . __(' already imported)'); ?>
+        <?php if ($to_import_count > 5000): ?>
+            <span class="help-block">
+                <?php echo __('Have a huge collection? You might be interested in the CLI tool'); ?>
+                <?php echo $this->Html->link(
+                    '<i class="glyphicon glyphicon-question-sign"></i>',
+                    'https://www.sonerezh.bzh/docs/en/command line tool.html',
+                    array('escape' => false, 'target' => 'blank', 'class' => 'no-ajax')
+                ); ?>
+            </span>
+        <?php endif; ?>
+
+        <div class="panel panel-primary" id="import-panel">
+            <div class="panel-heading" id="import-panel-header">
+                <?php echo __n("%s song detected ", "%s songs detected ", $to_import_count, $to_import_count) . '(' . $diff_count . __(' already imported)'); ?>
+            </div>
+            <div class="panel-body">
+                <div class="progress" style="margin-bottom: 0px;">
+                    <div id="import-progress-bar" class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer" id="import-panel-footer">
+                <div class="col-xs-6">
+                    <p class="help-block hidden" id="import-last-label">
+                        <?php echo __('Last import:') . ' '; ?><span id="import-last"></span>
+                    </p>
+                </div>
+                <div class="col-xs-6 text-right">
+                    <button class="btn btn-info" id="start-import-btn">
+                        <?php echo __('Start Import'); ?>
+                    </button>
+                </div>
+                <div class="clearfix"></div>
+            </div>
         </div>
-        <div class="panel-body">
-            <div class="progress" style="margin-bottom: 0px;">
-                <div id="import-progress-bar" class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+        <div class="panel-group hidden" id="accordion-warn" role="tablist" aria-multiselectable="true">
+            <div class="panel panel-warning">
+                <div class="panel-heading" role="tab" id="headingOne">
+                    <h4 class="panel-title">
+                        <a class="no-ajax" role="button" data-toggle="collapse" data-parent="#accordion-warn" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                            <?php echo __('Warning logs'); ?>
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+                    <p style="font-family: monospace;" id="warn-logs"></p>
                 </div>
             </div>
         </div>
-        <div class="panel-footer" id="import-panel-footer">
-            <div class="col-xs-6">
-                <p class="help-block hidden" id="import-last-label">
-                    <?php echo __('Last import:') . ' '; ?><span id="import-last"></span>
-                </p>
-            </div>
-            <div class="col-xs-6 text-right">
-                <button class="btn btn-info" id="start-import-btn">
-                    <?php echo __('Start Import'); ?>
-                </button>
-            </div>
-            <div class="clearfix"></div>
-        </div>
-    </div>
-    <div class="panel-group hidden" id="accordion-warn" role="tablist" aria-multiselectable="true">
-        <div class="panel panel-warning">
-            <div class="panel-heading" role="tab" id="headingOne">
-                <h4 class="panel-title">
-                    <a class="no-ajax" role="button" data-toggle="collapse" data-parent="#accordion-warn" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                        <?php echo __('Warning logs'); ?>
-                    </a>
-                </h4>
-            </div>
-            <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-                <p style="font-family: monospace;" id="warn-logs"></p>
-            </div>
-        </div>
-    </div>
     <?php else: ?>
-    <div class="alert alert-info">
-        <?php echo __('All the songs have already been imported'); ?>
-    </div>
+        <div class="alert alert-info">
+            <?php echo __('All the songs have already been imported'); ?>
+        </div>
     <?php endif; ?>
 </div>
