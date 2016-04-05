@@ -89,9 +89,9 @@ class SongManager {
 
         // Song set
         if (!empty($file_infos['comments']['part_of_a_set'])) {     // MP3 Tag
-            $metadata['part_of_a_set'] = end($file_infos['comments']['part_of_a_set']);
+            $metadata['disc'] = end($file_infos['comments']['part_of_a_set']);
         } elseif (!empty($file_infos['comments']['discnumber'])) {  // OGG Tag
-            $metadata['part_of_a_set'] = end($file_infos['comments']['discnumber']);
+            $metadata['disc'] = end($file_infos['comments']['discnumber']);
         }
 
         // Song genre

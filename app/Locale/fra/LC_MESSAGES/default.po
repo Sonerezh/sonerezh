@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Sonerezh 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2016-04-02 18:38+0100\n"
+"PO-Revision-Date: 2016-04-05 12:55+0100\n"
 "Last-Translator: Guillaume Leduc <hey@sonerezh.bzh>\n"
 "Language-Team:  <hey@sonerezh.bzh>\n"
 "Language: French\n"
@@ -157,37 +157,41 @@ msgstr "Préférences enregistrées !"
 msgid "Unable to save settings!"
 msgstr "Impossible d'enregistrer les préférences !"
 
-#: Controller/SettingsController.php:131
-msgid "Cache cleared!"
-msgstr "Cache nettoyé !"
+#: Controller/SettingsController.php:132
+msgid "Yeah! Cache cleared!"
+msgstr "Yeah ! Cache nettoyé !"
 
-#: Controller/SettingsController.php:164
+#: Controller/SettingsController.php:165
 msgid "All entries have been deleted !"
 msgstr "Toutes les entrées ont été supprimées !"
 
-#: Controller/SettingsController.php:167
+#: Controller/SettingsController.php:168
 msgid "Unable to clean the database!"
 msgstr "Impossible de nettoyer la base de donnée !"
 
-#: Controller/SongsController.php:36
+#: Controller/SongsController.php:37
 msgid "Please define a root path."
 msgstr "Veuillez renseigner l'emplacement de la librairie."
 
-#: Controller/SongsController.php:74
+#: Controller/SongsController.php:67 View/Songs/import.ctp:147
+msgid "The import process is already running via another client or the CLI."
+msgstr "Le processus d'import fonctionne déjà via un autre client ou la CLI"
+
+#: Controller/SongsController.php:85
 msgid "Unable to save the song metadata to the database"
 msgstr ""
 "Impossible de sauvegarder les métadonnées de la chanson dans la base de "
 "données"
 
-#: Controller/SongsController.php:198;308;351;437
+#: Controller/SongsController.php:214;324;367;453
 msgid "Oops!"
 msgstr "Oups !"
 
-#: Controller/SongsController.php:198;308;351
+#: Controller/SongsController.php:214;324;367
 msgid "The database is empty..."
 msgstr "La base de données est vide..."
 
-#: Controller/SongsController.php:437
+#: Controller/SongsController.php:453
 msgid "No results."
 msgstr "Pas de résultat."
 
@@ -729,49 +733,57 @@ msgstr "Ajoutés récemment"
 msgid "All albums"
 msgstr "Albums"
 
-#: View/Songs/import.ctp:25
+#: View/Songs/import.ctp:31
+msgid "Something bad happened, import aborted :("
+msgstr "Quelque chose d'anormal est arrivé, l'import a échoué :("
+
+#: View/Songs/import.ctp:47
 msgid "Import successfully done"
 msgstr "Import réalisé avec succès"
 
-#: View/Songs/import.ctp:57
+#: View/Songs/import.ctp:71
+msgid "Import cancelled"
+msgstr "Import annulé"
+
+#: View/Songs/import.ctp:80
 msgid "Import currently running. Please do not leave the page."
 msgstr "Importation en cours. Merci de ne pas quitter la page."
 
-#: View/Songs/import.ctp:58
-msgid "Running..."
-msgstr "En cours..."
-
-#: View/Songs/import.ctp:66
+#: View/Songs/import.ctp:90
 msgid "Update the music collection"
 msgstr "Mise à jour de la collection"
 
-#: View/Songs/import.ctp:71
+#: View/Songs/import.ctp:95
 msgid "Have a huge collection? You might be interested in the CLI tool"
 msgstr ""
 "Grosse collection ? Vous pourriez être intéressé par l'outil en ligne de "
 "commande"
 
-#: View/Songs/import.ctp:82
+#: View/Songs/import.ctp:106
 msgid " already imported)"
 msgstr " déjà importée(s))"
 
-#: View/Songs/import.ctp:93
+#: View/Songs/import.ctp:117
 msgid "Last import:"
 msgstr "Dernier import :"
 
-#: View/Songs/import.ctp:98
+#: View/Songs/import.ctp:122
 msgid "Start Import"
 msgstr "Démarrer l'import"
 
-#: View/Songs/import.ctp:109
+#: View/Songs/import.ctp:125
+msgid "Cancel"
+msgstr "Annuler"
+
+#: View/Songs/import.ctp:136
 msgid "Warning logs"
 msgstr "Avertissements"
 
-#: View/Songs/import.ctp:120
+#: View/Songs/import.ctp:151
 msgid "All the songs have already been imported"
 msgstr "Toutes les pistes ont déjà été importées"
 
-#: View/Songs/import.ctp:82
+#: View/Songs/import.ctp:106
 msgid "%s song detected "
 msgid_plural "%s songs detected "
 msgstr[0] "%s piste détectée "
@@ -994,6 +1006,9 @@ msgstr "Une erreur est survenue lors de l'envoi."
 #: Model/User.php:validation for field avatar
 msgid "Your avatar must be in a correct format (JPEG, PNG, GIF)."
 msgstr "Votre avatar doit être au format JPEG, PNG ou GIF."
+
+#~ msgid "Running..."
+#~ msgstr "En cours..."
 
 #~ msgid ""
 #~ "Sonerezh is currently updating the database. Please be patient, it may "

@@ -19,9 +19,31 @@
                     console.log('Unable to parse response: ' + error);
                 }
 
+                for (var i = 0, len = res['import_result'].length; i < len; i++) {
+                    if (res['import_result'][i]['status'] == 'WARN') {
+
+                        $('#accordion-warn').removeClass('hidden');
+                        $('#warn-logs').append('[' + res['import_result'][i]['file'] + '] ' + res['import_result'][i]['message'] + '<br />');
+
+                    } else if (res['import_result'][i]['status'] == 'ERR') {
+
+                        $('#import-panel').toggleClass('panel-primary panel-danger');
+                        $('#import-panel-header').text("<?php echo __('Something bad happened, import aborted :('); ?>");
+                        $('#import-progress-bar').toggleClass('progress-bar-stripped progress-bar-danger');
+                        $('#import-panel-footer').remove();
+                        $('#accordion-warn').removeClass('hidden');
+                        $('#warn-logs').append('[' + res['import_result'][i]['file'] + '] ' + res['import_result'][i]['message'] + '<br />');
+
+                        songsManager.sync(res['sync_token']);
+                        this.abort();
+                        return;
+
+                    }
+                }
+
                 if (files_imported >= files_count) {
 
-                    $('#import-panel').removeClass('panel-primary').addClass('panel-success');
+                    $('#import-panel').toggleClass('panel-primary panel-success');
                     $('#import-panel-header').text("<?php echo __('Import successfully done'); ?>");
                     $('#import-progress-bar').toggleClass('progress-bar-striped progress-bar-success').css('width', '100%').text('100%');
                     $('#import-panel-footer').remove();
@@ -34,28 +56,30 @@
                     $('#import-progress-bar').css('width', percentage + '%').text(percentage + '%');
                     $('#import-last-label').removeClass('hidden');
 
-                    var fullpath_last_import = res['import_result'][res['import_result'].length - 1]['file']
+                    var fullpath_last_import = res['import_result'][res['import_result'].length - 1]['file'] ? res['import_result'][res['import_result'].length - 1]['file'] : 'unknown';
                     var splitted_lat_import = fullpath_last_import.split('/');
                     $('#import-last').text(splitted_lat_import[splitted_lat_import.length - 1]);
                     ajaxImport();
-                }
-
-                for (var i = 0, len = res['import_result'].length; i < len; i++) {
-                    if (res['import_result'][i]['status'] == 'WARN') {
-                        $('#accordion-warn').removeClass('hidden');
-                        $('#warn-logs').append('[' + res['import_result'][i]['file'] + '] ' + res['import_result'][i]['message'] + '<br />');
-                    }
                 }
             }
         };
         xhr.open("POST", "<?php echo $this->Html->url(array('controller' => 'songs', 'action' => 'import')); ?>", true);
         xhr.send();
+
+        $('#cancel-import-btn').on('click', function() {
+            $('#import-panel').toggleClass('panel-primary panel-warning');
+            $('#import-panel-header').text("<?php echo __('Import cancelled'); ?>");
+            $('#import-progress-bar').toggleClass('progress-bar-striped progress-bar-warning');
+            $('#cancel-import-btn').addClass('disabled');
+            xhr.abort();
+        });
     }
 
-    $('#start-import-btn').click(function(e) {
+    $('#start-import-btn').on('click', function(e) {
         e.preventDefault();
         $('#import-panel-header').html('<strong>' + "<?php echo __('Import currently running. Please do not leave the page.'); ?>" + '</strong>');
-        $('#start-import-btn').addClass('disabled').text("<?php echo __('Running...'); ?>");
+        $('#start-import-btn').addClass('hidden');
+        $('#cancel-import-btn').removeClass('hidden');
         ajaxImport();
     });
 
@@ -65,7 +89,7 @@
 <div class="col-lg-12">
     <h3><?php echo __('Update the music collection'); ?></h3>
     <hr />
-    <?php if ($to_import_count > 0): ?>
+    <?php if ($to_import_count > 0 && !Cache::read('import')): ?>
         <?php if ($to_import_count > 5000): ?>
             <span class="help-block">
                 <?php echo __('Have a huge collection? You might be interested in the CLI tool'); ?>
@@ -82,7 +106,7 @@
                 <?php echo __n("%s song detected ", "%s songs detected ", $to_import_count, $to_import_count) . '(' . $diff_count . __(' already imported)'); ?>
             </div>
             <div class="panel-body">
-                <div class="progress" style="margin-bottom: 0px;">
+                <div class="progress" style="margin-bottom: 0;">
                     <div id="import-progress-bar" class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
                     </div>
                 </div>
@@ -96,6 +120,9 @@
                 <div class="col-xs-6 text-right">
                     <button class="btn btn-info" id="start-import-btn">
                         <?php echo __('Start Import'); ?>
+                    </button>
+                    <button class="btn btn-warning hidden" id="cancel-import-btn">
+                        <?php echo __('Cancel'); ?>
                     </button>
                 </div>
                 <div class="clearfix"></div>
@@ -114,6 +141,10 @@
                     <p style="font-family: monospace;" id="warn-logs"></p>
                 </div>
             </div>
+        </div>
+    <?php elseif (Cache::read('import')): ?>
+        <div class="alert alert-warning">
+            <?php echo __('The import process is already running via another client or the CLI.'); ?>
         </div>
     <?php else: ?>
         <div class="alert alert-info">

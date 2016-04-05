@@ -32,6 +32,11 @@ class SonerezhShell extends AppShell {
         $recursive = $this->param('recursive');
         //$verbose = $this->param('verbose');
 
+        if (Cache::read('import')) {
+            $this->out("<warning>[WARN]</warning> The import process is already running via another client or the CLI");
+            exit(0);
+        }
+
         $found = array();
 
         if (is_dir($path)) {
@@ -90,41 +95,60 @@ class SonerezhShell extends AppShell {
 
         $this->out('<info>[INFO]</info> Run import', 0);
 
-        $i = 1;
-        foreach ($to_import as $file) {
+        // Write lock to avoid multiple import processes in the same time
+        if (Cache::read('import')) {
+            $this->out("<warning>[WARN]</warning> The import process is already running via another client or the CLI");
+            exit(0);
+        } else {
+            Cache::write('import', true);
 
-            $song_manager = new SongManager($file);
-            $parse_result = $song_manager->parseMetadata();
+            // Catch SIGINT
+            pcntl_signal(SIGINT, function() {
+                Cache::delete('import');
+                exit();
+            });
 
-            if ($parse_result['status'] != 'OK') {
-                if ($parse_result['status'] == 'WARN') {
-                    $this->overwrite("<warning>[WARN]</warning>[$file] - " . $parse_result['message']);
-                } elseif ($parse_result['status'] == 'ERR') {
-                    $this->overwrite("<error>[ERR]</error>[$file] - " . $parse_result['message']);
+            $i = 1;
+            foreach ($to_import as $file) {
+
+                pcntl_signal_dispatch();
+                $song_manager = new SongManager($file);
+                $parse_result = $song_manager->parseMetadata();
+                //print_r($parse_result);
+                if ($parse_result['status'] != 'OK') {
+                    if ($parse_result['status'] == 'WARN') {
+                        $this->overwrite("<warning>[WARN]</warning>[$file] - " . $parse_result['message']);
+                    } elseif ($parse_result['status'] == 'ERR') {
+                        $this->overwrite("<error>[ERR]</error>[$file] - " . $parse_result['message']);
+                    }
                 }
+
+                $this->Song->create();
+                if (!$this->Song->save($parse_result['data'])) {
+                    $this->overwrite("<error>[ERR]</error>[$file] - Unable to save the song metadata to the database");
+                }
+
+                // Progressbar
+                $percent_done = 100 * $i / $to_import_count;
+                $hashtags_quantity = round(45 * $percent_done / 100);
+                $remaining_spaces = 45 - $hashtags_quantity;
+
+                if ($i < ($to_import_count)) {
+                    $this->overwrite('<info>[INFO]</info> Run import: [' . round($percent_done) . '%] [' . str_repeat('#', $hashtags_quantity) . str_repeat(' ', $remaining_spaces) . ']', 0);
+                } else {
+                    $this->overwrite('<info>[INFO]</info> Run import: [' . round($percent_done) . '%] [' . str_repeat('#', $hashtags_quantity) . str_repeat(' ', $remaining_spaces) . ']');
+                }
+                sleep(1);
+                $i++;
             }
 
-            $this->Song->create();
-            if (!$this->Song->save($parse_result['data'])) {
-                $this->overwrite("<error>[ERR]</error>[$file] - Unable to save the song metadata to the database");
-            }
+            // Delete lock
+            Cache::delete('import');
 
-            // Progressbar
-            $percent_done = 100 * $i / $to_import_count;
-            $hashtags_quantity = round(45 * $percent_done / 100);
-            $remaining_spaces = 45 - $hashtags_quantity;
-
-            if ($i < ($to_import_count)) {
-                $this->overwrite('<info>[INFO]</info> Run import: [' . round($percent_done) . '%] [' . str_repeat('#', $hashtags_quantity) . str_repeat(' ', $remaining_spaces) . ']', 0);
-            } else {
-                $this->overwrite('<info>[INFO]</info> Run import: [' . round($percent_done) . '%] [' . str_repeat('#', $hashtags_quantity) . str_repeat(' ', $remaining_spaces) . ']');
-            }
-            $i++;
+            // Update the sync_token to refresh the IndexedDB on the browser side
+            $settings = $this->Setting->find('first');
+            $settings['Setting']['sync_token'] = time();
+            $this->Setting->save($settings);
         }
-
-        // Update the sync_token to refresh the IndexedDB on the browser side
-        $settings = $this->Setting->find('first');
-        $settings['Setting']['sync_token'] = time();
-        $this->Setting->save($settings);
     }
 }

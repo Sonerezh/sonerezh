@@ -141,35 +141,40 @@ msgstr ""
 msgid "Unable to save settings!"
 msgstr ""
 
-#: Controller/SettingsController.php:131
-msgid "Cache cleared!"
+#: Controller/SettingsController.php:132
+msgid "Yeah! Cache cleared!"
 msgstr ""
 
-#: Controller/SettingsController.php:164
+#: Controller/SettingsController.php:165
 msgid "All entries have been deleted !"
 msgstr ""
 
-#: Controller/SettingsController.php:167
+#: Controller/SettingsController.php:168
 msgid "Unable to clean the database!"
 msgstr ""
 
-#: Controller/SongsController.php:36
+#: Controller/SongsController.php:37
 msgid "Please define a root path."
 msgstr ""
 
-#: Controller/SongsController.php:74
+#: Controller/SongsController.php:67
+#: View/Songs/import.ctp:147
+msgid "The import process is already running via another client or the CLI."
+msgstr ""
+
+#: Controller/SongsController.php:85
 msgid "Unable to save the song metadata to the database"
 msgstr ""
 
-#: Controller/SongsController.php:198;308;351;437
+#: Controller/SongsController.php:214;324;367;453
 msgid "Oops!"
 msgstr ""
 
-#: Controller/SongsController.php:198;308;351
+#: Controller/SongsController.php:214;324;367
 msgid "The database is empty..."
 msgstr ""
 
-#: Controller/SongsController.php:437
+#: Controller/SongsController.php:453
 msgid "No results."
 msgstr ""
 
@@ -705,47 +710,55 @@ msgstr ""
 msgid "All albums"
 msgstr ""
 
-#: View/Songs/import.ctp:25
+#: View/Songs/import.ctp:31
+msgid "Something bad happened, import aborted :("
+msgstr ""
+
+#: View/Songs/import.ctp:47
 msgid "Import successfully done"
 msgstr ""
 
-#: View/Songs/import.ctp:57
+#: View/Songs/import.ctp:71
+msgid "Import cancelled"
+msgstr ""
+
+#: View/Songs/import.ctp:80
 msgid "Import currently running. Please do not leave the page."
 msgstr ""
 
-#: View/Songs/import.ctp:58
-msgid "Running..."
-msgstr ""
-
-#: View/Songs/import.ctp:66
+#: View/Songs/import.ctp:90
 msgid "Update the music collection"
 msgstr ""
 
-#: View/Songs/import.ctp:71
+#: View/Songs/import.ctp:95
 msgid "Have a huge collection? You might be interested in the CLI tool"
 msgstr ""
 
-#: View/Songs/import.ctp:82
+#: View/Songs/import.ctp:106
 msgid " already imported)"
 msgstr ""
 
-#: View/Songs/import.ctp:93
+#: View/Songs/import.ctp:117
 msgid "Last import:"
 msgstr ""
 
-#: View/Songs/import.ctp:98
+#: View/Songs/import.ctp:122
 msgid "Start Import"
 msgstr ""
 
-#: View/Songs/import.ctp:109
+#: View/Songs/import.ctp:125
+msgid "Cancel"
+msgstr ""
+
+#: View/Songs/import.ctp:136
 msgid "Warning logs"
 msgstr ""
 
-#: View/Songs/import.ctp:120
+#: View/Songs/import.ctp:151
 msgid "All the songs have already been imported"
 msgstr ""
 
-#: View/Songs/import.ctp:82
+#: View/Songs/import.ctp:106
 msgid "%s song detected "
 msgid_plural "%s songs detected "
 msgstr[0] ""

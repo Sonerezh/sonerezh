@@ -128,7 +128,8 @@ class SettingsController extends AppController {
         $dir = new Folder(RESIZED_DIR);
         $dir->delete();
         $this->Song->updateAll(array('path' => null));
-        $this->Flash->success('<strong>Yeah! </strong>'.__('Cache cleared!'));
+        Cache::delete('import');
+        $this->Flash->success(__('Yeah! Cache cleared!'));
         $this->redirect(array('controller' => 'settings', 'action' => 'index'));
     }
 

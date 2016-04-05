@@ -30,6 +30,7 @@ class SongsController extends AppController {
         $settings = $this->Setting->find('first');
 
         if ($this->request->is('get')) {
+
             if ($settings) {
                 $paths = $settings['Rootpath'];
             } else {
@@ -59,44 +60,59 @@ class SongsController extends AppController {
             $this->set(compact('to_import_count', 'diff_count'));
         } elseif ($this->request->is('post')) {
             $this->viewClass = 'Json';
-            $to_import = $this->Session->read('to_import');
-            $imported = array();
             $import_result = array();
 
-            $i = 0;
-            foreach ($to_import as $file) {
-                $song_manager = new SongManager($file);
-                $parse_result = $song_manager->parseMetadata();
+            if (Cache::read('import')) { // Read lock to avoid multiple import processes in the same time
+                $import_result[0]['status'] = 'ERR';
+                $import_result[0]['message'] = __('The import process is already running via another client or the CLI.');
+                $this->set(compact('import_result'));
+                $this->set('_serialize', array('import_result'));
+            } else {
+                // Write lock
+                Cache::write('import', true);
 
-                $this->Song->create();
-                if (!$this->Song->save($parse_result['data'])) {
-                    $import_result[$file]['status'] = 'ERR';
-                    $import_result[$file]['message'] = __('Unable to save the song metadata to the database');
-                } else {
-                    unset($parse_result['data']);
-                    $import_result[$i]['file'] = $file;
-                    $import_result[$i]['status'] = $parse_result['status'];
-                    $import_result[$i]['message'] = $parse_result['message'];
+                $to_import = $this->Session->read('to_import');
+                $imported = array();
+
+                $i = 0;
+                foreach ($to_import as $file) {
+                    $song_manager = new SongManager($file);
+                    $parse_result = $song_manager->parseMetadata();
+
+                    $this->Song->create();
+                    if (!$this->Song->save($parse_result['data'])) {
+                        $import_result[$file]['status'] = 'ERR';
+                        $import_result[$file]['message'] = __('Unable to save the song metadata to the database');
+                    } else {
+                        unset($parse_result['data']);
+                        $import_result[$i]['file'] = $file;
+                        $import_result[$i]['status'] = $parse_result['status'];
+                        $import_result[$i]['message'] = $parse_result['message'];
+                    }
+
+                    if ($i >= 100) {
+                        break;
+                    }
+
+                    $imported [] = $file;
+                    $i++;
                 }
 
-                if ($i >= 100) {
-                    break;
+                if ($i) {
+                    $settings['Setting']['sync_token'] = time();
+                    $this->Setting->save($settings);
                 }
 
-                $imported [] = $file;
-                $i++;
+                // Delete lock
+                Cache::delete('import');
+
+                $sync_token = $settings['Setting']['sync_token'];
+                $diff = array_diff($to_import, $imported);
+                $this->Session->write('to_import', $diff);
+                $this->set(compact('sync_token', 'import_result'));
+                $this->set('_serialize', array('sync_token', 'import_result'));
             }
 
-            if ($i) {
-                $settings['Setting']['sync_token'] = time();
-                $this->Setting->save($settings);
-            }
-
-            $sync_token = $settings['Setting']['sync_token'];
-            $diff = array_diff($to_import, $imported);
-            $this->Session->write('to_import', $diff);
-            $this->set(compact('sync_token', 'import_result'));
-            $this->set('_serialize', array('sync_token', 'import_result'));
         }
     }
 
