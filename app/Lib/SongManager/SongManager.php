@@ -43,7 +43,7 @@ class SongManager {
         if (!empty($file_infos['comments']['artist'])) {
             $metadata['artist'] = end($file_infos['comments']['artist']);
         } else {
-            $metadata['artist'] = 'Unknown artist';
+            $metadata['artist'] = '';
         }
 
         // Song band
@@ -56,7 +56,7 @@ class SongManager {
         } elseif (!empty($file_infos['comments']['album artist'])) {// OGG/FLAC Tag
             $metadata['band'] = end($file_infos['comments']['album artist']);
         } else {
-            $metadata['band'] = $metadata['artist'];
+            $metadata['band'] = $metadata['artist'] != '' ? $metadata['artist'] : 'Unknown Band';
         }
 
         // Song album
