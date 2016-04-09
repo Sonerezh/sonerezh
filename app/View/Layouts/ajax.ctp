@@ -26,5 +26,6 @@
 },
 {
     "flash": <?php echo json_encode($this->Flash->render()); ?>,
-    "html": <?php echo json_encode($this->fetch('content')); ?>
+    "html": <?php echo json_encode($this->fetch('content')); ?>,
+    "playlist_form": <?php echo json_encode($this->fetch('playlist_form'));?>
 }]

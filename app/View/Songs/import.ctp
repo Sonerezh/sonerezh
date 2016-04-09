@@ -65,21 +65,12 @@
         };
         xhr.open("POST", "<?php echo $this->Html->url(array('controller' => 'songs', 'action' => 'import')); ?>", true);
         xhr.send();
-
-        $('#cancel-import-btn').on('click', function() {
-            $('#import-panel').toggleClass('panel-primary panel-warning');
-            $('#import-panel-header').text("<?php echo __('Import cancelled'); ?>");
-            $('#import-progress-bar').toggleClass('progress-bar-striped progress-bar-warning');
-            $('#cancel-import-btn').addClass('disabled');
-            xhr.abort();
-        });
     }
 
     $('#start-import-btn').on('click', function(e) {
         e.preventDefault();
         $('#import-panel-header').html('<strong>' + "<?php echo __('Import currently running. Please do not leave the page.'); ?>" + '</strong>');
-        $('#start-import-btn').addClass('hidden');
-        $('#cancel-import-btn').removeClass('hidden');
+        $('#start-import-btn').addClass('disabled').text("<?php echo __('Running...'); ?>");
         ajaxImport();
     });
 
@@ -120,9 +111,6 @@
                 <div class="col-xs-6 text-right">
                     <button class="btn btn-info" id="start-import-btn">
                         <?php echo __('Start Import'); ?>
-                    </button>
-                    <button class="btn btn-warning hidden" id="cancel-import-btn">
-                        <?php echo __('Cancel'); ?>
                     </button>
                 </div>
                 <div class="clearfix"></div>

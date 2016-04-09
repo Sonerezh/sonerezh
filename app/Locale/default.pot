@@ -13,7 +13,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: Controller/AppController.php:83
+#: Controller/AppController.php:89
 msgid "Sonerezh is already installed. Remove or rename app/Config/database.php to run the installation again."
 msgstr ""
 
@@ -158,7 +158,7 @@ msgid "Please define a root path."
 msgstr ""
 
 #: Controller/SongsController.php:67
-#: View/Songs/import.ctp:147
+#: View/Songs/import.ctp:135
 msgid "The import process is already running via another client or the CLI."
 msgstr ""
 
@@ -718,47 +718,43 @@ msgstr ""
 msgid "Import successfully done"
 msgstr ""
 
-#: View/Songs/import.ctp:71
-msgid "Import cancelled"
-msgstr ""
-
-#: View/Songs/import.ctp:80
+#: View/Songs/import.ctp:72
 msgid "Import currently running. Please do not leave the page."
 msgstr ""
 
-#: View/Songs/import.ctp:90
+#: View/Songs/import.ctp:73
+msgid "Running..."
+msgstr ""
+
+#: View/Songs/import.ctp:81
 msgid "Update the music collection"
 msgstr ""
 
-#: View/Songs/import.ctp:95
+#: View/Songs/import.ctp:86
 msgid "Have a huge collection? You might be interested in the CLI tool"
 msgstr ""
 
-#: View/Songs/import.ctp:106
+#: View/Songs/import.ctp:97
 msgid " already imported)"
 msgstr ""
 
-#: View/Songs/import.ctp:117
+#: View/Songs/import.ctp:108
 msgid "Last import:"
 msgstr ""
 
-#: View/Songs/import.ctp:122
+#: View/Songs/import.ctp:113
 msgid "Start Import"
 msgstr ""
 
-#: View/Songs/import.ctp:125
-msgid "Cancel"
-msgstr ""
-
-#: View/Songs/import.ctp:136
+#: View/Songs/import.ctp:124
 msgid "Warning logs"
 msgstr ""
 
-#: View/Songs/import.ctp:151
+#: View/Songs/import.ctp:139
 msgid "All the songs have already been imported"
 msgstr ""
 
-#: View/Songs/import.ctp:106
+#: View/Songs/import.ctp:97
 msgid "%s song detected "
 msgid_plural "%s songs detected "
 msgstr[0] ""

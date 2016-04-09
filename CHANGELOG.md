@@ -1,3 +1,10 @@
+Changes with 1.1.1
+------------------
+Bug / Security fixes:
+* Fix #174: Add lock system on import process
+* Fix #173: CSRF protection broke the 'add to playlist' form
+* Ohter bugfixes
+
 Changes with 1.1.0
 ------------------
 New features:

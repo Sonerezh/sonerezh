@@ -14,3 +14,6 @@ $(function() {
 });
 </script>
 <?php $this->end(); ?>
+<?php $this->start('playlist_form');?>
+<?php echo $this->element('add_to_playlist');?>
+<?php $this->end();?>

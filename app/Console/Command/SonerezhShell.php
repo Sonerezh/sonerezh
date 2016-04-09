@@ -105,6 +105,7 @@ class SonerezhShell extends AppShell {
             // Catch SIGINT
             pcntl_signal(SIGINT, function() {
                 Cache::delete('import');
+                $this->refreshSyncToken();
                 exit();
             });
 
@@ -114,7 +115,7 @@ class SonerezhShell extends AppShell {
                 pcntl_signal_dispatch();
                 $song_manager = new SongManager($file);
                 $parse_result = $song_manager->parseMetadata();
-                //print_r($parse_result);
+
                 if ($parse_result['status'] != 'OK') {
                     if ($parse_result['status'] == 'WARN') {
                         $this->overwrite("<warning>[WARN]</warning>[$file] - " . $parse_result['message']);
@@ -138,17 +139,20 @@ class SonerezhShell extends AppShell {
                 } else {
                     $this->overwrite('<info>[INFO]</info> Run import: [' . round($percent_done) . '%] [' . str_repeat('#', $hashtags_quantity) . str_repeat(' ', $remaining_spaces) . ']');
                 }
-                sleep(1);
+
                 $i++;
             }
 
             // Delete lock
             Cache::delete('import');
-
-            // Update the sync_token to refresh the IndexedDB on the browser side
-            $settings = $this->Setting->find('first');
-            $settings['Setting']['sync_token'] = time();
-            $this->Setting->save($settings);
+            $this->refreshSyncToken();
         }
+    }
+
+    public function refreshSyncToken() {
+        // Update the sync_token to refresh the IndexedDB on the browser side
+        $settings = $this->Setting->find('first');
+        $settings['Setting']['sync_token'] = time();
+        $this->Setting->save($settings);
     }
 }
