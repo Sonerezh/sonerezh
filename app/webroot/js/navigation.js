@@ -48,6 +48,10 @@ $(function(){
                 }else{
                     history.replaceState({url: response[1].url}, null, referrer);
                     response[1].url = referrer;
+                    if(response[2].playlist_form.length){
+                        var nodes = $(response[2].playlist_form);
+                        $("#add-to").html($(nodes[nodes.length-1]).html());
+                    }
                 }
                 referrer = response[1].url;
                 $('body script').remove();

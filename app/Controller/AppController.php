@@ -42,7 +42,13 @@ class AppController extends Controller {
             'httpOnly' => true
         ),
         'Security' => array(
-            'csrfExpires' => '+1 hour'
+            'csrfExpires' => '+1 hour',
+            'unlockedFields' => array( // dynamically added/changed fields
+                'Playlist.id',
+                'song',
+                'album',
+                'band'
+            )
         ),
         'DebugKit.Toolbar',
         'Image',
