@@ -495,11 +495,11 @@ class SongsController extends AppController {
                 if ($settings['Setting']['convert_to'] == 'mp3') {
                     $path = TMP.date('YmdHis').".mp3";
                     $song['Song']['path'] = $path;
-                    passthru($avconv.' -i "'.$song['Song']['source_path'].'" -threads 4  -c:a libmp3lame -b:a '.$bitrate.'k "'.$path.'" 2>&1');
+                    passthru($avconv . " -i '" . $song['Song']['source_path'] . "' -threads 4  -c:a libmp3lame -b:a " . $bitrate . "k '" . $path . "' 2>&1");
                 } elseif ($settings['Setting']['convert_to'] == 'ogg') {
                     $path = TMP.date('YmdHis').".ogg";
                     $song['Song']['path'] = $path;
-                    passthru($avconv.' -i "'.$song['Song']['source_path'].'" -threads 4  -c:a libvorbis -q:a '.$bitrate.' "'.$path.'" 2>&1');
+                    passthru($avconv . " -i '" . $song['Song']['source_path'] . "' -threads 4  -c:a libvorbis -q:a " . $bitrate . " '" . $path . "' 2>&1");
                 }
             } elseif (empty($song['Song']['path'])) {
                 $song['Song']['path'] = $song['Song']['source_path'];
