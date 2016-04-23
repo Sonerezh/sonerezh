@@ -33,3 +33,8 @@
 Icon?
 ehthumbs.db
 Thumbs.db
+
+# Sonerezh files #
+##################
+/app/tmp/*.ogg
+/app/tmp/*.mp3
