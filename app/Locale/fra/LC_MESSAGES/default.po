@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Sonerezh 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2016-04-09 22:33+0100\n"
+"PO-Revision-Date: 2016-04-24 11:34+0100\n"
 "Last-Translator: Guillaume Leduc <hey@sonerezh.bzh>\n"
 "Language-Team:  <hey@sonerezh.bzh>\n"
 "Language: French\n"
@@ -183,17 +183,13 @@ msgstr ""
 "Impossible de sauvegarder les métadonnées de la chanson dans la base de "
 "données"
 
-#: Controller/SongsController.php:214;324;367;453
-msgid "Oops!"
-msgstr "Oups !"
-
 #: Controller/SongsController.php:214;324;367
-msgid "The database is empty..."
-msgstr "La base de données est vide..."
+msgid "Oops! The database is empty..."
+msgstr "Oups ! La base de données est vide..."
 
 #: Controller/SongsController.php:453
-msgid "No results."
-msgstr "Pas de résultat."
+msgid "Oops! No results."
+msgstr "Oups ! Pas de résultat."
 
 #: Controller/UsersController.php:52
 msgid "User created: "
@@ -1002,6 +998,9 @@ msgstr "Une erreur est survenue lors de l'envoi."
 #: Model/User.php:validation for field avatar
 msgid "Your avatar must be in a correct format (JPEG, PNG, GIF)."
 msgstr "Votre avatar doit être au format JPEG, PNG ou GIF."
+
+#~ msgid "Oops!"
+#~ msgstr "Oups !"
 
 #~ msgid "Import cancelled"
 #~ msgstr "Import annulé"
