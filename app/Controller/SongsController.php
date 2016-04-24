@@ -375,7 +375,7 @@ class SongsController extends AppController {
      * We just make a SQL request...
      */
     public function search() {
-        $query = isset($this->request->query['q']) ? $this->request->query['q'] : false ;
+        $query = isset($this->request->query['q']) ? trim($this->request->query['q']) : false ;
 
         if ($query) {
             $this->Paginator->settings = array(
