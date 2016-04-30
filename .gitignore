@@ -1,6 +1,6 @@
 # CakePHP and Sonerezh ignored files
 # ----------------------------------
-/app/Config/ciphers.php
+#/app/Config/ciphers.php
 /app/Config/database.php
 /app/Config/email.php
 /app/tmp/tests
