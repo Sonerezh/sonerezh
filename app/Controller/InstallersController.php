@@ -91,12 +91,12 @@ class InstallersController extends AppController {
             $missing_requirements = true;
         }
 
-        $is_core_writable = is_writable(APP.'Config'.DS.'core.php');
+        $is_core_writable = is_writable(APP.'Config'.DS.'ciphers.php');
 
         if ($is_core_writable) {
-            $requirements['core'] = array('label' => 'success', 'message' => APP . 'Config' . DS . 'core.php ' . __('is writable'));
+            $requirements['core'] = array('label' => 'success', 'message' => APP . 'Config' . DS . 'ciphers.php ' . __('is writable'));
         } else {
-            $requirements['core'] = array('label' => 'danger', 'message' => APP . 'Config' . DS . 'core.php ' . __('is not writable'));
+            $requirements['core'] = array('label' => 'danger', 'message' => APP . 'Config' . DS . 'ciphers.php ' . __('is not writable'));
             $missing_requirements = true;
         }
 
@@ -206,7 +206,7 @@ class InstallersController extends AppController {
                 return;
             }
 
-            $core_config_file = new File(APP.'Config'.DS.'core.php');
+            $core_config_file = new File(APP.'Config'.DS.'ciphers.php');
             $core_config_file->replaceText(
                 array(
                     Configure::read('Security.cipherSeed'),
