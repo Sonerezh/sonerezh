@@ -1,5 +1,6 @@
-# User specific & automatically generated files #
-#################################################
+# CakePHP and Sonerezh ignored files
+# ----------------------------------
+/app/Config/ciphers.php
 /app/Config/database.php
 /app/Config/email.php
 /app/tmp/tests
@@ -12,19 +13,22 @@
 /dist
 /tags
 *.mo
+
 /app/webroot/img/thumbnails/
 /app/webroot/img/resized/
 /app/webroot/img/avatars/
+/app/tmp/*.ogg
+/app/tmp/*.mp3
 
-# IDE and editor specific files #
-#################################
+# IDE and editor specific files
+# ----------------------------------
 .idea
 /app/Config/database.php.pgsql
 /app/Config/database.php.mysql
 /app/Config/database.php.sqlite
 
-# OS generated files #
-######################
+# OS generated files
+# ----------------------------------
 .DS_Store
 .DS_Store?
 ._*
@@ -33,8 +37,3 @@
 Icon?
 ehthumbs.db
 Thumbs.db
-
-# Sonerezh files #
-##################
-/app/tmp/*.ogg
-/app/tmp/*.mp3

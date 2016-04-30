@@ -1,11 +1,11 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Sonerezh 1.0.0\n"
+"Project-Id-Version: Sonerezh 1.1.2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2016-04-24 11:34+0100\n"
+"PO-Revision-Date: 2016-04-30 17:07+0100\n"
 "Last-Translator: Guillaume Leduc <hey@sonerezh.bzh>\n"
-"Language-Team:  <hey@sonerezh.bzh>\n"
+"Language-Team: Sonerezh Team <hey@sonerezh.bzh>\n"
 "Language: French\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -17,7 +17,7 @@ msgstr ""
 "X-Loco-Target-Locale: zz_ZZ\n"
 "X-Generator: Poedit 1.5.4\n"
 
-#: Controller/AppController.php:89
+#: Controller/AppController.php:83
 msgid ""
 "Sonerezh is already installed. Remove or rename app/Config/database.php to "
 "run the installation again."
@@ -54,20 +54,20 @@ msgstr ""
 "sqlite)"
 
 #: Controller/InstallersController.php:65
-msgid "driver is installed."
-msgstr "pilote est installé."
+msgid "The %s driver is installed."
+msgstr "Le pilote %s est installé."
 
 #: Controller/InstallersController.php:80
-msgid "is required if you want to use Sonerezh with "
-msgstr "est requis si vous souhaitez utiliser Sonerezh avec "
+msgid "The %s driver is required if you want to use Sonerezh with %s"
+msgstr "Le pilote %s est requis si vous souhaitez utiliser Sonerezh avec %s"
 
 #: Controller/InstallersController.php:88;97
-msgid "is writable"
-msgstr "est accessible en écriture"
+msgid "%s is writable"
+msgstr "%s est accessible en écriture"
 
 #: Controller/InstallersController.php:90;99
-msgid "is not writable"
-msgstr "n'est pas accessible en écriture"
+msgid "%s is not writable"
+msgstr "%s n'est pas accessible en écriture"
 
 #: Controller/InstallersController.php:131
 msgid "Wrong datasource."
@@ -305,7 +305,7 @@ msgstr "Lire après"
 msgid "Add to Up Next"
 msgstr "Ajouter à la file d'attente"
 
-#: View/Elements/add_menu.ctp:5 View/Elements/add_to_playlist.ctp:37
+#: View/Elements/add_menu.ctp:5 View/Elements/add_to_playlist.ctp:43
 #: View/Elements/artists_view.ctp:27;67 View/Songs/album.ctp:14
 msgid "Add to..."
 msgstr "Ajouter à..."
@@ -314,21 +314,21 @@ msgstr "Ajouter à..."
 msgid "Select a playlist"
 msgstr "Sélectionner une liste de lecture"
 
-#: View/Elements/add_to_playlist.ctp:61
+#: View/Elements/add_to_playlist.ctp:67
 msgid "Playlist Title"
 msgstr "Titre de la liste de lecture"
 
-#: View/Elements/add_to_playlist.ctp:75
+#: View/Elements/add_to_playlist.ctp:81
 msgid "Add"
 msgstr "Ajouter"
 
 #: View/Elements/admin_navbar.ctp:2 View/Elements/default_navbar.ctp:2
-#: View/Settings/index.ctp:154
+#: View/Settings/index.ctp:155
 msgid "Artists"
 msgstr "Artistes"
 
 #: View/Elements/admin_navbar.ctp:3 View/Elements/default_navbar.ctp:3
-#: View/Settings/index.ctp:158
+#: View/Settings/index.ctp:159
 msgid "Albums"
 msgstr "Albums"
 
@@ -342,7 +342,7 @@ msgstr "Listes de lecture"
 msgid "Search"
 msgstr "Rechercher"
 
-#: View/Elements/admin_navbar.ctp:13 View/Settings/index.ctp:116
+#: View/Elements/admin_navbar.ctp:13 View/Settings/index.ctp:117
 msgid "Database update"
 msgstr "Mettre à jour la base"
 
@@ -538,7 +538,7 @@ msgstr "La file d'attente est vide."
 msgid "Queue"
 msgstr "File d'attente"
 
-#: View/Layouts/default.ctp:115 View/Settings/index.ctp:162
+#: View/Layouts/default.ctp:115 View/Settings/index.ctp:163
 msgid "Songs"
 msgstr "Pistes"
 
@@ -618,39 +618,39 @@ msgstr "Enregistrer"
 msgid "Sonerezh settings"
 msgstr "Préférences de Sonerezh"
 
-#: View/Settings/index.ctp:15;26;42
+#: View/Settings/index.ctp:16;27;43
 msgid "Music root directory"
 msgstr "Emplacement de la librairie"
 
-#: View/Settings/index.ctp:49
+#: View/Settings/index.ctp:50
 msgid ""
 "Make sure Sonerezh can read this folder recursively. Current App folder is:"
 msgstr ""
 "Assurez-vous que Sonerezh puisse lire ce dossier de manière récursive. "
 "Racine de l'application :"
 
-#: View/Settings/index.ctp:55
+#: View/Settings/index.ctp:56
 msgid "Enable mail notifications."
 msgstr "Activer les notifications par email."
 
-#: View/Settings/index.ctp:61
+#: View/Settings/index.ctp:62
 msgid "Sonerezh can send an email on users creation to notify them."
 msgstr ""
 "Sonerezh peut vous envoyer des emails lors de certains événements (création "
 "d'utilisateurs...)"
 
-#: View/Settings/index.ctp:73
+#: View/Settings/index.ctp:74
 msgid "Automatic tracks conversion"
 msgstr "Conversion automatique des pistes"
 
-#: View/Settings/index.ctp:78
+#: View/Settings/index.ctp:79
 msgid ""
 "The command 'avconv' is not available. Sonerezh cannot convert your tracks."
 msgstr ""
 "La commande 'avconv' n'est pas disponible. Sonerezh ne pourra pas convertir "
 "vos pistes."
 
-#: View/Settings/index.ctp:83
+#: View/Settings/index.ctp:84
 msgid ""
 "If you have heterogeneous formats in your collection, and because your "
 "browser cannot read them all, Sonerezh can convert your tracks to MP3 or OGG/"
@@ -662,58 +662,58 @@ msgstr ""
 "MP3 ou OGG/Vorbis avant de les diffuser. Les morceaux convertis seront "
 "stockés dans le \"Cache audio\"."
 
-#: View/Settings/index.ctp:88
+#: View/Settings/index.ctp:89
 msgid "Source format"
 msgstr "Format source"
 
-#: View/Settings/index.ctp:95
+#: View/Settings/index.ctp:96
 msgid "Destination format"
 msgstr "Format de destination"
 
-#: View/Settings/index.ctp:97
+#: View/Settings/index.ctp:98
 msgid "Quality"
 msgstr "Qualité"
 
-#: View/Settings/index.ctp:109
+#: View/Settings/index.ctp:110
 msgid "Submit"
 msgstr "Enregistrer"
 
-#: View/Settings/index.ctp:113
+#: View/Settings/index.ctp:114
 msgid "Database management"
 msgstr "Gestion de la base de données"
 
-#: View/Settings/index.ctp:119
+#: View/Settings/index.ctp:120
 msgid "Clear the cache"
 msgstr "Nettoyer le cache"
 
-#: View/Settings/index.ctp:122
+#: View/Settings/index.ctp:123
 msgid "Reset the database"
 msgstr "Réinitialiser la base"
 
-#: View/Settings/index.ctp:122
+#: View/Settings/index.ctp:123
 msgid "Are you sure? All your songs and playlists will disappear!"
 msgstr ""
 "Etes-vous sûr ? Toutes vos pistes et vos listes de lecture seront "
 "supprimées !"
 
-#: View/Settings/index.ctp:129
+#: View/Settings/index.ctp:130
 msgid "Support Sonerezh!"
 msgstr "Soutenir Sonerezh!"
 
-#: View/Settings/index.ctp:131
+#: View/Settings/index.ctp:132
 msgid "Help us to provide you the best music player! Make a donation."
 msgstr ""
 "Aidez-nous à vous fournir le meilleur lecteur de musique ! Faites un don."
 
-#: View/Settings/index.ctp:149
+#: View/Settings/index.ctp:150
 msgid "Sonerezh statistics"
 msgstr "Statistiques de Sonerezh"
 
-#: View/Settings/index.ctp:166
+#: View/Settings/index.ctp:167
 msgid "Thumbnails cache"
 msgstr "Cache des miniatures"
 
-#: View/Settings/index.ctp:170
+#: View/Settings/index.ctp:171
 msgid "Songs cache"
 msgstr "Cache audio"
 

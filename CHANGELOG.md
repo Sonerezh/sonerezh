@@ -1,3 +1,14 @@
+Changes with 1.1.2
+------------------
+Bug / Security fixes:
+* Fix #183: Bug if the artist string contains "$"
+* Fix #178: Problem with file rights at installation
+* Fix #177: Trim whitespace characters on search request
+* Fix #143: Cannot choose output bitrate in conversion window
+* Fix #60: Store cipherSeed and salt outside app/Config/core.php
+* French translation improvements
+* Other minor bugfixes
+
 Changes with 1.1.1
 ------------------
 Bug / Security fixes:

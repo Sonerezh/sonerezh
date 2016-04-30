@@ -62,7 +62,7 @@ class InstallersController extends AppController {
         } else {
             foreach ($drivers as $driver) {
                 if (in_array($driver, $pdo_drivers)) {
-                    $requirements[$driver] = array('label' => 'success', 'message' => $driver . ' ' .  __('driver is installed.'));
+                    $requirements[$driver] = array('label' => 'success', 'message' => __('The %s driver is installed.', $driver));
 
                     switch ($driver) {
                         case 'mysql':
@@ -77,7 +77,7 @@ class InstallersController extends AppController {
                     }
 
                 } else {
-                    $requirements[$driver] = array('label' => 'warning', 'message' => $driver . ' ' . __('is required if you want to use Sonerezh with ') . $driver);
+                    $requirements[$driver] = array('label' => 'warning', 'message' => __('The %s driver is required if you want to use Sonerezh with %s', array($driver, $driver)));
                 }
             }
         }
@@ -85,18 +85,18 @@ class InstallersController extends AppController {
         $is_config_writable = is_writable(APP.'Config');
 
         if ($is_config_writable) {
-            $requirements['conf'] = array('label' => 'success', 'message' => APP . 'Config ' . __('is writable'));
+            $requirements['conf'] = array('label' => 'success', 'message' => __('%s is writable', APP . 'Config'));
         } else {
-            $requirements['conf'] = array('label' => 'danger', 'message' => APP . 'Config ' . __('is not writable'));
+            $requirements['conf'] = array('label' => 'danger', 'message' => __('%s is not writable', APP . 'Config'));
             $missing_requirements = true;
         }
 
         $is_core_writable = is_writable(APP.'Config'.DS.'ciphers.php');
 
         if ($is_core_writable) {
-            $requirements['core'] = array('label' => 'success', 'message' => APP . 'Config' . DS . 'ciphers.php ' . __('is writable'));
+            $requirements['core'] = array('label' => 'success', 'message' => __('%s is writable', APP . 'Config' . DS . 'ciphers.php'));
         } else {
-            $requirements['core'] = array('label' => 'danger', 'message' => APP . 'Config' . DS . 'ciphers.php ' . __('is not writable'));
+            $requirements['core'] = array('label' => 'danger', 'message' => __('%s is not writable', APP . 'Config' . DS . 'ciphers.php'));
             $missing_requirements = true;
         }
 

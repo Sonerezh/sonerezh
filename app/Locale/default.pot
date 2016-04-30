@@ -13,7 +13,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: Controller/AppController.php:89
+#: Controller/AppController.php:83
 msgid "Sonerezh is already installed. Remove or rename app/Config/database.php to run the installation again."
 msgstr ""
 
@@ -38,19 +38,19 @@ msgid "At least one PDO driver must be installed to run Sonerezh (mysql, pgsql o
 msgstr ""
 
 #: Controller/InstallersController.php:65
-msgid "driver is installed."
+msgid "The %s driver is installed."
 msgstr ""
 
 #: Controller/InstallersController.php:80
-msgid "is required if you want to use Sonerezh with "
+msgid "The %s driver is required if you want to use Sonerezh with %s"
 msgstr ""
 
 #: Controller/InstallersController.php:88;97
-msgid "is writable"
+msgid "%s is writable"
 msgstr ""
 
 #: Controller/InstallersController.php:90;99
-msgid "is not writable"
+msgid "%s is not writable"
 msgstr ""
 
 #: Controller/InstallersController.php:131
@@ -293,7 +293,7 @@ msgid "Add to Up Next"
 msgstr ""
 
 #: View/Elements/add_menu.ctp:5
-#: View/Elements/add_to_playlist.ctp:37
+#: View/Elements/add_to_playlist.ctp:43
 #: View/Elements/artists_view.ctp:27;67
 #: View/Songs/album.ctp:14
 msgid "Add to..."
@@ -304,23 +304,23 @@ msgstr ""
 msgid "Select a playlist"
 msgstr ""
 
-#: View/Elements/add_to_playlist.ctp:61
+#: View/Elements/add_to_playlist.ctp:67
 msgid "Playlist Title"
 msgstr ""
 
-#: View/Elements/add_to_playlist.ctp:75
+#: View/Elements/add_to_playlist.ctp:81
 msgid "Add"
 msgstr ""
 
 #: View/Elements/admin_navbar.ctp:2
 #: View/Elements/default_navbar.ctp:2
-#: View/Settings/index.ctp:154
+#: View/Settings/index.ctp:155
 msgid "Artists"
 msgstr ""
 
 #: View/Elements/admin_navbar.ctp:3
 #: View/Elements/default_navbar.ctp:3
-#: View/Settings/index.ctp:158
+#: View/Settings/index.ctp:159
 msgid "Albums"
 msgstr ""
 
@@ -337,7 +337,7 @@ msgid "Search"
 msgstr ""
 
 #: View/Elements/admin_navbar.ctp:13
-#: View/Settings/index.ctp:116
+#: View/Settings/index.ctp:117
 msgid "Database update"
 msgstr ""
 
@@ -528,7 +528,7 @@ msgid "Queue"
 msgstr ""
 
 #: View/Layouts/default.ctp:115
-#: View/Settings/index.ctp:162
+#: View/Settings/index.ctp:163
 msgid "Songs"
 msgstr ""
 
@@ -614,83 +614,83 @@ msgstr ""
 msgid "Sonerezh settings"
 msgstr ""
 
-#: View/Settings/index.ctp:15;26;42
+#: View/Settings/index.ctp:16;27;43
 msgid "Music root directory"
 msgstr ""
 
-#: View/Settings/index.ctp:49
+#: View/Settings/index.ctp:50
 msgid "Make sure Sonerezh can read this folder recursively. Current App folder is:"
 msgstr ""
 
-#: View/Settings/index.ctp:55
+#: View/Settings/index.ctp:56
 msgid "Enable mail notifications."
 msgstr ""
 
-#: View/Settings/index.ctp:61
+#: View/Settings/index.ctp:62
 msgid "Sonerezh can send an email on users creation to notify them."
 msgstr ""
 
-#: View/Settings/index.ctp:73
+#: View/Settings/index.ctp:74
 msgid "Automatic tracks conversion"
 msgstr ""
 
-#: View/Settings/index.ctp:78
+#: View/Settings/index.ctp:79
 msgid "The command 'avconv' is not available. Sonerezh cannot convert your tracks."
 msgstr ""
 
-#: View/Settings/index.ctp:83
+#: View/Settings/index.ctp:84
 msgid "If you have heterogeneous formats in your collection, and because your browser cannot read them all, Sonerezh can convert your tracks to MP3 or OGG/Vorbis before being played. The converted songs will be stored in the \"Songs Cache\"."
 msgstr ""
 
-#: View/Settings/index.ctp:88
+#: View/Settings/index.ctp:89
 msgid "Source format"
 msgstr ""
 
-#: View/Settings/index.ctp:95
+#: View/Settings/index.ctp:96
 msgid "Destination format"
 msgstr ""
 
-#: View/Settings/index.ctp:97
+#: View/Settings/index.ctp:98
 msgid "Quality"
 msgstr ""
 
-#: View/Settings/index.ctp:109
+#: View/Settings/index.ctp:110
 msgid "Submit"
 msgstr ""
 
-#: View/Settings/index.ctp:113
+#: View/Settings/index.ctp:114
 msgid "Database management"
 msgstr ""
 
-#: View/Settings/index.ctp:119
+#: View/Settings/index.ctp:120
 msgid "Clear the cache"
 msgstr ""
 
-#: View/Settings/index.ctp:122
+#: View/Settings/index.ctp:123
 msgid "Reset the database"
 msgstr ""
 
-#: View/Settings/index.ctp:122
+#: View/Settings/index.ctp:123
 msgid "Are you sure? All your songs and playlists will disappear!"
 msgstr ""
 
-#: View/Settings/index.ctp:129
+#: View/Settings/index.ctp:130
 msgid "Support Sonerezh!"
 msgstr ""
 
-#: View/Settings/index.ctp:131
+#: View/Settings/index.ctp:132
 msgid "Help us to provide you the best music player! Make a donation."
 msgstr ""
 
-#: View/Settings/index.ctp:149
+#: View/Settings/index.ctp:150
 msgid "Sonerezh statistics"
 msgstr ""
 
-#: View/Settings/index.ctp:166
+#: View/Settings/index.ctp:167
 msgid "Thumbnails cache"
 msgstr ""
 
-#: View/Settings/index.ctp:170
+#: View/Settings/index.ctp:171
 msgid "Songs cache"
 msgstr ""
 
