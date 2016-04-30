@@ -31,7 +31,13 @@
 <div class="modal fade" id="add-to">
     <div class="modal-dialog">
         <div class="modal-content">
-            <?php echo $this->Form->create('PlaylistMembership', array('url' => array('controller' => 'playlist_memberships', 'action' => 'add'))); ?>
+            <?php
+            echo $this->Form->create('PlaylistMembership', array('url' => array('controller' => 'playlist_memberships', 'action' => 'add')));
+            $this->Form->unlockField('Playlist.id');
+            $this->Form->unlockField('song');
+            $this->Form->unlockField('album');
+            $this->Form->unlockField('band');
+            ?>
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                 <h4 class="modal-title"><?php echo __('Add to...'); ?></h4>
