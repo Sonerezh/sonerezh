@@ -1,5 +1,8 @@
 Changes with 1.1.2
 ------------------
+New features:
+* You can now download a track
+
 Bug / Security fixes:
 * Fix #183: Bug if the artist string contains "$"
 * Fix #178: Problem with file rights at installation

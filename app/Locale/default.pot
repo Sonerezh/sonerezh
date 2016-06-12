@@ -299,6 +299,10 @@ msgstr ""
 msgid "Add to..."
 msgstr ""
 
+#: View/Elements/add_menu.ctp:8
+msgid "Download"
+msgstr ""
+
 #: View/Elements/add_to_playlist.ctp:5
 #: View/PlaylistMemberships/add.ctp:12
 msgid "Select a playlist"

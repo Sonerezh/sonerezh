@@ -110,7 +110,7 @@
                                         </td>
                                         <td class="text-right playtime-cell">
                                             <span class="song-playtime"><?php echo h($song['playtime']); ?></span>
-                                            <?php echo $this->element('add_menu'); ?>
+                                            <?php echo $this->element('add_menu', array('song_id' => h($song['id']), 'song_title' => h($song['title']))); ?>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>

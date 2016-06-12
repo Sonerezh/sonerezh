@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Sonerezh 1.1.2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2016-04-30 17:07+0100\n"
+"PO-Revision-Date: 2016-06-12 18:46+0100\n"
 "Last-Translator: Guillaume Leduc <hey@sonerezh.bzh>\n"
 "Language-Team: Sonerezh Team <hey@sonerezh.bzh>\n"
 "Language: French\n"
@@ -309,6 +309,10 @@ msgstr "Ajouter à la file d'attente"
 #: View/Elements/artists_view.ctp:27;67 View/Songs/album.ctp:14
 msgid "Add to..."
 msgstr "Ajouter à..."
+
+#: View/Elements/add_menu.ctp:8
+msgid "Download"
+msgstr "Télécharger"
 
 #: View/Elements/add_to_playlist.ctp:5 View/PlaylistMemberships/add.ctp:12
 msgid "Select a playlist"
