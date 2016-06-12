@@ -1,7 +1,7 @@
 Sonerezh
 ========
 
-A self-hosted, web-based application for stream your music, everywhere.
+A self-hosted, web-based application to stream your music, everywhere.
 
 Some Handy Links
 ----------------
