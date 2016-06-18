@@ -144,29 +144,22 @@ function init() {
         }
     });
 
+    $('#content').on('mousedown', 'tr[data-id]', function(e) {
+        if (e.which == 2){      // Middle mouse click
+            e.preventDefault();
+            var songId = $(this).attr('data-id');
+            player.playNext(songsManager.getSong(songId));
+            $(this).addClass('alert-info on-air');
+            if (player.getCurrentTrack().id == songId) player.play();
+        }
+    });
+
     $('#content').on('dblclick', 'tr[data-id]', function(e) {
         e.preventDefault();
         var songId = $(this).attr('data-id');
-        var view = $('[data-view]').attr('data-view');
-
-        if (view == 'default') {
-            var songs = songsManager.getAllSongs();
-        } else if (view == 'artists' || view == 'search') {
-            var band = $(this).parents('[data-band]').attr('data-band');
-            var songs = songsManager.getBandSongs(band);
-        } else if (view == 'albums') {
-            var band = $(this).parents('[data-band]').attr('data-band');
-            var album = $(this).parents('[data-album]').attr('data-album');
-            var songs = songsManager.getAlbumSongs(band, album);
-        } else {
-            var songs = [songsManager.getSong(songId)];
-        }
-
-        populatePlaylist(songs);
-        if (player.isShuffle()) {
-            player.setFirst(songId);
-        }
-        player.play(songId);
+        player.add(songsManager.getSong(songId));
+        $(this).addClass('alert-info');
+        if (player.getCurrentTrack().id == songId) player.play();
     });
 
     $('#content').on('click', pauseTitle, function(e) {
@@ -178,12 +171,14 @@ function init() {
         e.preventDefault();
         var songId = $(this).parents('[data-id]').attr('data-id');
         player.playNext(songsManager.getSong(songId));
+        $(this).parents('[data-id]').addClass('alert-info on-air');
     });
 
     $('#content').on('click', playTitleAfter, function(e) {
         e.preventDefault();
         var songId = $(this).parents('[data-id]').attr('data-id');
         player.add(songsManager.getSong(songId));
+        $(this).parents('[data-id]').addClass('alert-info');
     });
 
     $('#content').on('click', playBand, function(e) {
@@ -487,7 +482,7 @@ function updateSelectedSong() {
     var track = player.getCurrentTrack();
     if (track) {
         $('tr.on-air').removeClass('on-air');
-        $('#content tr[data-id="'+track.id+'"]').addClass('on-air');
+        $('#content tr[data-id="'+track.id+'"]').addClass('on-air').removeClass('alert-info');
         $('#queue').find('[data-index="'+player.getCurrentIndex()+'"]').addClass('on-air');
         if (!player.isPlaying()) {
             $('#content tr[data-id="'+track.id+'"]').addClass('paused');

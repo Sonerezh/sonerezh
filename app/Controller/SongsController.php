@@ -464,6 +464,35 @@ class SongsController extends AppController {
     }
 
     /**
+     * Guillaume: Altered version of /lib/Cake/Network/CakeResponse.php _sendFile function
+     */
+    public function streamFile($path, $format, $bitrate) {
+        $minBuffer = 256 * $bitrate;
+        while (!file_exists($path)) {}
+        while (filesize($path) <= $minBuffer) { clearstatcache(); }
+        $file = fopen($path, 'rb');
+        set_time_limit(0);
+        ob_end_clean();
+        if (ob_get_level() == 0) ob_start();
+        $readPos = 0;
+        header("Cache-Control: no-store, no-cache, must-revalidate");
+        header("Content-Type: audio/" . $format);
+        while (!feof($file)) {
+            clearstatcache();
+            $currentSize = filesize($path);
+            $length = $currentSize - $readPos;
+            if ($length) $buffer = fread($file, $length);
+            echo $buffer;
+            $readPos += strlen($buffer);
+            if (ob_get_level()) ob_flush();
+            flush();
+            sleep(1);
+        }
+        if (ob_get_length()) ob_end_flush();
+        fclose($file);
+    }
+
+    /**
      * This function is called by the player when you click on 'Play'
      * The file extension is checked to know if Sonerezh must converts the track.
      *
@@ -495,11 +524,15 @@ class SongsController extends AppController {
                 if ($settings['Setting']['convert_to'] == 'mp3') {
                     $path = TMP.date('YmdHis').".mp3";
                     $song['Song']['path'] = $path;
-                    passthru($avconv . " -i " . escapeshellarg($song['Song']['source_path']) . "' -threads 4  -c:a libmp3lame -b:a " . escapeshellarg($bitrate) . "k " . escapeshellarg($path) . " 2>&1");
+                    //passthru($avconv . " -i " . escapeshellarg($song['Song']['source_path']) . "' -threads 4  -c:a libmp3lame -b:a " . escapeshellarg($bitrate) . "k " . escapeshellarg($path) . " 2>&1");
+                    exec('bash -c "exec nohup setsid \"'.$avconv.'\" -i \"'.$song['Song']['source_path'].'\" -threads 3 -c:a libmp3lame -q:a 2 \"'.$path.'\" > /dev/null 2>&1 &"');
+                    $converted = true;
                 } elseif ($settings['Setting']['convert_to'] == 'ogg') {
                     $path = TMP.date('YmdHis').".ogg";
                     $song['Song']['path'] = $path;
-                    passthru($avconv . " -i " . escapeshellarg($song['Song']['source_path']) . " -threads 4 -c:a libvorbis -q:a " . escapeshellarg($bitrate) . " " . escapeshellarg($path) . " 2>&1");
+                    //passthru($avconv . " -i " . escapeshellarg($song['Song']['source_path']) . " -threads 4 -c:a libvorbis -q:a " . escapeshellarg($bitrate) . " " . escapeshellarg($path) . " 2>&1");
+                    exec('bash -c "exec nohup setsid \"'.$avconv.'\" -i \"'.$song['Song']['source_path'].'\" -threads 3 -c:a libvorbis -q:a '.$bitrate.' \"'.$path.'\" > /dev/null 2>&1 &"');
+                    $converted = true;
                 }
             } elseif (empty($song['Song']['path'])) {
                 $song['Song']['path'] = $song['Song']['source_path'];
@@ -507,6 +540,7 @@ class SongsController extends AppController {
 
             $this->Song->id = $id;
             $this->Song->save($song);
+            if ($converted) return $this->streamFile($song['Song']['path'], $settings['Setting']['convert_to'], $bitrate);
         }
 
         // Symlink files whose name contains '..' to avoid CakePHP request error.
