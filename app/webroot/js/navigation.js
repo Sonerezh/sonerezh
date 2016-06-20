@@ -5,6 +5,8 @@ window.paceOptions = {
 $(function(){
     var referrer = document.location.pathname;
 
+    window.collapsed = false;
+
     function loadPage(url, pushState, method, data) {
         Pace.restart();
         if(url.indexOf("ajax=true") == -1){
@@ -90,8 +92,28 @@ $(function(){
     selectMenuItem(referrer);
     $('body').infinitescroll({callback: updateSelectedSong, loadBefore: '600'});
 
+
+    $('#content').on('click', '[data-band]>div.col-xs-10, [data-band]>.clearfix', function(e) {
+        e.preventDefault();
+        $(this).parent().find('.col-xs-12').slideToggle();
+    });
+
+
     $(document).on('click', 'a:not(.no-ajax)', function(e){
         e.preventDefault();
+
+        if ($(this).attr('href') == '/artists' && $(this).parent('li').hasClass('active')) {
+            if (window.collapsed)
+                $('#content').find('.col-xs-12:not([data-band])').slideDown().parents('#content')
+                             .find('[data-band]').css('margin-bottom', '25px');
+            else
+                $('#content').find('.col-xs-12:not([data-band])').slideUp().parents('#content')
+                             .find('[data-band]').css('margin-bottom', '-25px');
+            window.collapsed = !window.collapsed;
+            $(window).scroll();
+            return;
+        }
+
         var url = $(this).attr('href');
         if($(this).data('confirm') && !confirm($(this).data('confirm'))){
             return;

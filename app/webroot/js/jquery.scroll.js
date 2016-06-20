@@ -17,7 +17,7 @@
             }
             if(loading)
                 return;
-            if($(document).height()-settings.loadBefore <= ($(document).scrollTop()+$(window).height())){
+            if(window.collapsed || $(document).height()-settings.loadBefore <= ($(document).scrollTop()+$(window).height())){
                 var link = $(settings.nextSelector).attr('href');
                 if(link === undefined){
                     return;
@@ -30,6 +30,12 @@
                     success: function(data){
                         var html = data[2].html;
                         var nextLink = $(html).find(settings.nextSelector).attr('href');
+
+                        if (window.collapsed)
+                            html = $('<div id="wrap">'+ html +'</div>')
+                                .find('.col-xs-12:not([data-band])').hide().parents('#wrap')
+                                .find('[data-band]').css('margin-bottom', '-25px').parents('#wrap').html();
+
                         $(settings.nextSelector).attr('href', nextLink ? nextLink : null);
                         $('[data-scroll-container="true"]').append($(html).find('[data-scroll-content="true"]'));
                         loading = false;
