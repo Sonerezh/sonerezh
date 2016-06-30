@@ -111,6 +111,7 @@ $(function(){
                              .find('[data-band]').css('margin-bottom', '-25px');
             window.collapsed = !window.collapsed;
             $(window).scroll();
+            if (window.collapsed) setTimeout(function(){$(window).scroll()}, 1500);  // Prevent unscrollable list
             return;
         }
 
