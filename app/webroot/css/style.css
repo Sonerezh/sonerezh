@@ -18,6 +18,16 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     line-height: 1.2;
 }
 
+/* Guillaume */
+hr { margin: 0; padding-bottom: 20px; }
+
+.nav>li.active>a[href='/artists'],
+.band-name>hr, .band-stats { cursor: alias; }
+.band-name h3, .album:not(.row) h3, .album h4 { display: inline-block; cursor: help; }
+.band-stats { padding-bottom: 20px; }
+tr[data-id]{ cursor: copy !important; }
+/* END Guillaume */
+
 .alert {
     margin-bottom: 0;
     margin-top: 20px;

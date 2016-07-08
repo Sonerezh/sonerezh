@@ -5,9 +5,8 @@ window.paceOptions = {
 $(function(){
     var referrer = document.location.pathname;
 
-    window.collapsed = false;
-
     function loadPage(url, pushState, method, data) {
+        window.collapsed = false;
         Pace.restart();
         if(url.indexOf("ajax=true") == -1){
             if(url.indexOf("?") == -1){
@@ -93,9 +92,26 @@ $(function(){
     $('body').infinitescroll({callback: updateSelectedSong, loadBefore: '600'});
 
 
-    $('#content').on('click', '[data-band]>div.col-xs-10, [data-band]>.clearfix', function(e) {
+    $('#content').on('click', '[data-band]>hr', function(e) {
         e.preventDefault();
         $(this).parent().find('.col-xs-12').slideToggle();
+    });
+    $('#content').on('click', '[data-band] .band-stats', function(e) {
+        e.preventDefault();
+        $(this).parent().parent().find('.col-xs-12').slideToggle();
+    });
+
+    $('#content').on('click', '[data-band]>.col-xs-10>h3', function(e) {
+        e.preventDefault();
+        loadPage('search?q='+$(this).parent().parent().attr('data-band'));
+    });
+    $('#content').on('click', '[data-album]>.col-xs-10>h4', function(e) {
+        e.preventDefault();
+        loadPage('search?q='+$(this).parent().parent().attr('data-album'));
+    });
+    $('#content').on('click', '[data-album]>.container>.album>.col-xs-12>h4', function(e) {
+        e.preventDefault();
+        loadPage('search?q='+$(this).parent().parent().parent().parent().attr('data-band'));
     });
 
 
