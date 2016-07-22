@@ -8,9 +8,19 @@ App::uses('AppModel', 'Model');
  * @property PlaylistMembership $PlaylistMembership
  */
 class Playlist extends AppModel {
+
     public $hasMany = array(
         'PlaylistMembership' => array(
             'dependent' => true
+        )
+    );
+
+    public $validate = array(
+        'title' => array(
+            'notBlank' => array(
+                'rule'      => 'notBlank',
+                'required'  => true,
+                'message'   => 'Enter a playlist title')
         )
     );
 

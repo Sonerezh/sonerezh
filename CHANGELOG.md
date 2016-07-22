@@ -4,6 +4,7 @@ New features:
 * You can now download a track
 
 Bug / Security fixes:
+* Merge #215: Playlist title cannot be empty (Thanks to disc)
 * Fix #207: Broken disc info on OGG files
 * Fix #199: Improve the message on the cli tool
 * Fix #196: Error on import when people mess with dates
