@@ -8,5 +8,9 @@ App::uses('AppModel', 'Model');
  * @property PlaylistMembership $PlaylistMembership
  */
 class Song extends AppModel {
-    public $hasMany = array('PlaylistMembership');
+    public $hasMany = array(
+        'PlaylistMembership' => array(
+            'dependent' => true
+        )
+    );
 }

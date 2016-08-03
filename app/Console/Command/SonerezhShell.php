@@ -61,6 +61,35 @@ class SonerezhShell extends AppShell {
         $already_imported = $this->Song->find('list', array(
             'fields' => array('Song.id', 'Song.source_path')
         ));
+        
+        // Guillaume MOD: clean up removed files
+        $cascade = true;  // Removes files from playlists??
+        foreach ($already_imported as $id => $path) {
+            if (!file_exists($path)) {
+                $this->out("<info>[INFO]</info> File ($id) $path not found. Song will be removed from database.");
+
+                $song = $this->Song->findById($id);
+                
+                if (strpos($song['Song']['path'], TMP) !== false) {
+                    if (unlink($song['Song']['path']))
+                        $this->out("<info>[INFO]</info> Conversion file ".$song['Song']['path']." removed.");
+                    else
+                        $this->out("<error>[ERROR]</error> Conversion file ".$song['Song']['path']." could not be removed.");
+                }
+
+                $cover = $song['Song']['cover'];
+                if (!empty($cover) && $this->Song->find('count', array('conditions' => array('cover' => $cover))) == 1) {
+                    $this->out("<info>[INFO]</info> Removing thumbnail files ($cover).");
+                    unlink(IMAGES.THUMBNAILS_DIR.DS.$cover);
+                    $resized_mask = RESIZED_DIR . substr($cover, 0, (strrpos($cover, ".")-1)) ."*.*";
+                    array_map('unlink', glob($resized_mask));
+                }
+                
+                $this->Song->delete($id, $cascade);
+                $this->out("<info>[INFO]</info> Song is removed.");
+            }
+        }
+        // END Guillaume
 
         $to_import = array_merge(array_diff($found, $already_imported));
         $to_import_count = count($to_import);
