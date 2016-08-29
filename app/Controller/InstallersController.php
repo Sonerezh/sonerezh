@@ -27,6 +27,7 @@ class InstallersController extends AppController {
      * The first users is also created here, with the administrator role, and the default settings are applied.
      */
     public function index() {
+        clearstatcache();
         $this->view = "index";
         $requirements = array();
         $missing_requirements = false;
@@ -40,11 +41,15 @@ class InstallersController extends AppController {
             $missing_requirements = true;
         }
 
-		if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-			$libavtools = shell_exec("where avconv") || shell_exec("where ffmpeg");//WIN
-		} else {
-			$libavtools = shell_exec("which avconv") || shell_exec("which ffmpeg");//NO WIN
-		}
+        if ($this->func_enabled('shell_exec')['s'] == 1) {
+    		if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+    			$libavtools = shell_exec("where avconv") || shell_exec("where ffmpeg");//WIN
+    		} else {
+    			$libavtools = shell_exec("which avconv") || shell_exec("which ffmpeg");//NO WIN
+    		}
+        } else {
+            $libavtools = false;
+        }
 
         if ($libavtools) {
             $requirements['libavtools'] = array('label' => 'success', 'message' => __('libav-tools (avconv) is installed!'));
@@ -135,12 +140,17 @@ class InstallersController extends AppController {
             // Write app/Config/database.php
             $db_config_file = new File(APP.'Config'.DS.'database.php');
 
-            if ($db_config_file->create()) {
+            if ($db_config_file->create() === true) {
                 $db_config_data = "<?php\n";
                 $db_config_data .= "class DATABASE_CONFIG {\n";
                 $db_config_data .= 'public $default = '.var_export($db_config_array, true).";\n";
                 $db_config_data .= '}';
-                $db_config_file->write($db_config_data);
+                // $db_config_file->write($db_config_data,'w',false);
+                file_put_contents(APP.'Config'.DS.'database.php', $db_config_data);
+                if (!file_exists($db_config_file->path)) {
+                    $this->Flash->error(__('Unable to write configuration file.'));
+                    return;
+                }
             } else {
                 $this->Flash->error(__('Unable to write configuration file.'));
                 return;
@@ -169,7 +179,7 @@ class InstallersController extends AppController {
                 $db_connection = ConnectionManager::getDataSource('default');
                 $db_connection->connect();
             } catch (Exception $e) {
-                $db_config_file->delete();
+               // $db_config_file->delete();
                 $this->Flash->error(__('Could not connect to database'));
                 return;
             }

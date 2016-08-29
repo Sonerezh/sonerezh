@@ -432,7 +432,7 @@ class I18n {
 				if (is_file($file . '.mo')) {
 					$translations = static::loadMo($file . '.mo');
 				}
-				if ($translations === false && is_file($file . '.po')) {
+				if ($translations === false && is_file(trim($file) . '.po')) {
 					$translations = static::loadPo($file . '.po');
 				}
 

@@ -222,18 +222,23 @@
 	Configure::write('Session', array(
 		'defaults' => 'php',
 		'cookie' => 'Sonerezh',
-		'timeout' => 4320
+		'timeout' => 4320,
+		'ini' => array(
+			'session.save_handler' => 'files',
+			'session.cookie_lifetime' => 0,
+			'session.cookie_httponly' => 0
+		)
 	));
 
 /**
  * A random string used in security hashing methods.
  */
-	Configure::write('Security.salt', 'AUZCf9nyl8MvKoeElb2elVOPzCxny7TZRIrWHFlS');
+	Configure::write('Security.salt', 'LKoCJQ0LKeN6gXzCNfsEtzyhBH803OEDoS6Yz6ya');
 
 /**
  * A random numeric string (digits only) used to encrypt/decrypt strings.
  */
-	Configure::write('Security.cipherSeed', '8584443986453549548448780006040768989077');
+	Configure::write('Security.cipherSeed', '1603162903989056101141254979932991296475');
 
 /**
  * Apply timestamps with the last modified time to static assets (js, css, images).

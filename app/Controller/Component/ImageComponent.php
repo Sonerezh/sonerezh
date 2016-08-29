@@ -12,7 +12,12 @@ class ImageComponent extends Component{
 
         $dimensions = getimagesize($img);
         $ratio		= $dimensions[0] / $dimensions[1];
-        $exif = exif_read_data($img);
+        $extension = strtolower(end(explode(".", $img)));
+        if (in_array($extention,array('jpg','jpeg','gif'))) {
+            $exif = exif_read_data($img);
+        } else {
+            $exif = array();
+        }
         $rotation = 0;
 
         if (isset($exif['Orientation'])) {

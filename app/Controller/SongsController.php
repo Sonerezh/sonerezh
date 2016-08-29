@@ -211,7 +211,7 @@ class SongsController extends AppController {
         }
 
         if (empty($songs)) {
-            $this->Flash->info('<strong>'.__('Oops!').'</strong> '.__('The database is empty...'));
+            $this->Flash->info(__('Oops!').__('The database is empty...'));
         }
 
         $this->set(compact('songs', 'playlists', 'latests'));
@@ -321,7 +321,7 @@ class SongsController extends AppController {
         }
 
         if (empty($parsed)) {
-            $this->Flash->info("<strong>".__('Oops!')."</strong> ".__('The database is empty...'));
+            $this->Flash->info(__('Oops!').__('The database is empty...'));
         }
         $this->set(array('songs' => $parsed, 'playlists' => $playlists));
     }
@@ -364,7 +364,7 @@ class SongsController extends AppController {
         $songs = $this->SortComponent->sortByBand($songs);
 
         if (empty($songs)) {
-            $this->Flash->info("<strong>".__('Oops!')."</strong> ".__('The database is empty...'));
+            $this->Flash->info(__('Oops!').__('The database is empty...'));
         }
 
         $this->set(compact('songs', 'playlists'));
@@ -450,7 +450,7 @@ class SongsController extends AppController {
             }
 
             if (empty($parsed)) {
-                $this->Flash->error("<strong>".__('Oops!')."</strong> ".__('No results.'));
+                $this->Flash->error(__('Oops!').__('No results.'));
             }
             $this->set('songs', $parsed);
         }
