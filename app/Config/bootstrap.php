@@ -110,7 +110,7 @@ CakeLog::config('error', array(
  * Default application language
  */
 Configure::write('Config.language', 'eng');
-
+Configure::write('Session.save', 'cake');
 /**
  * Sonerezh constants declarations
  */
