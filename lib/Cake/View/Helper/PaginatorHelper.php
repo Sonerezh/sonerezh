@@ -438,7 +438,7 @@ class PaginatorHelper extends AppHelper {
 
 		if (isset($url['order'])) {
 			$sort = $direction = null;
-			if (is_array($url['order'])) {
+			if (is_array($url['order']) && count($url['order']) == 1) {  // Guillaume: don't re-set order & direction via url if more than 1 order field is set, otherwise the 2nd, 3rd etc. field are ignored in following pages
 				list($sort, $direction) = array($this->sortKey($model, $url), current($url['order']));
 			}
 			unset($url['order']);
