@@ -164,8 +164,8 @@ class SongsController extends AppController {
                 'Song' => array(
                     'fields'    => array('Song.id', 'Song.band', 'Song.album', 'Song.cover'),
                     'group'     => 'Song.album',
-                    'order'     => 'Song.album',
-                    'limit'     => 36
+                    'order'     => ['Song.band', 'Song.album'],
+                    'limit'     => 60
                 )
             );
         } else {
@@ -194,8 +194,8 @@ class SongsController extends AppController {
                 'Song' => array(
                     'fields' => array('Song.id', 'Song.band', 'Song.album', 'Song.cover'),
                     'conditions' => $subQuery,
-                    'order' => 'Song.album',
-                    'limit' => 36
+                    'order' => ['Song.band', 'Song.album'],
+                    'limit' => 60
                 )
             );
         }
