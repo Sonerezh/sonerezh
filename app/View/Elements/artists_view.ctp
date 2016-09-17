@@ -77,7 +77,7 @@
                         <!-- Songs list -->
                         <div class="col-lg-6 col-xs-12 album-table-container">
                             <?php if (count($album['discs']) > 1): ?>
-                                <p class="disc-number"><strong><?php echo __('Disc') . h($keyDisc); ?></strong></p>
+                                <p class="disc-number"><strong><?php echo __('Disc') . ' ' . h($keyDisc); ?></strong></p>
                             <?php endif; ?>
                             <table class="table table-hover table-album table-album-left">
                                 <tbody>

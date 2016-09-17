@@ -83,15 +83,25 @@ class SongManager {
         }
 
         // Song year
+        $date = false;
         if (!empty($file_infos['comments']['year'])) {
-            $metadata['year'] = end($file_infos['comments']['year']);
+            $date = $file_infos['comments']['year'];
+        } elseif (!empty($file_infos['comments']['date'])) {
+            $date = $file_infos['comments']['date'];
+        }
+
+        if ($date) {
+            $strptime = strptime(end($date), "%Y");
+            if ($strptime) {
+                $metadata['year'] = $strptime['tm_year'] + 1900;
+            }
         }
 
         // Song set
         if (!empty($file_infos['comments']['part_of_a_set'])) {     // MP3 Tag
             $metadata['disc'] = end($file_infos['comments']['part_of_a_set']);
-        } elseif (!empty($file_infos['comments']['discnumber'])) {  // OGG Tag
-            $metadata['disc'] = end($file_infos['comments']['discnumber']);
+        } elseif (!empty($file_infos['comments']['discnumber']) && !empty($file_infos['comments']['disctotal'])) {  // OGG Tag
+            $metadata['disc'] = end($file_infos['comments']['discnumber']) . '/' . end($file_infos['comments']['disctotal']);
         }
 
         // Song genre
@@ -100,6 +110,10 @@ class SongManager {
         }
 
         // Song cover
+        if (!file_exists(IMAGES.THUMBNAILS_DIR)) {
+            new Folder(IMAGES.THUMBNAILS_DIR, true, 0755);
+        }
+
         if (!empty($file_infos['comments']['picture'])) {
             $array_length = count($file_infos['comments']['picture']);
             if (!empty($file_infos['comments']['picture'][$array_length - 1]['image_mime'])) {
@@ -115,9 +129,9 @@ class SongManager {
             // IF the cover already exists
             // OR the cover doesn't exist AND has been successfully written
             if (
-                $this->thumbnailExists($cover_name)
+                file_exists(IMAGES.THUMBNAILS_DIR.DS.$cover_name)
                 || (
-                    !$this->thumbnailExists($cover_name)
+                    !file_exists(IMAGES.THUMBNAILS_DIR.DS.$cover_name)
                     && $cover_path->write($file_infos['comments']['picture'][$array_length - 1]['data'])
                 )
             ) {
@@ -141,9 +155,9 @@ class SongManager {
                 // IF the cover already exists
                 // OR the cover doesn't exist AND has been successfully copied
                 if (
-                    $this->thumbnailExists($cover_name)
+                    file_exists(IMAGES.THUMBNAILS_DIR.DS.$cover_name)
                     || (
-                        !$this->thumbnailExists($cover_name)
+                        !file_exists(IMAGES.THUMBNAILS_DIR.DS.$cover_name)
                         && $cover_source->copy(IMAGES.THUMBNAILS_DIR.DS.$cover_name)
                     )
                 ) {
@@ -155,20 +169,5 @@ class SongManager {
         $metadata['source_path'] = $this->song->path;
         $result['data'] = $metadata;
         return $result;
-    }
-
-    public function thumbnailExists($cover_name) {
-        $exists = true;
-
-        if (!file_exists(IMAGES.THUMBNAILS_DIR.DS.$cover_name)) {
-
-            if (!file_exists(IMAGES.THUMBNAILS_DIR)) {
-                new Folder(IMAGES.THUMBNAILS_DIR, true, 0755);
-            }
-
-            $exists = false;
-        }
-
-        return $exists;
     }
 }

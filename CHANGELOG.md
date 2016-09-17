@@ -4,6 +4,8 @@ New features:
 * You can now download a track
 
 Bug / Security fixes:
+$ Fix #207: Broken disc info on OGG files
+* Fix #196: Error on import when people mess with dates
 * Fix #183: Bug if the artist string contains "$"
 * Fix #178: Problem with file rights at installation
 * Fix #177: Trim whitespace characters on search request
