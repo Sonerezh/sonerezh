@@ -42,8 +42,25 @@ class SongsController extends AppController {
             $found = array();
 
             foreach ($paths as $path) {
-                $dir = new Folder($path['rootpath']);
-                $found = array_merge($found, $dir->findRecursive('^.*\.(mp3|ogg|flac|aac)$'));
+                $directory = new Folder($path['rootpath']);
+                $tree = $directory->tree();
+
+                foreach ($tree[0] as $subdirectory) {
+                    $subdirectory = new Folder($subdirectory);
+
+                    // Do not follow symlinks to avoid infinite loops
+                    if (!is_link($subdirectory->path)) {
+
+                        $found_in_this_directory = $subdirectory->find('^.*\.(mp3|ogg|flac|aac)$');
+
+                        // The find method does not return absolute paths.
+                        foreach ($found_in_this_directory as $key => $value) {
+                            $found_in_this_directory[$key] = $subdirectory->path . '/' . $value;
+                        }
+
+                        $found = array_merge($found, $found_in_this_directory);
+                    }
+                }
             }
 
             // The files already imported
