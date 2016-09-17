@@ -9,6 +9,7 @@ Bug / Security fixes:
 * Fix #196: Error on import when people mess with dates
 * Fix #192: Skip symlinks on the import process to avoid infinite loops
 * Fix #183: Bug if the artist string contains "$"
+* Fix #180: Duplicate track on import
 * Fix #178: Problem with file rights at installation
 * Fix #177: Trim whitespace characters on search request
 * Fix #143: Cannot choose output bitrate in conversion window

@@ -93,6 +93,11 @@ class SongsController extends AppController {
 
                 $i = 0;
                 foreach ($to_import as $file) {
+
+                    if ($i >= 100) {
+                        break;
+                    }
+
                     $song_manager = new SongManager($file);
                     $parse_result = $song_manager->parseMetadata();
 
@@ -105,10 +110,6 @@ class SongsController extends AppController {
                         $import_result[$i]['file'] = $file;
                         $import_result[$i]['status'] = $parse_result['status'];
                         $import_result[$i]['message'] = $parse_result['message'];
-                    }
-
-                    if ($i >= 100) {
-                        break;
                     }
 
                     $imported [] = $file;
