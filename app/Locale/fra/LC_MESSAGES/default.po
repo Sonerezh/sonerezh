@@ -3,10 +3,10 @@ msgstr ""
 "Project-Id-Version: Sonerezh 1.1.2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2016-06-12 18:46+0100\n"
+"PO-Revision-Date: 2016-09-17 15:17+0200\n"
 "Last-Translator: Guillaume Leduc <hey@sonerezh.bzh>\n"
 "Language-Team: Sonerezh Team <hey@sonerezh.bzh>\n"
-"Language: French\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -15,7 +15,7 @@ msgstr ""
 "X-Loco-Source-Locale: fr_FR\n"
 "X-Loco-Parser: loco_parse_po\n"
 "X-Loco-Target-Locale: zz_ZZ\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Poedit 1.8.7.1\n"
 
 #: Controller/AppController.php:83
 msgid ""
@@ -173,7 +173,7 @@ msgstr "Impossible de nettoyer la base de donnée !"
 msgid "Please define a root path."
 msgstr "Veuillez renseigner l'emplacement de la librairie."
 
-#: Controller/SongsController.php:67 View/Songs/import.ctp:135
+#: Controller/SongsController.php:67
 msgid "The import process is already running via another client or the CLI."
 msgstr "Le processus d'import fonctionne déjà via un autre client ou la CLI"
 
@@ -211,8 +211,8 @@ msgstr "Utilisateur invalide"
 msgid "User updated: "
 msgstr "Utilisateur mis à jour : "
 
-#: Controller/UsersController.php:79;124 Model/Setting.php:validation for
-#: field enable_auto_conv;validation enable_mail_notification
+#: Controller/UsersController.php:79;124 Model/Setting.php:validation for field
+#: enable_auto_conv;validation enable_mail_notification
 msgid "Something went wrong!"
 msgstr "Une erreur est survenue !"
 
@@ -774,6 +774,15 @@ msgstr "Démarrer l'import"
 #: View/Songs/import.ctp:124
 msgid "Warning logs"
 msgstr "Avertissements"
+
+#: View/Songs/import.ctp:135
+msgid ""
+"The import process is already running via another client or the CLI. You can "
+"click on \"Clear cache\" on the settings page to remove the lock, if needed."
+msgstr ""
+"Le processus d'import fonctionne déjà via un autre client ou la CLI. Vous "
+"pouvez cliquer sur \"Nettoyer le cache\" depuis la page de préférences pour "
+"supprimer le verrou, si besoin."
 
 #: View/Songs/import.ctp:139
 msgid "All the songs have already been imported"

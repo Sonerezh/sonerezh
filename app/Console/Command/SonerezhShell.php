@@ -33,7 +33,7 @@ class SonerezhShell extends AppShell {
         //$verbose = $this->param('verbose');
 
         if (Cache::read('import')) {
-            $this->out("<warning>[WARN]</warning> The import process is already running via another client or the CLI");
+            $this->out("<warning>[WARN]</warning> The import process is already running via another client or the CLI. You can click on \"Clear cache\" on the settings page to remove the lock, if needed.");
             exit(0);
         }
 
@@ -97,7 +97,7 @@ class SonerezhShell extends AppShell {
 
         // Write lock to avoid multiple import processes in the same time
         if (Cache::read('import')) {
-            $this->out("<warning>[WARN]</warning> The import process is already running via another client or the CLI");
+            $this->out("<warning>[WARN]</warning> The import process is already running via another client or the CLI. You can click on \"Clear cache\" on the settings page to remove the lock, if needed.");
             exit(0);
         } else {
             Cache::write('import', true);

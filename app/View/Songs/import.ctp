@@ -132,7 +132,7 @@
         </div>
     <?php elseif (Cache::read('import')): ?>
         <div class="alert alert-warning">
-            <?php echo __('The import process is already running via another client or the CLI.'); ?>
+            <?php echo __('The import process is already running via another client or the CLI. You can click on "Clear cache" on the settings page to remove the lock, if needed.'); ?>
         </div>
     <?php else: ?>
         <div class="alert alert-info">

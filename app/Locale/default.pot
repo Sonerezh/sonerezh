@@ -158,7 +158,6 @@ msgid "Please define a root path."
 msgstr ""
 
 #: Controller/SongsController.php:67
-#: View/Songs/import.ctp:135
 msgid "The import process is already running via another client or the CLI."
 msgstr ""
 
@@ -748,6 +747,10 @@ msgstr ""
 
 #: View/Songs/import.ctp:124
 msgid "Warning logs"
+msgstr ""
+
+#: View/Songs/import.ctp:135
+msgid "The import process is already running via another client or the CLI. You can click on \"Clear cache\" on the settings page to remove the lock, if needed."
 msgstr ""
 
 #: View/Songs/import.ctp:139
