@@ -43,7 +43,21 @@ $this->end(); ?>
         <div class="clearfix"></div>
         <hr />
     <?php endif; ?>
-    <h3><?php echo __('All albums'); ?></h3>
+    <h3>
+        <?php echo __('All albums'); ?>
+        <small>
+            <?php echo $this->Html->link(
+                __('Sort by album'),
+                array('controller' => 'songs', 'action' => 'albums', '?' => array('sort' => 'album')),
+                array('class' => 'label label-info pull-right', 'style' => 'margin-left: 2px;')
+            ); ?>
+            <?php echo $this->Html->link(
+                __('Sort by band'),
+                array('controller' => 'songs', 'action' => 'albums', '?' => array('sort' => 'band')),
+                array('class' => 'label label-info pull-right', 'style' => 'margin-right: 2px;')
+            ); ?>
+        </small>
+    </h3>
     <?php $j = 1; ?>
 	<?php foreach ($songs as $album): ?>
         <div class="col-md-2 col-sm-3 col-xs-4 action-expend" data-band="<?php echo h($album['Song']['band']); ?>" data-album="<?php echo h($album['Song']['album']); ?>" data-scroll-content="true">

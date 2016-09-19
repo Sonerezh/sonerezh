@@ -157,19 +157,19 @@ msgstr ""
 msgid "Please define a root path."
 msgstr ""
 
-#: Controller/SongsController.php:67
+#: Controller/SongsController.php:84
 msgid "The import process is already running via another client or the CLI."
 msgstr ""
 
-#: Controller/SongsController.php:85
+#: Controller/SongsController.php:107
 msgid "Unable to save the song metadata to the database"
 msgstr ""
 
-#: Controller/SongsController.php:214;324;367
+#: Controller/SongsController.php:252;362;405
 msgid "Oops! The database is empty..."
 msgstr ""
 
-#: Controller/SongsController.php:453
+#: Controller/SongsController.php:491
 msgid "Oops! No results."
 msgstr ""
 
@@ -705,8 +705,16 @@ msgstr ""
 msgid "Recently added"
 msgstr ""
 
-#: View/Songs/albums.ctp:46
+#: View/Songs/albums.ctp:47
 msgid "All albums"
+msgstr ""
+
+#: View/Songs/albums.ctp:50
+msgid "Sort by album"
+msgstr ""
+
+#: View/Songs/albums.ctp:55
+msgid "Sort by band"
 msgstr ""
 
 #: View/Songs/import.ctp:31
@@ -912,6 +920,10 @@ msgstr ""
 
 #: View/Users/reset_password.ctp:15
 msgid "Reset my password"
+msgstr ""
+
+#: Model/Playlist.php:validation for field title
+msgid "The playlist must have a title"
 msgstr ""
 
 #: Model/Rootpath.php:validation for field rootpath

@@ -1,9 +1,10 @@
-Changes with 1.1.2
-------------------
-New features:
-* You can now download a track
+# Changes with 1.1.2
 
-Bug / Security fixes:
+#### New features:
+* You can now download a track
+* Issue #223: sort the "Albums" page by band or by album
+
+#### Bug / Security fixes:
 * Merge #215: Playlist title cannot be empty (Thanks to disc)
 * Fix #207: Broken disc info on OGG files
 * Fix #199: Improve the message on the cli tool
@@ -18,26 +19,26 @@ Bug / Security fixes:
 * French translation improvements
 * Other minor bugfixes
 
-Changes with 1.1.1
-------------------
-Bug / Security fixes:
+# Changes with 1.1.1
+
+#### Bug / Security fixes:
 * Fix #174: Add lock system on import process
 * Fix #173: CSRF protection broke the 'add to playlist' form
 * Ohter bugfixes
 
-Changes with 1.1.0
-------------------
-New features:
+# Changes with 1.1.0
+
+#### New features:
 * The import function has been entirely refactored
 * New CLI to import your music
 
-Improvements:
-* #148: Upgrade CakePHP to 2.8
+#### Improvements:
+* Issue #148: Upgrade CakePHP to 2.8
 * Upgrade Twitter Bootstrap to 3.3.6
 * Import view with debug report if warnings or errors happened
 * PHP7 support
 
-Bug / Security fixes:
+#### Bug / Security fixes:
 * PRs #158 #159 #162: Typo fix (Thanks to MightyCreak,NumEricR and nodiscc)
 * Fix #161: CSRF vulnerability
 * Fix #155: Fatal error with getID3 lib and PHP7
@@ -45,22 +46,22 @@ Bug / Security fixes:
 * Fix #51: Import bugs
 * Other bugfixes
 
-Changes with 1.0.0
-------------------
-New features:
+# Changes with 1.0.0
+
+#### New features:
 * Docker compatibility
 * The first row on the album view shows the 6 latest albums added
 
-Improvements:
+#### Improvements:
 * Code readability
 
-Bug / Security fixes:
+#### Bug / Security fixes:
 * Fix #142: Mp3 files without Id3 tags all showns as "Unknown"
 * Fix #122: Songs are duplicated when i attempt to update database
 
-Changes with 1.0.0-beta2
-------------------------
-New features:
+# Changes with 1.0.0-beta2
+
+#### New features:
 * French translation (using the browser language)
 
 Improvements:

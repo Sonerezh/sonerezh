@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Sonerezh 1.1.2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2016-09-17 16:05+0200\n"
+"PO-Revision-Date: 2016-09-19 21:43+0200\n"
 "Last-Translator: Guillaume Leduc <hey@sonerezh.bzh>\n"
 "Language-Team: Sonerezh Team <hey@sonerezh.bzh>\n"
 "Language: fr\n"
@@ -173,21 +173,21 @@ msgstr "Impossible de nettoyer la base de donnée !"
 msgid "Please define a root path."
 msgstr "Veuillez renseigner l'emplacement de la bibliothèque."
 
-#: Controller/SongsController.php:67
+#: Controller/SongsController.php:84
 msgid "The import process is already running via another client or the CLI."
 msgstr "Le processus d'import fonctionne déjà via un autre client ou la CLI"
 
-#: Controller/SongsController.php:85
+#: Controller/SongsController.php:107
 msgid "Unable to save the song metadata to the database"
 msgstr ""
 "Impossible de sauvegarder les métadonnées de la chanson dans la base de "
 "données"
 
-#: Controller/SongsController.php:214;324;367
+#: Controller/SongsController.php:252;362;405
 msgid "Oops! The database is empty..."
 msgstr "Oups ! La base de données est vide..."
 
-#: Controller/SongsController.php:453
+#: Controller/SongsController.php:491
 msgid "Oops! No results."
 msgstr "Oups ! Pas de résultat."
 
@@ -729,9 +729,17 @@ msgstr "Lire l'album"
 msgid "Recently added"
 msgstr "Ajoutés récemment"
 
-#: View/Songs/albums.ctp:46
+#: View/Songs/albums.ctp:47
 msgid "All albums"
 msgstr "Albums"
+
+#: View/Songs/albums.ctp:50
+msgid "Sort by album"
+msgstr "Trier par album"
+
+#: View/Songs/albums.ctp:55
+msgid "Sort by band"
+msgstr "Trier par artiste"
 
 #: View/Songs/import.ctp:31
 msgid "Something bad happened, import aborted :("
@@ -943,6 +951,10 @@ msgstr "Confirmez votre mot de passe"
 #: View/Users/reset_password.ctp:15
 msgid "Reset my password"
 msgstr "Réinitialiser mon mot de passe"
+
+#: Model/Playlist.php:validation for field title
+msgid "The playlist must have a title"
+msgstr "La liste de lecture doit avoir un titre"
 
 #: Model/Rootpath.php:validation for field rootpath
 msgid "The music library's directory does not exist."

@@ -155,6 +155,26 @@ class SongsController extends AppController {
      * Find songs in the database, alphabetically and grouped by album.
      */
     public function albums() {
+
+        $sort = 'Song.album';
+
+        if ($this->Cookie->read('albums_sort') && $this->Cookie->read('albums_sort') == 'band') {
+            $sort = 'Song.band';
+        }
+
+        if (isset($this->request->query['sort'])) {
+            if ($this->request->query['sort'] == 'band') {
+
+                $sort = 'Song.band';
+                $this->Cookie->write('albums_sort', 'band', true, 315360000); # This cookie will expire in ten years
+
+            } elseif ($this->request->query['sort'] == 'album') {
+
+                $this->Cookie->delete('albums_sort');
+
+            }
+        }
+
         $this->loadModel('Playlist');
         $playlists = $this->Playlist->find('list', array(
             'fields'        => array('Playlist.id', 'Playlist.title'),
@@ -182,7 +202,7 @@ class SongsController extends AppController {
                 'Song' => array(
                     'fields'    => array('Song.id', 'Song.band', 'Song.album', 'Song.cover'),
                     'group'     => 'Song.album',
-                    'order'     => 'Song.album',
+                    'order'     => $sort,
                     'limit'     => 36
                 )
             );
@@ -212,7 +232,7 @@ class SongsController extends AppController {
                 'Song' => array(
                     'fields' => array('Song.id', 'Song.band', 'Song.album', 'Song.cover'),
                     'conditions' => $subQuery,
-                    'order' => 'Song.album',
+                    'order' => $sort,
                     'limit' => 36
                 )
             );

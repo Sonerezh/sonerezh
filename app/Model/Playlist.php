@@ -20,7 +20,7 @@ class Playlist extends AppModel {
             'notBlank' => array(
                 'rule'      => 'notBlank',
                 'required'  => true,
-                'message'   => 'Enter a playlist title')
+                'message'   => 'The playlist must have a title')
         )
     );
 
