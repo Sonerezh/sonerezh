@@ -127,7 +127,7 @@ class UsersController extends AppController {
     }
 
 	public function login() {
-		$this->layout = 'login';
+	    $this->layout = 'login';
 
         $this->loadModel('Setting');
         $settings = $this->Setting->find('first', array('fields' => 'Setting.enable_mail_notification'));
@@ -145,6 +145,7 @@ class UsersController extends AppController {
                 return $this->redirect($this->Auth->redirectUrl());
             } else {
                 $this->Flash->error(__('Wrong credentials!'));
+                CakeLog::write('error', 'Failed authentication for ' . $this->request->data['User']['email'] . ' from ' . $this->request->clientIp());
             }
         }
 	}

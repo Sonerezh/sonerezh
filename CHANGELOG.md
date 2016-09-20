@@ -3,6 +3,7 @@
 #### New features:
 * You can now download a track
 * Issue #223: sort the "Albums" page by band or by album
+* Issue #214: log failed authentication attempts to prevent brute-force attacks
 
 #### Bug / Security fixes:
 * Merge #215: Playlist title cannot be empty (Thanks to disc)
