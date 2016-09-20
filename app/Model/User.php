@@ -94,6 +94,7 @@ class User extends AppModel {
     }
 
     public function beforeSave($options = array()) {
+
         if (isset($this->data[$this->alias]['password'])) {
             $passwordHasher = new BlowfishPasswordHasher();
             $this->data[$this->alias]['password'] = $passwordHasher->hash($this->data[$this->alias]['password']);
@@ -121,9 +122,11 @@ class User extends AppModel {
             $event = new CakeEvent('Model.User.add', $this);
             $this->getEventManager()->dispatch($event);
         }
+
     }
 
     public function beforeValidate($options = array()) {
+
         // Check if the user has an ID
         if (isset($this->data[$this->alias]['id'])) {
             //If the password is not updated, skip the validation
@@ -132,7 +135,7 @@ class User extends AppModel {
                 unset($validator['password'], $validator['confirm_password'], $this->data[$this->alias]['password'], $this->data[$this->alias]['confirm_password']);
             }
             // If the avatar is not updated, skip the validation
-            if (isset($this->data[$this->alias]['avatar']) && $this->data[$this->alias]['avatar']['error'] === 4) {
+            if (empty($this->data[$this->alias]['avatar']) || $this->data[$this->alias]['avatar']['error'] === 4) {
                 unset($this->data[$this->alias]['avatar']);
             }
             // If the role is not updated, skip the validation
@@ -141,6 +144,7 @@ class User extends AppModel {
                 unset($validator['role']);
             }
         }
+
         return true;
     }
 

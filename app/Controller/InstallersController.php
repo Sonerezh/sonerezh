@@ -177,7 +177,16 @@ class InstallersController extends AppController {
             // Populate Sonerezh database
             // Export schema
             $schema_shell = new SchemaShell();
-            $schema_shell->params = array('connection' => 'default', 'file' => 'sonerezh.php', 'yes' => 1, 'name' => 'Sonerezh');
+
+            if ($this->request->data['DB']['datasource'] == 'Database/Postgres') {
+                $schema_file = 'sonerezh_pgsql.php';
+                $schema_name = 'SonerezhPgsql';
+            } else {
+                $schema_file = 'sonerezh_mysql.php';
+                $schema_name = 'SonerezhMysql';
+            }
+
+            $schema_shell->params = array('connection' => 'default', 'file' => $schema_file, 'yes' => 1, 'name' => $schema_name);
             $schema_shell->startup();
             $schema_shell->create();
 

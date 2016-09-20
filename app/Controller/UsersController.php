@@ -136,13 +136,22 @@ class UsersController extends AppController {
         if ($this->request->is('post')) {
             if ($this->Auth->login()) {
                 if ($this->request->data['User']['rememberme']) {
-                    $user = $this->User->find('first', array('fields' => array('password'), 'conditions' => array('User.id' => $this->Auth->user('id'))));
+
+                    $user = $this->User->find('first', array(
+                        'fields' => array('password', 'preferences'),
+                        'conditions' => array('User.id' => $this->Auth->user('id'))
+                        )
+                    );
+
                     $passwordHasher = new BlowfishPasswordHasher();
-                    $this->Cookie->write('auth', $this->Auth->user('id').':'.$passwordHasher->hash($this->request->data['User']['email']).':'.$passwordHasher->hash($user['User']['password']));
+                    $this->Cookie->write('auth', $this->Auth->user('id') . ':' . $passwordHasher->hash($this->request->data['User']['email']) . ':' . $passwordHasher->hash($user['User']['password']));
+
                 } else {
                     $this->Session->delete('auth');
                 }
+
                 return $this->redirect($this->Auth->redirectUrl());
+
             } else {
                 $this->Flash->error(__('Wrong credentials!'));
                 CakeLog::write('error', 'Failed authentication for ' . $this->request->data['User']['email'] . ' from ' . $this->request->clientIp());

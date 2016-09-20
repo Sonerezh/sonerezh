@@ -1,5 +1,5 @@
 <?php 
-class SonerezhSchema extends CakeSchema {
+class SonerezhMysqlSchema extends CakeSchema {
 
 	public function before($event = array()) {
 		return true;
@@ -85,6 +85,7 @@ class SonerezhSchema extends CakeSchema {
 		'password' => array('type' => 'string', 'null' => false, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'role' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 15, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'avatar' => array('type' => 'string', 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
+		'preferences' => array('type' => 'text', 'null' => true, 'default' => null, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'indexes' => array(
 			'PRIMARY' => array('column' => 'id', 'unique' => 1)
 		),

@@ -157,21 +157,58 @@ class SongsController extends AppController {
     public function albums() {
 
         $sort = 'Song.album';
+        $user_preferences = json_decode($this->Auth->user('preferences'), true);
 
-        if ($this->Cookie->read('albums_sort') && $this->Cookie->read('albums_sort') == 'band') {
-            $sort = 'Song.band';
+        if (!empty($user_preferences['albums_sort']) && $user_preferences['albums_sort'] == 'band') {
+            $sort = 'Song.band, Song.album';
         }
 
         if (isset($this->request->query['sort'])) {
             if ($this->request->query['sort'] == 'band') {
 
-                $sort = 'Song.band';
-                $this->Cookie->write('albums_sort', 'band', true, 315360000); # This cookie will expire in ten years
+                $sort = 'Song.band, Song.album';
+
+                if (!isset($user_preferences['sort']) || $user_preferences['sort'] != 'band') {
+                    $this->loadModel('User');
+                    $user = $this->User->find('first', array(
+                        'fields' => array('id', 'preferences'),
+                        'conditions' => array('id' => $this->Auth->user('id')),
+                        )
+                    );
+
+                    $new_preferences = json_decode($user['User']['preferences'], true);
+                    $new_preferences['albums_sort'] = 'band';
+                    $user['User']['preferences'] = json_encode($new_preferences);
+
+                    if ($this->User->save($user, false)) {
+                        $session_auth = $this->Session->read('Auth');
+                        $session_auth['User']['preferences'] = $user['User']['preferences'];
+                        $this->Session->write('Auth', $session_auth);
+                    }
+                }
 
             } elseif ($this->request->query['sort'] == 'album') {
 
-                $this->Cookie->delete('albums_sort');
+                $sort = 'Song.album';
 
+                if (!isset($user_preferences['sort']) || $user_preferences['sort'] != 'album') {
+                    $this->loadModel('User');
+                    $user = $this->User->find('first', array(
+                            'fields' => array('id', 'preferences'),
+                            'conditions' => array('id' => $this->Auth->user('id')),
+                        )
+                    );
+
+                    $new_preferences = json_decode($user['User']['preferences'], true);
+                    unset($new_preferences['albums_sort']);
+                    $user['User']['preferences'] = json_encode($new_preferences);
+
+                    if ($this->User->save($user, false)) {
+                        $session_auth = $this->Session->read('Auth');
+                        $session_auth['User']['preferences'] = $user['User']['preferences'];
+                        $this->Session->write('Auth', $session_auth);
+                    }
+                }
             }
         }
 
