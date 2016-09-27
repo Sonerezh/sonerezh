@@ -225,7 +225,12 @@
 		'timeout' => 4320
 	));
 
-require 'ciphers.php';
+if (file_exists(APP . 'Config' . DS . 'ciphers.php')) {
+    require 'ciphers.php';
+} else {
+    require 'ciphers.php.default';
+}
+
 
 /**
  * Apply timestamps with the last modified time to static assets (js, css, images).

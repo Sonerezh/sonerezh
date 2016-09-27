@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Sonerezh 1.1.2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2016-09-19 21:43+0200\n"
+"PO-Revision-Date: 2016-09-27 19:04+0200\n"
 "Last-Translator: Guillaume Leduc <hey@sonerezh.bzh>\n"
 "Language-Team: Sonerezh Team <hey@sonerezh.bzh>\n"
 "Language: fr\n"
@@ -61,47 +61,55 @@ msgstr "Le pilote %s est installé."
 msgid "The %s driver is required if you want to use Sonerezh with %s"
 msgstr "Le pilote %s est requis si vous souhaitez utiliser Sonerezh avec %s"
 
-#: Controller/InstallersController.php:88;97
+#: Controller/InstallersController.php:88
 msgid "%s is writable"
 msgstr "%s est accessible en écriture"
 
-#: Controller/InstallersController.php:90;99
+#: Controller/InstallersController.php:90
 msgid "%s is not writable"
 msgstr "%s n'est pas accessible en écriture"
 
-#: Controller/InstallersController.php:131
+#: Controller/InstallersController.php:122
 msgid "Wrong datasource."
 msgstr "Mauvaise source de données (wrong datasource)."
 
-#: Controller/InstallersController.php:145
-msgid "Unable to write configuration file."
-msgstr "Impossible d'écrire les fichiers de configuration."
+#: Controller/InstallersController.php:136
+msgid "Unable to write "
+msgstr "Impossible d'écrire "
 
-#: Controller/InstallersController.php:156
+#: Controller/InstallersController.php:149
 msgid "Unable to create the SQlite database file."
 msgstr "Impossible de créer le fichier SQlite."
 
-#: Controller/InstallersController.php:160
+#: Controller/InstallersController.php:153
 msgid "This is not a regular file: "
 msgstr "Ceci n'est pas un fichier : "
 
-#: Controller/InstallersController.php:173
+#: Controller/InstallersController.php:176
+msgid "Unable to rewrite ciphers into "
+msgstr "Impossible de réécrite les sels de chiffrement dans  "
+
+#: Controller/InstallersController.php:183
+msgid "Unable to copy ciphers.php.default to "
+msgstr "Impossible de copier cipher.php.default vers "
+
+#: Controller/InstallersController.php:194
 msgid "Could not connect to database"
 msgstr "Connexion à la base de données impossible"
 
-#: Controller/InstallersController.php:195;268
+#: Controller/InstallersController.php:225;286
 msgid "Passwords do not match."
 msgstr "Les mots de passe ne correspondent pas."
 
-#: Controller/InstallersController.php:202;275
+#: Controller/InstallersController.php:232;293
 msgid "Installation successful!"
 msgstr "Installation réussie !"
 
-#: Controller/InstallersController.php:204;277
+#: Controller/InstallersController.php:234;295
 msgid "Unable to save your data."
 msgstr "Impossible de sauvegarder vos données."
 
-#: Controller/InstallersController.php:244
+#: Controller/InstallersController.php:262
 msgid "Could not connect to the database"
 msgstr "La connexion à la base de données à échouée"
 
@@ -183,11 +191,11 @@ msgstr ""
 "Impossible de sauvegarder les métadonnées de la chanson dans la base de "
 "données"
 
-#: Controller/SongsController.php:252;362;405
+#: Controller/SongsController.php:289;399;442
 msgid "Oops! The database is empty..."
 msgstr "Oups ! La base de données est vide..."
 
-#: Controller/SongsController.php:491
+#: Controller/SongsController.php:528
 msgid "Oops! No results."
 msgstr "Oups ! Pas de résultat."
 
@@ -224,51 +232,51 @@ msgstr "Utilisateur supprimé : "
 msgid "Avatar has been successfully removed!"
 msgstr "Avatar supprimé avec succès !"
 
-#: Controller/UsersController.php:147
+#: Controller/UsersController.php:156
 msgid "Wrong credentials!"
 msgstr "Identifiants incorrects !"
 
-#: Controller/UsersController.php:172
+#: Controller/UsersController.php:182
 msgid "Unable to find your account"
 msgstr "Impossible retrouver votre compte"
 
-#: Controller/UsersController.php:196
+#: Controller/UsersController.php:206
 msgid "Email successfully sent."
 msgstr "Email envoyé avec succès."
 
-#: Controller/UsersController.php:198
+#: Controller/UsersController.php:208
 msgid "Unable to generate a token."
 msgstr "Impossible de générer un jeton."
 
-#: Controller/UsersController.php:210
+#: Controller/UsersController.php:220
 msgid "You need to provide a token."
 msgstr "Vous devez fournir un jeton."
 
-#: Controller/UsersController.php:218
+#: Controller/UsersController.php:228
 msgid "Unable to decode your token."
 msgstr "Impossible de décoder votre jeton."
 
-#: Controller/UsersController.php:225
+#: Controller/UsersController.php:235
 msgid "Unable to read your token."
 msgstr "Impossible de lire vote jeton."
 
-#: Controller/UsersController.php:235
+#: Controller/UsersController.php:245
 msgid "The token has expired."
 msgstr "Le jeton a expiré."
 
-#: Controller/UsersController.php:246
+#: Controller/UsersController.php:256
 msgid "Unable to find your account."
 msgstr "Impossible de retrouver votre compte."
 
-#: Controller/UsersController.php:249
+#: Controller/UsersController.php:259
 msgid "Wrong token."
 msgstr "Jeton erroné."
 
-#: Controller/UsersController.php:260
+#: Controller/UsersController.php:270
 msgid "Your password has been updated."
 msgstr "Votre mot de passe a été mis à jour."
 
-#: Controller/UsersController.php:263
+#: Controller/UsersController.php:273
 msgid "Unable to update your password."
 msgstr "Impossible de mettre à jour votre mot de passe."
 
@@ -1023,6 +1031,9 @@ msgstr "Une erreur est survenue lors de l'envoi."
 #: Model/User.php:validation for field avatar
 msgid "Your avatar must be in a correct format (JPEG, PNG, GIF)."
 msgstr "Votre avatar doit être au format JPEG, PNG ou GIF."
+
+#~ msgid "Unable to write configuration file."
+#~ msgstr "Impossible d'écrire les fichiers de configuration."
 
 #~ msgid "Oops!"
 #~ msgstr "Oups !"

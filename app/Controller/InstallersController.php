@@ -91,15 +91,6 @@ class InstallersController extends AppController {
             $missing_requirements = true;
         }
 
-        $is_core_writable = is_writable(APP.'Config'.DS.'ciphers.php');
-
-        if ($is_core_writable) {
-            $requirements['core'] = array('label' => 'success', 'message' => __('%s is writable', APP . 'Config' . DS . 'ciphers.php'));
-        } else {
-            $requirements['core'] = array('label' => 'danger', 'message' => __('%s is not writable', APP . 'Config' . DS . 'ciphers.php'));
-            $missing_requirements = true;
-        }
-
         $this->set(compact('requirements', 'missing_requirements', 'available_drivers'));
 
         $this->loadModel('User');
@@ -142,7 +133,9 @@ class InstallersController extends AppController {
                 $db_config_data .= '}';
                 $db_config_file->write($db_config_data);
             } else {
-                $this->Flash->error(__('Unable to write configuration file.'));
+                $this->Flash->error(__('Unable to write '), array(
+                    'params' => array(APP . 'Config' . DS . 'database.php')
+                ));
                 return;
             }
 
@@ -164,14 +157,42 @@ class InstallersController extends AppController {
                 }
             }
 
+            // Write app/Config/ciphers.php
+            $ciphers_default_file = new File(APP . 'Config' . DS . 'ciphers.php.default');
+            if ($ciphers_default_file->copy(APP . 'Config' . DS . 'ciphers.php')) {
+                $ciphers_config_file = new File(APP . 'Config' . DS . 'ciphers.php');
+                $new_ciphers = $ciphers_config_file->replaceText(
+                    array(
+                        Configure::read('Security.cipherSeed'),
+                        Configure::read('Security.salt')
+                    ),
+                    array(
+                        $this->__generateCipherKey(),
+                        $this->__generateSalt()
+                    )
+                );
+
+                if (!$new_ciphers) {
+                    $this->Flash->error(__('Unable to rewrite ciphers into '), array(
+                        'params' => array(APP . 'Config' . DS . 'ciphers.php')
+                    ));
+                    return $this->__cleanAndReturn();
+                }
+
+            } else {
+                $this->Flash->error(__('Unable to copy ciphers.php.default to '), array(
+                    'params' => array(APP . 'Config' . DS . 'ciphers.php')
+                ));
+                return $this->__cleanAndReturn();
+            }
+
             // Check database connection
             try {
                 $db_connection = ConnectionManager::getDataSource('default');
                 $db_connection->connect();
             } catch (Exception $e) {
-                $db_config_file->delete();
                 $this->Flash->error(__('Could not connect to database'));
-                return;
+                return $this->__cleanAndReturn();
             }
 
             // Populate Sonerezh database
@@ -211,21 +232,9 @@ class InstallersController extends AppController {
                 $this->Flash->success(__('Installation successful!'));
             } else {
                 $this->Flash->error(__('Unable to save your data.'));
-                $db_config_file->delete();
-                return;
+                return $this->__cleanAndReturn();
             }
 
-            $core_config_file = new File(APP.'Config'.DS.'ciphers.php');
-            $core_config_file->replaceText(
-                array(
-                    Configure::read('Security.cipherSeed'),
-                    Configure::read('Security.salt')
-                ),
-                array(
-                    $this->__generateCipherKey(),
-                    $this->__generateSalt()
-                )
-            );
             $this->Cookie->destroy();
 
             $this->redirect(array('controller' => 'songs', 'action' => 'import'));
@@ -317,6 +326,14 @@ class InstallersController extends AppController {
             $hash .= $chars[rand(0, strlen($chars)-1)];
         }
         return $hash;
+    }
+
+    private function __cleanAndReturn() {
+        $ciphers_file = new File(APP . 'Config' . DS . 'ciphers.php');
+        $database_file = new File(APP . 'Config' . DS . 'database.php');
+        $ciphers_file->delete();
+        $database_file->delete();
+        return null;
     }
 
 }
