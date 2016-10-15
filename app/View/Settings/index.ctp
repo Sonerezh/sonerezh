@@ -10,6 +10,7 @@ $this->end(); ?>
             <?php
             echo $this->Form->create('Setting');
             $this->Form->unlockField('Setting.quality');
+            $this->Form->unlockField('Rootpath');
             echo $this->Form->input('id');
             ?>
             <label for="SettingRootPath">
