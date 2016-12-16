@@ -19,6 +19,7 @@
 * Fix #60: Store cipherSeed and salt outside app/Config/core.php
 * French translation improvements
 * Other minor bugfixes
+* Contributing guide
 
 # Changes with 1.1.1
 
