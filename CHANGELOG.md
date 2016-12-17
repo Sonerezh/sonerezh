@@ -8,6 +8,7 @@
 
 #### Bug / Security fixes:
 * Merge #215: Playlist title cannot be empty (Thanks to disc)
+* Merge #236: Fix missing albums in recently added albums (Thanks to fcharlier)
 * Fix #207: Broken disc info on OGG files
 * Fix #199: Improve the message on the cli tool
 * Fix #196: Error on import when people mess with dates
