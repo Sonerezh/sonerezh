@@ -368,7 +368,9 @@ function init() {
     });
 
     player.addEventListener('progress', function() {
-        $timeBar.slider('buffered', player.getBuffered());
+        setTimeout(function() {
+            $timeBar.slider('buffered', player.getBuffered());
+        }, 500);
     });
 
     player.addEventListener('volumechange', function() {

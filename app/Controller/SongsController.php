@@ -594,6 +594,7 @@ class SongsController extends AppController {
         }
 
         $this->response->file($song['Song']['path'], array('download' => true));
+        $this->response->cache('-1 minute', '+2 hours');
         return $this->response;
     }
 

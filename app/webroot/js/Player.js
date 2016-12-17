@@ -1,6 +1,8 @@
 function Player() {
 
     var audioElement = document.createElement('audio');
+    var bufferAudioElement = document.createElement('audio');
+    var buffered = false;
     var playlist = new Playlist();
     var self = this;
     var selected = null;
@@ -21,6 +23,20 @@ function Player() {
     this.addEventListener = function(event, callback) {
         audioElement.addEventListener(event, callback, true);
     };
+    this.addEventListener('progress', function() {
+        setTimeout(function() {
+            if(self.getBuffered() == self.getDuration() && self.hasNext() && !buffered) {
+                var index = playlist.getCurrentIndex()+1;
+                if (index == playlist.size()) {
+                    index = 0;
+                }
+                bufferAudioElement.src = playlist.getByIndex(index).url;
+                bufferAudioElement.play();
+                bufferAudioElement.pause();
+                buffered = true;
+            }
+        }, 500);
+    });
     this.getPlaylist = function() {
         return playlist.getSongs();
     };
@@ -45,6 +61,10 @@ function Player() {
     this.seek = function(currentTime) {
         if(currentTime <= audioElement.duration){
             audioElement.currentTime = currentTime;
+            if (this.isPlaying()) {
+                audioElement.pause();
+                audioElement.play();
+            }
         }
     };
     this.canPlay = function() {
@@ -63,6 +83,7 @@ function Player() {
         }else if(audioElement.src == "" && selected != null) {
             audioElement.src = selected.url;
         }
+        buffered = false;
         if(audioElement.src != "") {
             audioElement.play();
         }
