@@ -229,7 +229,7 @@ class SongsController extends AppController {
             if ($page == 1) {
                 $latests = $this->Song->find('all', array(
                     'fields' => array('Song.id', 'Song.band', 'Song.album', 'Song.cover'),
-                    'group' => array('Song.album', 'Song.band'),
+                    'group' => 'Song.album',
                     'order' => 'Song.created DESC',
                     'limit' => 6
                 ));
@@ -246,14 +246,14 @@ class SongsController extends AppController {
         } else {
             $subQuery = $db->buildStatement(
                 array(
-                    'fields' => array('MIN(subsong.id)', 'subsong.album', 'subsong.band'),
+                    'fields' => array('MIN(subsong.id)', 'subsong.album'),
                     'table' => $db->fullTableName($this->Song),
                     'alias' => 'subsong',
-                    'group' => array('subsong.album', 'subsong.band')
+                    'group' => 'subsong.album'
                 ),
                 $this->Song
             );
-            $subQuery = ' (Song.id, Song.album, Song.band) IN (' . $subQuery . ') ';
+            $subQuery = ' (Song.id, Song.album) IN (' . $subQuery . ') ';
 
             if ($page == 1) {
                 $latests = $this->Song->find('all', array(
