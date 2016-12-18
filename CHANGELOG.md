@@ -1,3 +1,8 @@
+# Changes with 1.1.3
+
+### Bug / Security fixes:
+* Revert the pull request #236 because it introduces instabilities with the database
+
 # Changes with 1.1.2
 
 #### New features:
