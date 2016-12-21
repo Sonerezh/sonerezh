@@ -1,0 +1,15 @@
+mysqldb:
+    image: mysql
+    environment:
+        - MYSQL_ROOT_PASSWORD=password
+        - MYSQL_DATABASE=sonerezh
+        - MYSQL_USER=sonerezh
+        - MYSQL_PASSWORD=password
+sonerezh:
+    build: .
+    links:
+        - mysqldb:mysql
+    ports:
+        - "80:80"
+    volumes:
+        - ./data:/data
