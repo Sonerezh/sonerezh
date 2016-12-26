@@ -1,6 +1,7 @@
 # Changes with 1.1.4 (unrealeased)
 
 ### Bug / Security fixes:
+* Fix #152: IndexedDB does not function in private browsing mode (documentation improvement)
 * Fix #107: Replace avconv with ffmpeg
 
 # Changes with 1.1.3
