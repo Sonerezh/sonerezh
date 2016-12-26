@@ -563,10 +563,12 @@ class SongsController extends AppController {
         if (empty($song['Song']['path']) || $file_extension != $settings['Setting']['convert_to']) {
             if (in_array($file_extension, explode(',', $settings['Setting']['convert_from']))) {
                 $bitrate = $settings['Setting']['quality'];
-                $avconv = "ffmpeg";
-                if (shell_exec("which avconv")) {
-                    $avconv = "avconv";
+                $avconv = 'ffmpeg';
+
+                if (shell_exec('which avconv') || shell_exec('where avconv')) {
+                    $avconv = 'avconv';
                 }
+
                 if ($settings['Setting']['convert_to'] == 'mp3') {
                     $path = TMP.date('YmdHis').".mp3";
                     $song['Song']['path'] = $path;

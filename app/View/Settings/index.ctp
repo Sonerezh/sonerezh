@@ -77,7 +77,7 @@ $this->end(); ?>
                 <div class="panel-body">
                     <?php if (!$avconv): ?>
                         <p class="text-danger">
-                            <strong><?php echo __("The command 'avconv' is not available. Sonerezh cannot convert your tracks.") ?></strong>
+                            <strong><?php echo __("The command 'avconv' or 'ffmpeg' are not available. Sonerezh cannot convert your tracks.") ?></strong>
                         </p>
                     <?php else: ?>
                         <p class="help-block">

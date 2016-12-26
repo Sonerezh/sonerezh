@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Sonerezh 1.1.2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2016-09-27 19:04+0200\n"
+"PO-Revision-Date: 2016-12-26 16:19+0100\n"
 "Last-Translator: Guillaume Leduc <hey@sonerezh.bzh>\n"
 "Language-Team: Sonerezh Team <hey@sonerezh.bzh>\n"
 "Language: fr\n"
@@ -34,16 +34,16 @@ msgid "PHP GD is missing."
 msgstr "PHP GD n'est pas installé."
 
 #: Controller/InstallersController.php:50
-msgid "libav-tools (avconv) is installed!"
-msgstr "libav-tools (avconv) est installé !"
+msgid "libav-tools (avconv) or ffmpeg is installed!"
+msgstr "libav-tools (avconv) ou ffmpeg est installé !"
 
 #: Controller/InstallersController.php:52
 msgid ""
-"libav-tools (avconv) is missing. Sonerezh will not be able to convert your "
-"tracks."
+"libav-tools (avconv) or ffmpeg is missing. Sonerezh will not be able to "
+"convert your tracks."
 msgstr ""
-"libav-tools (avconv) n'est pas installé. Sonerezh ne pourra pas convertir "
-"vos musiques."
+"libav-tools (avconv) ou ffmpeg n'est pas installé. Sonerezh ne pourra pas "
+"convertir vos musiques."
 
 #: Controller/InstallersController.php:60
 msgid ""
@@ -335,12 +335,12 @@ msgid "Add"
 msgstr "Ajouter"
 
 #: View/Elements/admin_navbar.ctp:2 View/Elements/default_navbar.ctp:2
-#: View/Settings/index.ctp:155
+#: View/Settings/index.ctp:156
 msgid "Artists"
 msgstr "Artistes"
 
 #: View/Elements/admin_navbar.ctp:3 View/Elements/default_navbar.ctp:3
-#: View/Settings/index.ctp:159
+#: View/Settings/index.ctp:160
 msgid "Albums"
 msgstr "Albums"
 
@@ -354,7 +354,7 @@ msgstr "Listes de lecture"
 msgid "Search"
 msgstr "Rechercher"
 
-#: View/Elements/admin_navbar.ctp:13 View/Settings/index.ctp:117
+#: View/Elements/admin_navbar.ctp:13 View/Settings/index.ctp:118
 msgid "Database update"
 msgstr "Mettre à jour la base"
 
@@ -550,7 +550,7 @@ msgstr "La file d'attente est vide."
 msgid "Queue"
 msgstr "File d'attente"
 
-#: View/Layouts/default.ctp:115 View/Settings/index.ctp:163
+#: View/Layouts/default.ctp:115 View/Settings/index.ctp:164
 msgid "Songs"
 msgstr "Pistes"
 
@@ -630,39 +630,40 @@ msgstr "Enregistrer"
 msgid "Sonerezh settings"
 msgstr "Préférences de Sonerezh"
 
-#: View/Settings/index.ctp:16;27;43
+#: View/Settings/index.ctp:17;28;44
 msgid "Music root directory"
 msgstr "Emplacement de la bibliothèque"
 
-#: View/Settings/index.ctp:50
+#: View/Settings/index.ctp:51
 msgid ""
 "Make sure Sonerezh can read this folder recursively. Current App folder is:"
 msgstr ""
 "Assurez-vous que Sonerezh puisse lire ce dossier de manière récursive. "
 "Racine de l'application :"
 
-#: View/Settings/index.ctp:56
+#: View/Settings/index.ctp:57
 msgid "Enable mail notifications."
 msgstr "Activer les notifications par email."
 
-#: View/Settings/index.ctp:62
+#: View/Settings/index.ctp:63
 msgid "Sonerezh can send an email on users creation to notify them."
 msgstr ""
 "Sonerezh peut vous envoyer des emails lors de certains événements (création "
 "d'utilisateurs...)"
 
-#: View/Settings/index.ctp:74
+#: View/Settings/index.ctp:75
 msgid "Automatic tracks conversion"
 msgstr "Conversion automatique des pistes"
 
-#: View/Settings/index.ctp:79
+#: View/Settings/index.ctp:80
 msgid ""
-"The command 'avconv' is not available. Sonerezh cannot convert your tracks."
+"The command 'avconv' or 'ffmpeg' are not available. Sonerezh cannot convert "
+"your tracks."
 msgstr ""
-"La commande 'avconv' n'est pas disponible. Sonerezh ne pourra pas convertir "
-"vos pistes."
+"La commande 'avconv' ou 'ffmpeg' n'est pas disponible. Sonerezh ne pourra "
+"pas convertir vos pistes."
 
-#: View/Settings/index.ctp:84
+#: View/Settings/index.ctp:85
 msgid ""
 "If you have heterogeneous formats in your collection, and because your "
 "browser cannot read them all, Sonerezh can convert your tracks to MP3 or OGG/"
@@ -674,58 +675,58 @@ msgstr ""
 "MP3 ou OGG/Vorbis avant de les diffuser. Les morceaux convertis seront "
 "stockés dans le \"Cache audio\"."
 
-#: View/Settings/index.ctp:89
+#: View/Settings/index.ctp:90
 msgid "Source format"
 msgstr "Format source"
 
-#: View/Settings/index.ctp:96
+#: View/Settings/index.ctp:97
 msgid "Destination format"
 msgstr "Format de destination"
 
-#: View/Settings/index.ctp:98
+#: View/Settings/index.ctp:99
 msgid "Quality"
 msgstr "Qualité"
 
-#: View/Settings/index.ctp:110
+#: View/Settings/index.ctp:111
 msgid "Submit"
 msgstr "Enregistrer"
 
-#: View/Settings/index.ctp:114
+#: View/Settings/index.ctp:115
 msgid "Database management"
 msgstr "Gestion de la base de données"
 
-#: View/Settings/index.ctp:120
+#: View/Settings/index.ctp:121
 msgid "Clear the cache"
 msgstr "Nettoyer le cache"
 
-#: View/Settings/index.ctp:123
+#: View/Settings/index.ctp:124
 msgid "Reset the database"
 msgstr "Réinitialiser la base"
 
-#: View/Settings/index.ctp:123
+#: View/Settings/index.ctp:124
 msgid "Are you sure? All your songs and playlists will disappear!"
 msgstr ""
 "Etes-vous sûr ? Toutes vos pistes et vos listes de lecture seront "
 "supprimées !"
 
-#: View/Settings/index.ctp:130
+#: View/Settings/index.ctp:131
 msgid "Support Sonerezh!"
 msgstr "Soutenir Sonerezh!"
 
-#: View/Settings/index.ctp:132
+#: View/Settings/index.ctp:133
 msgid "Help us to provide you the best music player! Make a donation."
 msgstr ""
 "Aidez-nous à vous fournir le meilleur lecteur de musique ! Faites un don."
 
-#: View/Settings/index.ctp:150
+#: View/Settings/index.ctp:151
 msgid "Sonerezh statistics"
 msgstr "Statistiques de Sonerezh"
 
-#: View/Settings/index.ctp:167
+#: View/Settings/index.ctp:168
 msgid "Thumbnails cache"
 msgstr "Cache des miniatures"
 
-#: View/Settings/index.ctp:171
+#: View/Settings/index.ctp:172
 msgid "Songs cache"
 msgstr "Cache audio"
 
@@ -737,15 +738,15 @@ msgstr "Lire l'album"
 msgid "Recently added"
 msgstr "Ajoutés récemment"
 
-#: View/Songs/albums.ctp:47
+#: View/Songs/albums.ctp:49
 msgid "All albums"
 msgstr "Albums"
 
-#: View/Songs/albums.ctp:50
+#: View/Songs/albums.ctp:52
 msgid "Sort by album"
 msgstr "Trier par album"
 
-#: View/Songs/albums.ctp:55
+#: View/Songs/albums.ctp:57
 msgid "Sort by band"
 msgstr "Trier par artiste"
 

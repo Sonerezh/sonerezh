@@ -1,3 +1,8 @@
+# Changes with 1.1.4 (unrealeased)
+
+### Bug / Security fixes:
+* Fix #107: Replace avconv with ffmpeg
+
 # Changes with 1.1.3
 
 ### Bug / Security fixes:

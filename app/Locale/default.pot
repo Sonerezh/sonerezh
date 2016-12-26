@@ -26,11 +26,11 @@ msgid "PHP GD is missing."
 msgstr ""
 
 #: Controller/InstallersController.php:50
-msgid "libav-tools (avconv) is installed!"
+msgid "libav-tools (avconv) or ffmpeg is installed!"
 msgstr ""
 
 #: Controller/InstallersController.php:52
-msgid "libav-tools (avconv) is missing. Sonerezh will not be able to convert your tracks."
+msgid "libav-tools (avconv) or ffmpeg is missing. Sonerezh will not be able to convert your tracks."
 msgstr ""
 
 #: Controller/InstallersController.php:60
@@ -325,13 +325,13 @@ msgstr ""
 
 #: View/Elements/admin_navbar.ctp:2
 #: View/Elements/default_navbar.ctp:2
-#: View/Settings/index.ctp:155
+#: View/Settings/index.ctp:156
 msgid "Artists"
 msgstr ""
 
 #: View/Elements/admin_navbar.ctp:3
 #: View/Elements/default_navbar.ctp:3
-#: View/Settings/index.ctp:159
+#: View/Settings/index.ctp:160
 msgid "Albums"
 msgstr ""
 
@@ -348,7 +348,7 @@ msgid "Search"
 msgstr ""
 
 #: View/Elements/admin_navbar.ctp:13
-#: View/Settings/index.ctp:117
+#: View/Settings/index.ctp:118
 msgid "Database update"
 msgstr ""
 
@@ -539,7 +539,7 @@ msgid "Queue"
 msgstr ""
 
 #: View/Layouts/default.ctp:115
-#: View/Settings/index.ctp:163
+#: View/Settings/index.ctp:164
 msgid "Songs"
 msgstr ""
 
@@ -625,83 +625,83 @@ msgstr ""
 msgid "Sonerezh settings"
 msgstr ""
 
-#: View/Settings/index.ctp:16;27;43
+#: View/Settings/index.ctp:17;28;44
 msgid "Music root directory"
 msgstr ""
 
-#: View/Settings/index.ctp:50
+#: View/Settings/index.ctp:51
 msgid "Make sure Sonerezh can read this folder recursively. Current App folder is:"
 msgstr ""
 
-#: View/Settings/index.ctp:56
+#: View/Settings/index.ctp:57
 msgid "Enable mail notifications."
 msgstr ""
 
-#: View/Settings/index.ctp:62
+#: View/Settings/index.ctp:63
 msgid "Sonerezh can send an email on users creation to notify them."
 msgstr ""
 
-#: View/Settings/index.ctp:74
+#: View/Settings/index.ctp:75
 msgid "Automatic tracks conversion"
 msgstr ""
 
-#: View/Settings/index.ctp:79
-msgid "The command 'avconv' is not available. Sonerezh cannot convert your tracks."
+#: View/Settings/index.ctp:80
+msgid "The command 'avconv' or 'ffmpeg' are not available. Sonerezh cannot convert your tracks."
 msgstr ""
 
-#: View/Settings/index.ctp:84
+#: View/Settings/index.ctp:85
 msgid "If you have heterogeneous formats in your collection, and because your browser cannot read them all, Sonerezh can convert your tracks to MP3 or OGG/Vorbis before being played. The converted songs will be stored in the \"Songs Cache\"."
 msgstr ""
 
-#: View/Settings/index.ctp:89
+#: View/Settings/index.ctp:90
 msgid "Source format"
 msgstr ""
 
-#: View/Settings/index.ctp:96
+#: View/Settings/index.ctp:97
 msgid "Destination format"
 msgstr ""
 
-#: View/Settings/index.ctp:98
+#: View/Settings/index.ctp:99
 msgid "Quality"
 msgstr ""
 
-#: View/Settings/index.ctp:110
+#: View/Settings/index.ctp:111
 msgid "Submit"
 msgstr ""
 
-#: View/Settings/index.ctp:114
+#: View/Settings/index.ctp:115
 msgid "Database management"
 msgstr ""
 
-#: View/Settings/index.ctp:120
+#: View/Settings/index.ctp:121
 msgid "Clear the cache"
 msgstr ""
 
-#: View/Settings/index.ctp:123
+#: View/Settings/index.ctp:124
 msgid "Reset the database"
 msgstr ""
 
-#: View/Settings/index.ctp:123
+#: View/Settings/index.ctp:124
 msgid "Are you sure? All your songs and playlists will disappear!"
 msgstr ""
 
-#: View/Settings/index.ctp:130
+#: View/Settings/index.ctp:131
 msgid "Support Sonerezh!"
 msgstr ""
 
-#: View/Settings/index.ctp:132
+#: View/Settings/index.ctp:133
 msgid "Help us to provide you the best music player! Make a donation."
 msgstr ""
 
-#: View/Settings/index.ctp:150
+#: View/Settings/index.ctp:151
 msgid "Sonerezh statistics"
 msgstr ""
 
-#: View/Settings/index.ctp:167
+#: View/Settings/index.ctp:168
 msgid "Thumbnails cache"
 msgstr ""
 
-#: View/Settings/index.ctp:171
+#: View/Settings/index.ctp:172
 msgid "Songs cache"
 msgstr ""
 
@@ -713,15 +713,15 @@ msgstr ""
 msgid "Recently added"
 msgstr ""
 
-#: View/Songs/albums.ctp:47
+#: View/Songs/albums.ctp:49
 msgid "All albums"
 msgstr ""
 
-#: View/Songs/albums.ctp:50
+#: View/Songs/albums.ctp:52
 msgid "Sort by album"
 msgstr ""
 
-#: View/Songs/albums.ctp:55
+#: View/Songs/albums.ctp:57
 msgid "Sort by band"
 msgstr ""
 
