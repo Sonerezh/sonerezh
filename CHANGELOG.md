@@ -1,4 +1,4 @@
-# Changes with 1.1.4 (unrealeased)
+# Changes with 1.1.4 (unreleased)
 
 ### Bug / Security fixes:
 * Fix #241: Install script doesn't create the database
