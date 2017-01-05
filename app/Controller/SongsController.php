@@ -570,7 +570,7 @@ class SongsController extends AppController {
                 if ($settings['Setting']['convert_to'] == 'mp3') {
                     $path = TMP.date('YmdHis').".mp3";
                     $song['Song']['path'] = $path;
-                    passthru($avconv . " -i " . escapeshellarg($song['Song']['source_path']) . "' -threads 4  -c:a libmp3lame -b:a " . escapeshellarg($bitrate) . "k " . escapeshellarg($path) . " 2>&1");
+                    passthru($avconv . " -i " . escapeshellarg($song['Song']['source_path']) . " -threads 4 -c:a libmp3lame -b:a " . escapeshellarg($bitrate . 'k') . " " . escapeshellarg($path) . " 2>&1");
                 } elseif ($settings['Setting']['convert_to'] == 'ogg') {
                     $path = TMP.date('YmdHis').".ogg";
                     $song['Song']['path'] = $path;
