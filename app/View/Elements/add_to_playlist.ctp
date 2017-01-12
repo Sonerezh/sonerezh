@@ -8,11 +8,13 @@
         $('#btn-show-plstinput').on('click', function() {
             $('#create-playlist-input').slideDown();
             $('#add-to-playlist-selecter').selecter('disable');
+            $('#PlaylistTitle').attr('required', 'required');
         });
 
         $('#btn-hide-plstinput').on('click', function() {
             $('#create-playlist-input').hide();
             $('#add-to-playlist-selecter').selecter('enable');
+            $('#PlaylistTitle').removeAttr('required');
         });
 
         $('#add-to').on('hidden.bs.modal', function() {
@@ -67,7 +69,8 @@
                                 'placeholder'   => __('Playlist Title'),
                                 'class'         => 'form-control',
                                 'div'           => false,
-                                'label'         => false
+                                'label'         => false,
+                                'required'      => false
                             )); ?>
                             <span class="input-group-btn">
                                 <button type="button" id="btn-hide-plstinput" class="btn btn-danger"><i class="glyphicon glyphicon-remove"></i></button>
