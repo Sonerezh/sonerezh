@@ -114,7 +114,7 @@ Configure::write('Config.language', 'eng');
 /**
  * Sonerezh constants declarations
  */
-define('SONEREZH_VERSION', 'v1.1.3');
+define('SONEREZH_VERSION', 'v1.1.4-dev');
 define('THUMBNAILS_DIR', 'thumbnails');
 define('RESIZED_DIR', IMAGES.'resized'.DS);
 define('AVATARS_DIR', 'avatars');
