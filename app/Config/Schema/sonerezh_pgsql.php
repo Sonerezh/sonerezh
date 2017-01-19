@@ -64,7 +64,7 @@ class SonerezhPgsqlSchema extends CakeSchema {
 		'path' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 1024),
 		'cover' => array('type' => 'string', 'null' => true, 'default' => null),
 		'playtime' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 9),
-		'track_number' => array('type' => 'integer', 'null' => true, 'default' => null),
+		'track_number' => array('type' => 'string', 'null' => true, 'default' => null),
 		'year' => array('type' => 'integer', 'null' => true, 'default' => null),
 		'disc' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 7),
 		'band' => array('type' => 'string', 'null' => true, 'default' => null),
