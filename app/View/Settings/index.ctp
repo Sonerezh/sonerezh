@@ -55,6 +55,7 @@ $this->end(); ?>
             echo $this->Form->input('enable_mail_notification', array(
                 'type'  => 'checkbox',
                 'label' => __('Enable mail notifications.'),
+                'disabled' => !file_exists(APP . "Config" . DS . "email.php")
             ));
             ?>
 
@@ -63,7 +64,7 @@ $this->end(); ?>
                     <?php echo __('Sonerezh can send an email on users creation to notify them.'); ?>
                     <?php echo $this->Html->link(
                         '<i class="glyphicon glyphicon-question-sign"></i>',
-                        'https://www.sonerezh.bzh/docs/en/configuration.html#enable-mail-notification',
+                        'https://www.sonerezh.bzh/docs/en/configuration.html#enable-mail-notifications',
                         array('escape' => false, 'target' => 'blank', 'class' => 'no-ajax')
                     ); ?>
                 </span>
