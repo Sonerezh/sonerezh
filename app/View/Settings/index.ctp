@@ -90,8 +90,8 @@ $this->end(); ?>
                                 <h5><strong><?php echo __('Source format'); ?></strong></h5>
                                 <?php echo $this->Form->input('from_mp3', array('type' => 'checkbox', 'label' => 'MPEG-1/2 Audio Layer 3 (MP3)')); ?>
                                 <?php echo $this->Form->input('from_ogg', array('type' => 'checkbox', 'label' => 'Ogg Vorbis (OGG)')); ?>
+                                <?php echo $this->Form->input('from_flac', array('type' => 'checkbox', 'label' => 'Free Lossless Audio Codec (FLAC)')); ?>
                                 <?php echo $this->Form->input('from_aac', array('type' => 'checkbox', 'label' => 'Advanced Audio Coding (AAC)', 'disabled' => 'disabled', 'checked' => 'checked')); ?>
-                                <?php echo $this->Form->input('from_flac', array('type' => 'checkbox', 'label' => 'Free Lossless Audio Codec (FLAC)', 'disabled' => 'disabled', 'checked' => 'checked')); ?>
                             </div>
                             <div class="col-xs-6">
                                 <h5><strong><?php echo __('Destination format'); ?></strong></h5>
