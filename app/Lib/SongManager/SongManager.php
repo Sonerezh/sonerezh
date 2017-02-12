@@ -166,6 +166,11 @@ class SongManager {
             }
         }
 
+        //Comments
+        if (!empty($file_infos['comments']['comment'])) {
+            $metadata['comment'] = $file_infos['comments']['comment'][0];
+        }
+
         $metadata['source_path'] = $this->song->path;
         $result['data'] = $metadata;
         return $result;

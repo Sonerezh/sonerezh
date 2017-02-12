@@ -69,6 +69,7 @@ class SonerezhPgsqlSchema extends CakeSchema {
 		'disc' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 7),
 		'band' => array('type' => 'string', 'null' => true, 'default' => null),
 		'genre' => array('type' => 'string', 'null' => true, 'default' => null),
+		'comment' => array('type' => 'string', 'null' => true, 'default' => null),
 		'created' => array('type' => 'datetime', 'null' => false, 'default' => null),
 		'modified' => array('type' => 'datetime', 'null' => false, 'default' => null),
 		'indexes' => array(
