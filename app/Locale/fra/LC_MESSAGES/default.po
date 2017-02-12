@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Sonerezh 1.1.2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2016-12-26 16:19+0100\n"
+"PO-Revision-Date: 2017-02-12 18:50+0100\n"
 "Last-Translator: Guillaume Leduc <hey@sonerezh.bzh>\n"
 "Language-Team: Sonerezh Team <hey@sonerezh.bzh>\n"
 "Language: fr\n"
@@ -15,7 +15,7 @@ msgstr ""
 "X-Loco-Source-Locale: fr_FR\n"
 "X-Loco-Parser: loco_parse_po\n"
 "X-Loco-Target-Locale: zz_ZZ\n"
-"X-Generator: Poedit 1.8.7.1\n"
+"X-Generator: Poedit 1.8.11\n"
 
 #: Controller/AppController.php:83
 msgid ""
@@ -313,7 +313,7 @@ msgstr "Lire après"
 msgid "Add to Up Next"
 msgstr "Ajouter à la file d'attente"
 
-#: View/Elements/add_menu.ctp:5 View/Elements/add_to_playlist.ctp:43
+#: View/Elements/add_menu.ctp:5 View/Elements/add_to_playlist.ctp:45
 #: View/Elements/artists_view.ctp:27;67 View/Songs/album.ctp:14
 msgid "Add to..."
 msgstr "Ajouter à..."
@@ -326,21 +326,21 @@ msgstr "Télécharger"
 msgid "Select a playlist"
 msgstr "Sélectionner une liste de lecture"
 
-#: View/Elements/add_to_playlist.ctp:67
+#: View/Elements/add_to_playlist.ctp:69
 msgid "Playlist Title"
 msgstr "Titre de la liste de lecture"
 
-#: View/Elements/add_to_playlist.ctp:81
+#: View/Elements/add_to_playlist.ctp:84
 msgid "Add"
 msgstr "Ajouter"
 
 #: View/Elements/admin_navbar.ctp:2 View/Elements/default_navbar.ctp:2
-#: View/Settings/index.ctp:156
+#: View/Settings/index.ctp:157
 msgid "Artists"
 msgstr "Artistes"
 
 #: View/Elements/admin_navbar.ctp:3 View/Elements/default_navbar.ctp:3
-#: View/Settings/index.ctp:160
+#: View/Settings/index.ctp:161
 msgid "Albums"
 msgstr "Albums"
 
@@ -354,7 +354,7 @@ msgstr "Listes de lecture"
 msgid "Search"
 msgstr "Rechercher"
 
-#: View/Elements/admin_navbar.ctp:13 View/Settings/index.ctp:118
+#: View/Elements/admin_navbar.ctp:13 View/Settings/index.ctp:119
 msgid "Database update"
 msgstr "Mettre à jour la base"
 
@@ -550,7 +550,7 @@ msgstr "La file d'attente est vide."
 msgid "Queue"
 msgstr "File d'attente"
 
-#: View/Layouts/default.ctp:115 View/Settings/index.ctp:164
+#: View/Layouts/default.ctp:115 View/Settings/index.ctp:165
 msgid "Songs"
 msgstr "Pistes"
 
@@ -590,7 +590,7 @@ msgstr "Artiste"
 msgid "Album"
 msgstr "Album"
 
-#: View/Playlists/index.ctp:109 View/Songs/index.ctp:10
+#: View/Playlists/index.ctp:109 View/Songs/index.ctp:11
 msgid "Duration"
 msgstr "Durée"
 
@@ -645,17 +645,17 @@ msgstr ""
 msgid "Enable mail notifications."
 msgstr "Activer les notifications par email."
 
-#: View/Settings/index.ctp:63
+#: View/Settings/index.ctp:64
 msgid "Sonerezh can send an email on users creation to notify them."
 msgstr ""
 "Sonerezh peut vous envoyer des emails lors de certains événements (création "
 "d'utilisateurs...)"
 
-#: View/Settings/index.ctp:75
+#: View/Settings/index.ctp:76
 msgid "Automatic tracks conversion"
 msgstr "Conversion automatique des pistes"
 
-#: View/Settings/index.ctp:80
+#: View/Settings/index.ctp:81
 msgid ""
 "The command 'avconv' or 'ffmpeg' are not available. Sonerezh cannot convert "
 "your tracks."
@@ -663,7 +663,7 @@ msgstr ""
 "La commande 'avconv' ou 'ffmpeg' n'est pas disponible. Sonerezh ne pourra "
 "pas convertir vos pistes."
 
-#: View/Settings/index.ctp:85
+#: View/Settings/index.ctp:86
 msgid ""
 "If you have heterogeneous formats in your collection, and because your "
 "browser cannot read them all, Sonerezh can convert your tracks to MP3 or OGG/"
@@ -675,58 +675,58 @@ msgstr ""
 "MP3 ou OGG/Vorbis avant de les diffuser. Les morceaux convertis seront "
 "stockés dans le \"Cache audio\"."
 
-#: View/Settings/index.ctp:90
+#: View/Settings/index.ctp:91
 msgid "Source format"
 msgstr "Format source"
 
-#: View/Settings/index.ctp:97
+#: View/Settings/index.ctp:98
 msgid "Destination format"
 msgstr "Format de destination"
 
-#: View/Settings/index.ctp:99
+#: View/Settings/index.ctp:100
 msgid "Quality"
 msgstr "Qualité"
 
-#: View/Settings/index.ctp:111
+#: View/Settings/index.ctp:112
 msgid "Submit"
 msgstr "Enregistrer"
 
-#: View/Settings/index.ctp:115
+#: View/Settings/index.ctp:116
 msgid "Database management"
 msgstr "Gestion de la base de données"
 
-#: View/Settings/index.ctp:121
+#: View/Settings/index.ctp:122
 msgid "Clear the cache"
 msgstr "Nettoyer le cache"
 
-#: View/Settings/index.ctp:124
+#: View/Settings/index.ctp:125
 msgid "Reset the database"
 msgstr "Réinitialiser la base"
 
-#: View/Settings/index.ctp:124
+#: View/Settings/index.ctp:125
 msgid "Are you sure? All your songs and playlists will disappear!"
 msgstr ""
 "Etes-vous sûr ? Toutes vos pistes et vos listes de lecture seront "
 "supprimées !"
 
-#: View/Settings/index.ctp:131
+#: View/Settings/index.ctp:132
 msgid "Support Sonerezh!"
 msgstr "Soutenir Sonerezh!"
 
-#: View/Settings/index.ctp:133
+#: View/Settings/index.ctp:134
 msgid "Help us to provide you the best music player! Make a donation."
 msgstr ""
 "Aidez-nous à vous fournir le meilleur lecteur de musique ! Faites un don."
 
-#: View/Settings/index.ctp:151
+#: View/Settings/index.ctp:152
 msgid "Sonerezh statistics"
 msgstr "Statistiques de Sonerezh"
 
-#: View/Settings/index.ctp:168
+#: View/Settings/index.ctp:169
 msgid "Thumbnails cache"
 msgstr "Cache des miniatures"
 
-#: View/Settings/index.ctp:172
+#: View/Settings/index.ctp:173
 msgid "Songs cache"
 msgstr "Cache audio"
 
@@ -810,6 +810,10 @@ msgid "%s song detected "
 msgid_plural "%s songs detected "
 msgstr[0] "%s piste détectée "
 msgstr[1] "%s pistes détectées "
+
+#: View/Songs/index.ctp:10
+msgid "Comment"
+msgstr "Commentaire"
 
 #: View/Songs/search.ctp:4
 msgid "Looking for"

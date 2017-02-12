@@ -7,6 +7,7 @@
                 <th><?php echo __('Song Title'); ?></th>
                 <th class="hidden-xs hidden-sm"><?php echo __('Artist'); ?></th>
                 <th class="visible-lg"><?php echo __('Album'); ?></th>
+                <th class="visible-lg"><?php echo __('Comment'); ?></th>
                 <th class="text-right"><?php echo __('Duration'); ?></th>
             </tr>
             </thead>
@@ -19,6 +20,7 @@
                     <td class="truncated-name"><?php echo h($song['Song']['title']); ?></td>
                     <td class="truncated-name hidden-xs hidden-sm"><?php echo h($song['Song']['band']); ?></td>
                     <td class="truncated-name visible-lg"><?php echo h($song['Song']['album']); ?></td>
+                    <td class="trucated-name visible-lg"><?php echo h($song['Song']['comment']); ?></td>
                     <td class="text-right playtime-cell">
                         <span class="song-playtime"><?php echo h($song['Song']['playtime']); ?></span>
                         <?php echo $this->element('add_menu', array('song_id' => h($song['Song']['id']), 'song_title' => h($song['Song']['title']))); ?>

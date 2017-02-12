@@ -431,7 +431,7 @@ class SongsController extends AppController {
 
         // Get songs from the previous band names
         $songs = $this->Song->find('all', array(
-            'fields'        => array('Song.id', 'Song.title', 'Song.album', 'Song.band', 'Song.artist', 'Song.cover', 'Song.playtime', 'Song.track_number', 'Song.year', 'Song.disc', 'Song.genre'),
+            'fields'        => array('Song.id', 'Song.title', 'Song.album', 'Song.band', 'Song.artist', 'Song.cover', 'Song.playtime', 'Song.track_number', 'Song.year', 'Song.disc', 'Song.genre', 'Song.comment'),
             'conditions'    => array('Song.band' => $band_list)
         ));
 
