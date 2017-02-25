@@ -44,6 +44,18 @@ class Setting extends AppModel {
         }
         // On force la conversion des fichiers AAC
         $this->data[$this->alias]['convert_from'] .= 'aac';
+
+        // On place les vues à afficher dans ['displayed_views']
+        $this->data[$this->alias]['displayed_views'] = '';
+        if (isset($this->data[$this->alias]['display_artists']) && $this->data[$this->alias]['display_artists']) {
+        	$this->data[$this->alias]['displayed_views'] .= 'artists,';
+        }
+        if (isset($this->data[$this->alias]['display_albums']) && $this->data[$this->alias]['display_albums']) {
+        	$this->data[$this->alias]['displayed_views'] .= 'albums,';
+        }
+        if (isset($this->data[$this->alias]['display_playlists']) && $this->data[$this->alias]['display_playlists']) {
+        	$this->data[$this->alias]['displayed_views'] .= 'main,';
+        }
         return true;
     }
 

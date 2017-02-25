@@ -49,6 +49,7 @@ class SonerezhMysqlSchema extends CakeSchema {
 		'quality' => array('type' => 'integer', 'null' => false, 'default' => '256', 'length' => 3, 'unsigned' => true),
 		'enable_mail_notification' => array('type' => 'boolean', 'null' => false, 'default' => '0'),
 		'sync_token' => array('type' => 'integer', 'null' => true, 'default' => null, 'unsigned' => false),
+		'displayed_views' => array('type' => 'string', 'null' => false, 'default' => 'artists,albums,playlists', 'length' => 255, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'indexes' => array(
 			'PRIMARY' => array('column' => 'id', 'unique' => 1)
 		),

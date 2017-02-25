@@ -109,6 +109,22 @@ $this->end(); ?>
                 </div>
             </div>
 
+            <div class="panel panel-default">
+            	<div class="panel-heading">
+            		<h4 class="panel-title"><?php echo __('Displayed views'); ?></h4>
+            	</div>
+            	<div class="panel-body">
+                    <p class="help-block">
+                        <small>
+                            <?php echo __('The modifications made on the displayed views will only be visible upon the next full page refresh.'); ?>
+                        </small>
+                    </p>
+            		<?php echo $this->Form->input('display_artists', array('type' => 'checkbox', 'label' => __('Artists View'))); ?>
+            		<?php echo $this->Form->input('display_albums', array('type' => 'checkbox', 'label' => __('Albums View'))); ?>
+            		<?php echo $this->Form->input('display_playlists', array('type' => 'checkbox', 'label' => __('Playlists View'))); ?>
+            	</div>
+            </div>
+
             <?php echo $this->Form->end(array('label' => __('Submit'), 'class' => 'btn btn-success pull-right')); ?>
         </div>
 

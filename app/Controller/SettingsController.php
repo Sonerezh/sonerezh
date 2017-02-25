@@ -55,6 +55,13 @@ class SettingsController extends AppController {
             }
         }
 
+        if (isset($this->request->data['Setting']['displayed_views'])) {
+            $displayed_views = explode(',', $this->request->data['Setting']['displayed_views']);
+            foreach ($displayed_views as $d) {
+                $this->request->data['Setting']['display_'.$d] = true;
+            }
+        }
+
         $stats['artists'] = $this->Song->find('count', array(
             'group' => 'Song.artist'
         ));

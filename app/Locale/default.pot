@@ -149,15 +149,15 @@ msgstr ""
 msgid "Unable to save settings!"
 msgstr ""
 
-#: Controller/SettingsController.php:132
+#: Controller/SettingsController.php:139
 msgid "Yeah! Cache cleared!"
 msgstr ""
 
-#: Controller/SettingsController.php:165
+#: Controller/SettingsController.php:172
 msgid "All entries have been deleted !"
 msgstr ""
 
-#: Controller/SettingsController.php:168
+#: Controller/SettingsController.php:175
 msgid "Unable to clean the database!"
 msgstr ""
 
@@ -300,7 +300,7 @@ msgid "Add to Up Next"
 msgstr ""
 
 #: View/Elements/add_menu.ctp:5
-#: View/Elements/add_to_playlist.ctp:43
+#: View/Elements/add_to_playlist.ctp:45
 #: View/Elements/artists_view.ctp:27;67
 #: View/Songs/album.ctp:14
 msgid "Add to..."
@@ -315,23 +315,23 @@ msgstr ""
 msgid "Select a playlist"
 msgstr ""
 
-#: View/Elements/add_to_playlist.ctp:67
+#: View/Elements/add_to_playlist.ctp:69
 msgid "Playlist Title"
 msgstr ""
 
-#: View/Elements/add_to_playlist.ctp:81
+#: View/Elements/add_to_playlist.ctp:84
 msgid "Add"
 msgstr ""
 
 #: View/Elements/admin_navbar.ctp:2
 #: View/Elements/default_navbar.ctp:2
-#: View/Settings/index.ctp:156
+#: View/Settings/index.ctp:173
 msgid "Artists"
 msgstr ""
 
 #: View/Elements/admin_navbar.ctp:3
 #: View/Elements/default_navbar.ctp:3
-#: View/Settings/index.ctp:160
+#: View/Settings/index.ctp:177
 msgid "Albums"
 msgstr ""
 
@@ -348,7 +348,7 @@ msgid "Search"
 msgstr ""
 
 #: View/Elements/admin_navbar.ctp:13
-#: View/Settings/index.ctp:118
+#: View/Settings/index.ctp:135
 msgid "Database update"
 msgstr ""
 
@@ -539,7 +539,7 @@ msgid "Queue"
 msgstr ""
 
 #: View/Layouts/default.ctp:115
-#: View/Settings/index.ctp:164
+#: View/Settings/index.ctp:181
 msgid "Songs"
 msgstr ""
 
@@ -637,71 +637,91 @@ msgstr ""
 msgid "Enable mail notifications."
 msgstr ""
 
-#: View/Settings/index.ctp:63
+#: View/Settings/index.ctp:64
 msgid "Sonerezh can send an email on users creation to notify them."
 msgstr ""
 
-#: View/Settings/index.ctp:75
+#: View/Settings/index.ctp:76
 msgid "Automatic tracks conversion"
 msgstr ""
 
-#: View/Settings/index.ctp:80
+#: View/Settings/index.ctp:81
 msgid "The command 'avconv' or 'ffmpeg' are not available. Sonerezh cannot convert your tracks."
 msgstr ""
 
-#: View/Settings/index.ctp:85
+#: View/Settings/index.ctp:86
 msgid "If you have heterogeneous formats in your collection, and because your browser cannot read them all, Sonerezh can convert your tracks to MP3 or OGG/Vorbis before being played. The converted songs will be stored in the \"Songs Cache\"."
 msgstr ""
 
-#: View/Settings/index.ctp:90
+#: View/Settings/index.ctp:91
 msgid "Source format"
 msgstr ""
 
-#: View/Settings/index.ctp:97
+#: View/Settings/index.ctp:98
 msgid "Destination format"
 msgstr ""
 
-#: View/Settings/index.ctp:99
+#: View/Settings/index.ctp:100
 msgid "Quality"
 msgstr ""
 
-#: View/Settings/index.ctp:111
+#: View/Settings/index.ctp:114
+msgid "Displayed views"
+msgstr ""
+
+#: View/Settings/index.ctp:119
+msgid "The modifications made on the displayed views will only be visible upon the next full page refresh."
+msgstr ""
+
+#: View/Settings/index.ctp:122
+msgid "Artists View"
+msgstr ""
+
+#: View/Settings/index.ctp:123
+msgid "Albums View"
+msgstr ""
+
+#: View/Settings/index.ctp:124
+msgid "Playlists View"
+msgstr ""
+
+#: View/Settings/index.ctp:128
 msgid "Submit"
 msgstr ""
 
-#: View/Settings/index.ctp:115
+#: View/Settings/index.ctp:132
 msgid "Database management"
 msgstr ""
 
-#: View/Settings/index.ctp:121
+#: View/Settings/index.ctp:138
 msgid "Clear the cache"
 msgstr ""
 
-#: View/Settings/index.ctp:124
+#: View/Settings/index.ctp:141
 msgid "Reset the database"
 msgstr ""
 
-#: View/Settings/index.ctp:124
+#: View/Settings/index.ctp:141
 msgid "Are you sure? All your songs and playlists will disappear!"
 msgstr ""
 
-#: View/Settings/index.ctp:131
+#: View/Settings/index.ctp:148
 msgid "Support Sonerezh!"
 msgstr ""
 
-#: View/Settings/index.ctp:133
+#: View/Settings/index.ctp:150
 msgid "Help us to provide you the best music player! Make a donation."
 msgstr ""
 
-#: View/Settings/index.ctp:151
+#: View/Settings/index.ctp:168
 msgid "Sonerezh statistics"
 msgstr ""
 
-#: View/Settings/index.ctp:168
+#: View/Settings/index.ctp:185
 msgid "Thumbnails cache"
 msgstr ""
 
-#: View/Settings/index.ctp:172
+#: View/Settings/index.ctp:189
 msgid "Songs cache"
 msgstr ""
 
