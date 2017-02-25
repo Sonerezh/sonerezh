@@ -1,7 +1,7 @@
 <ul class="nav navbar-nav">
-    <li><?php echo $this->Html->link(__('Artists'), array('controller' => 'songs', 'action' => 'artists')); ?></li>
-    <li><?php echo $this->Html->link(__('Albums'), array('controller' => 'songs', 'action' => 'albums')); ?></li>
-    <li><?php echo $this->Html->link(__('Playlists'), array('controller' => 'playlists', 'action' => 'index')); ?></li>
+    <li><?php if($display_artists) echo $this->Html->link(__('Artists'), array('controller' => 'songs', 'action' => 'artists')); ?></li>
+    <li><?php if($display_albums) echo $this->Html->link(__('Albums'), array('controller' => 'songs', 'action' => 'albums')); ?></li>
+    <li><?php if($display_playlists) echo $this->Html->link(__('Playlists'), array('controller' => 'playlists', 'action' => 'index')); ?></li>
 </ul>
 <form action="<?php echo $this->Html->url(array('controller' => 'songs', 'action' => 'search')); ?>" class="navbar-form navbar-left hidden-md hidden-sm hidden-xs" role="search">
     <div class="form-group search" >

@@ -99,11 +99,17 @@ class AppController extends Controller {
             }
         }
 
+        $this->loadModel('Setting');
+        $setting = $this->Setting->find('first', array('fields' => array('sync_token', 'displayed_views')));
+
         if (!$this->request->is('ajax') && $this->Auth->user()) {
-            $this->loadModel('Setting');
-            $setting = $this->Setting->find('first', array('fields' => array('sync_token')));
             $this->set('sync_token', $setting['Setting']['sync_token']);
         }
+
+        $displayed_views = explode(',', $setting['Setting']['displayed_views']);
+        $this->set('display_artists', in_array('artists', $displayed_views));
+        $this->set('display_albums', in_array('albums', $displayed_views));
+        $this->set('display_playlists', in_array('playlists', $displayed_views));
 
         $this->__setLanguage();
     }
