@@ -54,7 +54,7 @@ class Setting extends AppModel {
         	$this->data[$this->alias]['displayed_views'] .= 'albums,';
         }
         if (isset($this->data[$this->alias]['display_playlists']) && $this->data[$this->alias]['display_playlists']) {
-        	$this->data[$this->alias]['displayed_views'] .= 'main,';
+        	$this->data[$this->alias]['displayed_views'] .= 'playlists,';
         }
         return true;
     }
