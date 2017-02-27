@@ -309,22 +309,11 @@ class SongsController extends AppController {
                 )
             );
         } else {
-            $subQuery = $db->buildStatement(
-                array(
-                    'fields' => array('MIN(subsong.id)', 'subsong.album'),
-                    'table' => $db->fullTableName($this->Song),
-                    'alias' => 'subsong',
-                    'group' => 'subsong.album'
-                ),
-                $this->Song
-            );
-            $subQuery = ' (Song.id, Song.album) IN (' . $subQuery . ') ';
-
             if ($page == 1) {
                 $latests = $this->Song->find('all', array(
-                    'fields' => array('Song.id', 'Song.band', 'Song.album', 'Song.cover'),
-                    'conditions' => $subQuery,
+                    'fields' => array('MIN(Song.id)', 'Song.band', 'Song.album', 'Song.cover'),
                     'order' => 'Song.created DESC',
+                    'group' => 'Song.album',
                     'limit' => 6
                 ));
             }
@@ -332,9 +321,9 @@ class SongsController extends AppController {
             // This doesn't work on SQlite database
             $this->Paginator->settings = array(
                 'Song' => array(
-                    'fields' => array('Song.id', 'Song.band', 'Song.album', 'Song.cover'),
-                    'conditions' => $subQuery,
+                    'fields' => array('MIN(Song.id)', 'Song.band', 'Song.album', 'Song.cover', 'Song.album'),
                     'order' => $sort,
+                    'group' => 'Song.album',
                     'limit' => 36
                 )
             );
