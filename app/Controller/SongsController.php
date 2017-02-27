@@ -288,57 +288,24 @@ class SongsController extends AppController {
         $page = isset($this->request->params['named']['page']) ? $this->request->params['named']['page'] : 1;
         $db = $this->Song->getDataSource();
 
-        // Ugly temporary fix for SQlite DB
-        if ($db->config['datasource'] == 'Database/Sqlite') {
+        $this->Song->virtualFields['cover'] = 'MIN(Song.cover)';
 
-            if ($page == 1) {
-                $latests = $this->Song->find('all', array(
-                    'fields' => array('Song.id', 'Song.band', 'Song.album', 'Song.cover'),
-                    'group' => 'Song.album',
-                    'order' => 'Song.created DESC',
-                    'limit' => 6
-                ));
-            }
-
-            $this->Paginator->settings = array(
-                'Song' => array(
-                    'fields'    => array('Song.id', 'Song.band', 'Song.album', 'Song.cover'),
-                    'group'     => 'Song.album',
-                    'order'     => $sort,
-                    'limit'     => 36
-                )
-            );
-        } else {
-            $subQuery = $db->buildStatement(
-                array(
-                    'fields' => array('MIN(subsong.id)', 'subsong.album'),
-                    'table' => $db->fullTableName($this->Song),
-                    'alias' => 'subsong',
-                    'group' => 'subsong.album'
-                ),
-                $this->Song
-            );
-            $subQuery = ' (Song.id, Song.album) IN (' . $subQuery . ') ';
-
-            if ($page == 1) {
-                $latests = $this->Song->find('all', array(
-                    'fields' => array('Song.id', 'Song.band', 'Song.album', 'Song.cover'),
-                    'conditions' => $subQuery,
-                    'order' => 'Song.created DESC',
-                    'limit' => 6
-                ));
-            }
-
-            // This doesn't work on SQlite database
-            $this->Paginator->settings = array(
-                'Song' => array(
-                    'fields' => array('Song.id', 'Song.band', 'Song.album', 'Song.cover'),
-                    'conditions' => $subQuery,
-                    'order' => $sort,
-                    'limit' => 36
-                )
-            );
+        if ($page == 1) {
+            $latests = $this->Song->find('all', array(
+                'fields' => array('Song.band', 'Song.album', 'cover'),
+                'group' => array('Song.album', 'Song.band'),
+                'order' => 'MAX(Song.created) DESC',
+                'limit' => 6
+            ));
         }
+        $this->Paginator->settings = array(
+            'Song' => array(
+                'fields' => array('Song.band', 'Song.album', 'cover'),
+                'group' => array('Song.album', 'Song.band'),
+                'order' => $sort,
+                'limit' => 36
+            )
+        );
 
         $songs = $this->Paginator->paginate();
 
