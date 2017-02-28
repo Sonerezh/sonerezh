@@ -26,6 +26,8 @@ class SongsController extends AppController {
         App::uses('SongManager', 'SongManager');
 
         $this->loadModel('Setting');
+        $this->loadModel('Playlist');
+        $this->loadModel('PlaylistMembership');
         $this->Setting->contain('Rootpath');
         $settings = $this->Setting->find('first');
 
@@ -102,10 +104,56 @@ class SongsController extends AppController {
                     $parse_result = $song_manager->parseMetadata();
 
                     $this->Song->create();
+                    // Generate Playlist.name from path/to/file
+                    $playlist_name = array_reverse(explode('/',$parse_result['data']['source_path']))[1];
+                    // Get or create Playlist
+                    $playlist_data = array();
+                    $playlist_data['Playlist']['title'] = $playlist_name;
+                    $playlist = $this->Playlist->find('first', array(
+                        'conditions' => array('Playlist.title' => $playlist_name)
+                    ));
+                    if(!$playlist) {
+                        $this->Playlist->create();
+                        if($this->Playlist->save($playlist_data)){
+                            $playlist_id = $this->Playlist->getLastInsertId();
+                            $this->Flash->success(__('Successfully created playlist'));
+                        } else {
+                            $this->Flash->error(__('Unable to create playlist'));
+                        }
+
+                    }
+                    else {
+                        $playlist_id = $playlist['Playlist']['id'];
+                    }
+
+
                     if (!$this->Song->save($parse_result['data'])) {
                         $import_result[$file]['status'] = 'ERR';
                         $import_result[$file]['message'] = __('Unable to save the song metadata to the database');
                     } else {
+                        // Get just created song's id
+                        $song_id = $this->Song->getLastInsertId();
+                        // Add song to playlist
+                        if($this->PlaylistMembership->Playlist->exists($playlist_id)){
+                            $playlist_length = $this->PlaylistMembership->find('count', array(
+                                'conditions' => array('PlaylistMembership.playlist_id' => $playlist_id)
+                            ));
+                            $data = array('Playlist' => array("id" => $playlist_id));
+                            $data['PlaylistMembership'][] = array(
+                                'song_id' => $song_id,
+                                'sort' => $playlist_length+1
+                            );
+                            // Save data
+                            if ($this->PlaylistMembership->Playlist->saveAll($data, array('deep' => true))) {
+                                $this->Flash->success(__('Song successfully added to playlist'));
+                            } else {
+                                $this->Flash->error(__('Unable to add song to playlist'));
+                            }
+                        }
+                        else {
+                            $this->Flash->error(__('Unable to add song to playlist. Playlist does not exist'));
+                        }
+
                         unset($parse_result['data']);
                         $import_result[$i]['file'] = $file;
                         $import_result[$i]['status'] = $parse_result['status'];
