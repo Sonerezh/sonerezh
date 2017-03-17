@@ -24,6 +24,12 @@ class SonerezhShell extends AppShell {
             'boolean' => true
         ))->command('import');
 
+        $parser->addOption('yes', array(
+            'short' => 'y',
+            'help' => 'Answer \'yes\' to all questions',
+            'boolean' => true
+        ))->command('import');
+
         return $parser;
     }
 
@@ -31,6 +37,7 @@ class SonerezhShell extends AppShell {
         $path = $this->args[0];
         $recursive = $this->param('recursive');
         //$verbose = $this->param('verbose');
+        $answerYes = $this->param('yes');
 
         if (Cache::read('import')) {
             $this->out("<warning>[WARN]</warning> The import process is already running via another client or the CLI. You can click on \"Clear cache\" on the settings page to remove the lock, if needed.");
@@ -67,14 +74,14 @@ class SonerezhShell extends AppShell {
         $found_count = count($found);
 
         if ($to_import_count == 1) {
-            $selection = $this->in("[INFO] You asked to import $to_import[0]. Continue?", array(
+            $selection = $answerYes ? 'yes' : $this->in("[INFO] You asked to import $to_import[0]. Continue?", array(
                 'yes',
                 'no'
             ), 'yes');
 
         } elseif ($to_import_count > 1) {
             $diff = $found_count - $to_import_count;
-            $selection = $this->in("[INFO] Found $to_import_count audio files ($diff already in the database). Continue?", array(
+            $selection = $answerYes ? 'yes' : $this->in("[INFO] Found $to_import_count audio files ($diff already in the database). Continue?", array(
                 'yes',
                 'no'
             ), 'yes');
