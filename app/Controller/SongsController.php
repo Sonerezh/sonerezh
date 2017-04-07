@@ -229,7 +229,7 @@ class SongsController extends AppController {
             if ($page == 1) {
                 $latests = $this->Song->find('all', array(
                     'fields' => array('Song.id', 'Song.band', 'Song.album', 'Song.cover'),
-                    'group' => 'Song.album',
+                    'group' => array('Song.album', 'Song.band'),
                     'order' => 'Song.created DESC',
                     'limit' => 6
                 ));
@@ -238,7 +238,7 @@ class SongsController extends AppController {
             $this->Paginator->settings = array(
                 'Song' => array(
                     'fields'    => array('Song.id', 'Song.band', 'Song.album', 'Song.cover'),
-                    'group'     => 'Song.album',
+                    'group'     => array('Song.album', 'Song.band'),
                     'order'     => $sort,
                     'limit'     => 36
                 )
@@ -248,7 +248,7 @@ class SongsController extends AppController {
                 $latests = $this->Song->find('all', array(
                     'fields' => array('MIN(Song.id)', 'Song.band', 'Song.album', 'Song.cover'),
                     'order' => 'Song.created DESC',
-                    'group' => 'Song.album',
+                    'group' => array('Song.album', 'Song.band'),
                     'limit' => 6
                 ));
             }
@@ -258,7 +258,7 @@ class SongsController extends AppController {
                 'Song' => array(
                     'fields' => array('MIN(Song.id)', 'Song.band', 'Song.album', 'Song.cover', 'Song.album'),
                     'order' => $sort,
-                    'group' => 'Song.album',
+                    'group' => array('Song.album', 'Song.band'),
                     'limit' => 36
                 )
             );
