@@ -717,7 +717,11 @@ msgstr ""
 msgid "All albums"
 msgstr ""
 
-#: View/Songs/albums.ctp:52
+#: View/Songs/albums.ctp:48
+msgid "Random albums"
+msgstr ""
+
+#: View/Songs/albums.ctp:50
 msgid "Sort by album"
 msgstr ""
 

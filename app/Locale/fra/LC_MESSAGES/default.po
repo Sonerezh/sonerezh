@@ -742,7 +742,11 @@ msgstr "Ajoutés récemment"
 msgid "All albums"
 msgstr "Albums"
 
-#: View/Songs/albums.ctp:52
+#: View/Songs/albums.ctp:48
+msgid "Random albums"
+msgstr "Au hasard"
+
+#: View/Songs/albums.ctp:50
 msgid "Sort by album"
 msgstr "Trier par album"
 

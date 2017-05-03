@@ -219,6 +219,7 @@ class SongsController extends AppController {
         ));
 
         $latests = array();
+        $rands = array();
         // Is this the first page requested?
         $page = isset($this->request->params['named']['page']) ? $this->request->params['named']['page'] : 1;
         $db = $this->Song->getDataSource();
@@ -244,7 +245,8 @@ class SongsController extends AppController {
                 )
             );
         } else {
-            $subQuery = $db->buildStatement(
+/* https://github.com/Sonerezh/sonerezh/pull/283 */
+            /* $subQuery = $db->buildStatement(
                 array(
                     'fields' => array('MIN(subsong.id)', 'subsong.album'),
                     'table' => $db->fullTableName($this->Song),
@@ -253,13 +255,24 @@ class SongsController extends AppController {
                 ),
                 $this->Song
             );
-            $subQuery = ' (Song.id, Song.album) IN (' . $subQuery . ') ';
+            $subQuery = ' (Song.id, Song.album) IN (' . $subQuery . ') '; */
 
             if ($page == 1) {
                 $latests = $this->Song->find('all', array(
-                    'fields' => array('Song.id', 'Song.band', 'Song.album', 'Song.cover'),
-                    'conditions' => $subQuery,
+                    /* 'fields' => array('Song.id', 'Song.band', 'Song.album', 'Song.cover'),
+                    'conditions' => $subQuery, */
+/* https://github.com/Sonerezh/sonerezh/pull/283 */
+                    'fields' => array('MIN(Song.id)', 'Song.band', 'Song.album', 'Song.cover'),
                     'order' => 'Song.created DESC',
+                    'group' => 'Song.album',
+                    'limit' => 6
+                ));
+                $rands = $this->Song->find('all', array(
+                    /* 'fields' => array('Song.id', 'Song.band', 'Song.album', 'Song.cover'),
+                    'conditions' => $subQuery, */
+                    'fields' => array('Song.id', 'Song.band', 'Song.album', 'Song.cover'),
+                    'order' => 'RAND()',
+                    'group' => 'Song.album',
                     'limit' => 6
                 ));
             }
@@ -285,11 +298,15 @@ class SongsController extends AppController {
             $latest['Song']['cover'] = empty($latest['Song']['cover']) ? "no-cover.png" : THUMBNAILS_DIR.'/'.$latest['Song']['cover'];
         }
 
+        foreach ($rands as &$r) {
+            $r['Song']['cover'] = empty($r['Song']['cover']) ? "no-cover.png" : THUMBNAILS_DIR.'/'.$r['Song']['cover'];
+        }
+
         if (empty($songs)) {
             $this->Flash->info(__('Oops! The database is empty...'));
         }
 
-        $this->set(compact('songs', 'playlists', 'latests'));
+        $this->set(compact('songs', 'playlists', 'latests', 'rands'));
     }
 
     /**
