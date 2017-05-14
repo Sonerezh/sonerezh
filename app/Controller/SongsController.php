@@ -55,7 +55,13 @@ class SongsController extends AppController {
 
                         // The find method does not return absolute paths.
                         foreach ($found_in_this_directory as $key => $value) {
-                            $found_in_this_directory[$key] = $subdirectory->path . '/' . $value;
+
+                            // CakePHP adds a trailing slash when the path contains two dots in sequence
+                            if(substr($subdirectory->path, -1) === '/') {
+                                $found_in_this_directory[$key] = $subdirectory->path . $value;
+                            } else {
+                                $found_in_this_directory[$key] = $subdirectory->path . '/' . $value;
+                            }
                         }
 
                         $found = array_merge($found, $found_in_this_directory);
