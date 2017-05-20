@@ -97,6 +97,7 @@ class CakeRequest implements ArrayAccess {
  */
 	protected $_detectors = array(
 		'get' => array('env' => 'REQUEST_METHOD', 'value' => 'GET'),
+		'patch' => array('env' => 'REQUEST_METHOD', 'value' => 'PATCH'),
 		'post' => array('env' => 'REQUEST_METHOD', 'value' => 'POST'),
 		'put' => array('env' => 'REQUEST_METHOD', 'value' => 'PUT'),
 		'delete' => array('env' => 'REQUEST_METHOD', 'value' => 'DELETE'),
@@ -222,7 +223,7 @@ class CakeRequest implements ArrayAccess {
 		unset($query[$unsetUrl]);
 		unset($query[$this->base . $unsetUrl]);
 		if (strpos($this->url, '?') !== false) {
-			list(, $querystr) = explode('?', $this->url);
+			list($this->url, $querystr) = explode('?', $this->url);
 			parse_str($querystr, $queryArgs);
 			$query += $queryArgs;
 		}
@@ -396,7 +397,7 @@ class CakeRequest implements ArrayAccess {
 
 /**
  * Get the content type used in this request.
- * 
+ *
  * @return string
  */
 	public function contentType() {
@@ -417,20 +418,10 @@ class CakeRequest implements ArrayAccess {
 	public function clientIp($safe = true) {
 		if (!$safe && env('HTTP_X_FORWARDED_FOR')) {
 			$ipaddr = preg_replace('/(?:,.*)/', '', env('HTTP_X_FORWARDED_FOR'));
+		} elseif (!$safe && env('HTTP_CLIENT_IP')) {
+			$ipaddr = env('HTTP_CLIENT_IP');
 		} else {
-			if (env('HTTP_CLIENT_IP')) {
-				$ipaddr = env('HTTP_CLIENT_IP');
-			} else {
-				$ipaddr = env('REMOTE_ADDR');
-			}
-		}
-
-		if (env('HTTP_CLIENTADDRESS')) {
-			$tmpipaddr = env('HTTP_CLIENTADDRESS');
-
-			if (!empty($tmpipaddr)) {
-				$ipaddr = preg_replace('/(?:,.*)/', '', $tmpipaddr);
-			}
+			$ipaddr = env('REMOTE_ADDR');
 		}
 		return trim($ipaddr);
 	}
@@ -448,6 +439,9 @@ class CakeRequest implements ArrayAccess {
 		if (!empty($ref) && !empty($base)) {
 			if ($local && strpos($ref, $base) === 0) {
 				$ref = substr($ref, strlen($base));
+				if (empty($ref)) {
+					$ref = '/';
+				}
 				if ($ref[0] !== '/') {
 					$ref = '/' . $ref;
 				}
@@ -754,7 +748,12 @@ class CakeRequest implements ArrayAccess {
  * @return mixed Either false on no header being set or the value of the header.
  */
 	public static function header($name) {
-		$name = 'HTTP_' . strtoupper(str_replace('-', '_', $name));
+		$httpName = 'HTTP_' . strtoupper(str_replace('-', '_', $name));
+		if (isset($_SERVER[$httpName])) {
+			return $_SERVER[$httpName];
+		}
+		// Use the provided value, in some configurations apache will
+		// pass Authorization with no prefix and in Titlecase.
 		if (isset($_SERVER[$name])) {
 			return $_SERVER[$name];
 		}
@@ -1007,7 +1006,7 @@ class CakeRequest implements ArrayAccess {
  * @param string $callback A decoding callback that will convert the string data to another
  *     representation. Leave empty to access the raw input data. You can also
  *     supply additional parameters for the decoding callback using var args, see above.
- * @return The decoded/processed request data.
+ * @return mixed The decoded/processed request data.
  */
 	public function input($callback = null) {
 		$input = $this->_readInput();
@@ -1131,6 +1130,9 @@ class CakeRequest implements ArrayAccess {
  * @return bool
  */
 	public function offsetExists($name) {
+		if ($name === 'url' || $name === 'data') {
+			return true;
+		}
 		return isset($this->params[$name]);
 	}
 

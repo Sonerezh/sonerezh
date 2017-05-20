@@ -21,7 +21,7 @@ App::uses('Xml', 'Utility');
 App::uses('CakeRequest', 'Network');
 
 /**
- * Class TestCakeRequest
+ * TestCakeRequest
  *
  * @package       Cake.Test.Case.Network
  */
@@ -55,7 +55,7 @@ class TestCakeRequest extends CakeRequest {
 }
 
 /**
- * Class CakeRequestTest
+ * CakeRequestTest
  */
 class CakeRequestTest extends CakeTestCase {
 
@@ -148,7 +148,7 @@ class CakeRequestTest extends CakeTestCase {
 
 /**
  * Test the content type method.
- * 
+ *
  * @return void
  */
 	public function testContentType() {
@@ -193,7 +193,8 @@ class CakeRequestTest extends CakeTestCase {
 		$request = new CakeRequest('some/path?one=something&two=else');
 		$expected = array('one' => 'something', 'two' => 'else');
 		$this->assertEquals($expected, $request->query);
-		$this->assertEquals('some/path?one=something&two=else', $request->url);
+		$this->assertEquals('some/path', $request->url);
+		$this->assertStringEndsWith('/some/path?one=something&two=else', $request->here());
 	}
 
 /**
@@ -711,18 +712,18 @@ class CakeRequestTest extends CakeTestCase {
 		$_SERVER['HTTP_X_FORWARDED_FOR'] = '192.168.1.5, 10.0.1.1, proxy.com';
 		$_SERVER['HTTP_CLIENT_IP'] = '192.168.1.2';
 		$_SERVER['REMOTE_ADDR'] = '192.168.1.3';
+
 		$request = new CakeRequest('some/path');
-		$this->assertEquals('192.168.1.5', $request->clientIp(false));
-		$this->assertEquals('192.168.1.2', $request->clientIp());
+		$this->assertEquals('192.168.1.3', $request->clientIp(), 'Use remote_addr in safe mode');
+		$this->assertEquals('192.168.1.5', $request->clientIp(false), 'Use x-forwarded');
 
 		unset($_SERVER['HTTP_X_FORWARDED_FOR']);
-		$this->assertEquals('192.168.1.2', $request->clientIp());
+		$this->assertEquals('192.168.1.3', $request->clientIp(), 'safe uses remote_addr');
+		$this->assertEquals('192.168.1.2', $request->clientIp(false), 'unsafe reads from client_ip');
 
 		unset($_SERVER['HTTP_CLIENT_IP']);
-		$this->assertEquals('192.168.1.3', $request->clientIp());
-
-		$_SERVER['HTTP_CLIENTADDRESS'] = '10.0.1.2, 10.0.1.1';
-		$this->assertEquals('10.0.1.2', $request->clientIp());
+		$this->assertEquals('192.168.1.3', $request->clientIp(), 'use remote_addr');
+		$this->assertEquals('192.168.1.3', $request->clientIp(false), 'use remote_addr');
 	}
 
 /**
@@ -740,6 +741,10 @@ class CakeRequestTest extends CakeTestCase {
 
 		$_SERVER['HTTP_REFERER'] = '';
 		$result = $request->referer();
+		$this->assertSame($result, '/');
+
+		$_SERVER['HTTP_REFERER'] = Configure::read('App.fullBaseUrl') . '/';
+		$result = $request->referer(true);
 		$this->assertSame($result, '/');
 
 		$_SERVER['HTTP_REFERER'] = Configure::read('App.fullBaseUrl') . '/some/path';
@@ -1143,11 +1148,14 @@ class CakeRequestTest extends CakeTestCase {
 		$_SERVER['HTTP_X_THING'] = '';
 		$_SERVER['HTTP_HOST'] = 'localhost';
 		$_SERVER['HTTP_USER_AGENT'] = 'Mozilla/5.0 (Macintosh; U; Intel Mac OS X 10_6_4; en-ca) AppleWebKit/534.8+ (KHTML, like Gecko) Version/5.0 Safari/533.16';
+		$_SERVER['Authorization'] = 'foobar';
 		$request = new CakeRequest('/', false);
 
 		$this->assertEquals($_SERVER['HTTP_HOST'], $request->header('host'));
 		$this->assertEquals($_SERVER['HTTP_USER_AGENT'], $request->header('User-Agent'));
 		$this->assertSame('', $request->header('X-thing'));
+		$this->assertEquals($_SERVER['Authorization'], $request->header('Authorization'));
+		$this->assertFalse($request->header('authorization'));
 	}
 
 /**

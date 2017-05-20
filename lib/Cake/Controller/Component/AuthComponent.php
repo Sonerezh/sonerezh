@@ -359,7 +359,7 @@ class AuthComponent extends Component {
 			return true;
 		}
 
-		if (!$controller->request->is('ajax')) {
+		if (!$controller->request->is('ajax') && !$controller->request->is('json')) {
 			$this->flash($this->authError);
 			$this->Session->write('Auth.redirect', $controller->request->here(false));
 			$controller->redirect($this->loginAction);
@@ -611,8 +611,12 @@ class AuthComponent extends Component {
 			$user = $this->identify($this->request, $this->response);
 		}
 		if ($user) {
-			$this->Session->renew();
-			$this->Session->write(static::$sessionKey, $user);
+			if (static::$sessionKey) {
+				$this->Session->renew();
+				$this->Session->write(static::$sessionKey, $user);
+			} else {
+				static::$_user = $user;
+			}
 			$event = new CakeEvent('Auth.afterIdentify', $this, array('user' => $user));
 			$this->_Collection->getController()->getEventManager()->dispatch($event);
 		}
@@ -641,6 +645,7 @@ class AuthComponent extends Component {
 		foreach ($this->_authenticateObjects as $auth) {
 			$auth->logout($user);
 		}
+		static::$_user = array();
 		$this->Session->delete(static::$sessionKey);
 		$this->Session->delete('Auth.redirect');
 		$this->Session->renew();
@@ -737,7 +742,7 @@ class AuthComponent extends Component {
 			$this->Session->delete('Auth.redirect');
 
 			if (Router::normalize($redir) === Router::normalize($this->loginAction)) {
-				$redir = $this->loginRedirect;
+				$redir = $this->loginRedirect ?: '/';
 			}
 		} elseif ($this->loginRedirect) {
 			$redir = $this->loginRedirect;
