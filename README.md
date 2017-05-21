@@ -25,4 +25,5 @@ Changes implemented:
 - Merged commit in PR https://github.com/Sonerezh/sonerezh/pull/300 (Removed slow subquery from albums view)
 - Merged commit for issue https://github.com/Sonerezh/sonerezh/issues/270 (Changed select grouping so that albums with the same name are listed)
 - Merged commit in PR https://github.com/Sonerezh/sonerezh/pull/287 (Removed trailing slash in subdirectory path added by CakePHP for some folders)
-- Merge commit in PR https://github.com/Sonerezh/sonerezh/pull/306 (Upgraded CakePHP to 2.9.8)
+- Merged commit in PR https://github.com/Sonerezh/sonerezh/pull/306 (Upgraded CakePHP to 2.9.8)
+- Merged commit in PR https://github.com/Sonerezh/sonerezh/pull/293 (Implemented database cleaning)
