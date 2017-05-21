@@ -76,30 +76,34 @@ class SongsController extends AppController {
 
             // The difference between $found and $already_imported
             $to_import = array_merge(array_diff($found, $already_imported));
+            $to_remove = array_merge(array_diff($already_imported, $found));
             $to_import_count = count($to_import);
+            $to_remove_count = count($to_remove);
             $found_count = count($found);
             $diff_count = $found_count - $to_import_count;
             $this->Session->write('to_import', $to_import);
-            $this->set(compact('to_import_count', 'diff_count'));
+            $this->Session->write('to_remove', $to_remove);
+            $this->set(compact('to_import_count', 'to_remove_count', 'diff_count'));
         } elseif ($this->request->is('post')) {
             $this->viewClass = 'Json';
-            $import_result = array();
+            $update_result = array();
 
             if (Cache::read('import')) { // Read lock to avoid multiple import processes in the same time
-                $import_result[0]['status'] = 'ERR';
-                $import_result[0]['message'] = __('The import process is already running via another client or the CLI.');
-                $this->set(compact('import_result'));
-                $this->set('_serialize', array('import_result'));
+                $update_result[0]['status'] = 'ERR';
+                $update_result[0]['message'] = __('The import process is already running via another client or the CLI.');
+                $this->set(compact('update_result'));
+                $this->set('_serialize', array('update_result'));
             } else {
                 // Write lock
                 Cache::write('import', true);
 
                 $to_import = $this->Session->read('to_import');
+                $to_remove = $this->Session->read('to_remove');
                 $imported = array();
+                $removed = array();
 
                 $i = 0;
                 foreach ($to_import as $file) {
-
                     if ($i >= 100) {
                         break;
                     }
@@ -109,16 +113,68 @@ class SongsController extends AppController {
 
                     $this->Song->create();
                     if (!$this->Song->save($parse_result['data'])) {
-                        $import_result[$file]['status'] = 'ERR';
-                        $import_result[$file]['message'] = __('Unable to save the song metadata to the database');
+                        $update_result[$file]['status'] = 'ERR';
+                        $update_result[$file]['message'] = __('Unable to save the song metadata to the database');
                     } else {
                         unset($parse_result['data']);
-                        $import_result[$i]['file'] = $file;
-                        $import_result[$i]['status'] = $parse_result['status'];
-                        $import_result[$i]['message'] = $parse_result['message'];
+                        $update_result[$i]['file'] = $file;
+                        $update_result[$i]['status'] = $parse_result['status'];
+                        $update_result[$i]['message'] = $parse_result['message'];
                     }
 
                     $imported [] = $file;
+                    $i++;
+                }
+
+                $this->loadModel('PlaylistMembership');
+                $this->Song->virtualFields['files_with_cover'] = 'count(Song2.id)';
+
+                foreach ($to_remove as $file) {
+                    if ($i >= 100) {
+                        break;
+                    }
+
+                    $result = $this->Song->find('first', array(
+                        'joins' => array(
+                            array(
+                                'table' => 'songs',
+                                'alias' => 'Song2',
+                                'type' => 'LEFT',
+                                'conditions' => array('Song2.cover = Song.cover')
+                            )
+                        ),
+                        'fields' => array('Song.id', 'Song.cover', 'files_with_cover'),
+                        'conditions' => array('Song.source_path' => $file)
+                    ));
+
+                    // Remove song from database
+                    $this->PlaylistMembership->deleteAll(array('PlaylistMembership.song_id' => $result["Song"]["id"]), false);
+
+                    $update_result[$i]['file'] = $file;
+                    if($this->Song->delete($result["Song"]["id"], false)) {
+                        $update_result[$i]['status'] = "OK";
+                        $update_result[$i]['message'] = "";
+                    } else {
+                        $update_result[$i]['status'] = "ERR";
+                        $update_result[$i]['message'] = "Unable to delete song from the database"; //TODO: Should be handled with __( function
+                    }
+
+                    // Last file using this cover file
+                    if ($result["Song"]['files_with_cover'] == 1) {
+                        // Remove cover files from file system
+                        if (file_exists(IMAGES.THUMBNAILS_DIR.DS . $result["Song"]["cover"])) {
+                            unlink(IMAGES.THUMBNAILS_DIR.DS . $result["Song"]["cover"]);
+                        }
+
+                        // Remove resized cover files from file system
+                        $resized_filename_base = explode(".", $result["Song"]["cover"])[0];
+                        $resized_files = glob(RESIZED_DIR . $resized_filename_base . "_*");
+                        foreach ($resized_files as $resized_file) {
+                            unlink($resized_file);
+                        }
+                    }    
+
+                    $removed [] = $file;
                     $i++;
                 }
 
@@ -131,10 +187,13 @@ class SongsController extends AppController {
                 Cache::delete('import');
 
                 $sync_token = $settings['Setting']['sync_token'];
-                $diff = array_diff($to_import, $imported);
-                $this->Session->write('to_import', $diff);
-                $this->set(compact('sync_token', 'import_result'));
-                $this->set('_serialize', array('sync_token', 'import_result'));
+
+                $import_diff = array_diff($to_import, $imported);
+                $remove_diff = array_diff($to_remove, $removed);
+                $this->Session->write('to_import', $import_diff);
+                $this->Session->write('to_remove', $remove_diff);
+                $this->set(compact('sync_token', 'update_result'));
+                $this->set('_serialize', array('sync_token', 'update_result'));
             }
 
         }
