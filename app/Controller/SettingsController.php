@@ -63,9 +63,7 @@ class SettingsController extends AppController {
             'group' => 'Song.album, Song.band'
         ));
 
-        $stats['songs'] = $this->Song->find('count', array(
-            'group' => 'Song.title, Song.album, Song.band'
-        ));
+        $stats['songs'] = $this->Song->find('count');
 
         // Thumbnails cache size
         $stats['thumbCache'] = 0;
