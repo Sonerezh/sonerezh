@@ -27,3 +27,4 @@ Changes implemented:
 - Merged commit in PR https://github.com/Sonerezh/sonerezh/pull/287 (Removed trailing slash in subdirectory path added by CakePHP for some folders)
 - Merged commit in PR https://github.com/Sonerezh/sonerezh/pull/306 (Upgraded CakePHP to 2.9.8)
 - Merged commit in PR https://github.com/Sonerezh/sonerezh/pull/293 (Implemented database cleaning)
+- Merged commit in PR https://github.com/Sonerezh/sonerezh/pull/309 (Corrected Songs number in statistics)
