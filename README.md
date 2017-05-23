@@ -23,8 +23,9 @@ This is a branch to continue development while the main project is temporarily p
 Changes implemented:
 
 - Merged commit in PR https://github.com/Sonerezh/sonerezh/pull/300 (Removed slow subquery from albums view)
-- Merged commit for issue https://github.com/Sonerezh/sonerezh/issues/270 (Changed select grouping so that albums with the same name are listed)
+- Merged commit in PR https://github.com/Sonerezh/sonerezh/pull/304 (Changed select grouping so that albums with the same name are listed)
 - Merged commit in PR https://github.com/Sonerezh/sonerezh/pull/287 (Removed trailing slash in subdirectory path added by CakePHP for some folders)
 - Merged commit in PR https://github.com/Sonerezh/sonerezh/pull/306 (Upgraded CakePHP to 2.9.8)
 - Merged commit in PR https://github.com/Sonerezh/sonerezh/pull/293 (Implemented database cleaning)
 - Merged commit in PR https://github.com/Sonerezh/sonerezh/pull/309 (Corrected Songs number in statistics)
+- Made compatible with MySQL setting ONLY_FULL_GROUP_BY + removed old unecessary SQLite code
