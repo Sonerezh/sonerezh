@@ -292,9 +292,12 @@ class SongsController extends AppController {
             // This doesn't work on SQlite database
             $this->Paginator->settings = array(
                 'Song' => array(
-                    'fields' => array('Song.id', 'Song.band', 'Song.album', 'Song.cover'),
-                    'conditions' => $subQuery,
+                    /* 'fields' => array('Song.id', 'Song.band', 'Song.album', 'Song.cover'),
+                    'conditions' => $subQuery, */
+/* https://github.com/Sonerezh/sonerezh/pull/283 */
+                    'fields' => array('MIN(Song.id)', 'Song.band', 'Song.album', 'Song.cover', 'Song.album'),
                     'order' => $sort,
+                    'group' => 'Song.album',
                     'limit' => 36
                 )
             );
