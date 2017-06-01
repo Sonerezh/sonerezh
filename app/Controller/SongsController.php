@@ -234,6 +234,12 @@ class SongsController extends AppController {
                     'order' => 'Song.created DESC',
                     'limit' => 6
                 ));
+                $rands = $this->Song->find('all', array(
+                    'fields' => array('Song.id', 'Song.band', 'Song.album', 'Song.cover'),
+                    'group' => 'Song.album',
+                    'order' => 'RANDOM()',
+                    'limit' => 6
+                ));
             }
 
             $this->Paginator->settings = array(
