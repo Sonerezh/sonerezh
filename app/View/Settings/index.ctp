@@ -69,7 +69,17 @@ $this->end(); ?>
                     ); ?>
                 </span>
             </small>
+            <?php
 
+            echo $this->Form->input('enable_random', array(
+                'type'  => 'checkbox',
+                'label' => __('Enable display of random albums.')
+            ));
+            echo $this->Form->input('enable_recent', array(
+                'type'  => 'checkbox',
+                'label' => __('Enable display of recently added albums.')
+            ));
+            ?>
 
             <div class="panel <?php echo $avconv ? 'panel-default' : 'panel-danger'; ?>">
                 <div class="panel-heading">
