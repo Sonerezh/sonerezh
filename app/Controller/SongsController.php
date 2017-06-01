@@ -224,6 +224,12 @@ class SongsController extends AppController {
         $page = isset($this->request->params['named']['page']) ? $this->request->params['named']['page'] : 1;
         $db = $this->Song->getDataSource();
 
+        if ($db->config['datasource'] == 'Database/Mysql') {
+            $random_order_by_method = 'RAND()';
+        } else {
+            $random_order_by_method = 'RANDOM()';
+        }
+
         // Ugly temporary fix for SQlite DB
         if ($db->config['datasource'] == 'Database/Sqlite') {
 
@@ -237,7 +243,7 @@ class SongsController extends AppController {
                 $rands = $this->Song->find('all', array(
                     'fields' => array('Song.id', 'Song.band', 'Song.album', 'Song.cover'),
                     'group' => 'Song.album',
-                    'order' => 'RANDOM()',
+                    'order' => $random_order_by_method,
                     'limit' => 6
                 ));
             }
@@ -277,7 +283,7 @@ class SongsController extends AppController {
                     /* 'fields' => array('Song.id', 'Song.band', 'Song.album', 'Song.cover'),
                     'conditions' => $subQuery, */
                     'fields' => array('Song.id', 'Song.band', 'Song.album', 'Song.cover'),
-                    'order' => 'RAND()',
+                    'order' => $random_order_by_method,
                     'group' => 'Song.album',
                     'limit' => 6
                 ));
