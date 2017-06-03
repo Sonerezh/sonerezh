@@ -127,7 +127,6 @@ class SongsController extends AppController {
                 }
 
                 $this->loadModel('PlaylistMembership');
-                $this->Song->virtualFields['files_with_cover'] = 'COUNT(Song2.id)';
 
                 foreach ($to_remove as $file) {
                     if ($i >= 100) {
@@ -143,31 +142,31 @@ class SongsController extends AppController {
                                 'conditions' => array('Song2.cover = Song.cover')
                             )
                         ),
-                        'fields' => array('Song.id', 'Song.cover', 'files_with_cover'),
+                        'fields' => array('MAX(Song.id) id', 'MAX(Song.cover) cover', 'COUNT(Song2.id) files_with_cover'),
                         'conditions' => array('Song.source_path' => $file)
                     ));
 
                     // Remove song from database
-                    $this->PlaylistMembership->deleteAll(array('PlaylistMembership.song_id' => $result["Song"]["id"]), false);
+                    $this->PlaylistMembership->deleteAll(array('PlaylistMembership.song_id' => $result["0"]["id"]), false);
 
                     $update_result[$i]['file'] = $file;
-                    if($this->Song->delete($result["Song"]["id"], false)) {
+                    if($this->Song->delete($result["0"]["id"], false)) {
                         $update_result[$i]['status'] = "OK";
                         $update_result[$i]['message'] = "";
                     } else {
                         $update_result[$i]['status'] = "ERR";
-                        $update_result[$i]['message'] = "Unable to delete song from the database"; //TODO: Should be handled with __( function
+                        $update_result[$i]['message'] = __('Unable to delete song from the database');
                     }
 
                     // Last file using this cover file
-                    if ($result["Song"]['files_with_cover'] == 1) {
+                    if ($result["0"]['files_with_cover'] == 1) {
                         // Remove cover files from file system
-                        if (file_exists(IMAGES.THUMBNAILS_DIR.DS . $result["Song"]["cover"])) {
-                            unlink(IMAGES.THUMBNAILS_DIR.DS . $result["Song"]["cover"]);
+                        if (file_exists(IMAGES.THUMBNAILS_DIR.DS . $result["0"]["cover"])) {
+                            unlink(IMAGES.THUMBNAILS_DIR.DS . $result["0"]["cover"]);
                         }
 
                         // Remove resized cover files from file system
-                        $resized_filename_base = explode(".", $result["Song"]["cover"])[0];
+                        $resized_filename_base = explode(".", $result["0"]["cover"])[0];
                         $resized_files = glob(RESIZED_DIR . $resized_filename_base . "_*");
                         foreach ($resized_files as $resized_file) {
                             unlink($resized_file);
