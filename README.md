@@ -29,3 +29,4 @@ Changes implemented:
 - Merged commit in PR https://github.com/Sonerezh/sonerezh/pull/293 (Implemented database cleaning)
 - Merged commit in PR https://github.com/Sonerezh/sonerezh/pull/309 (Corrected Songs number in statistics)
 - Made compatible with MySQL setting ONLY_FULL_GROUP_BY + removed old unecessary SQLite code
+- Implemented re-parsing of metadata for modified files

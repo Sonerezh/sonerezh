@@ -1,6 +1,6 @@
 <?php echo $this->start('script'); ?>
 <script type="text/javascript">
-    var files_count = <?php echo $to_import_count + $to_remove_count; ?>;
+    var files_count = <?php echo $to_import_count + $to_update_count + $to_remove_count; ?>;
     var files_updated = 0;
     var lastResponse = "";
     var noOutput = false;
@@ -80,7 +80,7 @@
 <div class="col-lg-12">
     <h3><?php echo __('Update the music collection'); ?></h3>
     <hr />
-    <?php if (($to_import_count > 0 || $to_remove_count > 0) && !Cache::read('import')): ?>
+    <?php if (($to_import_count > 0 || $to_remove_count > 0 || $to_update_count > 0) && !Cache::read('import')): ?>
         <?php if ($to_import_count > 5000): ?>
             <span class="help-block">
                 <?php echo __('Have a huge collection? You might be interested in the CLI tool'); ?>
@@ -94,9 +94,14 @@
 
         <div class="panel panel-primary" id="import-panel">
             <div class="panel-heading" id="import-panel-header">
-                <?php echo __n("%s song detected ", "%s songs detected ", $to_import_count, $to_import_count) . '(' . $diff_count . __(' already imported)'); ?>
+                <?php if ($to_import_count > 0): ?>
+                    <?php echo __n("%s song detected ", "%s songs detected ", $to_import_count, $to_import_count) . '(' . $already_imported_count . __(' already imported)') . '<br/>'; ?>
+                <?php endif; ?>
+                <?php if ($to_update_count > 0): ?>
+                    <?php echo __n("%s song updated on the file system ", "%s songs updated on the file system ", $to_update_count, $to_update_count) . '<br/>'; ?>
+                <?php endif; ?>
                 <?php if ($to_remove_count > 0): ?>
-                    <?php echo ', ' . __n("%s song removed from file system ", "%s songs removed from file system ", $to_remove_count, $to_remove_count); ?>
+                    <?php echo '<br/>' . __n("%s song removed from file system ", "%s songs removed from file system ", $to_remove_count, $to_remove_count) . '<br/>'; ?>
                 <?php endif; ?>
             </div>
             <div class="panel-body">
