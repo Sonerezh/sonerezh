@@ -54,36 +54,47 @@ class SongsController extends AppController {
                         $found_in_this_directory = $subdirectory->find('^.*\.(mp3|ogg|flac|aac)$');
 
                         // The find method does not return absolute paths.
-                        foreach ($found_in_this_directory as $key => $value) {
+                        foreach ($found_in_this_directory as $file) {
 
                             // CakePHP adds a trailing slash when the path contains two dots in sequence
                             if(substr($subdirectory->path, -1) === '/') {
-                                $found_in_this_directory[$key] = $subdirectory->path . $value;
+                                $found_in_this_directory_full_path[$subdirectory->path . $file] = filemtime($subdirectory->path . $file);
                             } else {
-                                $found_in_this_directory[$key] = $subdirectory->path . '/' . $value;
+                                $found_in_this_directory_full_path[$subdirectory->path . '/' . $file] = filemtime($subdirectory->path . '/' . $file);
                             }
                         }
 
-                        $found = array_merge($found, $found_in_this_directory);
+                        $found = array_merge($found, $found_in_this_directory_full_path);
                     }
                 }
             }
 
             // The files already imported
             $already_imported = $this->Song->find('list', array(
-                'fields' => array('Song.id', 'Song.source_path')
+                'fields' => array('Song.source_path', 'Song.modified')
             ));
 
             // The difference between $found and $already_imported
-            $to_import = array_merge(array_diff($found, $already_imported));
-            $to_remove = array_merge(array_diff($already_imported, $found));
+            $to_import = array_keys(array_diff_key($found, $already_imported));
+            $to_remove = array_keys(array_diff_key($already_imported, $found));
+
+            // Find what already imported files still on the filesystem that have been modified since import
+            $to_update = array();
+            foreach (array_intersect_key($found, $already_imported) as $source_path => $value) {
+                if($value > strtotime($already_imported[$source_path])) {
+                    $to_update[] = $source_path;
+                }
+            }
+
             $to_import_count = count($to_import);
+            $to_update_count = count($to_update);
             $to_remove_count = count($to_remove);
-            $found_count = count($found);
-            $diff_count = $found_count - $to_import_count;
+            $already_imported_count = count($already_imported);
+
             $this->Session->write('to_import', $to_import);
+            $this->Session->write('to_update', $to_update);
             $this->Session->write('to_remove', $to_remove);
-            $this->set(compact('to_import_count', 'to_remove_count', 'diff_count'));
+            $this->set(compact('to_import_count', 'to_remove_count', 'to_update_count', 'already_imported_count'));
         } elseif ($this->request->is('post')) {
             $this->viewClass = 'Json';
             $update_result = array();
@@ -98,8 +109,10 @@ class SongsController extends AppController {
                 Cache::write('import', true);
 
                 $to_import = $this->Session->read('to_import');
+                $to_update = $this->Session->read('to_update');
                 $to_remove = $this->Session->read('to_remove');
                 $imported = array();
+                $updated = array();
                 $removed = array();
 
                 $i = 0;
@@ -126,6 +139,40 @@ class SongsController extends AppController {
                     $i++;
                 }
 
+                foreach ($to_update as $file) {
+                    if ($i >= 100) {
+                        break;
+                    }
+
+                    $song_manager = new SongManager($file);
+                    $parse_result = $song_manager->parseMetadata();
+
+                    // Get the song id and enrich the array
+                    $result = $this->Song->find('first', array(
+                        'fields' => array('Song.id'),
+                        'conditions' => array('Song.source_path' => $file)
+                    ));
+                    $parse_result['data']['id'] = $result['Song']['id'];
+
+                    if (!$this->Song->save($parse_result['data'])) {
+                        $update_result[$file]['status'] = 'ERR';
+                        $update_result[$file]['message'] = __('Unable to update the song metadata in the database');
+                    } else {
+                        unset($parse_result['data']);
+                        $update_result[$i]['file'] = $file;
+                        $update_result[$i]['status'] = $parse_result['status'];
+                        $update_result[$i]['message'] = $parse_result['message'];
+                    }
+
+                    // Update db (CakePHP id column magic)
+                    ;
+
+                    unset($parse_result['data']);
+
+                    $updated [] = $file;
+                    $i++;
+                }
+
                 $this->loadModel('PlaylistMembership');
 
                 foreach ($to_remove as $file) {
@@ -147,10 +194,10 @@ class SongsController extends AppController {
                     ));
 
                     // Remove song from database
-                    $this->PlaylistMembership->deleteAll(array('PlaylistMembership.song_id' => $result["0"]["id"]), false);
+                    $this->PlaylistMembership->deleteAll(array('PlaylistMembership.song_id' => $result['0']['id']), false);
 
                     $update_result[$i]['file'] = $file;
-                    if($this->Song->delete($result["0"]["id"], false)) {
+                    if($this->Song->delete($result['0']['id'], false)) {
                         $update_result[$i]['status'] = "OK";
                         $update_result[$i]['message'] = "";
                     } else {
@@ -159,14 +206,14 @@ class SongsController extends AppController {
                     }
 
                     // Last file using this cover file
-                    if ($result["0"]['files_with_cover'] == 1) {
+                    if ($result['0']['files_with_cover'] == 1) {
                         // Remove cover files from file system
-                        if (file_exists(IMAGES.THUMBNAILS_DIR.DS . $result["0"]["cover"])) {
-                            unlink(IMAGES.THUMBNAILS_DIR.DS . $result["0"]["cover"]);
+                        if (file_exists(IMAGES.THUMBNAILS_DIR.DS . $result['0']['cover'])) {
+                            unlink(IMAGES.THUMBNAILS_DIR.DS . $result['0']['cover']);
                         }
 
                         // Remove resized cover files from file system
-                        $resized_filename_base = explode(".", $result["0"]["cover"])[0];
+                        $resized_filename_base = explode(".", $result['0']['cover'])[0];
                         $resized_files = glob(RESIZED_DIR . $resized_filename_base . "_*");
                         foreach ($resized_files as $resized_file) {
                             unlink($resized_file);
@@ -188,6 +235,7 @@ class SongsController extends AppController {
                 $sync_token = $settings['Setting']['sync_token'];
 
                 $import_diff = array_diff($to_import, $imported);
+                $update_diff = array_diff($to_update, $updated);
                 $remove_diff = array_diff($to_remove, $removed);
                 $this->Session->write('to_import', $import_diff);
                 $this->Session->write('to_remove', $remove_diff);
