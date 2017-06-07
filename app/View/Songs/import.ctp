@@ -7,10 +7,10 @@
     function ajaxImport() {
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange  = function() {
-            if (xhr.readyState == 4) {
+            if (xhr.readyState == xhr.DONE) {
 
                 var sync_token = 0;
-                files_updated += 100;
+                files_updated += <?php echo SYNC_BATCH_SIZE ?>;
 
                 try {
                     var res = JSON.parse(xhr.response);

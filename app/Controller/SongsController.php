@@ -117,7 +117,7 @@ class SongsController extends AppController {
 
                 $i = 0;
                 foreach ($to_import as $file) {
-                    if ($i >= 100) {
+                    if ($i >= SYNC_BATCH_SIZE) {
                         break;
                     }
 
@@ -140,7 +140,7 @@ class SongsController extends AppController {
                 }
 
                 foreach ($to_update as $file) {
-                    if ($i >= 100) {
+                    if ($i >= SYNC_BATCH_SIZE) {
                         break;
                     }
 
@@ -176,7 +176,7 @@ class SongsController extends AppController {
                 $this->loadModel('PlaylistMembership');
 
                 foreach ($to_remove as $file) {
-                    if ($i >= 100) {
+                    if ($i >= SYNC_BATCH_SIZE) {
                         break;
                     }
 
