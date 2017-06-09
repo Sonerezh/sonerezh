@@ -30,3 +30,5 @@ Changes implemented:
 - Merged commit in PR https://github.com/Sonerezh/sonerezh/pull/309 (Corrected Songs number in statistics)
 - Made compatible with MySQL setting ONLY_FULL_GROUP_BY + removed old unecessary SQLite code
 - Implemented re-parsing of metadata for modified files
+- Fixed some magic numbers in code
+- Merged commit in PR https://github.com/Sonerezh/sonerezh/pull/312 (Player now shows artist instead of band)
