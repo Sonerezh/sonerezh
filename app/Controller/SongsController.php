@@ -58,13 +58,11 @@ class SongsController extends AppController {
 
                             // CakePHP adds a trailing slash when the path contains two dots in sequence
                             if(substr($subdirectory->path, -1) === '/') {
-                                $found_in_this_directory_full_path[$subdirectory->path . $file] = filemtime($subdirectory->path . $file);
+                                $found[$subdirectory->path . $file] = filemtime($subdirectory->path . $file);
                             } else {
-                                $found_in_this_directory_full_path[$subdirectory->path . '/' . $file] = filemtime($subdirectory->path . '/' . $file);
+                                $found[$subdirectory->path . '/' . $file] = filemtime($subdirectory->path . '/' . $file);
                             }
                         }
-
-                        $found = array_merge($found, $found_in_this_directory_full_path);
                     }
                 }
             }
@@ -163,9 +161,6 @@ class SongsController extends AppController {
                         $update_result[$i]['status'] = $parse_result['status'];
                         $update_result[$i]['message'] = $parse_result['message'];
                     }
-
-                    // Update db (CakePHP id column magic)
-                    ;
 
                     unset($parse_result['data']);
 
