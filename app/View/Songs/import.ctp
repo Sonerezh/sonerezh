@@ -101,7 +101,7 @@
                     <?php echo __n("%s song updated on the file system ", "%s songs updated on the file system ", $to_update_count, $to_update_count) . '<br/>'; ?>
                 <?php endif; ?>
                 <?php if ($to_remove_count > 0): ?>
-                    <?php echo '<br/>' . __n("%s song removed from file system ", "%s songs removed from file system ", $to_remove_count, $to_remove_count) . '<br/>'; ?>
+                    <?php echo __n("%s song removed from file system ", "%s songs removed from file system ", $to_remove_count, $to_remove_count) . '<br/>'; ?>
                 <?php endif; ?>
             </div>
             <div class="panel-body">
@@ -144,7 +144,7 @@
         </div>
     <?php else: ?>
         <div class="alert alert-info">
-            <?php echo __('All the songs have already been imported'); ?>
+            <?php echo __('Database is up to date!'); ?>
         </div>
     <?php endif; ?>
 </div>
