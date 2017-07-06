@@ -149,6 +149,7 @@ class User extends AppModel {
     }
 
     public function isThereAnAdmin() {
+		if($this->data[$this->alias]['id']){
 		if(isset($this->data[$this->alias]['id'])){
 			if (AuthComponent::user('id') == $this->data[$this->alias]['id'] && isset($this->data[$this->alias]['role'])) {
 
@@ -158,6 +159,7 @@ class User extends AppModel {
 					return false;
 				}
 			}
+		}
 		}
         return true;
     }
