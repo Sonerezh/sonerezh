@@ -89,6 +89,25 @@ class TestDeValidation {
 }
 
 /**
+ * ValidationStub
+ *
+ * @package       Cake.Test.Case.Utility
+ */
+class ValidationStub extends Validation {
+
+/**
+ * Stub out is_uploaded_file check
+ *
+ * @param string $path
+ * @return void
+ */
+	protected static function _isUploadedFile($path) {
+		return file_exists($path);
+	}
+
+}
+
+/**
  * Test Case for Validation Class
  *
  * @package       Cake.Test.Case.Utility
@@ -129,6 +148,10 @@ class ValidationTest extends CakeTestCase {
  * @return void
  */
 	public function testNotBlank() {
+		$this->assertTrue(Validation::notBlank(0), 'zero should not be blank');
+		$this->assertTrue(Validation::notBlank(0.0), 'zero should not be blank');
+		$this->assertTrue(Validation::notBlank(0.0 * -1), 'negative 0 should not be blank');
+		$this->assertTrue(Validation::notBlank(-0.0), 'negative 0 should not be blank');
 		$this->assertTrue(Validation::notBlank('abcdefg'));
 		$this->assertTrue(Validation::notBlank('fasdf '));
 		$this->assertTrue(Validation::notBlank('fooo' . chr(243) . 'blabla'));
@@ -384,6 +407,12 @@ class ValidationTest extends CakeTestCase {
 		$this->assertTrue(Validation::cc('5467639122779531', array('mc')));
 		$this->assertTrue(Validation::cc('5297350261550024', array('mc')));
 		$this->assertTrue(Validation::cc('5162739131368058', array('mc')));
+		//Mastercard (additional 2016 BIN)
+		$this->assertTrue(Validation::cc('2221000000000009', array('mc')));
+		$this->assertTrue(Validation::cc('2720999999999996', array('mc')));
+		$this->assertTrue(Validation::cc('2223000010005798', array('mc')));
+		$this->assertTrue(Validation::cc('2623430710235708', array('mc')));
+		$this->assertTrue(Validation::cc('2420452519835723', array('mc')));
 		//Solo 16
 		$this->assertTrue(Validation::cc('6767432107064987', array('solo')));
 		$this->assertTrue(Validation::cc('6334667758225411', array('solo')));
@@ -1801,6 +1830,20 @@ class ValidationTest extends CakeTestCase {
 	}
 
 /**
+ * maxLengthBytes method
+ *
+ * @return void
+ */
+	public function testMaxLengthBytes() {
+		$this->assertTrue(Validation::maxLengthBytes('ab', 3));
+		$this->assertTrue(Validation::maxLengthBytes('abc', 3));
+		$this->assertTrue(Validation::maxLengthBytes('ÆΔΩЖÇ', 10));
+		$this->assertTrue(Validation::maxLengthBytes('ÆΔΩЖÇ', 11));
+		$this->assertFalse(Validation::maxLengthBytes('abcd', 3));
+		$this->assertFalse(Validation::maxLengthBytes('ÆΔΩЖÇ', 9));
+	}
+
+/**
  * testMinLength method
  *
  * @return void
@@ -1812,6 +1855,20 @@ class ValidationTest extends CakeTestCase {
 		$this->assertTrue(Validation::minLength('abc', 3));
 		$this->assertTrue(Validation::minLength('abcd', 3));
 		$this->assertTrue(Validation::minLength('ÆΔΩЖÇ', 2));
+	}
+
+/**
+ * minLengthBytes method
+ *
+ * @return void
+ */
+	public function testMinLengthBytes() {
+		$this->assertFalse(Validation::minLengthBytes('ab', 3));
+		$this->assertFalse(Validation::minLengthBytes('ÆΔΩЖÇ', 11));
+		$this->assertTrue(Validation::minLengthBytes('abc', 3));
+		$this->assertTrue(Validation::minLengthBytes('abcd', 3));
+		$this->assertTrue(Validation::minLengthBytes('ÆΔΩЖÇ', 10));
+		$this->assertTrue(Validation::minLengthBytes('ÆΔΩЖÇ', 9));
 	}
 
 /**
@@ -2142,9 +2199,6 @@ class ValidationTest extends CakeTestCase {
 		$this->assertFalse(Validation::phone('1-(511)-999-9999'));
 		$this->assertFalse(Validation::phone('1-(555)-999-9999'));
 
-		// invalid exhange
-		$this->assertFalse(Validation::phone('1-(222)-511-9999'));
-
 		// invalid phone number
 		$this->assertFalse(Validation::phone('1-(222)-555-0199'));
 		$this->assertFalse(Validation::phone('1-(222)-555-0122'));
@@ -2167,6 +2221,7 @@ class ValidationTest extends CakeTestCase {
 		$this->assertTrue(Validation::phone('1.(333).333-4444'));
 		$this->assertTrue(Validation::phone('1.(333).333.4444'));
 		$this->assertTrue(Validation::phone('1-333-333-4444'));
+		$this->assertTrue(Validation::phone('1-800-211-4511'));
 	}
 
 /**
@@ -2405,11 +2460,11 @@ class ValidationTest extends CakeTestCase {
  * @return void
  */
 	public function testUploadedFileErrorCode() {
-		$this->assertFalse(Validation::uploadedFile('derp'));
+		$this->assertFalse(ValidationStub::uploadedFile('derp'));
 		$invalid = array(
 			'name' => 'testing'
 		);
-		$this->assertFalse(Validation::uploadedFile($invalid));
+		$this->assertFalse(ValidationStub::uploadedFile($invalid));
 		$file = array(
 			'name' => 'cake.power.gif',
 			'tmp_name' => CORE_PATH . 'Cake' . DS . 'Test' . DS . 'test_app' . DS . 'webroot/img/cake.power.gif',
@@ -2417,9 +2472,9 @@ class ValidationTest extends CakeTestCase {
 			'type' => 'image/gif',
 			'size' => 201
 		);
-		$this->assertTrue(Validation::uploadedFile($file));
+		$this->assertTrue(ValidationStub::uploadedFile($file));
 		$file['error'] = UPLOAD_ERR_NO_FILE;
-		$this->assertFalse(Validation::uploadedFile($file), 'Error upload should fail.');
+		$this->assertFalse(ValidationStub::uploadedFile($file), 'Error upload should fail.');
 	}
 
 /**
@@ -2438,11 +2493,11 @@ class ValidationTest extends CakeTestCase {
 		$options = array(
 			'types' => array('text/plain')
 		);
-		$this->assertFalse(Validation::uploadedFile($file, $options), 'Incorrect mimetype.');
+		$this->assertFalse(ValidationStub::uploadedFile($file, $options), 'Incorrect mimetype.');
 		$options = array(
 			'types' => array('image/gif', 'image/png')
 		);
-		$this->assertTrue(Validation::uploadedFile($file, $options));
+		$this->assertTrue(ValidationStub::uploadedFile($file, $options));
 	}
 
 /**
@@ -2461,24 +2516,24 @@ class ValidationTest extends CakeTestCase {
 		$options = array(
 			'minSize' => 500
 		);
-		$this->assertFalse(Validation::uploadedFile($file, $options), 'Too small');
+		$this->assertFalse(ValidationStub::uploadedFile($file, $options), 'Too small');
 		$options = array(
 			'maxSize' => 100
 		);
-		$this->assertFalse(Validation::uploadedFile($file, $options), 'Too big');
+		$this->assertFalse(ValidationStub::uploadedFile($file, $options), 'Too big');
 		$options = array(
 			'minSize' => 100,
 		);
-		$this->assertTrue(Validation::uploadedFile($file, $options));
+		$this->assertTrue(ValidationStub::uploadedFile($file, $options));
 		$options = array(
 			'maxSize' => 500,
 		);
-		$this->assertTrue(Validation::uploadedFile($file, $options));
+		$this->assertTrue(ValidationStub::uploadedFile($file, $options));
 		$options = array(
 			'minSize' => 100,
 			'maxSize' => 500
 		);
-		$this->assertTrue(Validation::uploadedFile($file, $options));
+		$this->assertTrue(ValidationStub::uploadedFile($file, $options));
 	}
 
 /**
@@ -2519,6 +2574,6 @@ class ValidationTest extends CakeTestCase {
 			'size' => 201
 		);
 		$options = array();
-		$this->assertTrue(Validation::uploadedFile($file, $options), 'Wrong order');
+		$this->assertTrue(ValidationStub::uploadedFile($file, $options), 'Wrong order');
 	}
 }

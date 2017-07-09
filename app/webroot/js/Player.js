@@ -1,7 +1,6 @@
 function Player() {
 
     var audioElement = document.createElement('audio');
-    var bufferAudioElement = document.createElement('audio');
     var buffered = false;
     var playlist = new Playlist();
     var self = this;
@@ -30,9 +29,10 @@ function Player() {
                 if (index == playlist.size()) {
                     index = 0;
                 }
-                bufferAudioElement.src = playlist.getByIndex(index).url;
-                bufferAudioElement.play();
-                bufferAudioElement.pause();
+                var audio = new Audio(playlist.getByIndex(index).url);
+                audio.preload = 'auto';
+                audio.play();
+                audio.pause();
                 buffered = true;
             }
         }, 500);

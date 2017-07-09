@@ -63,9 +63,7 @@ class SettingsController extends AppController {
             'group' => 'Song.album, Song.band'
         ));
 
-        $stats['songs'] = $this->Song->find('count', array(
-            'group' => 'Song.title, Song.album, Song.band'
-        ));
+        $stats['songs'] = $this->Song->find('count');
 
         // Thumbnails cache size
         $stats['thumbCache'] = 0;
@@ -91,11 +89,11 @@ class SettingsController extends AppController {
             }
         }
 
-        // Check if avconv shell command is available
+        // Check if avconv / ffpmeg shell command is available
         if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-            $avconv = shell_exec("where avconv") || shell_exec("where ffmpeg");//WIN
+            $avconv = shell_exec('where avconv') || shell_exec('where ffmpeg');  //WIN
         } else {
-            $avconv = shell_exec("which avconv") || shell_exec("which ffmpeg");//NO WIN
+            $avconv = shell_exec('which avconv') || shell_exec('which ffmpeg');  //NO WIN
         }
 
         $db = $this->Setting->getDataSource();

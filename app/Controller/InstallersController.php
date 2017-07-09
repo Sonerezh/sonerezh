@@ -41,15 +41,15 @@ class InstallersController extends AppController {
         }
 
 		if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-			$libavtools = shell_exec("where avconv") || shell_exec("where ffmpeg");//WIN
+			$libavtools = shell_exec('where avconv') || shell_exec('where ffmpeg');  // WIN
 		} else {
-			$libavtools = shell_exec("which avconv") || shell_exec("which ffmpeg");//NO WIN
+			$libavtools = shell_exec('which avconv') || shell_exec('which ffmpeg');  //NO WIN
 		}
 
         if ($libavtools) {
-            $requirements['libavtools'] = array('label' => 'success', 'message' => __('libav-tools (avconv) is installed!'));
+            $requirements['libavtools'] = array('label' => 'success', 'message' => __('libav-tools (avconv) or ffmpeg is installed!'));
         } else {
-            $requirements['libavtools'] = array('label' => 'warning', 'message' => __('libav-tools (avconv) is missing. Sonerezh will not be able to convert your tracks.'));
+            $requirements['libavtools'] = array('label' => 'warning', 'message' => __('libav-tools (avconv) or ffmpeg is missing. Sonerezh will not be able to convert your tracks.'));
         }
 
         $pdo_drivers = PDO::getAvailableDrivers();

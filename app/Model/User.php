@@ -149,12 +149,14 @@ class User extends AppModel {
     }
 
     public function isThereAnAdmin() {
-        if (AuthComponent::user('id') == $this->data[$this->alias]['id'] && isset($this->data[$this->alias]['role'])) {
+        if(isset($this->data[$this->alias]['id'])){
+            if (AuthComponent::user('id') == $this->data[$this->alias]['id'] && isset($this->data[$this->alias]['role'])) {
 
-            $users = $this->find('count');
+                $users = $this->find('count');
 
-            if ($users > 0) {
-                return false;
+                if ($users > 0) {
+                    return false;
+                }
             }
         }
         return true;

@@ -66,19 +66,14 @@ class Validation {
  *
  * Returns true if string contains something other than whitespace
  *
- * $check can be passed as an array:
- * array('check' => 'valueToCheck');
- *
- * @param string|array $check Value to check
+ * @param string $check Value to check
  * @return bool Success
  */
 	public static function notBlank($check) {
-		if (!is_scalar($check)) {
+		if (empty($check) && !is_bool($check) && !is_numeric($check)) {
 			return false;
 		}
-		if (empty($check) && (string)$check !== '0') {
-			return false;
-		}
+
 		return static::_check($check, '/[^\s]+/m');
 	}
 
@@ -182,7 +177,7 @@ class Validation {
 				'enroute'	=> '/^2(?:014|149)\\d{11}$/',
 				'jcb'		=> '/^(3\\d{4}|2100|1800)\\d{11}$/',
 				'maestro'	=> '/^(?:5020|6\\d{3})\\d{12}$/',
-				'mc'		=> '/^5[1-5]\\d{14}$/',
+				'mc'		=> '/^(5[1-5]\\d{14})|(2(?:22[1-9]|2[3-9][0-9]|[3-6][0-9]{2}|7[0-1][0-9]|720)\\d{12})$/',
 				'solo'		=> '/^(6334[5-9][0-9]|6767[0-9]{2})\\d{10}(\\d{2,3})?$/',
 				'switch'	=>
 				'/^(?:49(03(0[2-9]|3[5-9])|11(0[1-2]|7[4-9]|8[1-2])|36[0-9]{2})\\d{10}(\\d{2,3})?)|(?:564182\\d{10}(\\d{2,3})?)|(6(3(33[0-4][0-9])|759[0-9]{2})\\d{10}(\\d{2,3})?)$/',
@@ -539,7 +534,7 @@ class Validation {
 	}
 
 /**
- * Checks whether the length of a string is greater or equal to a minimal length.
+ * Checks whether the length of a string (in characters) is greater or equal to a minimal length.
  *
  * @param string $check The string to test
  * @param int $min The minimal string length
@@ -550,7 +545,7 @@ class Validation {
 	}
 
 /**
- * Checks whether the length of a string is smaller or equal to a maximal length..
+ * Checks whether the length of a string (in characters) is smaller or equal to a maximal length..
  *
  * @param string $check The string to test
  * @param int $max The maximal string length
@@ -558,6 +553,28 @@ class Validation {
  */
 	public static function maxLength($check, $max) {
 		return mb_strlen($check) <= $max;
+	}
+
+/**
+ * Checks whether the length of a string (in bytes) is greater or equal to a minimal length.
+ *
+ * @param string $check The string to test
+ * @param int $min The minimal string length
+ * @return bool Success
+ */
+	public static function minLengthBytes($check, $min) {
+		return strlen($check) >= $min;
+	}
+
+/**
+ * Checks whether the length of a string (in bytes) is smaller or equal to a maximal length..
+ *
+ * @param string $check The string to test
+ * @param int $max The maximal string length
+ * @return bool Success
+ */
+	public static function maxLengthBytes($check, $max) {
+		return strlen($check) <= $max;
 	}
 
 /**
@@ -672,7 +689,7 @@ class Validation {
 					// Exchange and 555-XXXX numbers
 					$regex .= '(?!(555(?:\s*(?:[.\-\s]\s*))(01([0-9][0-9])|1212)))';
 					$regex .= '(?!(555(01([0-9][0-9])|1212)))';
-					$regex .= '([2-9]1[02-9]|[2-9]1[02-9]|[2-9][02-9]1|[2-9][02-9]{2})\s*(?:[.-]\s*)';
+					$regex .= '([2-9]1[02-9]|[2-9][02-9]1|[2-9][0-9]{2})\s*(?:[.-]\s*)';
 
 					// Local number and extension
 					$regex .= '?([0-9]{4})';
@@ -1036,7 +1053,17 @@ class Validation {
 		if (isset($options['types']) && !static::mimeType($file, $options['types'])) {
 			return false;
 		}
-		return true;
+		return static::_isUploadedFile($file['tmp_name']);
+	}
+
+/**
+ * Helper method that can be stubbed in testing.
+ *
+ * @param string $path The path to check.
+ * @return bool Whether or not the file is an uploaded file.
+ */
+	protected static function _isUploadedFile($path) {
+		return is_uploaded_file($path);
 	}
 
 /**

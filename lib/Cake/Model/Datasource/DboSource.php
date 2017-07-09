@@ -51,17 +51,19 @@ class DboSource extends DataSource {
 	public $alias = 'AS ';
 
 /**
- * Caches result from query parsing operations. Cached results for both DboSource::name() and
- * DboSource::conditions() will be stored here. Method caching uses `md5()`. If you have
- * problems with collisions, set DboSource::$cacheMethods to false.
+ * Caches result from query parsing operations. Cached results for both DboSource::name() and DboSource::fields()
+ * will be stored here.
+ *
+ * Method caching uses `md5` (by default) to construct cache keys. If you have problems with collisions,
+ * try a different hashing algorithm by overriding DboSource::cacheMethodHasher or set DboSource::$cacheMethods to false.
  *
  * @var array
  */
 	public static $methodCache = array();
 
 /**
- * Whether or not to cache the results of DboSource::name() and DboSource::conditions()
- * into the memory cache. Set to false to disable the use of the memory cache.
+ * Whether or not to cache the results of DboSource::name() and DboSource::fields() into the memory cache.
+ * Set to false to disable the use of the memory cache.
  *
  * @var bool
  */
@@ -182,6 +184,13 @@ class DboSource extends DataSource {
  * @var array
  */
 	protected $_sqlOps = array('like', 'ilike', 'rlike', 'or', 'not', 'in', 'between', 'regexp', 'similar to');
+
+/**
+ * The set of valid SQL boolean operations usable in a WHERE statement
+ *
+ * @var array
+ */
+	protected $_sqlBoolOps = array('and', 'or', 'not', 'and not', 'or not', 'xor', '||', '&&');
 
 /**
  * Indicates the level of nested transactions
@@ -779,8 +788,70 @@ class DboSource extends DataSource {
 		if ($value === null) {
 			return (isset(static::$methodCache[$method][$key])) ? static::$methodCache[$method][$key] : null;
 		}
+		if (!$this->cacheMethodFilter($method, $key, $value)) {
+			return $value;
+		}
 		$this->_methodCacheChange = true;
 		return static::$methodCache[$method][$key] = $value;
+	}
+
+/**
+ * Filters to apply to the results of `name` and `fields`. When the filter for a given method does not return `true`
+ * then the result is not added to the memory cache.
+ *
+ * Some examples:
+ *
+ * ```
+ * // For method fields, do not cache values that contain floats
+ * if ($method === 'fields') {
+ * 	$hasFloat = preg_grep('/(\d+)?\.\d+/', $value);
+ *
+ * 	return count($hasFloat) === 0;
+ * }
+ *
+ * return true;
+ * ```
+ *
+ * ```
+ * // For method name, do not cache values that have the name created
+ * if ($method === 'name') {
+ * 	return preg_match('/^`created`$/', $value) !== 1;
+ * }
+ *
+ * return true;
+ * ```
+ *
+ * ```
+ * // For method name, do not cache values that have the key 472551d38e1f8bbc78d7dfd28106166f
+ * if ($key === '472551d38e1f8bbc78d7dfd28106166f') {
+ * 	return false;
+ * }
+ *
+ * return true;
+ * ```
+ *
+ * @param string $method Name of the method being cached.
+ * @param string $key The key name for the cache operation.
+ * @param mixed $value The value to cache into memory.
+ * @return bool Whether or not to cache
+ */
+	public function cacheMethodFilter($method, $key, $value) {
+		return true;
+	}
+
+/**
+ * Hashes a given value.
+ *
+ * Method caching uses `md5` (by default) to construct cache keys. If you have problems with collisions,
+ * try a different hashing algorithm or set DboSource::$cacheMethods to false.
+ *
+ * @param string $value Value to hash
+ * @return string Hashed value
+ * @see http://php.net/manual/en/function.hash-algos.php
+ * @see http://softwareengineering.stackexchange.com/questions/49550/which-hashing-algorithm-is-best-for-uniqueness-and-speed
+ */
+	public function cacheMethodHasher($value) {
+		return md5($value);
 	}
 
 /**
@@ -808,7 +879,7 @@ class DboSource extends DataSource {
 			}
 			return $data;
 		}
-		$cacheKey = md5($this->startQuote . $data . $this->endQuote);
+		$cacheKey = $this->cacheMethodHasher($this->startQuote . $data . $this->endQuote);
 		if ($return = $this->cacheMethod(__FUNCTION__, $cacheKey)) {
 			return $return;
 		}
@@ -1490,34 +1561,38 @@ class DboSource extends DataSource {
 		$primaryKey = $Model->primaryKey;
 		$foreignKey = $Model->hasMany[$association]['foreignKey'];
 
+		// Make one pass through children and collect by parent key
+		// Make second pass through parents and associate children
+		$mergedByFK = array();
+		foreach ($assocResultSet as $data) {
+			$fk = $data[$association][$foreignKey];
+			if (! array_key_exists($fk, $mergedByFK)) {
+				$mergedByFK[$fk] = array();
+			}
+			if (count($data) > 1) {
+				$data = array_merge($data[$association], $data);
+				unset($data[$association]);
+				foreach ($data as $key => $name) {
+					if (is_numeric($key)) {
+						$data[$association][] = $name;
+						unset($data[$key]);
+					}
+				}
+				$mergedByFK[$fk][] = $data;
+			} else {
+				$mergedByFK[$fk][] = $data[$association];
+			}
+		}
+
 		foreach ($resultSet as &$result) {
 			if (!isset($result[$modelAlias])) {
 				continue;
 			}
-
-			$resultPrimaryKey = $result[$modelAlias][$primaryKey];
-
 			$merged = array();
-			foreach ($assocResultSet as $data) {
-				if ($resultPrimaryKey !== $data[$association][$foreignKey]) {
-					continue;
-				}
-
-				if (count($data) > 1) {
-					$data = array_merge($data[$association], $data);
-					unset($data[$association]);
-					foreach ($data as $key => $name) {
-						if (is_numeric($key)) {
-							$data[$association][] = $name;
-							unset($data[$key]);
-						}
-					}
-					$merged[] = $data;
-				} else {
-					$merged[] = $data[$association];
-				}
+			$pk = $result[$modelAlias][$primaryKey];
+			if (isset($mergedByFK[$pk])) {
+				$merged = $mergedByFK[$pk];
 			}
-
 			$result = Hash::mergeDiff($result, array($association => $merged));
 		}
 	}
@@ -2298,6 +2373,7 @@ class DboSource extends DataSource {
 
 		$this->_transactionNesting = 0;
 		if ($this->fullDebug) {
+			$this->took = $this->numRows = $this->affected = false;
 			$this->logQuery('BEGIN');
 		}
 		return $this->_transactionStarted = $this->_connection->beginTransaction();
@@ -2311,6 +2387,7 @@ class DboSource extends DataSource {
 	protected function _beginNested() {
 		$query = 'SAVEPOINT LEVEL' . ++$this->_transactionNesting;
 		if ($this->fullDebug) {
+			$this->took = $this->numRows = $this->affected = false;
 			$this->logQuery($query);
 		}
 		$this->_connection->exec($query);
@@ -2331,6 +2408,7 @@ class DboSource extends DataSource {
 
 		if ($this->_transactionNesting === 0) {
 			if ($this->fullDebug) {
+				$this->took = $this->numRows = $this->affected = false;
 				$this->logQuery('COMMIT');
 			}
 			$this->_transactionStarted = false;
@@ -2353,6 +2431,7 @@ class DboSource extends DataSource {
 	protected function _commitNested() {
 		$query = 'RELEASE SAVEPOINT LEVEL' . $this->_transactionNesting--;
 		if ($this->fullDebug) {
+			$this->took = $this->numRows = $this->affected = false;
 			$this->logQuery($query);
 		}
 		$this->_connection->exec($query);
@@ -2373,6 +2452,7 @@ class DboSource extends DataSource {
 
 		if ($this->_transactionNesting === 0) {
 			if ($this->fullDebug) {
+				$this->took = $this->numRows = $this->affected = false;
 				$this->logQuery('ROLLBACK');
 			}
 			$this->_transactionStarted = false;
@@ -2395,6 +2475,7 @@ class DboSource extends DataSource {
 	protected function _rollbackNested() {
 		$query = 'ROLLBACK TO SAVEPOINT LEVEL' . $this->_transactionNesting--;
 		if ($this->fullDebug) {
+			$this->took = $this->numRows = $this->affected = false;
 			$this->logQuery($query);
 		}
 		$this->_connection->exec($query);
@@ -2516,7 +2597,7 @@ class DboSource extends DataSource {
 			$Model->schemaName,
 			$Model->table
 		);
-		$cacheKey = md5(serialize($cacheKey));
+		$cacheKey = $this->cacheMethodHasher(serialize($cacheKey));
 		if ($return = $this->cacheMethod(__FUNCTION__, $cacheKey)) {
 			return $return;
 		}
@@ -2668,7 +2749,6 @@ class DboSource extends DataSource {
 	public function conditionKeysToString($conditions, $quoteValues = true, Model $Model = null) {
 		$out = array();
 		$data = $columnType = null;
-		$bool = array('and', 'or', 'not', 'and not', 'or not', 'xor', '||', '&&');
 
 		foreach ($conditions as $key => $value) {
 			$join = ' AND ';
@@ -2685,8 +2765,8 @@ class DboSource extends DataSource {
 				continue;
 			} elseif (is_numeric($key) && is_string($value)) {
 				$out[] = $this->_quoteFields($value);
-			} elseif ((is_numeric($key) && is_array($value)) || in_array(strtolower(trim($key)), $bool)) {
-				if (in_array(strtolower(trim($key)), $bool)) {
+			} elseif ((is_numeric($key) && is_array($value)) || in_array(strtolower(trim($key)), $this->_sqlBoolOps)) {
+				if (in_array(strtolower(trim($key)), $this->_sqlBoolOps)) {
 					$join = ' ' . strtoupper($key) . ' ';
 				} else {
 					$key = $join;
@@ -3081,54 +3161,45 @@ class DboSource extends DataSource {
  * @return mixed An integer or string representing the length of the column, or null for unknown length.
  */
 	public function length($real) {
-		if (!preg_match_all('/([\w\s]+)(?:\((\d+)(?:,(\d+))?\))?(\sunsigned)?(\szerofill)?/', $real, $result)) {
-			$col = str_replace(array(')', 'unsigned'), '', $real);
-			$limit = null;
-
-			if (strpos($col, '(') !== false) {
-				list($col, $limit) = explode('(', $col);
-			}
-			if ($limit !== null) {
-				return (int)$limit;
-			}
-			return null;
-		}
-
+		preg_match('/([\w\s]+)(?:\((.+?)\))?(\sunsigned)?/i', $real, $result);
 		$types = array(
 			'int' => 1, 'tinyint' => 1, 'smallint' => 1, 'mediumint' => 1, 'integer' => 1, 'bigint' => 1
 		);
 
-		list($real, $type, $length, $offset, $sign) = $result;
-		$typeArr = $type;
-		$type = $type[0];
-		$length = $length[0];
-		$offset = $offset[0];
+		$type = $length = null;
+		if (isset($result[1])) {
+			$type = $result[1];
+		}
+		if (isset($result[2])) {
+			$length = $result[2];
+		}
+		$sign = isset($result[3]);
 
 		$isFloat = in_array($type, array('dec', 'decimal', 'float', 'numeric', 'double'));
-		if ($isFloat && $offset) {
-			return $length . ',' . $offset;
+		if ($isFloat && strpos($length, ',') !== false) {
+			return $length;
 		}
 
-		if (($real[0] == $type) && (count($real) === 1)) {
+		if ($length === null) {
 			return null;
 		}
 
 		if (isset($types[$type])) {
-			$length += $types[$type];
-			if (!empty($sign)) {
-				$length--;
-			}
-		} elseif (in_array($type, array('enum', 'set'))) {
-			$length = 0;
-			foreach ($typeArr as $key => $enumValue) {
-				if ($key === 0) {
-					continue;
-				}
+			return (int)$length;
+		}
+		if (in_array($type, array('enum', 'set'))) {
+			$values = array_map(function ($value) {
+				return trim(trim($value), '\'"');
+			}, explode(',', $length));
+
+			$maxLength = 0;
+			foreach ($values as $key => $enumValue) {
 				$tmpLength = strlen($enumValue);
-				if ($tmpLength > $length) {
-					$length = $tmpLength;
+				if ($tmpLength > $maxLength) {
+					$maxLength = $tmpLength;
 				}
 			}
+			return $maxLength;
 		}
 		return (int)$length;
 	}
@@ -3186,10 +3257,13 @@ class DboSource extends DataSource {
 				$statement->bindValue($i, $val, $columnMap[$col]);
 				$i += 1;
 			}
+			$t = microtime(true);
 			$statement->execute();
 			$statement->closeCursor();
 
 			if ($this->fullDebug) {
+				$this->took = round((microtime(true) - $t) * 1000, 0);
+				$this->numRows = $this->affected = $statement->rowCount();
 				$this->logQuery($sql, $value);
 			}
 		}
@@ -3538,6 +3612,15 @@ class DboSource extends DataSource {
 			return 'integer';
 		}
 		return 'string';
+	}
+
+/**
+ * Empties the query caches.
+ *
+ * @return void
+ */
+	public function flushQueryCache() {
+		$this->_queryCache = array();
 	}
 
 /**

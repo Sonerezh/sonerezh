@@ -54,47 +54,68 @@ class SongsController extends AppController {
                         $found_in_this_directory = $subdirectory->find('^.*\.(mp3|ogg|flac|aac)$');
 
                         // The find method does not return absolute paths.
-                        foreach ($found_in_this_directory as $key => $value) {
-                            $found_in_this_directory[$key] = $subdirectory->path . '/' . $value;
-                        }
+                        foreach ($found_in_this_directory as $file) {
 
-                        $found = array_merge($found, $found_in_this_directory);
+                            // CakePHP adds a trailing slash when the path contains two dots in sequence
+                            if(substr($subdirectory->path, -1) === '/') {
+                                $found[$subdirectory->path . $file] = filemtime($subdirectory->path . $file);
+                            } else {
+                                $found[$subdirectory->path . '/' . $file] = filemtime($subdirectory->path . '/' . $file);
+                            }
+                        }
                     }
                 }
             }
 
             // The files already imported
             $already_imported = $this->Song->find('list', array(
-                'fields' => array('Song.id', 'Song.source_path')
+                'fields' => array('Song.source_path', 'Song.modified')
             ));
 
             // The difference between $found and $already_imported
-            $to_import = array_merge(array_diff($found, $already_imported));
+            $to_import = array_keys(array_diff_key($found, $already_imported));
+            $to_remove = array_keys(array_diff_key($already_imported, $found));
+
+            // Find what already imported files still on the filesystem that have been modified since import
+            $to_update = array();
+            foreach (array_intersect_key($found, $already_imported) as $source_path => $value) {
+                if($value > strtotime($already_imported[$source_path])) {
+                    $to_update[] = $source_path;
+                }
+            }
+
             $to_import_count = count($to_import);
-            $found_count = count($found);
-            $diff_count = $found_count - $to_import_count;
+            $to_update_count = count($to_update);
+            $to_remove_count = count($to_remove);
+            $already_imported_count = count($already_imported);
+
             $this->Session->write('to_import', $to_import);
-            $this->set(compact('to_import_count', 'diff_count'));
+            $this->Session->write('to_update', $to_update);
+            $this->Session->write('to_remove', $to_remove);
+            $this->set(compact('to_import_count', 'to_remove_count', 'to_update_count', 'already_imported_count'));
         } elseif ($this->request->is('post')) {
             $this->viewClass = 'Json';
-            $import_result = array();
+            $update_result = array();
 
             if (Cache::read('import')) { // Read lock to avoid multiple import processes in the same time
-                $import_result[0]['status'] = 'ERR';
-                $import_result[0]['message'] = __('The import process is already running via another client or the CLI.');
-                $this->set(compact('import_result'));
-                $this->set('_serialize', array('import_result'));
+                $update_result[0]['status'] = 'ERR';
+                $update_result[0]['message'] = __('The import process is already running via another client or the CLI.');
+                $this->set(compact('update_result'));
+                $this->set('_serialize', array('update_result'));
             } else {
                 // Write lock
                 Cache::write('import', true);
 
                 $to_import = $this->Session->read('to_import');
+                $to_update = $this->Session->read('to_update');
+                $to_remove = $this->Session->read('to_remove');
                 $imported = array();
+                $updated = array();
+                $removed = array();
 
                 $i = 0;
                 foreach ($to_import as $file) {
-
-                    if ($i >= 100) {
+                    if ($i >= SYNC_BATCH_SIZE) {
                         break;
                     }
 
@@ -103,16 +124,98 @@ class SongsController extends AppController {
 
                     $this->Song->create();
                     if (!$this->Song->save($parse_result['data'])) {
-                        $import_result[$file]['status'] = 'ERR';
-                        $import_result[$file]['message'] = __('Unable to save the song metadata to the database');
+                        $update_result[$file]['status'] = 'ERR';
+                        $update_result[$file]['message'] = __('Unable to save the song metadata to the database');
                     } else {
                         unset($parse_result['data']);
-                        $import_result[$i]['file'] = $file;
-                        $import_result[$i]['status'] = $parse_result['status'];
-                        $import_result[$i]['message'] = $parse_result['message'];
+                        $update_result[$i]['file'] = $file;
+                        $update_result[$i]['status'] = $parse_result['status'];
+                        $update_result[$i]['message'] = $parse_result['message'];
                     }
 
                     $imported [] = $file;
+                    $i++;
+                }
+
+                foreach ($to_update as $file) {
+                    if ($i >= SYNC_BATCH_SIZE) {
+                        break;
+                    }
+
+                    $song_manager = new SongManager($file);
+                    $parse_result = $song_manager->parseMetadata();
+
+                    // Get the song id and enrich the array
+                    $result = $this->Song->find('first', array(
+                        'fields' => array('Song.id'),
+                        'conditions' => array('Song.source_path' => $file)
+                    ));
+                    $parse_result['data']['id'] = $result['Song']['id'];
+
+                    if (!$this->Song->save($parse_result['data'])) {
+                        $update_result[$file]['status'] = 'ERR';
+                        $update_result[$file]['message'] = __('Unable to update the song metadata in the database');
+                    } else {
+                        unset($parse_result['data']);
+                        $update_result[$i]['file'] = $file;
+                        $update_result[$i]['status'] = $parse_result['status'];
+                        $update_result[$i]['message'] = $parse_result['message'];
+                    }
+
+                    unset($parse_result['data']);
+
+                    $updated [] = $file;
+                    $i++;
+                }
+
+                $this->loadModel('PlaylistMembership');
+
+                foreach ($to_remove as $file) {
+                    if ($i >= SYNC_BATCH_SIZE) {
+                        break;
+                    }
+
+                    $result = $this->Song->find('first', array(
+                        'joins' => array(
+                            array(
+                                'table' => 'songs',
+                                'alias' => 'Song2',
+                                'type' => 'LEFT',
+                                'conditions' => array('Song2.cover = Song.cover')
+                            )
+                        ),
+                        'fields' => array('MAX(Song.id) id', 'MAX(Song.cover) cover', 'COUNT(Song2.id) files_with_cover'),
+                        'conditions' => array('Song.source_path' => $file)
+                    ));
+
+                    // Remove song from database
+                    $this->PlaylistMembership->deleteAll(array('PlaylistMembership.song_id' => $result['0']['id']), false);
+
+                    $update_result[$i]['file'] = $file;
+                    if($this->Song->delete($result['0']['id'], false)) {
+                        $update_result[$i]['status'] = "OK";
+                        $update_result[$i]['message'] = "";
+                    } else {
+                        $update_result[$i]['status'] = "ERR";
+                        $update_result[$i]['message'] = __('Unable to delete song from the database');
+                    }
+
+                    // Last file using this cover file
+                    if ($result['0']['files_with_cover'] == 1) {
+                        // Remove cover files from file system
+                        if (file_exists(IMAGES.THUMBNAILS_DIR.DS . $result['0']['cover'])) {
+                            unlink(IMAGES.THUMBNAILS_DIR.DS . $result['0']['cover']);
+                        }
+
+                        // Remove resized cover files from file system
+                        $resized_filename_base = explode(".", $result['0']['cover'])[0];
+                        $resized_files = glob(RESIZED_DIR . $resized_filename_base . "_*");
+                        foreach ($resized_files as $resized_file) {
+                            unlink($resized_file);
+                        }
+                    }    
+
+                    $removed [] = $file;
                     $i++;
                 }
 
@@ -125,10 +228,14 @@ class SongsController extends AppController {
                 Cache::delete('import');
 
                 $sync_token = $settings['Setting']['sync_token'];
-                $diff = array_diff($to_import, $imported);
-                $this->Session->write('to_import', $diff);
-                $this->set(compact('sync_token', 'import_result'));
-                $this->set('_serialize', array('sync_token', 'import_result'));
+
+                $import_diff = array_diff($to_import, $imported);
+                $update_diff = array_diff($to_update, $updated);
+                $remove_diff = array_diff($to_remove, $removed);
+                $this->Session->write('to_import', $import_diff);
+                $this->Session->write('to_remove', $remove_diff);
+                $this->set(compact('sync_token', 'update_result'));
+                $this->set('_serialize', array('sync_token', 'update_result'));
             }
 
         }
@@ -223,57 +330,25 @@ class SongsController extends AppController {
         $page = isset($this->request->params['named']['page']) ? $this->request->params['named']['page'] : 1;
         $db = $this->Song->getDataSource();
 
-        // Ugly temporary fix for SQlite DB
-        if ($db->config['datasource'] == 'Database/Sqlite') {
+        $this->Song->virtualFields['cover'] = 'MIN(Song.cover)';
 
-            if ($page == 1) {
-                $latests = $this->Song->find('all', array(
-                    'fields' => array('Song.id', 'Song.band', 'Song.album', 'Song.cover'),
-                    'group' => 'Song.album',
-                    'order' => 'Song.created DESC',
-                    'limit' => 6
-                ));
-            }
-
-            $this->Paginator->settings = array(
-                'Song' => array(
-                    'fields'    => array('Song.id', 'Song.band', 'Song.album', 'Song.cover'),
-                    'group'     => 'Song.album',
-                    'order'     => $sort,
-                    'limit'     => 36
-                )
-            );
-        } else {
-            $subQuery = $db->buildStatement(
-                array(
-                    'fields' => array('MIN(subsong.id)', 'subsong.album'),
-                    'table' => $db->fullTableName($this->Song),
-                    'alias' => 'subsong',
-                    'group' => 'subsong.album'
-                ),
-                $this->Song
-            );
-            $subQuery = ' (Song.id, Song.album) IN (' . $subQuery . ') ';
-
-            if ($page == 1) {
-                $latests = $this->Song->find('all', array(
-                    'fields' => array('Song.id', 'Song.band', 'Song.album', 'Song.cover'),
-                    'conditions' => $subQuery,
-                    'order' => 'Song.created DESC',
-                    'limit' => 6
-                ));
-            }
-
-            // This doesn't work on SQlite database
-            $this->Paginator->settings = array(
-                'Song' => array(
-                    'fields' => array('Song.id', 'Song.band', 'Song.album', 'Song.cover'),
-                    'conditions' => $subQuery,
-                    'order' => $sort,
-                    'limit' => 36
-                )
-            );
+        if ($page == 1) {
+            $latests = $this->Song->find('all', array(
+                'fields' => array('Song.band', 'Song.album', 'cover'),
+                'group' => array('Song.album', 'Song.band'),
+                'order' => 'MAX(Song.created) DESC',
+                'limit' => 6
+            ));
         }
+
+        $this->Paginator->settings = array(
+            'Song' => array(
+                'fields' => array('Song.band', 'Song.album', 'cover'),
+                'group' => array('Song.album', 'Song.band'),
+                'order' => $sort,
+                'limit' => 36
+            )
+        );
 
         $songs = $this->Paginator->paginate();
 
@@ -563,14 +638,16 @@ class SongsController extends AppController {
         if (empty($song['Song']['path']) || $file_extension != $settings['Setting']['convert_to']) {
             if (in_array($file_extension, explode(',', $settings['Setting']['convert_from']))) {
                 $bitrate = $settings['Setting']['quality'];
-                $avconv = "ffmpeg";
-                if (shell_exec("which avconv")) {
-                    $avconv = "avconv";
+                $avconv = 'ffmpeg';
+
+                if (shell_exec('which avconv') || shell_exec('where avconv')) {
+                    $avconv = 'avconv';
                 }
+
                 if ($settings['Setting']['convert_to'] == 'mp3') {
                     $path = TMP.date('YmdHis').".mp3";
                     $song['Song']['path'] = $path;
-                    passthru($avconv . " -i " . escapeshellarg($song['Song']['source_path']) . "' -threads 4  -c:a libmp3lame -b:a " . escapeshellarg($bitrate) . "k " . escapeshellarg($path) . " 2>&1");
+                    passthru($avconv . " -i " . escapeshellarg($song['Song']['source_path']) . " -threads 4 -c:a libmp3lame -b:a " . escapeshellarg($bitrate . 'k') . " " . escapeshellarg($path) . " 2>&1");
                 } elseif ($settings['Setting']['convert_to'] == 'ogg') {
                     $path = TMP.date('YmdHis').".ogg";
                     $song['Song']['path'] = $path;

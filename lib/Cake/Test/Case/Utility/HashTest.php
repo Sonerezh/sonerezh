@@ -17,7 +17,7 @@
 App::uses('Hash', 'Utility');
 
 /**
- * Class HashTest
+ * HashTest
  *
  * @package       Cake.Utility
  */
@@ -230,13 +230,29 @@ class HashTest extends CakeTestCase {
 	}
 
 /**
+ * Test that get() can extract '' key data.
+ *
+ * @return void
+ */
+	public function testGetEmptyKey() {
+		$data = array(
+			true => 'true value',
+			false => 'false value',
+			'' => 'some value',
+		);
+		$this->assertSame($data[''], Hash::get($data, ''));
+		$this->assertSame($data[false], Hash::get($data, false));
+		$this->assertSame($data[true], Hash::get($data, true));
+	}
+
+/**
  * Test get() with an invalid path
  *
  * @expectedException InvalidArgumentException
  * @return void
  */
 	public function testGetInvalidPath() {
-		Hash::get(array('one' => 'two'), true);
+		Hash::get(array('one' => 'two'), new StdClass());
 	}
 
 /**
@@ -639,8 +655,21 @@ class HashTest extends CakeTestCase {
  * @return void
  */
 	public function testFilter() {
-		$result = Hash::filter(array('0', false, true, 0, array('one thing', 'I can tell you', 'is you got to be', false)));
-		$expected = array('0', 2 => true, 3 => 0, 4 => array('one thing', 'I can tell you', 'is you got to be'));
+		$result = Hash::filter(array(
+			'0',
+			false,
+			true,
+			0,
+			0.0,
+			array('one thing', 'I can tell you', 'is you got to be', false)
+		));
+		$expected = array(
+			'0',
+			2 => true,
+			3 => 0,
+			4 => 0.0,
+			5 => array('one thing', 'I can tell you', 'is you got to be')
+		);
 		$this->assertSame($expected, $result);
 
 		$result = Hash::filter(array(1, array(false)));
@@ -1358,6 +1387,38 @@ class HashTest extends CakeTestCase {
 		);
 		$sorted = Hash::sort($a, '{n}.Person.name', 'asc', 'natural');
 		$this->assertEquals($sorted, $b);
+	}
+
+/**
+ * Test sort() with locale option.
+ *
+ * @return void
+ */
+	public function testSortLocale() {
+		// get the current locale
+		$oldLocale = setlocale(LC_COLLATE, '0');
+
+		$updated = setlocale(LC_COLLATE, 'de_DE.utf8');
+		$this->skipIf($updated === false, 'Could not set locale to de_DE.utf8, skipping test.');
+
+		$items = array(
+			array('Item' => array('entry' => 'Übergabe')),
+			array('Item' => array('entry' => 'Ostfriesland')),
+			array('Item' => array('entry' => 'Äpfel')),
+			array('Item' => array('entry' => 'Apfel')),
+		);
+
+		$result = Hash::sort($items, '{n}.Item.entry', 'asc', 'locale');
+		$expected = array(
+			array('Item' => array('entry' => 'Apfel')),
+			array('Item' => array('entry' => 'Äpfel')),
+			array('Item' => array('entry' => 'Ostfriesland')),
+			array('Item' => array('entry' => 'Übergabe')),
+		);
+		$this->assertEquals($expected, $result);
+
+		// change to the original locale
+		setlocale(LC_COLLATE, $oldLocale);
 	}
 
 /**

@@ -1,3 +1,11 @@
+# Changes with 1.1.4 (unreleased)
+
+### Bug / Security fixes:
+* Fix #241: Install script doesn't create the database
+* Fix #214: Optimization: enable caching for albums covers (thanks to MightyCreak)
+* Fix #152: IndexedDB does not function in private browsing mode (documentation improvement)
+* Fix #107: Replace avconv with ffmpeg
+
 # Changes with 1.1.3
 
 ### Bug / Security fixes:

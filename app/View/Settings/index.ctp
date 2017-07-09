@@ -55,6 +55,7 @@ $this->end(); ?>
             echo $this->Form->input('enable_mail_notification', array(
                 'type'  => 'checkbox',
                 'label' => __('Enable mail notifications.'),
+                'disabled' => !file_exists(APP . "Config" . DS . "email.php")
             ));
             ?>
 
@@ -63,7 +64,7 @@ $this->end(); ?>
                     <?php echo __('Sonerezh can send an email on users creation to notify them.'); ?>
                     <?php echo $this->Html->link(
                         '<i class="glyphicon glyphicon-question-sign"></i>',
-                        'https://www.sonerezh.bzh/docs/en/configuration.html#enable-mail-notification',
+                        'https://www.sonerezh.bzh/docs/en/configuration.html#enable-mail-notifications',
                         array('escape' => false, 'target' => 'blank', 'class' => 'no-ajax')
                     ); ?>
                 </span>
@@ -77,7 +78,7 @@ $this->end(); ?>
                 <div class="panel-body">
                     <?php if (!$avconv): ?>
                         <p class="text-danger">
-                            <strong><?php echo __("The command 'avconv' is not available. Sonerezh cannot convert your tracks.") ?></strong>
+                            <strong><?php echo __("The command 'avconv' or 'ffmpeg' are not available. Sonerezh cannot convert your tracks.") ?></strong>
                         </p>
                     <?php else: ?>
                         <p class="help-block">
@@ -90,8 +91,8 @@ $this->end(); ?>
                                 <h5><strong><?php echo __('Source format'); ?></strong></h5>
                                 <?php echo $this->Form->input('from_mp3', array('type' => 'checkbox', 'label' => 'MPEG-1/2 Audio Layer 3 (MP3)')); ?>
                                 <?php echo $this->Form->input('from_ogg', array('type' => 'checkbox', 'label' => 'Ogg Vorbis (OGG)')); ?>
+                                <?php echo $this->Form->input('from_flac', array('type' => 'checkbox', 'label' => 'Free Lossless Audio Codec (FLAC)')); ?>
                                 <?php echo $this->Form->input('from_aac', array('type' => 'checkbox', 'label' => 'Advanced Audio Coding (AAC)', 'disabled' => 'disabled', 'checked' => 'checked')); ?>
-                                <?php echo $this->Form->input('from_flac', array('type' => 'checkbox', 'label' => 'Free Lossless Audio Codec (FLAC)', 'disabled' => 'disabled', 'checked' => 'checked')); ?>
                             </div>
                             <div class="col-xs-6">
                                 <h5><strong><?php echo __('Destination format'); ?></strong></h5>

@@ -215,11 +215,13 @@ class HttpSocketTest extends CakeTestCase {
 		$this->Socket->expects($this->never())->method('connect');
 		$this->Socket->__construct(array('host' => 'foo-bar'));
 		$baseConfig['host'] = 'foo-bar';
+		$baseConfig['cryptoType'] = 'tls';
 		$this->assertEquals($this->Socket->config, $baseConfig);
 
 		$this->Socket->reset();
 		$baseConfig = $this->Socket->config;
 		$this->Socket->__construct('http://www.cakephp.org:23/');
+		$baseConfig['cryptoType'] = 'tls';
 		$baseConfig['host'] = $baseConfig['request']['uri']['host'] = 'www.cakephp.org';
 		$baseConfig['port'] = $baseConfig['request']['uri']['port'] = 23;
 		$baseConfig['request']['uri']['scheme'] = 'http';
@@ -1779,7 +1781,7 @@ class HttpSocketTest extends CakeTestCase {
 	}
 
 /**
- * This tests asserts HttpSocket::reset() resets a HttpSocket instance to it's initial state (before Object::__construct
+ * This tests asserts HttpSocket::reset() resets a HttpSocket instance to it's initial state (before CakeObject::__construct
  * got executed)
  *
  * @return void
@@ -1803,7 +1805,7 @@ class HttpSocketTest extends CakeTestCase {
 
 /**
  * This tests asserts HttpSocket::reset(false) resets certain HttpSocket properties to their initial state (before
- * Object::__construct got executed).
+ * CakeObject::__construct got executed).
  *
  * @return void
  */
@@ -1843,7 +1845,6 @@ class HttpSocketTest extends CakeTestCase {
 		} catch (SocketException $e) {
 			$message = $e->getMessage();
 			$this->skipIf(strpos($message, 'Invalid HTTP') !== false, 'Invalid HTTP Response received, skipping.');
-			$this->assertContains('Peer certificate CN', $message);
 			$this->assertContains('Failed to enable crypto', $message);
 		}
 	}

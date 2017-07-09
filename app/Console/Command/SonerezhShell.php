@@ -125,8 +125,16 @@ class SonerezhShell extends AppShell {
                 }
 
                 $this->Song->create();
-                if (!$this->Song->save($parse_result['data'])) {
-                    $this->overwrite("<error>[ERR]</error>[$file] - Unable to save the song metadata to the database");
+                $status = false;
+                $message = "<error>[ERR]</error>[$file] - Unable to save the song metadata to the database";
+                try {
+                    $status = $this->Song->save($parse_result['data']);
+                }
+                catch (\Exception $e) {
+                    $message = $e->getMessage();
+                }
+                if (!$status) {
+                    $this->overwrite($message);
                 }
 
                 // Progressbar
