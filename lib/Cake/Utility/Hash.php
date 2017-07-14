@@ -43,16 +43,18 @@ class Hash {
  * @link http://book.cakephp.org/2.0/en/core-utility-libraries/hash.html#Hash::get
  */
 	public static function get(array $data, $path, $default = null) {
-		if (empty($data) || $path === '' || $path === null) {
+		if (empty($data) || $path === null) {
 			return $default;
 		}
 		if (is_string($path) || is_numeric($path)) {
 			$parts = explode('.', $path);
+		} elseif (is_bool($path) || $path === null) {
+			$parts = array($path);
 		} else {
 			if (!is_array($path)) {
 				throw new InvalidArgumentException(__d('cake_dev',
-					'Invalid Parameter %s, should be dot separated path or array.',
-					$path
+					'Invalid path parameter: %s, should be dot separated path or array.',
+					var_export($path, true)
 				));
 			}
 			$parts = $path;
@@ -571,7 +573,7 @@ class Hash {
  * @return bool
  */
 	protected static function _filter($var) {
-		if ($var === 0 || $var === '0' || !empty($var)) {
+		if ($var === 0 || $var === 0.0 || $var === '0' || !empty($var)) {
 			return true;
 		}
 		return false;
@@ -836,6 +838,7 @@ class Hash {
  * - `regular` For regular sorting (don't change types)
  * - `numeric` Compare values numerically
  * - `string` Compare values as strings
+ * - `locale` Compare items as strings, based on the current locale
  * - `natural` Compare items as strings using "natural ordering" in a human friendly way.
  *   Will sort foo10 below foo2 as an example. Requires PHP 5.4 or greater or it will fallback to 'regular'
  *
@@ -904,6 +907,8 @@ class Hash {
 			$type = SORT_STRING;
 		} elseif ($type === 'natural') {
 			$type = SORT_NATURAL;
+		} elseif ($type === 'locale') {
+			$type = SORT_LOCALE_STRING;
 		} else {
 			$type = SORT_REGULAR;
 		}

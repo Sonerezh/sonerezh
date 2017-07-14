@@ -37,7 +37,7 @@ App::uses('ComponentCollection', 'Controller');
  * @link          http://book.cakephp.org/2.0/en/controllers/components.html
  * @see Controller::$components
  */
-class Component extends Object {
+class Component extends CakeObject {
 
 /**
  * Component collection class used to lazy load components.
@@ -90,7 +90,7 @@ class Component extends Object {
  */
 	public function __get($name) {
 		if (isset($this->_componentMap[$name]) && !isset($this->{$name})) {
-			$settings = array('enabled' => false) + (array)$this->_componentMap[$name]['settings'];
+			$settings = (array)$this->_componentMap[$name]['settings'] + array('enabled' => false);
 			$this->{$name} = $this->_Collection->load($this->_componentMap[$name]['class'], $settings);
 		}
 		if (isset($this->{$name})) {
