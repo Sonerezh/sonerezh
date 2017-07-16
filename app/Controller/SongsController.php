@@ -634,6 +634,12 @@ class SongsController extends AppController {
                     $avconv = 'avconv';
                 }
 
+                $orig_locale = setlocale(LC_ALL, 0);
+                $orig_locale_bis = str_replace(';', '&', $orig_locale);
+                parse_str($orig_locale_bis, $locale_array);
+
+                setlocale(LC_CTYPE, 'C.UTF-8');
+
                 if ($settings['Setting']['convert_to'] == 'mp3') {
                     $path = TMP.date('YmdHis').".mp3";
                     $song['Song']['path'] = $path;
@@ -643,6 +649,9 @@ class SongsController extends AppController {
                     $song['Song']['path'] = $path;
                     passthru($avconv . " -i " . escapeshellarg($song['Song']['source_path']) . " -threads 4 -c:a libvorbis -q:a " . escapeshellarg($bitrate) . " " . escapeshellarg($path) . " 2>&1");
                 }
+
+                setlocale(LC_CTYPE, $locale_array['LC_CTYPE']);
+
             } elseif (empty($song['Song']['path'])) {
                 $song['Song']['path'] = $song['Song']['source_path'];
             }
