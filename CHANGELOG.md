@@ -1,10 +1,16 @@
 # Changes with 1.1.4 (unreleased)
 
-### Bug / Security fixes:
+#### Bug / Security fixes:
+* Merge #318 (fix #277): Getting "Undefined index: id [APP/Model/User.php, line 152]" During Installation (thanks to GaneshKandu)
+* Merge #306: Upgraded CakePHP to 2.9.8 (thanks to gs11)
+* Fix #263: Something wrong with files with non-latin characters in name
 * Fix #241: Install script doesn't create the database
 * Fix #214: Optimization: enable caching for albums covers (thanks to MightyCreak)
 * Fix #152: IndexedDB does not function in private browsing mode (documentation improvement)
 * Fix #107: Replace avconv with ffmpeg
+
+#### New features
+* Merge #293: Implement database update (thanks to gs11)
 
 # Changes with 1.1.3
 

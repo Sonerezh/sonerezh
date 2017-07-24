@@ -336,7 +336,7 @@ function init() {
 
     player.addEventListener('play', function() {
         var track = player.getCurrentTrack();
-        $pageTitle.text(track.title+" - "+track.band);
+        $pageTitle.text(track.title+" - "+track.artist);
         $playButton.removeClass('glyphicon-play').addClass('glyphicon-pause');
         $('#content tr, #queue tr').removeClass('paused');
         updateSelectedSong();
@@ -350,7 +350,7 @@ function init() {
     player.addEventListener('loadstart', function() {
         var track = player.getCurrentTrack();
         $songTitle.text(track.title);
-        $songBand.text(track.band);
+        $songBand.text(track.artist);
         var replace = "_65x65"+(retina ? "@2x" : "")+"$1";
         $coverImg.attr('src', track.cover.replace(/(\.[a-z0-9]+)/i, replace));
         updateUI();

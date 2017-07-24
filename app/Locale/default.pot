@@ -165,19 +165,19 @@ msgstr ""
 msgid "Please define a root path."
 msgstr ""
 
-#: Controller/SongsController.php:84
+#: Controller/SongsController.php:87
 msgid "The import process is already running via another client or the CLI."
 msgstr ""
 
-#: Controller/SongsController.php:107
+#: Controller/SongsController.php:111
 msgid "Unable to save the song metadata to the database"
 msgstr ""
 
-#: Controller/SongsController.php:289;399;442
+#: Controller/SongsController.php:348;458;501
 msgid "Oops! The database is empty..."
 msgstr ""
 
-#: Controller/SongsController.php:528
+#: Controller/SongsController.php:587
 msgid "Oops! No results."
 msgstr ""
 
@@ -300,7 +300,7 @@ msgid "Add to Up Next"
 msgstr ""
 
 #: View/Elements/add_menu.ctp:5
-#: View/Elements/add_to_playlist.ctp:43
+#: View/Elements/add_to_playlist.ctp:45
 #: View/Elements/artists_view.ctp:27;67
 #: View/Songs/album.ctp:14
 msgid "Add to..."
@@ -315,23 +315,23 @@ msgstr ""
 msgid "Select a playlist"
 msgstr ""
 
-#: View/Elements/add_to_playlist.ctp:67
+#: View/Elements/add_to_playlist.ctp:69
 msgid "Playlist Title"
 msgstr ""
 
-#: View/Elements/add_to_playlist.ctp:81
+#: View/Elements/add_to_playlist.ctp:84
 msgid "Add"
 msgstr ""
 
 #: View/Elements/admin_navbar.ctp:2
 #: View/Elements/default_navbar.ctp:2
-#: View/Settings/index.ctp:156
+#: View/Settings/index.ctp:157
 msgid "Artists"
 msgstr ""
 
 #: View/Elements/admin_navbar.ctp:3
 #: View/Elements/default_navbar.ctp:3
-#: View/Settings/index.ctp:160
+#: View/Settings/index.ctp:161
 msgid "Albums"
 msgstr ""
 
@@ -348,7 +348,7 @@ msgid "Search"
 msgstr ""
 
 #: View/Elements/admin_navbar.ctp:13
-#: View/Settings/index.ctp:118
+#: View/Settings/index.ctp:119
 msgid "Database update"
 msgstr ""
 
@@ -539,7 +539,7 @@ msgid "Queue"
 msgstr ""
 
 #: View/Layouts/default.ctp:115
-#: View/Settings/index.ctp:164
+#: View/Settings/index.ctp:165
 msgid "Songs"
 msgstr ""
 
@@ -637,71 +637,71 @@ msgstr ""
 msgid "Enable mail notifications."
 msgstr ""
 
-#: View/Settings/index.ctp:63
+#: View/Settings/index.ctp:64
 msgid "Sonerezh can send an email on users creation to notify them."
 msgstr ""
 
-#: View/Settings/index.ctp:75
+#: View/Settings/index.ctp:76
 msgid "Automatic tracks conversion"
 msgstr ""
 
-#: View/Settings/index.ctp:80
+#: View/Settings/index.ctp:81
 msgid "The command 'avconv' or 'ffmpeg' are not available. Sonerezh cannot convert your tracks."
 msgstr ""
 
-#: View/Settings/index.ctp:85
+#: View/Settings/index.ctp:86
 msgid "If you have heterogeneous formats in your collection, and because your browser cannot read them all, Sonerezh can convert your tracks to MP3 or OGG/Vorbis before being played. The converted songs will be stored in the \"Songs Cache\"."
 msgstr ""
 
-#: View/Settings/index.ctp:90
+#: View/Settings/index.ctp:91
 msgid "Source format"
 msgstr ""
 
-#: View/Settings/index.ctp:97
+#: View/Settings/index.ctp:98
 msgid "Destination format"
 msgstr ""
 
-#: View/Settings/index.ctp:99
+#: View/Settings/index.ctp:100
 msgid "Quality"
 msgstr ""
 
-#: View/Settings/index.ctp:111
+#: View/Settings/index.ctp:112
 msgid "Submit"
 msgstr ""
 
-#: View/Settings/index.ctp:115
+#: View/Settings/index.ctp:116
 msgid "Database management"
 msgstr ""
 
-#: View/Settings/index.ctp:121
+#: View/Settings/index.ctp:122
 msgid "Clear the cache"
 msgstr ""
 
-#: View/Settings/index.ctp:124
+#: View/Settings/index.ctp:125
 msgid "Reset the database"
 msgstr ""
 
-#: View/Settings/index.ctp:124
+#: View/Settings/index.ctp:125
 msgid "Are you sure? All your songs and playlists will disappear!"
 msgstr ""
 
-#: View/Settings/index.ctp:131
+#: View/Settings/index.ctp:132
 msgid "Support Sonerezh!"
 msgstr ""
 
-#: View/Settings/index.ctp:133
+#: View/Settings/index.ctp:134
 msgid "Help us to provide you the best music player! Make a donation."
 msgstr ""
 
-#: View/Settings/index.ctp:151
+#: View/Settings/index.ctp:152
 msgid "Sonerezh statistics"
 msgstr ""
 
-#: View/Settings/index.ctp:168
+#: View/Settings/index.ctp:169
 msgid "Thumbnails cache"
 msgstr ""
 
-#: View/Settings/index.ctp:172
+#: View/Settings/index.ctp:173
 msgid "Songs cache"
 msgstr ""
 
@@ -730,15 +730,15 @@ msgid "Sort by band"
 msgstr ""
 
 #: View/Songs/import.ctp:31
-msgid "Something bad happened, import aborted :("
+msgid "Something bad happened, update aborted :("
 msgstr ""
 
 #: View/Songs/import.ctp:47
-msgid "Import successfully done"
+msgid "Update successfully done"
 msgstr ""
 
 #: View/Songs/import.ctp:72
-msgid "Import currently running. Please do not leave the page."
+msgid "Update currently running. Please do not leave the page."
 msgstr ""
 
 #: View/Songs/import.ctp:73
@@ -757,29 +757,35 @@ msgstr ""
 msgid " already imported)"
 msgstr ""
 
-#: View/Songs/import.ctp:108
-msgid "Last import:"
+#: View/Songs/import.ctp:111
+msgid "Last update:"
 msgstr ""
 
-#: View/Songs/import.ctp:113
-msgid "Start Import"
+#: View/Songs/import.ctp:116
+msgid "Start Update"
 msgstr ""
 
-#: View/Songs/import.ctp:124
+#: View/Songs/import.ctp:127
 msgid "Warning logs"
 msgstr ""
 
-#: View/Songs/import.ctp:135
-msgid "The import process is already running via another client or the CLI. You can click on \"Clear cache\" on the settings page to remove the lock, if needed."
+#: View/Songs/import.ctp:138
+msgid "The update process is already running via another client or the CLI. You can click on \"Clear cache\" on the settings page to remove the lock, if needed."
 msgstr ""
 
-#: View/Songs/import.ctp:139
+#: View/Songs/import.ctp:142
 msgid "All the songs have already been imported"
 msgstr ""
 
 #: View/Songs/import.ctp:97
 msgid "%s song detected "
 msgid_plural "%s songs detected "
+msgstr[0] ""
+msgstr[1] ""
+
+#: View/Songs/import.ctp:99
+msgid "%s song removed from file system "
+msgid_plural "%s songs removed from file system "
 msgstr[0] ""
 msgstr[1] ""
 

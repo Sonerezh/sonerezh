@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Sonerezh 1.1.2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2016-12-26 16:19+0100\n"
+"PO-Revision-Date: 2017-07-14 14:19+0200\n"
 "Last-Translator: Guillaume Leduc <hey@sonerezh.bzh>\n"
 "Language-Team: Sonerezh Team <hey@sonerezh.bzh>\n"
 "Language: fr\n"
@@ -181,21 +181,21 @@ msgstr "Impossible de nettoyer la base de donnée !"
 msgid "Please define a root path."
 msgstr "Veuillez renseigner l'emplacement de la bibliothèque."
 
-#: Controller/SongsController.php:84
+#: Controller/SongsController.php:87
 msgid "The import process is already running via another client or the CLI."
 msgstr "Le processus d'import fonctionne déjà via un autre client ou la CLI"
 
-#: Controller/SongsController.php:107
+#: Controller/SongsController.php:111
 msgid "Unable to save the song metadata to the database"
 msgstr ""
 "Impossible de sauvegarder les métadonnées de la chanson dans la base de "
 "données"
 
-#: Controller/SongsController.php:289;399;442
+#: Controller/SongsController.php:348;458;501
 msgid "Oops! The database is empty..."
 msgstr "Oups ! La base de données est vide..."
 
-#: Controller/SongsController.php:528
+#: Controller/SongsController.php:587
 msgid "Oops! No results."
 msgstr "Oups ! Pas de résultat."
 
@@ -313,7 +313,7 @@ msgstr "Lire après"
 msgid "Add to Up Next"
 msgstr "Ajouter à la file d'attente"
 
-#: View/Elements/add_menu.ctp:5 View/Elements/add_to_playlist.ctp:43
+#: View/Elements/add_menu.ctp:5 View/Elements/add_to_playlist.ctp:45
 #: View/Elements/artists_view.ctp:27;67 View/Songs/album.ctp:14
 msgid "Add to..."
 msgstr "Ajouter à..."
@@ -326,21 +326,21 @@ msgstr "Télécharger"
 msgid "Select a playlist"
 msgstr "Sélectionner une liste de lecture"
 
-#: View/Elements/add_to_playlist.ctp:67
+#: View/Elements/add_to_playlist.ctp:69
 msgid "Playlist Title"
 msgstr "Titre de la liste de lecture"
 
-#: View/Elements/add_to_playlist.ctp:81
+#: View/Elements/add_to_playlist.ctp:84
 msgid "Add"
 msgstr "Ajouter"
 
 #: View/Elements/admin_navbar.ctp:2 View/Elements/default_navbar.ctp:2
-#: View/Settings/index.ctp:156
+#: View/Settings/index.ctp:157
 msgid "Artists"
 msgstr "Artistes"
 
 #: View/Elements/admin_navbar.ctp:3 View/Elements/default_navbar.ctp:3
-#: View/Settings/index.ctp:160
+#: View/Settings/index.ctp:161
 msgid "Albums"
 msgstr "Albums"
 
@@ -354,7 +354,7 @@ msgstr "Listes de lecture"
 msgid "Search"
 msgstr "Rechercher"
 
-#: View/Elements/admin_navbar.ctp:13 View/Settings/index.ctp:118
+#: View/Elements/admin_navbar.ctp:13 View/Settings/index.ctp:119
 msgid "Database update"
 msgstr "Mettre à jour la base"
 
@@ -550,7 +550,7 @@ msgstr "La file d'attente est vide."
 msgid "Queue"
 msgstr "File d'attente"
 
-#: View/Layouts/default.ctp:115 View/Settings/index.ctp:164
+#: View/Layouts/default.ctp:115 View/Settings/index.ctp:165
 msgid "Songs"
 msgstr "Pistes"
 
@@ -645,17 +645,17 @@ msgstr ""
 msgid "Enable mail notifications."
 msgstr "Activer les notifications par email."
 
-#: View/Settings/index.ctp:63
+#: View/Settings/index.ctp:64
 msgid "Sonerezh can send an email on users creation to notify them."
 msgstr ""
 "Sonerezh peut vous envoyer des emails lors de certains événements (création "
 "d'utilisateurs...)"
 
-#: View/Settings/index.ctp:75
+#: View/Settings/index.ctp:76
 msgid "Automatic tracks conversion"
 msgstr "Conversion automatique des pistes"
 
-#: View/Settings/index.ctp:80
+#: View/Settings/index.ctp:81
 msgid ""
 "The command 'avconv' or 'ffmpeg' are not available. Sonerezh cannot convert "
 "your tracks."
@@ -663,7 +663,7 @@ msgstr ""
 "La commande 'avconv' ou 'ffmpeg' n'est pas disponible. Sonerezh ne pourra "
 "pas convertir vos pistes."
 
-#: View/Settings/index.ctp:85
+#: View/Settings/index.ctp:86
 msgid ""
 "If you have heterogeneous formats in your collection, and because your "
 "browser cannot read them all, Sonerezh can convert your tracks to MP3 or OGG/"
@@ -675,58 +675,58 @@ msgstr ""
 "MP3 ou OGG/Vorbis avant de les diffuser. Les morceaux convertis seront "
 "stockés dans le \"Cache audio\"."
 
-#: View/Settings/index.ctp:90
+#: View/Settings/index.ctp:91
 msgid "Source format"
 msgstr "Format source"
 
-#: View/Settings/index.ctp:97
+#: View/Settings/index.ctp:98
 msgid "Destination format"
 msgstr "Format de destination"
 
-#: View/Settings/index.ctp:99
+#: View/Settings/index.ctp:100
 msgid "Quality"
 msgstr "Qualité"
 
-#: View/Settings/index.ctp:111
+#: View/Settings/index.ctp:112
 msgid "Submit"
 msgstr "Enregistrer"
 
-#: View/Settings/index.ctp:115
+#: View/Settings/index.ctp:116
 msgid "Database management"
 msgstr "Gestion de la base de données"
 
-#: View/Settings/index.ctp:121
+#: View/Settings/index.ctp:122
 msgid "Clear the cache"
 msgstr "Nettoyer le cache"
 
-#: View/Settings/index.ctp:124
+#: View/Settings/index.ctp:125
 msgid "Reset the database"
 msgstr "Réinitialiser la base"
 
-#: View/Settings/index.ctp:124
+#: View/Settings/index.ctp:125
 msgid "Are you sure? All your songs and playlists will disappear!"
 msgstr ""
 "Etes-vous sûr ? Toutes vos pistes et vos listes de lecture seront "
 "supprimées !"
 
-#: View/Settings/index.ctp:131
+#: View/Settings/index.ctp:132
 msgid "Support Sonerezh!"
 msgstr "Soutenir Sonerezh!"
 
-#: View/Settings/index.ctp:133
+#: View/Settings/index.ctp:134
 msgid "Help us to provide you the best music player! Make a donation."
 msgstr ""
 "Aidez-nous à vous fournir le meilleur lecteur de musique ! Faites un don."
 
-#: View/Settings/index.ctp:151
+#: View/Settings/index.ctp:152
 msgid "Sonerezh statistics"
 msgstr "Statistiques de Sonerezh"
 
-#: View/Settings/index.ctp:168
+#: View/Settings/index.ctp:169
 msgid "Thumbnails cache"
 msgstr "Cache des miniatures"
 
-#: View/Settings/index.ctp:172
+#: View/Settings/index.ctp:173
 msgid "Songs cache"
 msgstr "Cache audio"
 
@@ -755,16 +755,16 @@ msgid "Sort by band"
 msgstr "Trier par artiste"
 
 #: View/Songs/import.ctp:31
-msgid "Something bad happened, import aborted :("
-msgstr "Quelque chose d'anormal est arrivé, l'import a échoué :("
+msgid "Something bad happened, update aborted :("
+msgstr "Un problème est apparu, mise à jour annulée :("
 
 #: View/Songs/import.ctp:47
-msgid "Import successfully done"
-msgstr "Import réalisé avec succès"
+msgid "Update successfully done"
+msgstr "Mise à jour terminée"
 
 #: View/Songs/import.ctp:72
-msgid "Import currently running. Please do not leave the page."
-msgstr "Importation en cours. Merci de ne pas quitter la page."
+msgid "Update currently running. Please do not leave the page."
+msgstr "Mise à jour en cours. Merci de ne pas quitter la page."
 
 #: View/Songs/import.ctp:73
 msgid "Running..."
@@ -784,28 +784,28 @@ msgstr ""
 msgid " already imported)"
 msgstr " déjà importée(s))"
 
-#: View/Songs/import.ctp:108
-msgid "Last import:"
-msgstr "Dernier import :"
+#: View/Songs/import.ctp:111
+msgid "Last update:"
+msgstr "Dernière mise à jour :"
 
-#: View/Songs/import.ctp:113
-msgid "Start Import"
-msgstr "Démarrer l'import"
+#: View/Songs/import.ctp:116
+msgid "Start Update"
+msgstr "Mettre à jour"
 
-#: View/Songs/import.ctp:124
+#: View/Songs/import.ctp:127
 msgid "Warning logs"
 msgstr "Avertissements"
 
-#: View/Songs/import.ctp:135
+#: View/Songs/import.ctp:138
 msgid ""
-"The import process is already running via another client or the CLI. You can "
+"The update process is already running via another client or the CLI. You can "
 "click on \"Clear cache\" on the settings page to remove the lock, if needed."
 msgstr ""
-"Le processus d'import fonctionne déjà via un autre client ou la CLI. Vous "
-"pouvez cliquer sur \"Nettoyer le cache\" depuis la page de préférences pour "
-"supprimer le verrou, si besoin."
+"Une mise à jour est déjà en cours d'exécution via un autre client ou la CLI. "
+"Pour supprimer ce verrou, vous pouvez cliquer sur le bouton \"Nettoyer le "
+"cache\" sur la page de paramètres."
 
-#: View/Songs/import.ctp:139
+#: View/Songs/import.ctp:142
 msgid "All the songs have already been imported"
 msgstr "Toutes les pistes ont déjà été importées"
 
@@ -814,6 +814,12 @@ msgid "%s song detected "
 msgid_plural "%s songs detected "
 msgstr[0] "%s piste détectée "
 msgstr[1] "%s pistes détectées "
+
+#: View/Songs/import.ctp:99
+msgid "%s song removed from file system "
+msgid_plural "%s songs removed from file system "
+msgstr[0] "%s piste supprimées du système"
+msgstr[1] "%s pistes supprimées du système"
 
 #: View/Songs/search.ctp:4
 msgid "Looking for"
@@ -1036,6 +1042,30 @@ msgstr "Une erreur est survenue lors de l'envoi."
 #: Model/User.php:validation for field avatar
 msgid "Your avatar must be in a correct format (JPEG, PNG, GIF)."
 msgstr "Votre avatar doit être au format JPEG, PNG ou GIF."
+
+#~ msgid "Something bad happened, import aborted :("
+#~ msgstr "Quelque chose d'anormal est arrivé, l'import a échoué :("
+
+#~ msgid "Import successfully done"
+#~ msgstr "Import réalisé avec succès"
+
+#~ msgid "Import currently running. Please do not leave the page."
+#~ msgstr "Importation en cours. Merci de ne pas quitter la page."
+
+#~ msgid "Last import:"
+#~ msgstr "Dernier import :"
+
+#~ msgid "Start Import"
+#~ msgstr "Démarrer l'import"
+
+#~ msgid ""
+#~ "The import process is already running via another client or the CLI. You "
+#~ "can click on \"Clear cache\" on the settings page to remove the lock, if "
+#~ "needed."
+#~ msgstr ""
+#~ "Le processus d'import fonctionne déjà via un autre client ou la CLI. Vous "
+#~ "pouvez cliquer sur \"Nettoyer le cache\" depuis la page de préférences "
+#~ "pour supprimer le verrou, si besoin."
 
 #~ msgid "Unable to write configuration file."
 #~ msgstr "Impossible d'écrire les fichiers de configuration."
