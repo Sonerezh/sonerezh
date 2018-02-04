@@ -32,3 +32,4 @@ Changes implemented:
 - Implemented re-parsing of metadata for modified files
 - Fixed some magic numbers in code
 - Merged commit in PR https://github.com/Sonerezh/sonerezh/pull/312 (Player now shows artist instead of band)
+- Bugfix for https://github.com/gs11/sonerezh/issues/7 (Re-parsing of metadata for modified files)

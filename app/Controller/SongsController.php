@@ -133,7 +133,7 @@ class SongsController extends AppController {
                         $update_result[$i]['message'] = $parse_result['message'];
                     }
 
-                    $imported [] = $file;
+                    $imported[] = $file;
                     $i++;
                 }
 
@@ -162,9 +162,7 @@ class SongsController extends AppController {
                         $update_result[$i]['message'] = $parse_result['message'];
                     }
 
-                    unset($parse_result['data']);
-
-                    $updated [] = $file;
+                    $updated[] = $file;
                     $i++;
                 }
 
@@ -215,7 +213,7 @@ class SongsController extends AppController {
                         }
                     }    
 
-                    $removed [] = $file;
+                    $removed[] = $file;
                     $i++;
                 }
 
@@ -229,11 +227,12 @@ class SongsController extends AppController {
 
                 $sync_token = $settings['Setting']['sync_token'];
 
-                $import_diff = array_diff($to_import, $imported);
-                $update_diff = array_diff($to_update, $updated);
-                $remove_diff = array_diff($to_remove, $removed);
-                $this->Session->write('to_import', $import_diff);
-                $this->Session->write('to_remove', $remove_diff);
+                $remaining_to_import = array_diff($to_import, $imported);
+                $remaining_to_update = array_diff($to_update, $updated);
+                $remaining_to_remove = array_diff($to_remove, $removed);
+                $this->Session->write('to_import', $remaining_to_import);
+                $this->Session->write('to_update', $remaining_to_update);
+                $this->Session->write('to_remove', $remaining_to_remove);
                 $this->set(compact('sync_token', 'update_result'));
                 $this->set('_serialize', array('sync_token', 'update_result'));
             }
