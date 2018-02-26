@@ -387,7 +387,7 @@ class SongsController extends AppController {
             $currentDisc = 1;
             if (!empty($song['Song']['disc'])) {
                 $setsQuantity = explode('/', $song['Song']['disc']);
-                $currentDisc = $setsQuantity[0];
+                $currentDisc = (int)($setsQuantity[0]);
             }
 
             $parsed[$currentDisc][] = $song;
@@ -441,7 +441,7 @@ class SongsController extends AppController {
             $currentDisc = 1;
             if (!empty($song['Song']['disc'])) {
                 $setsQuantity = explode('/', $song['Song']['disc']);
-                $currentDisc = $setsQuantity[0];
+                $currentDisc = (int)($setsQuantity[0]);
             }
 
             if (!isset($parsed[$song['Song']['band']]['albums'][$song['Song']['album']])) {
@@ -567,7 +567,7 @@ class SongsController extends AppController {
                 $currentDisc = 1;
                 if (!empty($song['Song']['disc'])) {
                     $setsQuantity = explode('/', $song['Song']['disc']);
-                    $currentDisc = $setsQuantity[0];
+                    $currentDisc = (int)($setsQuantity[0]);
                 }
 
                 if (!isset($parsed[$song['Song']['band']]['albums'][$song['Song']['album']])) {
