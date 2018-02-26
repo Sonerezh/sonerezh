@@ -100,8 +100,11 @@ class SongManager {
         // Song set
         if (!empty($file_infos['comments']['part_of_a_set'])) {     // MP3 Tag
             $metadata['disc'] = end($file_infos['comments']['part_of_a_set']);
-        } elseif (!empty($file_infos['comments']['discnumber']) && !empty($file_infos['comments']['disctotal'])) {  // OGG Tag
-            $metadata['disc'] = end($file_infos['comments']['discnumber']) . '/' . end($file_infos['comments']['disctotal']);
+        } elseif (!empty($file_infos['comments']['discnumber'])) {  // OGG Tag
+            $metadata['disc'] = end($file_infos['comments']['discnumber']);
+            if (!empty($file_infos['comments']['disctotal'])) {
+                $metadata['disc'] .= '/' . end($file_infos['comments']['disctotal']);
+            }
         }
 
         // Song genre

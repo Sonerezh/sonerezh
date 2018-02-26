@@ -19,7 +19,7 @@ class SortComponent extends Component {
      */
     public function sortByBand($songs) {
         foreach ($songs as $key => $row) {
-            $s_discs = preg_split('/\//', $row['Song']['disc']);
+            $s_discs = explode('/', $row['Song']['disc']);
             $s_band[$key]           = $row['Song']['band'];
             $s_album[$key]          = $row['Song']['album'];
             $s_track_number[$key]   = $row['Song']['track_number'];
@@ -43,7 +43,7 @@ class SortComponent extends Component {
      */
     public function sortByDisc($songs) {
         foreach ($songs as $key => $row) {
-            $s_discs = preg_split('/\//', $row['Song']['disc']);
+            $s_discs = explode('/', $row['Song']['disc']);
             $s_track_number[$key]   = $row['Song']['track_number'];
             $s_disc[$key]           = $s_discs[0];
         }

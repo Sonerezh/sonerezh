@@ -384,13 +384,12 @@ class SongsController extends AppController {
 
         $parsed = array();
         foreach ($songs as &$song) {
-            $setsQuantity = explode('/', $song['Song']['disc']);
-
-            if (count($setsQuantity) < 2 || $setsQuantity[1] == '1') {
-                $currentDisc = '1';
-            } else {
+            $currentDisc = 1;
+            if (!empty($song['Song']['disc'])) {
+                $setsQuantity = explode('/', $song['Song']['disc']);
                 $currentDisc = $setsQuantity[0];
             }
+
             $parsed[$currentDisc][] = $song;
         }
 
@@ -439,11 +438,9 @@ class SongsController extends AppController {
         // Then we can group the songs by band name, album and disc.
         $parsed = array();
         foreach ($songs as $song) {
-            $setsQuantity = preg_split('/\//', $song['Song']['disc']);
-
-            if (count($setsQuantity) < 2 || $setsQuantity[1] == '1') {
-                $currentDisc = '1';
-            } else {
+            $currentDisc = 1;
+            if (!empty($song['Song']['disc'])) {
+                $setsQuantity = explode('/', $song['Song']['disc']);
                 $currentDisc = $setsQuantity[0];
             }
 
@@ -567,11 +564,9 @@ class SongsController extends AppController {
 
             $parsed = array();
             foreach ($songs as $song) {
-                $setsQuantity = preg_split('/\//', $song['Song']['disc']);
-
-                if (count($setsQuantity) < 2 || $setsQuantity[1] == '1'  ) {
-                    $currentDisc = '1';
-                } else {
+                $currentDisc = 1;
+                if (!empty($song['Song']['disc'])) {
+                    $setsQuantity = explode('/', $song['Song']['disc']);
                     $currentDisc = $setsQuantity[0];
                 }
 
