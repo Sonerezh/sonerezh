@@ -384,13 +384,12 @@ class SongsController extends AppController {
 
         $parsed = array();
         foreach ($songs as &$song) {
-            $setsQuantity = explode('/', $song['Song']['disc']);
-
-            if (count($setsQuantity) < 2 || $setsQuantity[1] == '1') {
-                $currentDisc = '1';
-            } else {
-                $currentDisc = $setsQuantity[0];
+            $currentDisc = 1;
+            if (!empty($song['Song']['disc'])) {
+                $setsQuantity = explode('/', $song['Song']['disc']);
+                $currentDisc = (int)($setsQuantity[0]);
             }
+
             $parsed[$currentDisc][] = $song;
         }
 
@@ -439,12 +438,10 @@ class SongsController extends AppController {
         // Then we can group the songs by band name, album and disc.
         $parsed = array();
         foreach ($songs as $song) {
-            $setsQuantity = preg_split('/\//', $song['Song']['disc']);
-
-            if (count($setsQuantity) < 2 || $setsQuantity[1] == '1') {
-                $currentDisc = '1';
-            } else {
-                $currentDisc = $setsQuantity[0];
+            $currentDisc = 1;
+            if (!empty($song['Song']['disc'])) {
+                $setsQuantity = explode('/', $song['Song']['disc']);
+                $currentDisc = (int)($setsQuantity[0]);
             }
 
             if (!isset($parsed[$song['Song']['band']]['albums'][$song['Song']['album']])) {
@@ -567,12 +564,10 @@ class SongsController extends AppController {
 
             $parsed = array();
             foreach ($songs as $song) {
-                $setsQuantity = preg_split('/\//', $song['Song']['disc']);
-
-                if (count($setsQuantity) < 2 || $setsQuantity[1] == '1'  ) {
-                    $currentDisc = '1';
-                } else {
-                    $currentDisc = $setsQuantity[0];
+                $currentDisc = 1;
+                if (!empty($song['Song']['disc'])) {
+                    $setsQuantity = explode('/', $song['Song']['disc']);
+                    $currentDisc = (int)($setsQuantity[0]);
                 }
 
                 if (!isset($parsed[$song['Song']['band']]['albums'][$song['Song']['album']])) {

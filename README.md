@@ -33,3 +33,6 @@ Changes implemented:
 - Fixed some magic numbers in code
 - Merged commit in PR https://github.com/Sonerezh/sonerezh/pull/312 (Player now shows artist instead of band)
 - Bugfix for https://github.com/gs11/sonerezh/issues/7 (Re-parsing of metadata for modified files)
+- Fixed detection of tag 'DISCNUMBER' without 'DISCTOTAL' for OGG files
+- Fixed detection of disc number without a disc total in the string (e.g. '01' instead of '01/02')
+- Fixed year not showing for album with multiple CDs
