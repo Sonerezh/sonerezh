@@ -45,7 +45,7 @@ msgstr "Damit Sonerezh funktioniert muss zumindest ein PDO Treiber installiert s
 
 #: Controller/InstallersController.php:65
 msgid "The %s driver is installed."
-msgstr "Der %s est Treiber ist installiert."
+msgstr "Der %s Treiber ist installiert."
 
 #: Controller/InstallersController.php:80
 msgid "The %s driver is required if you want to use Sonerezh with %s"
