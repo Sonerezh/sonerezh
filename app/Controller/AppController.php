@@ -169,6 +169,9 @@ class AppController extends Controller {
             case 'fr':
                 $locale = 'fra';
                 break;
+			case 'de':
+				$locale = 'deu';
+				break;
             default:
                 $locale = 'eng';
                 break;
