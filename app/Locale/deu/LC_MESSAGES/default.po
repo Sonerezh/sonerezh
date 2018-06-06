@@ -73,7 +73,7 @@ msgstr "Es ist nicht möglich die SQlite Datenbank-Datei zu erstellen."
 
 #: Controller/InstallersController.php:153
 msgid "This is not a regular file: "
-msgstr "Dies ist keine reguläre Datei : "
+msgstr "Dies ist keine reguläre Datei: "
 
 #: Controller/InstallersController.php:176
 msgid "Unable to rewrite ciphers into "
@@ -108,7 +108,7 @@ msgid "You must specify a valid playlist"
 msgstr "Sie müssen eine gültige Playlist angeben"
 
 #: Controller/PlaylistMembershipsController.php:86
-msgid "Song successfully added to playlist"
+msgid "Song successfully added to playlist"nann
 msgstr "Song erfolgreich zur Playlist hinzugefügt"
 
 #: Controller/PlaylistMembershipsController.php:88
@@ -121,7 +121,7 @@ msgstr "Song erfolgreich von Playlist entfernt"
 
 #: Controller/PlaylistsController.php:64
 msgid "Playlist created: "
-msgstr "Playlist erstellt : "
+msgstr "Playlist erstellt: "
 
 #: Controller/PlaylistsController.php:68
 msgid "Unable to create the playlist: "
@@ -133,11 +133,11 @@ msgstr "Ungültige Playlist ID"
 
 #: Controller/PlaylistsController.php:97
 msgid "Playlist renamed: "
-msgstr "Playlist umbenannt : "
+msgstr "Playlist umbenannt: "
 
 #: Controller/PlaylistsController.php:101
 msgid "Unable to rename the playlist: "
-msgstr "Playlist konnte nicht umbenannt werden : "
+msgstr "Playlist konnte nicht umbenannt werden: "
 
 #: Controller/PlaylistsController.php:125
 msgid "Playlist deleted: "
@@ -145,7 +145,7 @@ msgstr "Playlist gelöscht: "
 
 #: Controller/PlaylistsController.php:129
 msgid "Unable to delete the playlist: "
-msgstr "Playlist konnte nicht gelöscht werden : "
+msgstr "Playlist konnte nicht gelöscht werden: "
 
 #: Controller/SettingsController.php:40
 msgid "Settings saved !"
@@ -393,7 +393,7 @@ msgstr "Hallo, Sie haben diese Email bekommen, weil Sie einen Passwort Reset bei
 
 #: View/Emails/html/send_token.ctp:11
 msgid "Please follow this "
-msgstr "Bitte folgen Sie diesem"
+msgstr "Bitte folgen Sie diesem "
 
 #: View/Emails/html/send_token.ctp:11
 msgid "link"
