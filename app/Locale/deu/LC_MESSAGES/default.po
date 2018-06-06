@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: Sonerezh 1.1.4\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2018-05-31 17:26+0200\n"
+"PO-Revision-Date: 2018-06-06 20:56+0200\n"
 "Last-Translator: Robert Strasser <robert.strasser@posteo.net>\n"
 "Language-Team: Sonerezh Team <hey@sonerezh.bzh>\n"
 "Language: de\n"
@@ -12,16 +12,16 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SourceCharset: UTF-8\n"
-"X-Loco-Source-Locale: de\n"
+"X-Loco-Source-Locale: en\n"
 "X-Loco-Parser: loco_parse_po\n"
 "X-Loco-Target-Locale: zz_ZZ\n"
-"X-Generator: Poedit 2.0.7\n"
+"X-Generator: Poedit 2.0.8\n"
 
 #: Controller/AppController.php:83
 msgid "Sonerezh is already installed. Remove or rename app/Config/database.php to run the installation again."
 msgstr ""
 "Sonerezh ist bereits installiert. Bitte entfernen Sie die Datei app/Config/database.php oder benennen Sie die Datei "
-"umum die Installation erneut zu starten."
+"um, um die Installation erneut zu starten."
 
 #: Controller/InstallersController.php:37
 msgid "PHP GD is available and loaded."
@@ -33,7 +33,7 @@ msgstr "PHP GD fehlt."
 
 #: Controller/InstallersController.php:50
 msgid "libav-tools (avconv) or ffmpeg is installed!"
-msgstr "libav-tools (avconv) oder ffmpeg ist installiert !"
+msgstr "libav-tools (avconv) oder ffmpeg ist installiert!"
 
 #: Controller/InstallersController.php:52
 msgid "libav-tools (avconv) or ffmpeg is missing. Sonerezh will not be able to convert your tracks."
@@ -89,11 +89,11 @@ msgstr "Konnte nicht zur Datenbank verbinden"
 
 #: Controller/InstallersController.php:225;286
 msgid "Passwords do not match."
-msgstr "Passworter stimmen nicht überein."
+msgstr "Passwörter stimmen nicht überein."
 
 #: Controller/InstallersController.php:232;293
 msgid "Installation successful!"
-msgstr "Installation erfolgreich !"
+msgstr "Installation erfolgreich!"
 
 #: Controller/InstallersController.php:234;295
 msgid "Unable to save your data."
@@ -149,11 +149,11 @@ msgstr "Playlist konnte nicht gelöscht werden : "
 
 #: Controller/SettingsController.php:40
 msgid "Settings saved !"
-msgstr "Einstellungen gespeichert !"
+msgstr "Einstellungen gespeichert!"
 
 #: Controller/SettingsController.php:43
 msgid "Unable to save settings!"
-msgstr "Einstellungen konnten nicht gespeichert werden !"
+msgstr "Einstellungen konnten nicht gespeichert werden!"
 
 #: Controller/SettingsController.php:132
 msgid "Yeah! Cache cleared!"
@@ -161,11 +161,11 @@ msgstr "Yeah ! Cache wurde geleert!"
 
 #: Controller/SettingsController.php:165
 msgid "All entries have been deleted !"
-msgstr "Alle Einträge wurden gelöscht !"
+msgstr "Alle Einträge wurden gelöscht!"
 
 #: Controller/SettingsController.php:168
 msgid "Unable to clean the database!"
-msgstr "Datenbank konnte nicht geleert werden !"
+msgstr "Datenbank konnte nicht geleert werden!"
 
 #: Controller/SongsController.php:37
 msgid "Please define a root path."
@@ -203,24 +203,24 @@ msgstr "Ungültiger Benutzer"
 
 #: Controller/UsersController.php:75
 msgid "User updated: "
-msgstr "Benutzer geändert : "
+msgstr "Benutzer geändert: "
 
 #: Controller/UsersController.php:79;124 Model/Setting.php:validation for field enable_auto_conv;validation
 #: enable_mail_notification
 msgid "Something went wrong!"
-msgstr "Etwas ist schief gelaufen !"
+msgstr "Etwas ist schief gelaufen!"
 
 #: Controller/UsersController.php:99
 msgid "User deleted: "
-msgstr "Benutzer gelöscht : "
+msgstr "Benutzer gelöscht: "
 
 #: Controller/UsersController.php:120
 msgid "Avatar has been successfully removed!"
-msgstr "Avatar wurde erfolgreich entfernt !"
+msgstr "Avatar wurde erfolgreich entfernt!"
 
 #: Controller/UsersController.php:156
 msgid "Wrong credentials!"
-msgstr "Falsche Zugangsdaten !"
+msgstr "Falsche Zugangsdaten!"
 
 #: Controller/UsersController.php:182
 msgid "Unable to find your account"
@@ -260,7 +260,7 @@ msgstr "Falscher Token."
 
 #: Controller/UsersController.php:270
 msgid "Your password has been updated."
-msgstr "Ihr Passwort wurde geändern."
+msgstr "Ihr Passwort wurde geändert."
 
 #: Controller/UsersController.php:273
 msgid "Unable to update your password."
@@ -268,7 +268,7 @@ msgstr "Passwort konnte nicht geändert werden."
 
 #: Lib/Event/UsersEventListener.php:24
 msgid "Welcome on Sonerezh!"
-msgstr "Willkommen bei Sonerezh !"
+msgstr "Willkommen bei Sonerezh!"
 
 #: Lib/Event/UsersEventListener.php:45
 msgid "Forgot your password?"
@@ -305,7 +305,7 @@ msgstr "Herunterladen"
 
 #: View/Elements/add_to_playlist.ctp:5 View/PlaylistMemberships/add.ctp:12
 msgid "Select a playlist"
-msgstr "Playliste auswählen"
+msgstr "Playlist auswählen"
 
 #: View/Elements/add_to_playlist.ctp:69
 msgid "Playlist Title"
@@ -375,7 +375,7 @@ msgstr "Disk"
 msgid "%s Album"
 msgid_plural "%s Albums"
 msgstr[0] "%s Album"
-msgstr[1] "%s Albums"
+msgstr[1] "%s Alben"
 
 #: View/Elements/artists_view.ctp:12
 msgid "%s Song"
@@ -446,7 +446,7 @@ msgstr "Passwort (Wiederholung)"
 
 #: View/Installers/docker.ctp:32 View/Installers/index.ctp:97
 msgid "Confirm your password"
-msgstr "Bestätigen Sie ihr Passwort"
+msgstr "Bestätigen Sie Ihr Passwort"
 
 #: View/Installers/index.ctp:5
 msgid "Select a database type"
@@ -479,7 +479,7 @@ msgstr "Datenbank-Typ"
 
 #: View/Installers/index.ctp:67
 msgid "You can specify a non standard port if needed (127.0.0.1:1234)"
-msgstr "Sie können einen nicht Standard Port angeben, falls notwendig (z.B. 127.0.0.1:1234)"
+msgstr "Falls notwendig können Sie  einen nicht Standard Port angeben, (z.B. 127.0.0.1:1234)"
 
 #: View/Installers/index.ctp:71
 msgid "Database name"
@@ -487,11 +487,11 @@ msgstr "Datenbank-Name"
 
 #: View/Installers/index.ctp:75
 msgid "Database user login"
-msgstr "Datenbank-Login"
+msgstr "Datenbank-Benutzer Login"
 
 #: View/Installers/index.ctp:76
 msgid "Database user password"
-msgstr "Datenbank-Benutzerpasswort"
+msgstr "Datenbank-Benutzer Passwort"
 
 #: View/Installers/index.ctp:77
 msgid "Leave empty if none"
@@ -523,15 +523,15 @@ msgstr "Umbenennen"
 
 #: View/Playlists/index.ctp:62 View/Users/index.ctp:57
 msgid "Are you sure ?"
-msgstr "Sind Sie sicher ?"
+msgstr "Sind Sie sicher?"
 
 #: View/Playlists/index.ctp:72
 msgid "You don't have playlists yet."
-msgstr "Es sind noch keine Playlistst vorhanden."
+msgstr "Es sind noch keine Playlisten vorhanden."
 
 #: View/Playlists/index.ctp:84
 msgid "Play the playlist"
-msgstr "Playliste abspielen"
+msgstr "Playlist abspielen"
 
 #: View/Playlists/index.ctp:85
 msgid "Shuffle this playlist"
@@ -543,7 +543,7 @@ msgstr "Diese Playlist ist leer :("
 
 #: View/Playlists/index.ctp:106 View/Songs/index.ctp:7
 msgid "Song Title"
-msgstr "Song Name"
+msgstr "Song Titel"
 
 #: View/Playlists/index.ctp:107 View/Songs/index.ctp:8
 msgid "Artist"
@@ -563,7 +563,7 @@ msgstr "Entfernen"
 
 #: View/Playlists/index.ctp:128
 msgid "from the playlist?"
-msgstr "von der Playliste ?"
+msgstr "von der Playlist?"
 
 #: View/Playlists/index.ctp:147
 msgid "Create a playlist"
@@ -583,7 +583,7 @@ msgstr "Playlist umbenennen"
 
 #: View/Playlists/index.ctp:172
 msgid "New title"
-msgstr "Neue Titel"
+msgstr "Neuer Titel"
 
 #: View/Playlists/index.ctp:175
 msgid "Save"
@@ -603,11 +603,11 @@ msgstr "Stellen Sie sicher, dass Sonerezh diesen Pfad rekursiv lesen kann. Momen
 
 #: View/Settings/index.ctp:57
 msgid "Enable mail notifications."
-msgstr "Emailbenachrichtung aktivieren."
+msgstr "Email-Benachrichtung aktivieren."
 
 #: View/Settings/index.ctp:64
 msgid "Sonerezh can send an email on users creation to notify them."
-msgstr "Sonerezh kann Emailbenachrichtigungen für erstellte Nutzer verschicken, um diese zu benachrichtigen."
+msgstr "Sonerezh kann Email-Benachrichtigungen für erstellte Nutzer verschicken, um diese zu benachrichtigen."
 
 #: View/Settings/index.ctp:76
 msgid "Automatic tracks conversion"
@@ -615,7 +615,7 @@ msgstr "Automatische Song Konvertierung"
 
 #: View/Settings/index.ctp:81
 msgid "The command 'avconv' or 'ffmpeg' are not available. Sonerezh cannot convert your tracks."
-msgstr "Der Programm 'avconv' oder 'ffmpeg' sind nicht verfügbar. Sonerezh kann Ihre Songs nicht konvertieren."
+msgstr "Die Befehle 'avconv' oder 'ffmpeg' sind nicht verfügbar. Sonerezh kann Ihre Songs nicht konvertieren."
 
 #: View/Settings/index.ctp:86
 msgid ""
@@ -624,7 +624,7 @@ msgid ""
 "\"."
 msgstr ""
 "Wenn Sie unterschiedliche Formate in Ihrer Kollektion haben und Ihr Browser diese nicht lesen kann, dann kann "
-"Sonerezh ihre Songs zu MP3 oder OGG/Vorbis konvertieren bevor sie abgespielt werden. Die konvertierten Songs werden "
+"Sonerezh Ihre Songs zu MP3 oder OGG/Vorbis konvertieren bevor sie abgespielt werden. Die konvertierten Songs werden "
 "im \"Song Cache\" gespeichert."
 
 #: View/Settings/index.ctp:91
@@ -693,7 +693,7 @@ msgstr "Alle Alben"
 
 #: View/Songs/albums.ctp:52
 msgid "Sort by album"
-msgstr "Nach Album soriteren"
+msgstr "Nach Album sortieren"
 
 #: View/Songs/albums.ctp:57
 msgid "Sort by band"
@@ -729,7 +729,7 @@ msgstr " bereits importiert)"
 
 #: View/Songs/import.ctp:111
 msgid "Last update:"
-msgstr "Letztes Update :"
+msgstr "Letztes Update:"
 
 #: View/Songs/import.ctp:116
 msgid "Start Update"
@@ -773,7 +773,7 @@ msgstr "Rolle auswählen"
 
 #: View/Users/edit.ctp:13
 msgid "Edit your account"
-msgstr "Account bearbeiten"
+msgstr "Ihren Account bearbeiten"
 
 #: View/Users/edit.ctp:15
 msgid "Edit a user"
@@ -789,7 +789,7 @@ msgstr "Falls kein Avatar hochgeladen wurde, wird die Email-Adresse verwendet um
 
 #: View/Users/edit.ctp:30 View/Users/index.ctp:85
 msgid "Choose a password"
-msgstr "Bitte wählen Sie ein Passwor"
+msgstr "Bitte wählen Sie ein Passwort"
 
 #: View/Users/edit.ctp:30
 msgid "New password"
@@ -825,7 +825,7 @@ msgstr "Änderungen speichern"
 
 #: View/Users/index.ctp:14
 msgid "Share your music with your friends !"
-msgstr "Musik mit Freunden teilen !"
+msgstr "Musik mit Freunden teilen!"
 
 #: View/Users/index.ctp:24
 msgid "Email / Login"
@@ -865,7 +865,7 @@ msgstr "Login merken"
 
 #: View/Users/login.ctp:11
 msgid "Forgot Password?"
-msgstr "Passwort vergessen ?"
+msgstr "Passwort vergessen?"
 
 #: View/Users/login.ctp:17
 msgid "Sign In"
@@ -873,16 +873,16 @@ msgstr "Anmelden"
 
 #: View/Users/login.ctp:30
 msgid "Retrieve my password"
-msgstr "Mein Passwort empfangen"
+msgstr "Mein Passwort zuschicken"
 
 #: View/Users/login.ctp:35
 msgid "Enter your email"
-msgstr "Bitte Email-Adresse eingeben"
+msgstr "Bitte Ihre Email-Adresse eingeben"
 
 #: View/Users/login.ctp:36
 msgid "If your account exists, you will receive an email explaining how to change your password."
 msgstr ""
-"Wenn Ihre Account existiert, dann werden Sie eine Email erhalten, die Ihnen erklärt, wie Sie Ihr Passwort ändern "
+"Wenn Ihr Account existiert, dann werden Sie eine Email erhalten, die Ihnen erklärt, wie Sie Ihr Passwort ändern "
 "können."
 
 #: View/Users/login.ctp:41
@@ -911,7 +911,7 @@ msgstr "Mein Passwort zurücksetzen"
 
 #: Model/Playlist.php:validation for field title
 msgid "The playlist must have a title"
-msgstr "Die Playliste muss einen Titel haben"
+msgstr "Die Playlist muss einen Titel haben"
 
 #: Model/Rootpath.php:validation for field rootpath
 msgid "The music library's directory does not exist."
@@ -923,7 +923,7 @@ msgstr "Das Musikbibliotheksverzeichnis ist nicht lesbar."
 
 #: Model/Setting.php:validation for field convert_to
 msgid "Wrong conversion destination!"
-msgstr "Falsches Konvertierungsziel !"
+msgstr "Falsches Konvertierungsziel!"
 
 #: Model/Setting.php:validation for field convert_to
 msgid "Wrong conversion destination! Make sure you are not trying to convert MP3 to MP3, or OGG to OGG."
@@ -965,7 +965,7 @@ msgstr "Falsche Rolle."
 
 #: Model/User.php:validation for field role
 msgid "Sonerezh needs at least one administrator. You can not change your own privileges."
-msgstr "Sonerezh benötigt zumindest einen Administrator. Sie können Ihrer eigenen Rechte nicht ändern."
+msgstr "Sonerezh benötigt zumindest einen Administrator. Sie können Ihre eigenen Rechte nicht ändern."
 
 #: Model/User.php:validation for field avatar
 msgid "Something went wrong with the upload."
@@ -973,7 +973,7 @@ msgstr "Es ist ein Fehler beim Upload aufgetreten."
 
 #: Model/User.php:validation for field avatar
 msgid "Your avatar must be in a correct format (JPEG, PNG, GIF)."
-msgstr "Dein Avater muss im korrekten Format vorliegen: JPEG, PNG oder GIF."
+msgstr "Ihr Avatar muss im korrekten Format vorliegen: JPEG, PNG oder GIF."
 
 #~ msgid "Something bad happened, import aborted :("
 #~ msgstr "Es ist ein Fehler aufgetreten, der Import wurde abgebrochen :("
