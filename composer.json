@@ -1,0 +1,20 @@
+{
+  "name": "sonerezh/sonerezh",
+  "description": "A self-hosted, web-based application to stream your music, everywhere.",
+  "type": "project",
+  "require": {
+    "cakephp/cakephp": "2.10.*",
+    "ext-gd": "*"
+  },
+  "license": "AGPL-3.0-or-later",
+  "authors": [
+    {
+      "name": "Sonerezh",
+      "email": "hey@sonerezh.bzh"
+    }
+  ],
+  "minimum-stability": "stable",
+  "config": {
+    "vendor-dir": "Vendor/"
+  }
+}
