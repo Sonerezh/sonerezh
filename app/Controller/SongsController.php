@@ -339,6 +339,14 @@ class SongsController extends AppController {
                 'limit' => 6
             ));
         }
+        $this->Paginator->settings = array(
+            'Song' => array(
+                'fields' => array('Song.band', 'Song.album', 'cover'),
+                'group' => array('Song.album', 'Song.band'),
+                'order' => $sort,
+                'limit' => 36
+            )
+        );
 
         $this->Paginator->settings = array(
             'Song' => array(
