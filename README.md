@@ -1,17 +1,20 @@
-Sonerezh
-========
+# Sonerezh
 
-A self-hosted, web-based application to stream your music, everywhere.
+Sonerezh is a self-hosted web application which allows you to listen to your
+music, from anywhere.
 
-Some Handy Links
-----------------
+All you have to do is to specify where your music is stored, and Sonerezh will
+build its database based on the audio file's metadata. Then you can browse your
+music library through a simple and intuitive Web UI.
 
-[Sonerezh official website](https://www.sonerezh.bzh).
+Let's try the latest version on [sonerezh.bzh/demo]!
 
-[Sonerezh documentation](https://www.sonerezh.bzh/docs/).
+Follow us on [Twitter] if you like the project, and don't forget to [support it
+making a donation].
 
-[Sonerezh source code, on GitHub](https://github.com/sonerezh/sonerezh).
+The documentation is available on [sonerezh.bzh].
 
-[Sonerezh on Twitter](https://twitter.com/snrzh).
-
-Don't forget to [support us](https://www.sonerezh.bzh/support) !
+[sonerezh.bzh/demo]: (https://www.sonerezh.bzh/demo/login)
+[Twitter]: (https://twitter.com/snrzh)
+[support it making a donation]: (https://www.sonerezh.bzh/donate)
+[sonerezh.bzh]: (https://www.sonerezh.bzh)

@@ -1,0 +1,35 @@
+site_name: Sonerezh
+site_url: https://www.sonerezh.bzh
+site_description: The Sonerezh project documentation.
+site_author: The Sonerezh team.
+
+repo_url: https://github.com/Sonerezh/sonerezh
+
+nav:
+- Home: index.md
+- User Guides:
+  - How-to upgrade: user-guides/how-to-upgrade.md
+  - Command-line Tool: user-guides/cli-tool.md
+  - Settings Reference: user-guides/settings.md
+  - Nginx server-block: user-guides/nginx-server-block.md
+  - Apache virtual host: user-guides/apache-virtual-host.md
+- About:
+  - License: about/license.md
+- Download Sonerezh: downloads/latest.tar.gz
+- Demo: demo/
+
+extra_css:
+- css/style.css
+
+theme:
+  name: mkdocs
+  custom_dir: docs/sonerezh_theme/
+
+matomo_analytics: 1
+
+use_directory_urls: false
+
+markdown_extensions:
+- admonition
+
+copyright: 'Made in Brittany (FR) with <span class="icon heart"></span> by <a href="https://www.guillaume-leduc.fr" target="_blank" >Guillaume</a> & <a href="https://twitter.com/itomiix" target="_blank">Thomas</a> - hey [at] sonerezh [dot] bzh'
