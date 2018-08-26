@@ -1,3 +1,12 @@
+# Changes with 1.2.1
+
+This is a maintenance release with no changes for the end users.
+
+* The CakePHP dependency is now managed with Composer (close #85)
+* The documentation and the website repositories have been merged into the main
+  one to simplify the maintenance
+* The default CakePHP favicon is replaced by the Sonerezh icon
+
 # Changes with 1.2.0
 
 This new release backport stuff from the main fork of Sonerezh. A big thanks to
