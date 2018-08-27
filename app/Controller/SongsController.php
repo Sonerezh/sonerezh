@@ -9,6 +9,11 @@ class SongsController extends AppController {
 
     public function beforeFilter() {
         parent::beforeFilter();
+
+        if ($this->request->params['action'] == 'import' && $this->request->is('post')) {
+            $this->Security->validatePost = false;
+            $this->Security->csrfCheck = false;
+        }
     }
 
     /**
