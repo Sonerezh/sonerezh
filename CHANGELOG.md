@@ -1,3 +1,11 @@
+# Changes with 1.2.2
+
+Fix a bug introduced with CakePHP 2.10 upgrade.
+
+#### Bug / Security fixes
+
+* Fix #341: /import request black-holed
+
 # Changes with 1.2.1
 
 This is a maintenance release with no changes for the end users.
