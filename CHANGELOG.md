@@ -1,3 +1,11 @@
+# Changes with 1.2.3
+
+Fix a bug introduced with CakePHP 2.10 upgrade.
+
+#### Bug / Security fixes
+
+* Fix #342: HTTP ERROR 500 for 1.22
+
 # Changes with 1.2.2
 
 Fix a bug introduced with CakePHP 2.10 upgrade.
