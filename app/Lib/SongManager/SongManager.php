@@ -1,7 +1,6 @@
 <?php
 
 App::uses('Folder', 'Utility');
-App::import('Vendor', 'Getid3/getid3');
 
 class SongManager {
 

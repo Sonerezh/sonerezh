@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "710b0c909fa5880b5660a11ee78e0221",
+    "content-hash": "98e584e1f6902a057c29406a0e5e0245",
     "packages": [
         {
             "name": "cakephp/cakephp",
@@ -51,6 +51,42 @@
                 "framework"
             ],
             "time": "2018-07-01T19:05:15+00:00"
+        },
+        {
+            "name": "james-heinrich/getid3",
+            "version": "v1.9.15",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/JamesHeinrich/getID3.git",
+                "reference": "df9b441e547da1018b1be0e239bee095c9962c96"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/JamesHeinrich/getID3/zipball/df9b441e547da1018b1be0e239bee095c9962c96",
+                "reference": "df9b441e547da1018b1be0e239bee095c9962c96",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "getid3/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL"
+            ],
+            "description": "PHP script that extracts useful information from popular multimedia file formats",
+            "homepage": "http://www.getid3.org/",
+            "keywords": [
+                "codecs",
+                "php",
+                "tags"
+            ],
+            "time": "2017-10-26T18:34:37+00:00"
         }
     ],
     "packages-dev": [],
@@ -59,8 +95,6 @@
     "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
-    "platform": {
-        "ext-gd": "*"
-    },
+    "platform": [],
     "platform-dev": []
 }
