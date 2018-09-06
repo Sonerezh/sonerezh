@@ -4,7 +4,7 @@
   "type": "project",
   "require": {
     "cakephp/cakephp": "2.10.*",
-    "ext-gd": "*"
+    "james-heinrich/getid3": "1.9.*"
   },
   "license": "AGPL-3.0-or-later",
   "authors": [
@@ -15,6 +15,6 @@
   ],
   "minimum-stability": "stable",
   "config": {
-    "vendor-dir": "Vendor/"
+    "vendor-dir": "app/Vendor/"
   }
 }
