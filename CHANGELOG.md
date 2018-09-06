@@ -1,3 +1,14 @@
+# Unreleased
+
+### Fixes
+
+* Fix #343: Error on CLI import
+
+### Changes
+
+* Use composer for GetID3 package as well
+* Move the composer install path from `Vendor` to `app/Vendor`
+
 # Changes with 1.2.3
 
 Fix a bug introduced with CakePHP 2.10 upgrade.

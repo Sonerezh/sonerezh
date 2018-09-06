@@ -27,7 +27,7 @@ if (function_exists('ini_set')) {
 	$root = dirname(dirname(dirname(__FILE__)));
     $appDir = basename(dirname(dirname(__FILE__)));
     $install = $root . DS . 'lib';
-    $composerInstall = $root . DS . 'Vendor' . DS . 'cakephp' . DS . 'cakephp' . DS . 'lib';
+    $composerInstall = $root . DS . $appDir . DS . 'Vendor' . DS . 'cakephp' . DS . 'cakephp' . DS . 'lib';
 
     if (file_exists($composerInstall . DS . $dispatcher)) {
         $install = $composerInstall;
