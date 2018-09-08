@@ -8,6 +8,34 @@ class SonerezhPgsqlSchema extends CakeSchema {
 	public function after($event = array()) {
 	}
 
+	public $albums = array(
+		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 11, 'key' => 'primary'),
+		'name' => array('type' => 'string', 'null' => false, 'default' => null),
+		'cover' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 37),
+		'band_id' => array('type' => 'integer', 'null' => true, 'default' => null),
+		'year' => array('type' => 'integer', 'null' => true, 'default' => null),
+		'created' => array('type' => 'datetime', 'null' => false, 'default' => null),
+		'updated' => array('type' => 'datetime', 'null' => true, 'default' => null),
+		'indexes' => array(
+			'PRIMARY' => array('unique' => true, 'column' => 'id'),
+			'albums_bands_id_fk' => array('unique' => false, 'column' => 'band_id'),
+			'albums_name_index' => array('unique' => false, 'column' => 'name')
+		),
+		'tableParameters' => array()
+	);
+
+	public $bands = array(
+		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 11, 'key' => 'primary'),
+		'name' => array('type' => 'string', 'null' => false, 'default' => null),
+		'created' => array('type' => 'datetime', 'null' => false, 'default' => null),
+		'updated' => array('type' => 'datetime', 'null' => true, 'default' => null),
+		'indexes' => array(
+			'PRIMARY' => array('unique' => true, 'column' => 'id'),
+			'bands_name_index' => array('unique' => false, 'column' => 'name')
+		),
+		'tableParameters' => array()
+	);
+
 	public $playlist_memberships = array(
 		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 11, 'key' => 'primary'),
 		'playlist_id' => array('type' => 'integer', 'null' => false, 'default' => null),
@@ -75,6 +103,33 @@ class SonerezhPgsqlSchema extends CakeSchema {
 			'PRIMARY' => array('unique' => true, 'column' => 'id'),
 			'ix_songs_album' => array('unique' => false, 'column' => 'album'),
 			'ix_songs_band' => array('unique' => false, 'column' => 'band')
+		),
+		'tableParameters' => array()
+	);
+
+	public $tracks = array(
+		'id' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 11, 'key' => 'primary'),
+		'title' => array('type' => 'string', 'null' => true, 'default' => null),
+		'source_path' => array('type' => 'string', 'null' => false, 'default' => null, 'length' => 4096),
+		'playtime' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 9),
+		'track_number' => array('type' => 'integer', 'null' => true, 'default' => null),
+		'max_track_number' => array('type' => 'integer', 'null' => true, 'default' => null),
+		'disc_number' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 7),
+		'max_disc_number' => array('type' => 'integer', 'null' => true, 'default' => null),
+		'year' => array('type' => 'integer', 'null' => true, 'default' => null),
+		'genre' => array('type' => 'string', 'null' => true, 'default' => null),
+		'artist' => array('type' => 'string', 'null' => true, 'default' => null),
+		'created' => array('type' => 'datetime', 'null' => false, 'default' => 'CURRENT_TIMESTAMP'),
+		'album_id' => array('type' => 'integer', 'null' => true, 'default' => null),
+		'updated' => array('type' => 'datetime', 'null' => true, 'default' => 'CURRENT_TIMESTAMP'),
+		'imported' => array('type' => 'boolean', 'null' => true, 'default' => true),
+		'indexes' => array(
+			'PRIMARY' => array('unique' => true, 'column' => 'id'),
+			'tracks_albums_id_fk' => array('unique' => false, 'column' => 'album_id'),
+			'tracks_artist_index' => array('unique' => false, 'column' => 'artist'),
+			'tracks_genre_index' => array('unique' => false, 'column' => 'genre'),
+			'tracks_imported_index' => array('unique' => false, 'column' => 'imported'),
+			'tracks_title_index' => array('unique' => false, 'column' => 'title')
 		),
 		'tableParameters' => array()
 	);
