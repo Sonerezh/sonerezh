@@ -1,13 +1,25 @@
-# Unreleased
+# Changelog
 
-### Fixes
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]
+
+## [1.2.4] - 2018-09-16
+
+### Fixed
 
 * Fix #343: Error on CLI import
 
-### Changes
+### Changed
 
 * Use composer for GetID3 package as well
 * Move the composer install path from `Vendor` to `app/Vendor`
+* Use [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) to format the
+  changelog
+* Add installation instructions using git in the README.md
 
 # Changes with 1.2.3
 
@@ -197,3 +209,6 @@ Improvements:
 * Fix #19: Unable to add songs to playlist from search results screen (Thanks to Cr33p)
 * Fix #8 #71: Length path limitation (Thanks to maximelebastard)
 * Fix #3: Avconv and FFmpeg
+
+[Unreleased]: https://github.com/Sonerezh/sonerezh/compare/1.2.4...HEAD
+[1.2.4]: https://github.com/Sonerezh/sonerezh/compare/1.2.3...1.2.4
