@@ -535,10 +535,10 @@ class SongsController extends AppController {
                     'group'         => array('Song.band'),
                     'limit'         => 5,
                     'conditions'    => array('OR' => array(
-                        'Song.title like'   => '%'.$query.'%',
-                        'Song.band like'    => '%'.$query.'%',
-                        'Song.artist like'  => '%'.$query.'%',
-                        'Song.album like'   => '%'.$query.'%'
+                        'LOWER(Song.title) like'   => '%'.strtolower($query).'%',
+                        'LOWER(Song.band) like'    => '%'.strtolower($query).'%',
+                        'LOWER(Song.artist) like'  => '%'.strtolower($query).'%',
+                        'LOWER(Song.album) like'   => '%'.strtolower($query).'%'
                         )
                     )
                 )
@@ -555,9 +555,9 @@ class SongsController extends AppController {
                     'fields'        => array('Song.id', 'Song.title', 'Song.album', 'Song.band', 'Song.artist', 'Song.cover', 'Song.playtime', 'Song.track_number', 'Song.year', 'Song.disc', 'Song.genre'),
                     'conditions'    => array(
                     'OR' => array(
-                        'Song.title like'   => '%'.$query.'%',
-                        'Song.artist like'  => '%'.$query.'%',
-                        'Song.album like'   => '%'.$query.'%'
+                        'LOWER(Song.title) like'   => '%'.strtolower($query).'%',
+                        'LOWER(Song.artist) like'  => '%'.strtolower($query).'%',
+                        'LOWER(Song.album) like'   => '%'.strtolower($query).'%'
                         ),
                     'Song.band' => $band_list
                     )
