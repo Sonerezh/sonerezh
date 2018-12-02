@@ -46,7 +46,7 @@ Sonerezh is quite easy to install. All you need is:
 
 ### Get the latest stable release
 
-The releases are published on [GitHub], but you should download the latest
+The releases are published on [https://github.com/Sonerezh/sonerezh/releases], but you should download the latest
 stable release from _sonerezh.bzh_.
 
 ```sh
