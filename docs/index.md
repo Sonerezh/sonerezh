@@ -88,4 +88,4 @@ name) to set the database settings and create the first user.
 
 If all goes well you should be redirected to the login page.
 
-[GitHub]: (https://github.com/Sonerezh/sonerezh/releases)
+[GitHub]: https://github.com/Sonerezh/sonerezh/releases
