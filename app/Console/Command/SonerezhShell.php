@@ -4,6 +4,7 @@ App::uses('AppShell', 'Console/Command');
 App::uses('AudioFileManager', 'AudioFileManager');
 App::uses('AudioFileScanner', 'AudioFileScanner');
 App::uses('Folder', 'Utility');
+App::uses('SongManager', 'SongManager');
 
 App::import('Vendor', 'Getid3/getid3');
 
