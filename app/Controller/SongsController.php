@@ -28,7 +28,7 @@ class SongsController extends AppController {
      */
     public function import() {
         App::uses('Folder', 'Utility');
-        App::uses('SongManager', 'SongManager');
+        App::uses('AudioFileManager', 'AudioFileManager');
 
         $this->loadModel('Setting');
         $this->Setting->contain('Rootpath');
@@ -124,8 +124,8 @@ class SongsController extends AppController {
                         break;
                     }
 
-                    $song_manager = new SongManager($file);
-                    $parse_result = $song_manager->parseMetadata();
+                    $song_manager = new AudioFileManager($file);
+                    $parse_result = $song_manager->parse();
 
                     $this->Song->create();
                     if (!$this->Song->save($parse_result['data'])) {
@@ -147,8 +147,8 @@ class SongsController extends AppController {
                         break;
                     }
 
-                    $song_manager = new SongManager($file);
-                    $parse_result = $song_manager->parseMetadata();
+                    $song_manager = new AudioFileManager($file);
+                    $parse_result = $song_manager->parse();
 
                     // Get the song id and enrich the array
                     $result = $this->Song->find('first', array(

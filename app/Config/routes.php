@@ -24,36 +24,41 @@
  * its action called 'display', and we pass a param to select the view file
  * to use (in this case, /app/View/Pages/home.ctp)...
  */
-	Router::connect('/', array('controller' => 'songs', 'action' => 'index'));
+Router::connect('/', array('controller' => 'songs', 'action' => 'index'));
 
-    Router::connect('/install', array('controller' => 'installers', 'action' => 'index'));
-    Router::connect('/docker-install', array('controller' => 'installers', 'action' => 'docker'));
+Router::connect('/install', array('controller' => 'installers', 'action' => 'index'));
+Router::connect('/docker-install', array('controller' => 'installers', 'action' => 'docker'));
 
-    Router::connect('/login', array('controller' => 'users', 'action' => 'login'));
-    Router::connect('/logout', array('controller' => 'users', 'action' => 'logout'));
+Router::connect('/login', array('controller' => 'users', 'action' => 'login'));
+Router::connect('/logout', array('controller' => 'users', 'action' => 'logout'));
 
-    Router::connect('/api/*', array('controller' => 'api'));
+Router::connect('/api/*', array('controller' => 'api'));
 
-    Router::connect('/playlists/:action/:id', array('controller' => 'playlists'), array('pass' => array('id')));
-    Router::connect('/playlists/add', array('controller' => 'playlists', 'action' => 'add'));
-    Router::connect('/playlists/*', array('controller' => 'playlists', 'action' => 'index'));
+Router::connect('/playlists/:action/:id', array('controller' => 'playlists'), array('pass' => array('id')));
+Router::connect('/playlists/add', array('controller' => 'playlists', 'action' => 'add'));
+Router::connect('/playlists/*', array('controller' => 'playlists', 'action' => 'index'));
 
-    Router::connect('/users', array('controller' => 'users', 'action' => 'index'));
+Router::connect('/users', array('controller' => 'users', 'action' => 'index'));
 
-    Router::connect('/settings', array('controller' => 'settings', 'action' => 'index'));
+Router::connect('/settings', array('controller' => 'settings', 'action' => 'index'));
 
-    Router::connect('/img/**', array('controller' => 'img', 'action' => 'index'));
+Router::connect('/sync', array('controller' => 'sync', 'action' => 'index', '[method]' => 'GET'));
+Router::connect('/sync', array('controller' => 'sync', 'action' => 'patchSync', '[method]' => 'PATCH'));
+Router::connect('/sync', array('controller' => 'sync', 'action' => 'postSync', '[method]' => 'POST'));
+Router::connect('/sync', array('controller' => 'sync', 'action' => 'deleteSync', '[method]' => 'DELETE'));
 
-    Router::connect('/:action', array('controller' => 'songs'));
+Router::connect('/img/**', array('controller' => 'img', 'action' => 'index'));
+
+Router::connect('/:action', array('controller' => 'songs'));
 
 /**
  * Load all plugin routes. See the CakePlugin documentation on
  * how to customize the loading of plugin routes.
  */
-	CakePlugin::routes();
+CakePlugin::routes();
 
 /**
  * Load the CakePHP default routes. Only remove this if you do not want to use
  * the built-in default routes.
  */
-	require CAKE . 'Config' . DS . 'routes.php';
+require CAKE . 'Config' . DS . 'routes.php';

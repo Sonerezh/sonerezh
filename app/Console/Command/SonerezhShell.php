@@ -2,7 +2,7 @@
 
 App::uses('AppShell', 'Console/Command');
 App::uses('Folder', 'Utility');
-App::uses('SongManager', 'SongManager');
+App::uses('AudioFileManager', 'AudioFileManager');
 
 App::import('Vendor', 'Getid3/getid3');
 
@@ -113,8 +113,8 @@ class SonerezhShell extends AppShell {
             foreach ($to_import as $file) {
 
                 pcntl_signal_dispatch();
-                $song_manager = new SongManager($file);
-                $parse_result = $song_manager->parseMetadata();
+                $song_manager = new AudioFileManager($file);
+                $parse_result = $song_manager->parse();
 
                 if ($parse_result['status'] != 'OK') {
                     if ($parse_result['status'] == 'WARN') {
