@@ -63,25 +63,35 @@
         </div>
     </transition>
     <transition name="fade">
-        <div v-bind:class="panelClasses" v-if="loading === false && enableImport === true">
-            <div class="panel-heading">
-                {{ label }}
-            </div>
-            <div class="panel-body">
-                <div class="progress" style="margin-bottom: 0;">
-                    <div v-bind:style="{width: progressPercent + '%'}" v-bind:class="progressBarClasses" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+        <div v-if="loading === false && enableImport === true">
+            <p class="help-block" v-if="scan.to_import > 1000">
+                <?php echo __('Have a huge collection? You might be interested in the CLI tool'); ?>
+                <?php echo $this->Html->link(
+                        '<i class="glyphicon glyphicon-question-sign"></i>',
+                        'https://www.sonerezh.bzh/user-guides/cli-tool.html',
+                        array('escape' => false, 'target' => 'blank', 'class' => 'no-ajax')
+                    ); ?>
+            </p>
+            <div v-bind:class="panelClasses">
+                <div class="panel-heading">
+                    {{ label }}
                 </div>
-            </div>
-            <div class="panel-footer">
-                <div class="col-xs-8">
-                    <span v-if="lastTrack !== null" class="help-block">
-                        <?php echo __('Last track processed:'); ?> {{ lastTrack }}
-                    </span>
+                <div class="panel-body">
+                    <div class="progress" style="margin-bottom: 0;">
+                        <div v-bind:style="{width: progressPercent + '%'}" v-bind:class="progressBarClasses" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
                 </div>
-                <div class="col-xs-4 text-right">
-                    <button v-bind:class="buttonClasses" v-on:click="startImport">{{ button }}</button>
+                <div class="panel-footer">
+                    <div class="col-xs-8">
+                        <span v-if="lastTrack !== null" class="help-block">
+                            <?php echo __('Last track processed:'); ?> {{ lastTrack }}
+                        </span>
+                    </div>
+                    <div class="col-xs-4 text-right">
+                        <button v-bind:class="buttonClasses" v-on:click="startImport">{{ button }}</button>
+                    </div>
+                    <div class="clearfix"></div>
                 </div>
-                <div class="clearfix"></div>
             </div>
         </div>
     </transition>
@@ -181,11 +191,11 @@
                         if (response.status === 201) {
                             let count = 0;
                             if (response.data.imported) {
-                                count += response.data['imported'].length;
+                                count += Object.keys(response.data['imported']).length;
                                 app.lastTrack = response.data['imported'][count - 1];
                             }
                             if (response.data.errors) {
-                                count += response.data['errors'].length;
+                                count += Object.keys(response.data['errors']).length;
                             }
                             app.imported += count;
                             app.progressPercent = Math.round(100 * app.imported / app.scan['to_import']);
@@ -218,11 +228,11 @@
                         if (response.status === 200) {
                             let count = 0;
                             if (response.data.updated) {
-                                count += response.data['updated'].length;
+                                count += Object.keys(response.data['updated']).length;
                                 app.lastTrack = response.data['updated'][count - 1];
                             }
                             if (response.data.errors) {
-                                count += response.data['errors'].length;
+                                count += Object.keys(response.data['errors']).length;
                             }
                             app.updated += count;
                             app.progressPercent = Math.round(100 * app.updated / app.scan['to_update']);

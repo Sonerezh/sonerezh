@@ -1,11 +1,9 @@
 <?php
 
-App::uses('Component', 'Controller');
-
-class ScanComponent extends Component
+class AudioFileScanner
 {
     /**
-     * Browse the filesystem to find audio files.
+     * Browses the filesystem to find audio files.
      *
      * @param bool $new         The function will search for audio files that have not been saved yet, or skip them
      *                          otherwise.

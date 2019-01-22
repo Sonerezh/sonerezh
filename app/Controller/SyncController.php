@@ -4,14 +4,21 @@ App::uses('AppController', 'Controller');
 
 class SyncController extends AppController
 {
-    public $components = array('Scan');
-
     public function beforeFilter()
     {
         parent::beforeFilter();
-        $this->Auth->allow();
         $this->Security->csrfCheck = false;
         $this->Security->validatePost = false;
+    }
+
+    /**
+     * Handles authorization check. Only admin users can access this controller.
+     * @param $user
+     * @return bool
+     */
+    public function isAuthorized($user)
+    {
+        return (bool)($user['role'] === 'admin');
     }
 
     /**
@@ -22,13 +29,18 @@ class SyncController extends AppController
     {
         if ($this->request->is('ajax') && $this->request->header('X-Powered-By') == 'Axios') {
             $this->viewClass = 'Json';
-            $this->cleanNotImportedTracks(); // Remove all the previous failed imports
-            $scan = $this->Scan->scan($new = true, $orphans = true, $outdated = true, $batch = 0);
+            $this->cleanNotImportedTracks(); // Clean all the previous failed imports
+
+            App::uses('AudioFileScanner', 'AudioFileScanner');
+            $scanner = new AudioFileScanner();
+            $scan = $scanner->scan($new = true, $orphans = true, $outdated = true, $batch = 0);
+
             $data = array(
                 'to_import' => count($scan['to_import']),
                 'to_update' => count($scan['to_update']),
                 'to_remove' => count($scan['to_remove'])
             );
+
             $this->set(compact('data'));
             $this->set('_serialize', 'data');
         }
@@ -54,7 +66,9 @@ class SyncController extends AppController
             Cache::Write('import', true);
         }
 
-        $scan = $this->Scan->scan($new = false, $orphans = false, $outdated = true);
+        App::uses('AudioFileScanner', 'AudioFileScanner');
+        $scanner = new AudioFileScanner();
+        $scan = $scanner->scan($new = false, $orphans = false, $outdated = true);
 
         if (empty($scan['to_update'])) {
             $this->response->statusCode(204);
@@ -98,7 +112,7 @@ class SyncController extends AppController
                 if (empty($band)) {
                     $this->Band->create();
                     $band = $this->Band->save($metadata['Band']);
-                    if (empty($band)) {
+                    if (!empty($band)) {
                         $bands_buffer[$band['Band']['name']] = $band['Band']['id'];
                         $band_id = $band['Band']['id'];
                     } else {
@@ -172,7 +186,7 @@ class SyncController extends AppController
 
     /**
      * Imports audio files metadata into Sonerezh's database.
-     * Up to 250 files are processed per request.
+     * Up to <SYNC_BATCH_SIZE> (default: 50) files are processed per request.
      */
     public function postSync()
     {
@@ -189,7 +203,9 @@ class SyncController extends AppController
             Cache::Write('import', true);
         }
 
-        $scan = $this->Scan->scan($new = true, $orphans = false, $outdated = false);
+        App::uses('AudioFileScanner', 'AudioFileScanner');
+        $scanner = new AudioFileScanner();
+        $scan = $scanner->scan($new = true, $orphans = false, $outdated = false);
 
         if (empty($scan['to_import'])) {
             $this->response->statusCode(204);
@@ -328,7 +344,9 @@ class SyncController extends AppController
 
         $this->loadModel('Track');
         try {
-            $scan = $this->Scan->scan($new = true, $orphans = true, $outdated = false);
+            App::uses('AudioFileScanner', 'AudioFileScanner');
+            $scanner = new AudioFileScanner();
+            $scan = $scanner->scan($new = true, $orphans = true, $outdated = false);
         } catch (Exception $exception) {
             $res['errors'][] = array(
                 'error' => $exception->getMessage()
@@ -354,6 +372,8 @@ class SyncController extends AppController
             $res['errors'][] = array(
                 'error' => __('Unexpected error occurred while deleting data.')
             );
+        } else {
+            $this->cleanOrphanDatabaseRecords();
         }
 
         Cache::delete('import');
@@ -362,12 +382,19 @@ class SyncController extends AppController
         $this->set('_serialize', 'res');
     }
 
+    /**
+     * Deletes all database records marked as failed.
+     */
     private function cleanNotImportedTracks()
     {
         $this->loadModel('Track');
         $this->Track->deleteAll(array('imported' => false));
     }
 
+    /**
+     * Cleans records from the `albums` and the `bands` tables which have not
+     * any child in the database.
+     */
     private function cleanOrphanDatabaseRecords()
     {
         $this->loadModel('Track');

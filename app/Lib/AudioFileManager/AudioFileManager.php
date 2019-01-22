@@ -21,7 +21,7 @@ class AudioFileManager {
     {
         $result = array(
             'status' => 0,      // 0, or 1 (SUCCESS or FAILURE)
-            'status-msg' => '', // Debug message
+            'status_msg' => '', // Debug message
             'data' => array()   // The data ($metadata array below)
         );
 
