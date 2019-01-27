@@ -13,6 +13,9 @@ class SyncTask extends AppShell
     protected $bandsBuffer = array();
     public $uses = array('Album', 'Band', 'Track');
 
+    /**
+     * The sub-command entry-point.
+     */
     public function execute()
     {
         $actions = null;
@@ -100,54 +103,23 @@ class SyncTask extends AppShell
 
             $band_id = &$bands_buffer[$metadata['Band']['name']];
             if ($band_id === null) {
-                $band = $this->Band->find('first', array(
-                    'fields' => array('id', 'name'),
-                    'conditions' => array('name' => $metadata['Band']['name'])
-                ));
-
-                if (empty($band)) {
-                    $this->Band->create();
-                    $band = $this->Band->save($metadata['Band']);
-                    if (!empty($band)) {
-                        $bands_buffer[$band['Band']['name']] = $band['Band']['id'];
-                        $band_id = $band['Band']['id'];
-                    } else {
-                        $this->log('-----', $scopes = 'synchronization');
-                        $this->log($path, $scopes = 'synchronization');
-                        $this->log('Unable to save extracted Band name.', $scopes = 'synchronization');
-                        $this->log('Record: ' . json_encode($metadata['Band']), $scopes = 'synchronization');
-                        $this->log('Validation error: ' . json_encode($this->Band->validationErrors), $scopes = 'synchronization');
-                        $res['errors'] = true;
-                    }
+                $band = $this->findOrSaveBand($metadata, $path);
+                if ($band === false) {
+                    $res['errors'] = true;
+                    continue;
                 } else {
-                    $bands_buffer[$band['Band']['name']] = $band['Band']['id'];
                     $band_id = $band['Band']['id'];
+                    $bands_buffer[$band['Band']['name']] = $band['Band']['id'];
                 }
             }
 
             $metadata['Album']['band_id'] = $band_id;
-
             $album_id = &$albums_buffer[$metadata['Album']['name']];
             if ($album_id === null) {
-                $album = $this->Album->find('first', array(
-                    'fields' => array('id', 'name'),
-                    'conditions' => array('name' => $metadata['Album']['name'])
-                ));
-
-                if (empty($album)) {
-                    $this->Album->create();
-                    $album = $this->Album->save($metadata['Album']);
-                    if (!empty($album)) {
-                        $albums_buffer[$album['Album']['name']] = $album['Album']['id'];
-                        $album_id = $album['Album']['id'];
-                    } else {
-                        $this->log('-----', $scopes = 'synchronization');
-                        $this->log($path, $scopes = 'synchronization');
-                        $this->log('Unable to save extracted Album name.', $scopes = 'synchronization');
-                        $this->log('Record: ' . json_encode($metadata['Band']), $scopes = 'synchronization');
-                        $this->log('Validation error: ' . json_encode($this->Band->validationErrors), $scopes = 'synchronization');
-                        $res['errors'] = true;
-                    }
+                $album = $this->findOrSaveAlbum($metadata, $path);
+                if ($album === false) {
+                    $res['errors'] = true;
+                    continue;
                 } else {
                     $albums_buffer[$album['Album']['name']] = $album['Album']['id'];
                     $album_id = $album['Album']['id'];
@@ -257,26 +229,10 @@ class SyncTask extends AppShell
 
             $band_id = &$bands_buffer[$metadata['Band']['name']];
             if ($band_id === null) {
-                $band =
-                $band = $this->Band->find('first', array(
-                    'fields' => array('id', 'name'),
-                    'conditions' => array('name' => $metadata['Band']['name'])
-                ));
-
-                if (empty($band)) {
-                    $this->Band->create();
-                    $band = $this->Band->save($metadata['Band']);
-                    if (!empty($band)) {
-                        $bands_buffer[$band['Band']['name']] = $band['Band']['id'];
-                        $band_id = $band['Band']['id'];
-                    } else {
-                        $this->log('-----', $scopes = 'synchronization');
-                        $this->log($original_track['Track']['source_path'], $scopes = 'synchronization');
-                        $this->log('Unable to save extracted Band name.', $scopes = 'synchronization');
-                        $this->log('Record: ' . json_encode($metadata['Band']), $scopes = 'synchronization');
-                        $this->log('Validation error: ' . json_encode($this->Band->validationErrors), $scopes = 'synchronization');
-                        $res['errors'] = true;
-                    }
+                $band = $this->findOrSaveBand($metadata, $original_track['Track']['source_path']);
+                if ($band === false) {
+                    $res['errors'] = true;
+                    continue;
                 } else {
                     $bands_buffer[$band['Band']['name']] = $band['Band']['id'];
                     $band_id =  $band['Band']['id'];
@@ -286,25 +242,10 @@ class SyncTask extends AppShell
             $metadata['Album']['band_id'] = $band_id;
             $album_id = &$albums_buffer[$metadata['Album']['name']];
             if ($album_id === null) {
-                $album = $this->Album->find('first', array(
-                    'fields' => array('id', 'name'),
-                    'conditions' => array('name' => $metadata['Album']['name'])
-                ));
-
-                if (empty($album)) {
-                    $this->Album->create();
-                    $album = $this->Album->save($metadata['Album']);
-                    if (!empty($album)) {
-                        $albums_buffer[$album['Album']['name']] = $album['Album']['id'];
-                        $album_id = $album['Album']['id'];
-                    } else {
-                        $this->log('-----', $scopes = 'synchronization');
-                        $this->log($original_track['Track']['source_path'], $scopes = 'synchronization');
-                        $this->log('Unable to save extracted Album name.', $scopes = 'synchronization');
-                        $this->log('Record: ' . json_encode($metadata['Band']), $scopes = 'synchronization');
-                        $this->log('Validation error: ' . json_encode($this->Band->validationErrors), $scopes = 'synchronization');
-                        $res['errors'] = true;
-                    }
+                $album = $this->findOrSaveAlbum($metadata, $original_track['Track']['source_path']);
+                if ($album === false) {
+                    $res['errors'] = true;
+                    continue;
                 } else {
                     $albums_buffer[$album['Album']['name']] = $album['Album']['id'];
                     $album_id = $album['Album']['id'];
@@ -378,8 +319,61 @@ class SyncTask extends AppShell
 
         $this->out('<info>[INFO   ]</info> Deletion in progress, please be patient...');
         $this->Track->deleteAll(array('id' => $scan['to_remove']), false);
+        $this->cleanOrphanDatabaseRecords();
         $this->unlock();
         $this->out('<info>[INFO   ]</info> Cleaning done!');
+    }
+
+    /**
+     * Finds an Album from the database based on its name, or creates it if it
+     * doesn't exist.
+     */
+    private function findOrSaveAlbum($metadata, $path)
+    {
+        $album = $this->Album->find('first', array(
+            'fields' => array('id', 'name'),
+            'conditions' => array('name' => $metadata['Album']['name'])
+        ));
+
+        if (empty($album)) {
+            $this->Album->create();
+            $album = $this->Album->save($metadata['Album']);
+            if (empty($album)) {
+                $this->log('-----', $scopes = 'synchronization');
+                $this->log($path, $scopes = 'synchronization');
+                $this->log('Unable to save extracted Album name.', $scopes = 'synchronization');
+                $this->log('Record: ' . json_encode($metadata['Band']), $scopes = 'synchronization');
+                $this->log('Validation error: ' . json_encode($this->Band->validationErrors), $scopes = 'synchronization');
+                $album = false;
+            }
+        }
+        return $album;
+    }
+
+    /**
+     * Finds a Band from the database based on its name, or createss it if it
+     * doesn't exist.
+     */
+    private function findOrSaveBand($metadata, $path)
+    {
+        $band = $this->Band->find('first', array(
+            'fields' => array('id', 'name'),
+            'conditions' => array('name' => $metadata['Band']['name'])
+        ));
+
+        if (empty($band)) {
+            $this->Band->create();
+            $band = $this->Band->save($metadata['Band']);
+            if (empty($band)) {
+                $this->log('-----', $scopes = 'synchronization');
+                $this->log($path, $scopes = 'synchronization');
+                $this->log('Unable to save extracted Band name. Skipping.', $scopes = 'synchronization');
+                $this->log('Record: ' . json_encode($metadata['Band']), $scopes = 'synchronization');
+                $this->log('Validation error: ' . json_encode($this->Band->validationErrors), $scopes = 'synchronization');
+                $band = false;
+            }
+        }
+        return $band;
     }
 
     /**
@@ -421,6 +415,31 @@ class SyncTask extends AppShell
     {
         Cache::delete('import');
         $this->out('<info>[DEBUG  ]</info> Lock deleted.', 1, Shell::VERBOSE);
+    }
+
+    /**
+     * Cleans records from the `albums` and the `bands` tables which have not
+     * any child in the database.
+     */
+    private function cleanOrphanDatabaseRecords()
+    {
+        $this->loadModel('Track');
+        $db = $this->Track->getDataSource();
+        if ($db->config['datasource'] == 'Database/Mysql') {
+            $queries = array(
+                'DELETE FROM albums LEFT JOIN tracks ON albums.id = tracks.album_id WHERE tracks.album_id IS NULL',
+                'DELETE FROM bands LEFT JOIN albums ON bands.id = albums.band_id WHERE albums.band_id IS NULL'
+            );
+        } else {$this->loadModel('Track');
+            $queries = array(
+                'DELETE FROM albums WHERE NOT EXISTS (SELECT 1 FROM tracks WHERE tracks.album_id = albums.id)',
+                'DELETE FROM bands WHERE NOT EXISTS (SELECT 1 FROM albums WHERE albums.band_id = bands.id)'
+            );
+        }
+
+        foreach ($queries as $query) {
+            $db->fetchAll($query);
+        }
     }
 
     public function getOptionParser()

@@ -32,9 +32,9 @@ headaches with configuration files.
 Sonerezh is quite easy to install. All you need is:
 
 - A web server (Apache2, Nginx...)
-- PHP, with the following modules enabled: ``php-mysql`` and ``php-gd``
-  (with ``exif.so``)
-- A database (MySQL or MariaDB)
+- PHP, with the following modules enabled: ``php-mysql``, ``php-json`` and
+  ``php-gd`` (with ``exif.so``)
+- A database (MySQL or MariaDB) (PostreSQL and SQLite supported too)
 - Optionally ``avconv`` or ``ffmpeg`` if you plan to use the conversion tool
 
 !!! Note

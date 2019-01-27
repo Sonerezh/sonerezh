@@ -281,7 +281,20 @@ class SyncController extends AppController
 
                 if (empty($album)) {
                     $this->Album->create();
-                    $album = $this->Album->save($metadata['Album']);
+
+                    try {
+                        $album = $this->Album->save($metadata['Album']);
+                    } catch (Exception $exception) {
+                        $res['errors'][] = array(
+                            'error' => $exception->getMessage()
+                        );
+                        $this->response->statusCode(500);
+                        $this->set(compact('res'));
+                        $this->set('_serialize', 'data');
+                        Cache::delete('import');
+                        return;
+                    }
+
                     if (!empty($album)) {
                         $albums_buffer[$album['Album']['name']] = $album['Album']['id'];
                         $album_id = $album['Album']['id'];
@@ -327,6 +340,9 @@ class SyncController extends AppController
         $this->set('_serialize', 'res');
     }
 
+    /**
+     * Cleans the Sonerezh's database.
+     */
     public function deleteSync()
     {
         $this->viewClass = 'Json';
@@ -372,8 +388,6 @@ class SyncController extends AppController
             $res['errors'][] = array(
                 'error' => __('Unexpected error occurred while deleting data.')
             );
-        } else {
-            $this->cleanOrphanDatabaseRecords();
         }
 
         Cache::delete('import');

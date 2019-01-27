@@ -1,15 +1,18 @@
 <?php
 
 /**
- * The Status task handles getting information about the synchronization status.
+ * The Status task gets information about the synchronization status.
  */
 class StatusTask extends AppShell
 {
     public $uses = array('Track');
 
+    /**
+     * The sub-command entry-point.
+     */
     public function execute ()
     {
-        $this->cleanNotImportedTracks(); // Clean previous failed import
+        $this->cleanNotImportedTracks(); // Clean previous failed imports
         $scanner = new AudioFileScanner();
         $scan = $scanner->scan($new = true, $orphans = true, $outdated = true, $batch = 0);
 
@@ -29,6 +32,10 @@ class StatusTask extends AppShell
         }
     }
 
+    /**
+     * Remove the database records marked as "not imported" during the previous
+     * import task.
+     */
     private function cleanNotImportedTracks()
     {
         $this->Track->deleteAll(array('imported' => false));
@@ -36,8 +43,6 @@ class StatusTask extends AppShell
 
     /**
      * Gets the option parser instance and configures it.
-     *
-     * @return ConsoleOptionParser
      */
     public function getOptionParser()
     {

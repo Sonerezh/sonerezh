@@ -7,12 +7,18 @@ App::uses('Folder', 'Utility');
 
 App::import('Vendor', 'Getid3/getid3');
 
+/**
+ * The Sonerezh Shell provides several commands to manage and synchronize
+ * the Sonerezh's database.
+ */
 class SonerezhShell extends AppShell
 {
 
-    public $uses = array('Setting');
     public $tasks = array('Status', 'Sync');
 
+    /**
+     * Each sub-command has its own Cake Task.
+     */
     public function getOptionParser() {
         $parser = parent::getOptionParser();
 

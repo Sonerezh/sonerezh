@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+This is the second major release of Sonerezh. Most part of the core of Sonerezh
+has been rewritten during the last months. The database schema has been changed
+too, to improve global performances and allow more cool stuff for the future.
+
+### Changed
+
+* New synchronization system to easily import to, update or clean the database.
+* New command-line interface.
+* Fix #353: skip directories prefixed with a dot during scan.
+* Implement #289: add the --force option to the CLI.
 
 ## [1.2.5] - 2019-02-05
 
@@ -228,4 +238,3 @@ Improvements:
 
 [Unreleased]: https://github.com/Sonerezh/sonerezh/compare/1.2.4...HEAD
 [1.2.4]: https://github.com/Sonerezh/sonerezh/compare/1.2.3...1.2.4
-[1.2.5]: https://github.com/Sonerezh/sonerezh/compare/1.2.4...1.2.5

@@ -239,7 +239,7 @@ class InstallersController extends AppController {
 
             $this->Cookie->destroy();
 
-            $this->redirect(array('controller' => 'songs', 'action' => 'import'));
+            $this->redirect(array('controller' => 'sync', 'action' => 'index'));
         }
     }
 
@@ -310,7 +310,7 @@ class InstallersController extends AppController {
             );
             $this->Cookie->destroy();
 
-            $this->redirect(array('controller' => 'songs', 'action' => 'import'));
+            $this->redirect(array('controller' => 'sync', 'action' => 'index'));
         }
     }
 
