@@ -56,7 +56,8 @@ class AudioFileScanner
                 $directory = new Folder($directory);
 
                 // Skip symlinks to avoid infinite loops
-                if (is_link($directory->path)) {
+                // Skip dotfiles to avoid scanning "hidden" directories
+                if (is_link($directory->path) || preg_match('/^.*\/\..*$/', $directory->path) === 1) {
                     continue;
                 }
 
