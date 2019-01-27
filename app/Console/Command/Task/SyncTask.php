@@ -390,7 +390,7 @@ class SyncTask extends AppShell
      */
     private function isAgree($count = 0)
     {
-        $choice = $this->in(
+        $choice = $this->param('force') ? 'Y' : $this->in(
             sprintf('%d files to process. Continue?', $count),
             array('Y', 'N'),
             'Y'
@@ -435,6 +435,11 @@ class SyncTask extends AppShell
             'short' => 'i',
             'help' => 'Only perform import process.',
             'boolean' => true,
+        ))->addOption('force', array(
+            'short' => 'f',
+            'help' => 'Disable interactions and answer "yes" to every command.',
+            'boolean' => true,
+            'default' => false,
         ))->addOption('update', array(
             'short' => 'u',
             'help' => 'Only perform update process.',
