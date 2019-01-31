@@ -12,6 +12,7 @@ class SongManager {
 
     function parseMetadata() {
         $getID3 = new getID3();
+        $getID3->option_tags_html = false;
         $file_infos = $getID3->analyze(($this->song->path));
         getid3_lib::CopyTagsToComments($file_infos);
 
