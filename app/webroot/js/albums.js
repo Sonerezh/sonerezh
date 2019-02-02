@@ -2,8 +2,7 @@ $(function(){
 
     $('#content').off('click', '.action-expend');
     $('#content').on('click', '.action-expend', function(){
-        var band = $(this).attr('data-band');
-        var album = $(this).attr('data-album');
+        var albumId = $(this).attr('data-album-id');
         var $this = $(this);
 
         $('#album-expended').remove();
@@ -19,8 +18,7 @@ $(function(){
         $(this).prepend('<div class="loader"><i></i><i></i><i></i><i></i></div>');
 
         $.ajax({
-            url: baseurl + "/album",
-            data: "band=" + encodeURIComponent(band) + "&album=" + encodeURIComponent(album),
+            url: baseurl + '/albums/' + encodeURIComponent(albumId),
             success: function(response){
                 var $html = $(response[2].html);
                 $html.css('top', $this.offset().top+$this.height()).addClass('animated flipInX');

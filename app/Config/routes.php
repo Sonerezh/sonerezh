@@ -32,6 +32,9 @@ Router::connect('/docker-install', array('controller' => 'installers', 'action' 
 Router::connect('/login', array('controller' => 'users', 'action' => 'login'));
 Router::connect('/logout', array('controller' => 'users', 'action' => 'logout'));
 
+Router::connect('/albums', array('controller' => 'albums', 'action' => 'index'));
+Router::connect('/albums/:id', array('controller' => 'albums', 'action' => 'album'), array('pass' => array('id')));
+
 Router::connect('/api/*', array('controller' => 'api'));
 
 Router::connect('/artists', array('controller' => 'bands', 'action' => 'index'));

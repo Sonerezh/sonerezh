@@ -68,9 +68,10 @@ class BandsController extends AppController
                 if (empty($album['cover'])) {
                     $bands[$b]['Album'][$a]['cover'] = 'no-cover.png';
                 } else {
-                    $bands[$b]['Album'][$a]['cover'] = THUMBNAILS_DIR . '/' . $album['cover'];
+                    $bands[$b]['Album'][$a]['cover'] = implode('/', array(THUMBNAILS_DIR, $album['cover']));
                 }
 
+                ksort($discs);
                 $bands[$b]['Album'][$a]['discs'] = $discs;
                 $bands[$b]['Album'][$a]['genres'] = $albumGenres;
                 unset($bands[$b]['Album'][$a]['Track']);

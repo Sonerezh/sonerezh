@@ -11,6 +11,7 @@ App::uses('AppModel', 'Model');
 class Album extends AppModel
 {
     private $bandId;
+    public $actsAs = array('Containable');
     public $belongsTo = array('Band');
     public $hasMany = array('Track');
     public $validate = array(
