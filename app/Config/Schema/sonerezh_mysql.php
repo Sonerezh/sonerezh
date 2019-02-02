@@ -19,6 +19,7 @@ class SonerezhMysqlSchema extends CakeSchema {
 		'indexes' => array(
 			'PRIMARY' => array('column' => 'id', 'unique' => 1),
 			'albums_bands_id_fk' => array('column' => 'band_id', 'unique' => 0),
+			'albums_created_index' => array('unique' => false, 'column' => 'created'),
 			'albums_name_index' => array('column' => 'name', 'unique' => 0)
 		),
 		'tableParameters' => array('charset' => 'utf8mb4', 'collate' => 'utf8mb4_unicode_ci', 'engine' => 'InnoDB')

@@ -19,6 +19,7 @@ class SonerezhPgsqlSchema extends CakeSchema {
 		'indexes' => array(
 			'PRIMARY' => array('unique' => true, 'column' => 'id'),
 			'albums_bands_id_fk' => array('unique' => false, 'column' => 'band_id'),
+			'albums_created_index' => array('unique' => false, 'column' => 'created'),
 			'albums_name_index' => array('unique' => false, 'column' => 'name')
 		),
 		'tableParameters' => array()
