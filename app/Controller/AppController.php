@@ -55,7 +55,7 @@ class AppController extends Controller {
                 )
             ),
             'authorize' => array('Controller'),
-            'unauthorizedRedirect' => array('controller' => 'songs', 'action' => 'index')
+            'unauthorizedRedirect' => array('controller' => 'me', 'action' => 'index')
         ),
         'Flash'
     );

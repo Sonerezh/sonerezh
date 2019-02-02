@@ -24,7 +24,7 @@
  * its action called 'display', and we pass a param to select the view file
  * to use (in this case, /app/View/Pages/home.ctp)...
  */
-Router::connect('/', array('controller' => 'songs', 'action' => 'index'));
+Router::connect('/', array('controller' => 'me', 'action' => 'index'));
 
 Router::connect('/install', array('controller' => 'installers', 'action' => 'index'));
 Router::connect('/docker-install', array('controller' => 'installers', 'action' => 'docker'));
