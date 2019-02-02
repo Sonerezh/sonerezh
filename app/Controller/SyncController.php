@@ -71,6 +71,7 @@ class SyncController extends AppController
         $scan = $scanner->scan($new = false, $orphans = false, $outdated = true);
 
         if (empty($scan['to_update'])) {
+            $this->cleanOrphanDatabaseRecords();
             $this->response->statusCode(204);
             $this->set(compact('res'));
             $this->set('_serialize', 'data');

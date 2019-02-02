@@ -34,11 +34,11 @@ Router::connect('/logout', array('controller' => 'users', 'action' => 'logout'))
 
 Router::connect('/api/*', array('controller' => 'api'));
 
+Router::connect('/artists', array('controller' => 'bands', 'action' => 'index'));
+
 Router::connect('/playlists/:action/:id', array('controller' => 'playlists'), array('pass' => array('id')));
 Router::connect('/playlists/add', array('controller' => 'playlists', 'action' => 'add'));
 Router::connect('/playlists/*', array('controller' => 'playlists', 'action' => 'index'));
-
-Router::connect('/users', array('controller' => 'users', 'action' => 'index'));
 
 Router::connect('/settings', array('controller' => 'settings', 'action' => 'index'));
 
@@ -46,6 +46,8 @@ Router::connect('/sync', array('controller' => 'sync', 'action' => 'index', '[me
 Router::connect('/sync', array('controller' => 'sync', 'action' => 'patchSync', '[method]' => 'PATCH'));
 Router::connect('/sync', array('controller' => 'sync', 'action' => 'postSync', '[method]' => 'POST'));
 Router::connect('/sync', array('controller' => 'sync', 'action' => 'deleteSync', '[method]' => 'DELETE'));
+
+Router::connect('/users', array('controller' => 'users', 'action' => 'index'));
 
 Router::connect('/img/**', array('controller' => 'img', 'action' => 'index'));
 

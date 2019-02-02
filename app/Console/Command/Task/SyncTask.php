@@ -280,6 +280,7 @@ class SyncTask extends AppShell
             $progress->draw();
         }
 
+        $this->cleanOrphanDatabaseRecords();
         $this->unlock();
 
         if ($res['errors'] === true) {

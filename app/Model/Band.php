@@ -9,6 +9,7 @@ App::uses('AppModel', 'Model');
  */
 class Band extends AppModel
 {
+    public $actsAs = array('Containable');
     public $hasMany = array('Album');
     public $validate = array(
         'name' => array(
