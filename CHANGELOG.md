@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 * Fix #354: Do not convert tags to HTML
+* Fix #357: APP_DIR missing in top level index.php for CAKE full path
 
 ### Changed
 
