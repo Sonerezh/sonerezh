@@ -13,6 +13,7 @@ class AudioFileManager {
     public function __construct($song) {
         $this->file = new File($song);
         $getID3 = new getID3();
+        $getID3->option_tags_html = false;
         $this->raw_data = $getID3->analyze(($this->file->path));
         getid3_lib::CopyTagsToComments($this->raw_data);
     }
