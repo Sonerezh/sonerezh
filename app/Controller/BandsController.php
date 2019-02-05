@@ -29,7 +29,8 @@ class BandsController extends AppController
                     'order' => 'year',
                     'Track' => array(
                         'fields' => array(
-                            'id', 'title', 'source_path', 'playtime', 'track_number', 'disc_number', 'genre', 'artist'
+                            'id', 'title', 'source_path', 'playtime',
+                            'track_number', 'disc_number', 'genre', 'artist'
                         ),
                         'conditions' => array('imported' => true),
                         'order' => 'track_number'

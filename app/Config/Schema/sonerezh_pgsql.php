@@ -124,6 +124,7 @@ class SonerezhPgsqlSchema extends CakeSchema {
 		'album_id' => array('type' => 'integer', 'null' => true, 'default' => null),
 		'updated' => array('type' => 'datetime', 'null' => true, 'default' => 'CURRENT_TIMESTAMP'),
 		'imported' => array('type' => 'boolean', 'null' => true, 'default' => true),
+		'path' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 4096),
 		'indexes' => array(
 			'PRIMARY' => array('unique' => true, 'column' => 'id'),
 			'tracks_albums_id_fk' => array('unique' => false, 'column' => 'album_id'),

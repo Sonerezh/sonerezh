@@ -119,9 +119,7 @@ function init() {
         var songId = $(this).parents('[data-id]').attr('data-id');
         var view = $('[data-view]').attr('data-view');
 
-        if (view == 'default') {
-            var songs = songsManager.getAllSongs();
-        } else if (view == 'artists' || view == 'search') {
+        if (view == 'artists' || view == 'search') {
             var band = $(this).parents('[data-band]').attr('data-band');
             var songs = songsManager.getBandSongs(band);
         } else if (view == 'albums') {
@@ -137,7 +135,7 @@ function init() {
             player.setFirst(songId);
         }
 
-        if (player.getCurrentTrack().id == songId) {
+        if (player.getCurrentTrack() && (player.getCurrentTrack().id === songId)) {
             player.play();
         } else {
             player.play(songId);

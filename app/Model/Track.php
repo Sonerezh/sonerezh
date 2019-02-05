@@ -11,7 +11,6 @@ App::uses('AppModel', 'Model');
  */
 class Track extends AppModel
 {
-    private $albumId;
     public $belongsTo = array('Album');
     public $validate = array(
         'title' => array(
@@ -64,6 +63,8 @@ class Track extends AppModel
             'message' => 'The artist value cannot exceed 255 characters.'
         )
     );
+
+    private $albumId;
 
     /**
      * Override the "created" and the "updated" fields to ensure they are

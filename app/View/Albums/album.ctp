@@ -59,7 +59,7 @@
                             </td>
                             <td class="text-right playtime-cell">
                                 <span class="song-playtime"><?php echo h($track['playtime']); ?></span>
-                                <?php echo $this->element('add_menu', array('song_id' => h($track['id']), 'song_title' => h($track['title']))); ?>
+                                <?php echo $this->element('add_menu', array('id' => h($track['id']), 'title' => h($track['title']))); ?>
                             </td>
                         </tr>
                         <?php $switch += 1; ?>

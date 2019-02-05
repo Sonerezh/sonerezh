@@ -124,6 +124,7 @@ class SonerezhMysqlSchema extends CakeSchema {
 		'album_id' => array('type' => 'integer', 'null' => true, 'default' => null, 'unsigned' => false, 'key' => 'index'),
 		'updated' => array('type' => 'timestamp', 'null' => true, 'default' => null),
 		'imported' => array('type' => 'boolean', 'null' => true, 'default' => '1', 'key' => 'index'),
+        'path' => array('type' => 'string', 'null' => true, 'default' => null, 'length' => 4096),
 		'indexes' => array(
 			'PRIMARY' => array('column' => 'id', 'unique' => 1),
 			'tracks_albums_id_fk' => array('column' => 'album_id', 'unique' => 0),

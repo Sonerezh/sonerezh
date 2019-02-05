@@ -6,8 +6,8 @@
         <li role="presentation">
             <?php echo $this->Html->link(
                 __('Download'),
-                array('controller' => 'songs', 'action' => 'download', $song_id),
-                array('class' => 'no-ajax', 'role' => 'menuitem', 'tabindex' => '-1', 'download' => $song_title));
+                array('controller' => 'tracks', 'action' => 'download', $id),
+                array('class' => 'no-ajax', 'role' => 'menuitem', 'tabindex' => '-1', 'download' => $title));
             ?>
         </li>
     </ul>

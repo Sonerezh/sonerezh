@@ -83,6 +83,7 @@ class AlbumsController extends AppController
                     'fields' => array(
                         'Track.id', 'Track.artist', 'Track.title', 'Track.playtime', 'Track.track_number', 'Track.disc_number'
                     ),
+                    'conditions' => array('Track.imported' => true),
                     'order' => array('Track.track_number')
                 )
             )
