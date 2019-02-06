@@ -7,9 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.5] - 2019-02-05
+
+This release fixes some little bugs and add a booster to the "import" function
+(big thanks to Nizhile). The metadata parsing is more than ten times faster
+when the cover image tag is large. This should fix the "Maximum execution time"
+error happening when you try to import files.
+
 ### Fixed
 
 * Fix #354: Do not convert tags to HTML
+* Fix #357: APP_DIR missing in top level index.php for CAKE full path
 
 ### Changed
 
@@ -220,3 +228,4 @@ Improvements:
 
 [Unreleased]: https://github.com/Sonerezh/sonerezh/compare/1.2.4...HEAD
 [1.2.4]: https://github.com/Sonerezh/sonerezh/compare/1.2.3...1.2.4
+[1.2.5]: https://github.com/Sonerezh/sonerezh/compare/1.2.4...1.2.5
