@@ -9,6 +9,27 @@ class TracksController extends AppController
         parent::beforeFilter();
     }
 
+    public function tracks($id)
+    {
+        $this->viewClass = 'Json';
+        $track = $this->Track->find('first', array(
+            'conditions' => array('Track.id' => $id),
+            'contain' => array('Album')
+        ));
+
+        if ($track['Album']['band_id']) {
+            $this->loadModel('Band');
+            $track['Band'] = $this->Band->findById($track['Album']['band_id']);
+        }
+
+        if (empty($track)) {
+            throw new NotFoundException();
+        }
+
+        $this->set(compact('track'));
+        $this->set('_serialize', 'track');
+    }
+
     /**
      * This function is called by the player when you click on "Play".
      * The file extension is checked to know if a conversion must be triggered
@@ -135,6 +156,54 @@ class TracksController extends AppController
                 }
             }
         }
+
+        $this->set(compact('data'));
+        $this->set('_serialize', 'data');
+    }
+
+    /**
+     * A function to replace the legacy Javascript calls to the IndexedDB.
+     */
+    public function api_view($trackId)
+    {
+        $this->viewClass = 'Json';
+
+        $raw = $this->Track->find('first', array(
+            'fields' => array(
+                'Track.id', 'Track.title', 'Track.playtime',
+                'Track.track_number', 'Track.disc_number', 'Track.artist',
+            ),
+            'conditions' => array('imported' => true, 'Track.id' => $trackId),
+            'order' => array(
+                'Track.disc_number' => 'ASC',
+                'Track.track_number' => 'ASC'
+            ),
+            'contain' => array(
+                'Album' => array(
+                    'fields' => array(
+                        'Album.name', 'Album.cover', 'Album.band_id'
+                    )
+                )
+            )
+        ));
+
+        if ($raw['Album']['band_id']) {
+            $this->loadModel('Band');
+            $raw = array_merge($raw, $this->Band->findById($raw['Album']['band_id']));
+        }
+
+        $data = array(
+            'id' => $raw['Track']['id'],
+            'title' => $raw['Track']['title'],
+            'artist' => $raw['Track']['artist'],
+            'band' => ($raw['Band']) ? $raw['Band']['name'] : null,
+            'album' => $raw['Album']['name'],
+            'cover' => $raw['Album']['cover'],
+            'disc_number' => $raw['Track']['disc_number'],
+            'track_number' => $raw['Track']['track_number'],
+            'playtime' => $raw['Track']['playtime'],
+            'url' => $this->request->base . '/tracks/download/' . $raw['Track']['id']
+        );
 
         $this->set(compact('data'));
         $this->set('_serialize', 'data');

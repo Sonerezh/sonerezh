@@ -1,5 +1,5 @@
 var player = new Player();
-var songsManager = new SongsManager(baseurl, syncToken);
+var songsManager = new SongsManager();
 
 var $playButton = $("#play");
 var $prevButton = $("#backward");
@@ -116,29 +116,47 @@ function init() {
 
     $('#content').on('click', playTitle, function(e) {
         e.preventDefault();
-        var songId = $(this).parents('[data-id]').attr('data-id');
-        var view = $('[data-view]').attr('data-view');
+        let songId = $(this).parents('[data-id]').attr('data-id');
+        let view = $('[data-view]').attr('data-view');
 
-        if (view == 'artists' || view == 'search') {
-            var band = $(this).parents('[data-band]').attr('data-band');
-            var songs = songsManager.getBandSongs(band);
-        } else if (view == 'albums') {
-            var band = $(this).parents('[data-band]').attr('data-band');
-            var album = $(this).parents('[data-album]').attr('data-album');
-            var songs = songsManager.getAlbumSongs(band, album);
-        } else {
-            var songs = [songsManager.getSong(songId)];
-        }
-
-        populatePlaylist(songs);
-        if (player.isShuffle()) {
-            player.setFirst(songId);
-        }
-
-        if (player.getCurrentTrack() && (player.getCurrentTrack().id === songId)) {
-            player.play();
-        } else {
-            player.play(songId);
+        if (view === 'artists' || view === 'search') {
+            let bandId = $(this).parents('[data-band]').attr('data-band-id');
+            let xhr = new XMLHttpRequest();
+            xhr.open('GET', baseurl + '/api/v1/bands/' + bandId + '/tracks', true);
+            xhr.onload = function () {
+                if (xhr.readyState === 4) {
+                    songs = JSON.parse(xhr.response);
+                    populatePlaylist(songs);
+                    if (player.isShuffle()) {
+                        player.setFirst(songId);
+                    }
+                    if (player.getCurrentTrack() && (player.getCurrentTrack().id === songId)) {
+                        player.play();
+                    } else {
+                        player.play(songId);
+                    }
+                }
+            };
+            xhr.send();
+        } else if (view === 'albums') {
+            var albumId = $(this).parents('[data-album]').attr('data-album-id');
+            let xhr = new XMLHttpRequest();
+            xhr.open('GET', baseurl + '/api/v1/albums/' + albumId + '/tracks', true);
+            xhr.onload = function () {
+                if (xhr.readyState === 4) {
+                    songs = JSON.parse(xhr.response);
+                    populatePlaylist(songs);
+                    if (player.isShuffle()) {
+                        player.setFirst(songId);
+                    }
+                    if (player.getCurrentTrack() && (player.getCurrentTrack().id === songId)) {
+                        player.play();
+                    } else {
+                        player.play(songId);
+                    }
+                }
+            };
+            xhr.send();
         }
     });
 
@@ -147,24 +165,37 @@ function init() {
         var songId = $(this).attr('data-id');
         var view = $('[data-view]').attr('data-view');
 
-        if (view == 'default') {
-            var songs = songsManager.getAllSongs();
-        } else if (view == 'artists' || view == 'search') {
-            var band = $(this).parents('[data-band]').attr('data-band');
-            var songs = songsManager.getBandSongs(band);
+        if (view == 'artists' || view == 'search') {
+            let bandId = $(this).parents('[data-band]').attr('data-band-id');
+            let xhr = new XMLHttpRequest();
+            xhr.open('GET', baseurl + '/api/v1/bands/' + bandId + '/tracks', true);
+            xhr.onload = function () {
+                if (xhr.readyState === 4) {
+                    songs = JSON.parse(xhr.response);
+                    populatePlaylist(songs);
+                    if (player.isShuffle()) {
+                        player.setFirst(songId);
+                    }
+                    player.play(songId);
+                }
+            };
+            xhr.send();
         } else if (view == 'albums') {
-            var band = $(this).parents('[data-band]').attr('data-band');
-            var album = $(this).parents('[data-album]').attr('data-album');
-            var songs = songsManager.getAlbumSongs(band, album);
-        } else {
-            var songs = [songsManager.getSong(songId)];
+            var albumId = $(this).parents('[data-album]').attr('data-album-id');
+            let xhr = new XMLHttpRequest();
+            xhr.open('GET', baseurl + '/api/v1/albums/' + albumId + '/tracks', true);
+            xhr.onload = function () {
+                if (xhr.readyState === 4) {
+                    songs = JSON.parse(xhr.response);
+                    populatePlaylist(songs);
+                    if (player.isShuffle()) {
+                        player.setFirst(songId);
+                    }
+                    player.play(songId);
+                }
+            };
+            xhr.send();
         }
-
-        populatePlaylist(songs);
-        if (player.isShuffle()) {
-            player.setFirst(songId);
-        }
-        player.play(songId);
     });
 
     $('#content').on('click', pauseTitle, function(e) {
@@ -175,74 +206,147 @@ function init() {
     $('#content').on('click', playTitleNext, function(e) {
         e.preventDefault();
         var songId = $(this).parents('[data-id]').attr('data-id');
-        player.playNext(songsManager.getSong(songId));
+        let xhr = new XMLHttpRequest();
+        xhr.open('GET', baseurl + '/api/v1/tracks/' + songId, true);
+        xhr.onload = function () {
+            if (xhr.readyState === 4) {
+                data = JSON.parse(xhr.response);
+                player.playNext(data);
+            }
+        };
+        xhr.send();
     });
 
     $('#content').on('click', playTitleAfter, function(e) {
         e.preventDefault();
         var songId = $(this).parents('[data-id]').attr('data-id');
-        player.add(songsManager.getSong(songId));
+        let xhr = new XMLHttpRequest();
+        xhr.open('GET', baseurl + '/api/v1/tracks/' + songId, true);
+        xhr.onload = function () {
+            if (xhr.readyState === 4) {
+                data = JSON.parse(xhr.response);
+                player.add(data);
+            }
+        };
+        xhr.send();
     });
 
     $('#content').on('click', playBand, function(e) {
         e.preventDefault();
-        var band = $(this).parents('[data-band]').attr('data-band');
-        var songs = songsManager.getBandSongs(band);
-        populatePlaylist(songs);
-        player.playIndex(0);
+        let bandId = $(this).parents('[data-band]').attr('data-band-id');
+        let xhr = new XMLHttpRequest();
+        xhr.open('GET', baseurl + '/api/v1/bands/' + bandId + '/tracks', true);
+        xhr.onload = function () {
+            if (xhr.readyState === 4) {
+                songs = JSON.parse(xhr.response);
+                populatePlaylist(songs);
+                player.playIndex(0);
+            }
+        };
+        xhr.send();
     });
 
     $('#content').on('click', playBandNext, function(e) {
         e.preventDefault();
-        var band = $(this).parents('[data-band]').attr('data-band');
-        player.playNextAll(songsManager.getBandSongs(band));
+        let bandId = $(this).parents('[data-band]').attr('data-band-id');
+        let xhr = new XMLHttpRequest();
+        xhr.open('GET', baseurl + '/api/v1/bands/' + bandId + '/tracks', true);
+        xhr.onload = function () {
+            if (xhr.readyState === 4) {
+                songs = JSON.parse(xhr.response);
+                player.playNextAll(songs);
+            }
+        };
+        xhr.send();
     });
 
     $('#content').on('click', playBandAfter, function(e) {
         e.preventDefault();
-        var band = $(this).parents('[data-band]').attr('data-band');
-        player.addAll(songsManager.getBandSongs(band));
+        let bandId = $(this).parents('[data-band]').attr('data-band-id');
+        let xhr = new XMLHttpRequest();
+        xhr.open('GET', baseurl + '/api/v1/bands/' + bandId + '/tracks', true);
+        xhr.onload = function () {
+            if (xhr.readyState === 4) {
+                songs = JSON.parse(xhr.response);
+                player.addAll(songs);
+            }
+        };
+        xhr.send();
     });
+
     $('#content').on('click', shuffleBand, function(e) {
         e.preventDefault();
-        var band = $(this).parents('[data-band]').attr('data-band');
-        var songs = songsManager.getBandSongs(band);
-        player.clearPlaylist();
-        player.addAll(songs.shuffle());
-        player.playIndex(0);
+        let bandId = $(this).parents('[data-band]').attr('data-band-id');
+        let xhr = new XMLHttpRequest();
+        xhr.open('GET', baseurl + '/api/v1/bands/' + bandId + '/tracks', true);
+        xhr.onload = function () {
+            if (xhr.readyState === 4) {
+                songs = JSON.parse(xhr.response);
+                player.clearPlaylist();
+                player.addAll(songs.shuffle());
+                player.playIndex(0);
+            }
+        };
+        xhr.send();
     });
 
     $('#content').on('click', playAlbum, function(e) {
         e.preventDefault();
-        var band = $(this).parents('[data-band]').attr('data-band');
-        var album = $(this).parents('[data-album]').attr('data-album');
-        var songs = songsManager.getAlbumSongs(band, album);
-        populatePlaylist(songs);
-        player.playIndex(0);
+        var albumId = $(this).parents('[data-album]').attr('data-album-id');
+        let xhr = new XMLHttpRequest();
+        xhr.open('GET', baseurl + '/api/v1/albums/' + albumId + '/tracks', true);
+        xhr.onload = function () {
+            if (xhr.readyState === 4) {
+                songs = JSON.parse(xhr.response);
+                populatePlaylist(songs);
+                player.playIndex(0);
+            }
+        };
+        xhr.send();
     });
 
     $('#content').on('click', playAlbumNext, function(e) {
         e.preventDefault();
-        var band = $(this).parents('[data-band]').attr('data-band');
-        var album = $(this).parents('[data-album]').attr('data-album');
-        player.playNextAll(songsManager.getAlbumSongs(band, album));
+        var albumId = $(this).parents('[data-album]').attr('data-album-id');
+        let xhr = new XMLHttpRequest();
+        xhr.open('GET', baseurl + '/api/v1/albums/' + albumId + '/tracks', true);
+        xhr.onload = function () {
+            if (xhr.readyState === 4) {
+                songs = JSON.parse(xhr.response);
+                player.playNextAll(songs);
+            }
+        };
+        xhr.send();
     });
 
     $('#content').on('click', playAlbumAfter, function(e) {
         e.preventDefault();
-        var band = $(this).parents('[data-band]').attr('data-band');
-        var album = $(this).parents('[data-album]').attr('data-album');
-        player.addAll(songsManager.getAlbumSongs(band, album));
+        var albumId = $(this).parents('[data-album]').attr('data-album-id');
+        let xhr = new XMLHttpRequest();
+        xhr.open('GET', baseurl + '/api/v1/albums/' + albumId + '/tracks', true);
+        xhr.onload = function () {
+            if (xhr.readyState === 4) {
+                songs = JSON.parse(xhr.response);
+                player.addAll(songs);
+            }
+        };
+        xhr.send();
     });
 
     $('#content').on('click', shuffleAlbum, function(e) {
         e.preventDefault();
-        var band = $(this).parents('[data-band]').attr('data-band');
-        var album = $(this).parents('[data-album]').attr('data-album');
-        var songs = songsManager.getAlbumSongs(band, album);
-        player.clearPlaylist();
-        player.addAll(songs.shuffle());
-        player.playIndex(0);
+        var albumId = $(this).parents('[data-album]').attr('data-album-id');
+        let xhr = new XMLHttpRequest();
+        xhr.open('GET', baseurl + '/api/v1/albums/' + albumId + '/tracks', true);
+        xhr.onload = function () {
+            if (xhr.readyState === 4) {
+                songs = JSON.parse(xhr.response);
+                player.clearPlaylist();
+                player.addAll(songs.shuffle());
+                player.playIndex(0);
+            }
+        };
+        xhr.send();
     });
 
     $('#content').on('click', playPlaylist, function(e) {

@@ -47,6 +47,25 @@ class Album extends AppModel
     }
 
     /**
+     * Replace an empty cover art with the default one.
+     *
+     * @param mixed $results
+     * @param bool $primary
+     * @return mixed
+     */
+    public function afterFind($results, $primary = false)
+    {
+        foreach ($results as $a => $album) {
+            if (empty($album['Album']['cover']) || $album['Album']['cover'] === null) {
+                $results[$a]['Album']['cover'] = '/' . IMAGES_URL . THUMBNAILS_DIR . '/no-cover.png';
+            } else {
+                $results[$a]['Album']['cover'] = '/' . IMAGES_URL . THUMBNAILS_DIR . '/' . $album['Album']['cover'];
+            }
+        }
+        return $results;
+    }
+
+    /**
      * Override the "created" and the "updated" fields to ensure they are
      * properly filled.
      *

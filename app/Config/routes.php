@@ -35,8 +35,6 @@ Router::connect('/logout', array('controller' => 'users', 'action' => 'logout'))
 Router::connect('/albums', array('controller' => 'albums', 'action' => 'index'));
 Router::connect('/albums/:id', array('controller' => 'albums', 'action' => 'album'), array('pass' => array('id')));
 
-Router::connect('/api/*', array('controller' => 'api'));
-
 Router::connect('/artists', array('controller' => 'bands', 'action' => 'index'));
 
 Router::connect('/playlists/:action/:id', array('controller' => 'playlists'), array('pass' => array('id')));
@@ -50,11 +48,29 @@ Router::connect('/sync', array('controller' => 'sync', 'action' => 'patchSync', 
 Router::connect('/sync', array('controller' => 'sync', 'action' => 'postSync', '[method]' => 'POST'));
 Router::connect('/sync', array('controller' => 'sync', 'action' => 'deleteSync', '[method]' => 'DELETE'));
 
+Router::connect('/tracks/:id', array('controller' => 'tracks', 'action' => 'tracks', '[method]' => 'GET'), array('pass' => array('id')));
+
 Router::connect('/users', array('controller' => 'users', 'action' => 'index'));
 
 Router::connect('/img/**', array('controller' => 'img', 'action' => 'index'));
 
-Router::connect('/:action', array('controller' => 'songs'));
+Router::connect(
+    '/api/v1/albums/:albumId/tracks',
+    array('controller' => 'albums', 'action' => 'tracks', 'prefix' => 'api', 'api' => true),
+    array('pass' => array('albumId'))
+);
+
+Router::connect(
+    '/api/v1/bands/:bandId/tracks',
+    array('controller' => 'bands', 'action' => 'tracks', 'prefix' => 'api', 'api' => true),
+    array('pass' => array('bandId'))
+);
+
+Router::connect(
+    '/api/v1/tracks/:trackId',
+    array('controller' => 'tracks', 'action' => 'view', 'prefix' => 'api', 'api' => true),
+    array('pass' => array('trackId'))
+);
 
 /**
  * Load all plugin routes. See the CakePlugin documentation on

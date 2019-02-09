@@ -98,5 +98,9 @@ $this->end(); ?>
         $j++; ?>
 	<?php endforeach; ?>
 </div>
-<?php echo $this->element('add_to_playlist'); ?>
-<?php echo $this->element('pagination'); ?>
+<?php if (empty($albums)): ?>
+    <?php echo $this->element('empty_db'); ?>
+<?php else: ?>
+    <?php echo $this->element('add_to_playlist'); ?>
+    <?php echo $this->element('pagination'); ?>
+<?php endif; ?>

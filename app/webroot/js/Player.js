@@ -225,6 +225,7 @@ function Playlist() {
     var playlist = function() {
         return shuffle ? shuffledSongs : songs;
     };
+
     var shuffleArray = function(array) {
         if(array.length == 0) return [];
         var tmp = array.slice();

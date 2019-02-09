@@ -29,16 +29,6 @@ class AlbumsController extends AppController
                     )
                 )
             ));
-
-            if (!empty($latest)) {
-                foreach ($latest as $a => $album) {
-                    if (empty($album['Album']['cover'])) {
-                        $latest[$a]['Album']['cover'] = 'no-cover.png';
-                    } else {
-                        $latest[$a]['Album']['cover'] = implode('/', array(THUMBNAILS_DIR, $album['Album']['cover']));
-                    }
-                }
-            }
         }
 
         $this->Paginator->settings = array(
@@ -56,15 +46,6 @@ class AlbumsController extends AppController
 
         if (empty($albums)) {
             $this->Flash->info(__('Oops! The database is empty…'));
-            return;
-        }
-
-        foreach ($albums as $a => $album) {
-            if (empty($album['Album']['cover'])) {
-                $albums[$a]['Album']['cover'] = 'no-cover.png';
-            } else {
-                $albums[$a]['Album']['cover'] = implode('/', array(THUMBNAILS_DIR, $album['Album']['cover']));
-            }
         }
 
         $this->set(compact('albums', 'latest'));
@@ -81,7 +62,9 @@ class AlbumsController extends AppController
                 ),
                 'Track' => array(
                     'fields' => array(
-                        'Track.id', 'Track.artist', 'Track.title', 'Track.playtime', 'Track.track_number', 'Track.disc_number'
+                        'Track.id', 'Track.artist', 'Track.title',
+                        'Track.playtime', 'Track.track_number',
+                        'Track.disc_number'
                     ),
                     'conditions' => array('Track.imported' => true),
                     'order' => array('Track.track_number')
@@ -102,5 +85,54 @@ class AlbumsController extends AppController
         $album['discs'] = $discs;
 
         $this->set(compact('album'));
+    }
+
+    /**
+     * A function to replace the legacy Javascript calls to the IndexedDB.
+     */
+    public function api_tracks($albumId)
+    {
+        $this->viewClass = 'Json';
+
+        $raw = $this->Album->find('first', array(
+            'fields' => array('Album.id', 'Album.name', 'Album.cover'),
+            'conditions' => array('Album.id' => $albumId),
+            'contain' => array(
+                'Band' => array(
+                    'fields' => array('Band.name'),
+                ),
+                'Track' => array(
+                    'fields' => array(
+                        'Track.id', 'Track.title', 'Track.playtime',
+                        'Track.track_number', 'Track.disc_number',
+                        'Track.artist'
+                    ),
+                    'order' => array(
+                        'Track.disc_number' => 'ASC',
+                        'Track.track_number' => 'ASC'
+                    ),
+                    'conditions' => array('imported' => true)
+                )
+            )
+        ));
+
+        $data = array();
+        foreach ($raw['Track'] as $track) {
+            $data[] = array(
+                'id' => $track['id'],
+                'title' => $track['title'],
+                'artist' => $track['artist'],
+                'band' => $raw['Band']['name'],
+                'album' => $raw['Album']['name'],
+                'cover' => $raw['Album']['cover'],
+                'disc_number' => $track['disc_number'],
+                'track_number' => $track['track_number'],
+                'playtime' => $track['playtime'],
+                'url' => $this->request->base . '/tracks/download/' . $track['id']
+            );
+        }
+
+        $this->set(compact('data'));
+        $this->set('_serialize', 'data');
     }
 }

@@ -1,4 +1,4 @@
-<div id="album-expended" data-band="<?php echo h($album['Band']['name']); ?>" data-album="<?php echo h($album['Album']['name']); ?>">
+<div id="album-expended" data-band="<?php echo h($album['Band']['name']); ?>" data-album="<?php echo h($album['Album']['name']); ?>" data-album-id="<?php echo h($album['Album']['id']); ?>">
     <div class="container">
         <div class="row album" style="margin-bottom: 20px;">
             <div class="col-xs-12">
