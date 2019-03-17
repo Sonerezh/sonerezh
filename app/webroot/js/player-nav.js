@@ -445,7 +445,7 @@ function init() {
     });
 
     player.volume(0);
-    player.volume(volume ? volume : 50);
+    player.volume(volume ? volume : 100);
     if (mute == "true") {
         player.mute();
     }

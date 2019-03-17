@@ -11,7 +11,8 @@
 
 body {
     font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-    padding-top: 120px;
+    padding-top: 60px;
+    padding-bottom: 60px;
 }
 
 h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
@@ -62,10 +63,14 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 }
 
 .navbar-inverse .navbar-header>a,
-.navbar-inverse .navbar-nav>li>a,
+.navbar-inverse .navbar-nav>li>a{
+    background-color:transparent;
+    transition: background-color 0.2s;
+}
+
 .navbar-inverse .navbar-nav>.active>a,
 .navbar-inverse .navbar-nav>.active>a:focus {
-    background-color: transparent;
+    background-color:#58A7D2;
     transition: background-color 0.2s;
 }
 .navbar-inverse .navbar-header>a:hover,
@@ -73,17 +78,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 .navbar-inverse .navbar-nav>.active>a:hover {
     background-color: #337AB7;
 }
-.navbar-inverse .navbar-nav>.active>a:after{
-    content: " ";
-    display: block;
-    position: absolute;
-    border-width: 7px;
-    border-style: solid;
-    border-color: transparent transparent #f8f8f8;
-    bottom: 0;
-    left: 50%;
-    margin-left: -7px;
-}
+
 
 nav .search .search-input{
     height: 25px;
@@ -123,7 +118,7 @@ nav .search .search-input{
     margin-top: 50px;
     height: 65px;
     z-index: 1020;
-    border: none;
+    /*border: none;*/
     box-shadow: 0 2px 4px 0 rgba(0,0,0,.15);
 }
 
@@ -146,6 +141,24 @@ ul.player-controls li{
     cursor: default;
     color: #808080;
 }
+
+ul.player-controls li.disable span,
+ul.player-controls li.disable div{
+    cursor: default;
+}
+
+ul.player-controls li span,
+ul.player-controls li div,
+div#timebar.slider{
+    cursor: pointer;
+}
+
+ul.player-controls li span{
+	height: 100%;
+	width: 100%;
+	line-height: 65px;
+}
+
 ul.player-controls.volume li.volumeicon .glyphicon{
     margin-right: 5px;
 }
@@ -216,7 +229,7 @@ ul.player-controls li.play{
 
 .queue {
     border-bottom: 1px solid transparent;
-    top: -196px;
+    top: -250px;
     left: 0;
     position: fixed;
     width: 100%;
@@ -226,7 +239,7 @@ ul.player-controls li.play{
 }
 
 .queue.queue-open {
-    top: 114px;
+    top: 50px;
 }
 
 .queue > .queue-wrapper {
@@ -267,7 +280,7 @@ body, body.modal-open {
     position: fixed;
     width: 250px;
     z-index: 100;
-    bottom: 15px;
+    top: 35px;
     right: -300px;
 }
 
@@ -302,9 +315,12 @@ body, body.modal-open {
 }
 
 .truncated-name {
-    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.truncated {
+    white-space: nowrap;
 }
 
 .separator-right {
