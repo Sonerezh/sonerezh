@@ -79,9 +79,7 @@
         <div class="col-md-6 col-xs-6">
             <?php echo $this->Html->image("no-cover.png", array('class' => "song-cover hidden-xs")); ?>
             <div class="song-infos truncated-name hidden-xs">
-		<span class="song-artist truncated"></span>
-		-
-                <span class="song-name truncated"></span>
+		<span class="song-artist truncated"></span> - <span class="song-name truncated"></span>
             </div>
             <div class="song-infos truncated-name hidden-sm hidden-md hidden-lg">
 		<div class="song-artist truncated"></div>
