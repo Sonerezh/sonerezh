@@ -79,10 +79,10 @@
         <div class="col-md-6 col-xs-6">
             <?php echo $this->Html->image("no-cover.png", array('class' => "song-cover hidden-xs")); ?>
             <div class="song-infos truncated-name hidden-xs">
-		<span class="song-artist truncated"></span> - <span class="song-name truncated"></span>
+                <span class="song-artist truncated"></span> - <span class="song-name truncated"></span>
             </div>
             <div class="song-infos truncated-name hidden-sm hidden-md hidden-lg">
-		<div class="song-artist truncated"></div>
+                <div class="song-artist truncated"></div>
                 <div class="song-name truncated"></div>
             </div>
             <ul class="timebar hidden-xs">
@@ -91,7 +91,7 @@
                 <li><span class="badge badge-timer totalTime"></span></li>
             </ul>
         </div>
-	<!-- Play/Pause buttons -->
+        <!-- Play/Pause buttons -->
         <div class="col-md-2 col-xs-5">
             <ul class="player-controls">
                 <li><span class="glyphicon glyphicon-step-backward" id="backward"></span></li>
