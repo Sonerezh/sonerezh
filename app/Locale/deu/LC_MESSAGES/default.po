@@ -609,6 +609,15 @@ msgstr "Email-Benachrichtung aktivieren."
 msgid "Sonerezh can send an email on users creation to notify them."
 msgstr "Sonerezh kann Email-Benachrichtigungen für erstellte Nutzer verschicken, um diese zu benachrichtigen."
 
+#: View/Settings/index.ctp:57
+msgid "Enable sort albums by year."
+msgstr "Aktivieren Sie das Sortieren von Alben nach Jahr."
+
+#: View/Settings/index.ctp:64
+msgid "By Default albums are sort by name. Tick this box to sort them by year."
+msgstr ""
+"Standardmäßig werden Alben nach Namen sortiert. Aktivieren Sie dieses Kontrollkästchen, um sie nach Jahr zu sortieren."
+
 #: View/Settings/index.ctp:76
 msgid "Automatic tracks conversion"
 msgstr "Automatische Song Konvertierung"

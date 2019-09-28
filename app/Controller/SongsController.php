@@ -438,7 +438,7 @@ class SongsController extends AppController {
         ));
 
         $this->SortComponent = $this->Components->load('Sort');
-        $songs = $this->SortComponent->sortByBand($songs);
+        $songs = $this->SortComponent->sortByBand($songs, $this->is_enabled_sort_album_by_year());
 
         // Then we can group the songs by band name, album and disc.
         $parsed = array();
@@ -512,7 +512,7 @@ class SongsController extends AppController {
         ));
 
         $this->SortComponent = $this->Components->load('Sort');
-        $songs = $this->SortComponent->sortByBand($songs);
+        $songs = $this->SortComponent->sortByBand($songs, $this->is_enabled_sort_album_by_year());
 
         if (empty($songs)) {
             $this->Flash->info(__('Oops! The database is empty...'));
@@ -565,7 +565,7 @@ class SongsController extends AppController {
             );
 
             $this->SortComponent = $this->Components->load('Sort');
-            $songs = $this->SortComponent->sortByBand($songs);
+            $songs = $this->SortComponent->sortByBand($songs, $this->is_enabled_sort_album_by_year());
 
             $parsed = array();
             foreach ($songs as $song) {
@@ -704,7 +704,7 @@ class SongsController extends AppController {
         ));
 
         $this->SortComponent = $this->Components->load('Sort');
-        $songs = $this->SortComponent->sortByBand($songs);
+        $songs = $this->SortComponent->sortByBand($songs, $this->is_enabled_sort_album_by_year());
 
         foreach ($songs as &$song) {
             $song['Song']['url'] = Router::url(array('controller'=>'songs', 'action'=>'download', $song['Song']['id'], 'api'=> false));
@@ -757,5 +757,15 @@ class SongsController extends AppController {
 
         $this->set('data', $songs);
         $this->set('_serialize', 'data');
+    }
+
+    private function is_enabled_sort_album_by_year() {
+        if(isset($this->Setting)) {
+            $settings = $this->Setting->find('first');
+            if(isset($settings) && isset($settings['Setting']) && isset($settings['Setting']['enable_sort_album_by_year'])) {
+                return $settings['Setting']['enable_sort_album_by_year'];
+            }
+        }
+        return false;
     }
 }

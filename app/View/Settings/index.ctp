@@ -70,6 +70,29 @@ $this->end(); ?>
                 </span>
             </small>
 
+            <?php
+            echo $this->Form->input('enable_sort_album_by_year', array(
+                'type'  => 'checkbox',
+                'label' => __('Enable sort albums by year.')
+            ));
+            ?>
+
+            <small>
+                <span class="help-block">
+                    <?php echo __('By Default albums are sort by name. Tick this box to sort them by year.'); ?>
+                </span>
+            </small>
+
+            <small>
+                <span class="help-block">
+                    <?php echo __('Sonerezh can send an email on users creation to notify them.'); ?>
+                    <?php echo $this->Html->link(
+                        '<i class="glyphicon glyphicon-question-sign"></i>',
+                        'https://www.sonerezh.bzh/docs/en/configuration.html#enable-mail-notifications',
+                        array('escape' => false, 'target' => 'blank', 'class' => 'no-ajax')
+                    ); ?>
+                </span>
+            </small>
 
             <div class="panel <?php echo $avconv ? 'panel-default' : 'panel-danger'; ?>">
                 <div class="panel-heading">
