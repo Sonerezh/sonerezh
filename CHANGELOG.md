@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.2.6] - 2019-09-29
+
+This is a minor release to upgrade CakePHP 2.10 and add support for PHP 7.3.
+
+### Fixed
+
+* Fix #372: Compatibility with PHP 7.3
+
 ## [1.2.5] - 2019-02-05
 
 This release fixes some little bugs and add a booster to the "import" function
