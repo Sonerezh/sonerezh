@@ -15,13 +15,15 @@ class SortComponent extends Component {
      * @see https://php.net/manual/en/function.array-multisort.php
      *
      * @param array $songs Array of songs returned by the database.
+     * @param boolean $sort_album_by_year Sort albums by name if false. Sort albums by year if true.
      * @return array An array of sorted songs.
      */
-    public function sortByBand($songs) {
+    public function sortByBand($songs, $sort_album_by_year = false) {
+        $album_sort_field = $sort_album_by_year ? 'year' : 'album';
         foreach ($songs as $key => $row) {
             $s_discs = explode('/', $row['Song']['disc']);
             $s_band[$key]           = $row['Song']['band'];
-            $s_album[$key]          = $row['Song']['album'];
+            $s_album[$key]          = $row['Song'][$album_sort_field];
             $s_track_number[$key]   = $row['Song']['track_number'];
             $s_disc[$key]           = $s_discs[0];
         }

@@ -641,6 +641,14 @@ msgstr ""
 msgid "Sonerezh can send an email on users creation to notify them."
 msgstr ""
 
+#: View/Settings/index.ctp:57
+msgid "Enable sort albums by year."
+msgstr ""
+
+#: View/Settings/index.ctp:64
+msgid "By Default albums are sort by name. Tick this box to sort them by year."
+msgstr ""
+
 #: View/Settings/index.ctp:76
 msgid "Automatic tracks conversion"
 msgstr ""

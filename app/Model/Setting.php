@@ -27,6 +27,12 @@ class Setting extends AppModel {
                 'rule'				=> array('boolean'),
                 'message'			=> 'Something went wrong!'
             )
+            ),
+        'enable_sort_album_by_year'	=> array(
+            'boolean'			=> array(
+                'rule'				=> array('boolean'),
+                'message'			=> 'Something went wrong!'
+            )
         )
     );
 

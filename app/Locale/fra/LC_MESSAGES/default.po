@@ -651,6 +651,16 @@ msgstr ""
 "Sonerezh peut vous envoyer des emails lors de certains événements (création "
 "d'utilisateurs...)"
 
+#: View/Settings/index.ctp:57
+msgid "Enable sort albums by year."
+msgstr "Activer le tri des albums par année."
+
+#: View/Settings/index.ctp:64
+msgid "By Default albums are sort by name. Tick this box to sort them by year."
+msgstr ""
+"Par défaut les albums sont triés par ordre alphabétique. En cochant cette "
+"case les albums seront triés par année."
+
 #: View/Settings/index.ctp:76
 msgid "Automatic tracks conversion"
 msgstr "Conversion automatique des pistes"
