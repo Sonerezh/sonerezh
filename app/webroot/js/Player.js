@@ -87,6 +87,7 @@ function Player() {
         if(audioElement.src != "") {
             audioElement.play();
         }
+        this.notifyNowPlaying();
     };
     this.playIndex = function(index) {
         this.play(playlist.getByIndex(index).id);
@@ -204,6 +205,19 @@ function Player() {
     };
     this.isShuffle = function() {
         return shuffle;
+    };
+    this.notifyNowPlaying = function() {
+        if(Notification) {
+            Notification.requestPermission().then(function(permission) {
+                if (permission === 'granted') {
+                    const replace = '_65x65' + (retina ? '@2x' : '') + '$1';
+                    new Notification(`Now playing: ${selected.title} (${selected.playtime})`, {
+                        icon: selected.cover.replace(/(\.[a-z0-9]+)/i, replace),
+                        body: `${selected.artist} / ${selected.album}`
+                    });
+                }
+            });
+        }
     };
 }
 
