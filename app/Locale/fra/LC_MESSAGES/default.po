@@ -651,6 +651,15 @@ msgstr ""
 "Sonerezh peut vous envoyer des emails lors de certains événements (création "
 "d'utilisateurs...)"
 
+#: View/Settings/index.ctp:57
+msgid "Number of line to use to display latest albums."
+msgstr "Nombre de ligne à utiliser pour afficher les derniers albums."
+
+#: View/Settings/index.ctp:64
+msgid "By Default only one line of six albums is displayed. Note: it will change only desktop version, not mobile version."
+msgstr ""
+"Par défaut, une seule ligne de six albums sera affichée. Note: ce paramètre ne changera que l'affichage pc, pas la version mobile."
+
 #: View/Settings/index.ctp:76
 msgid "Automatic tracks conversion"
 msgstr "Conversion automatique des pistes"

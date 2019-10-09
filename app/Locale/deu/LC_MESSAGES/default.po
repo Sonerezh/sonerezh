@@ -609,6 +609,15 @@ msgstr "Email-Benachrichtung aktivieren."
 msgid "Sonerezh can send an email on users creation to notify them."
 msgstr "Sonerezh kann Email-Benachrichtigungen für erstellte Nutzer verschicken, um diese zu benachrichtigen."
 
+#: View/Settings/index.ctp:57
+msgid "Number of line to use to display latest albums."
+msgstr "Nummer der Zeile, in der die neuesten Alben angezeigt werden sollen."
+
+#: View/Settings/index.ctp:64
+msgid "By Default only one line of six albums is displayed. Note: it will change only desktop version, not mobile version."
+msgstr ""
+"Standardmäßig wird nur eine Zeile mit sechs Alben angezeigt. Hinweis: Es wird nur die Desktop-Version geändert, nicht die mobile Version."
+
 #: View/Settings/index.ctp:76
 msgid "Automatic tracks conversion"
 msgstr "Automatische Song Konvertierung"
