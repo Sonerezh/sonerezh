@@ -48,6 +48,7 @@ class SonerezhPgsqlSchema extends CakeSchema {
 		'convert_to' => array('type' => 'string', 'null' => false, 'default' => 'mp3', 'length' => 5),
 		'quality' => array('type' => 'integer', 'null' => false, 'default' => '256'),
 		'enable_mail_notification' => array('type' => 'boolean', 'null' => false, 'default' => false),
+		'nb_latest_albums_lines' => array('type' => 'integer', 'null' => false, 'default' => null, 'length' => 3, 'unsigned' => true),
 		'sync_token' => array('type' => 'integer', 'null' => true, 'default' => null),
 		'indexes' => array(
 			'PRIMARY' => array('unique' => true, 'column' => 'id')

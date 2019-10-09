@@ -70,6 +70,18 @@ $this->end(); ?>
                 </span>
             </small>
 
+            <?php
+            echo $this->Form->input('nb_latest_albums_lines', array(
+                'type'  => 'number',
+                'label' => __('Number of line to use to display latest albums.')
+            ));
+            ?>
+
+            <small>
+                <span class="help-block">
+                    <?php echo __('By Default only one line of six albums is displayed. Note: it will change only desktop version, not mobile version.'); ?>
+                </span>
+            </small>
 
             <div class="panel <?php echo $avconv ? 'panel-default' : 'panel-danger'; ?>">
                 <div class="panel-heading">

@@ -27,6 +27,12 @@ class Setting extends AppModel {
                 'rule'				=> array('boolean'),
                 'message'			=> 'Something went wrong!'
             )
+            ),
+        'nb_latest_albums_lines'	=> array(
+            'integer'			=> array(
+                'rule'				=> array('integer'),
+                'message'			=> 'Something went wrong!'
+            )
         )
     );
 
