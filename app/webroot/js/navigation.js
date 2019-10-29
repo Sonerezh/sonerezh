@@ -139,4 +139,11 @@ $(function(){
         $(this).find('.hidden-fields').empty();
     });
 
+    
+    $('.nav a').on('click', function(){
+        if($('.navbar-toggle').css('display') != 'none'){
+            $('.navbar-toggle').click();
+        }
+    });
+
 });

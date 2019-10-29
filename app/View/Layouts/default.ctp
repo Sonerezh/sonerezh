@@ -57,16 +57,17 @@
     </div>
 </nav>
 <!-- Player -->
-<div class="navbar navbar-default navbar-fixed-top navbar-player">
+<div class="navbar navbar-default navbar-fixed-bottom navbar-player">
     <div class="container">
-        <!-- Play/Pause buttons -->
-        <div class="col-md-2 col-xs-3">
+        <!-- Playlist management -->
+        <div class="col-md-2 col-xs-1">
             <ul class="player-controls">
-                <li><span class="glyphicon glyphicon-backward" id="backward"></span></li>
-                <li class="play"><span class="glyphicon glyphicon-play" id="play"></span></li>
-                <li><span class="glyphicon glyphicon-forward" id="forward"></span></li>
+                <li class="hidden-xs"><span class="glyphicon glyphicon-th-list" id="queue-button"></span></li>
+                <li class="hidden-xs"><span class="glyphicon glyphicon-repeat" id="queue-repeat"></span></li>
+                <li><span class="glyphicon glyphicon-random" id="queue-shuffle"></span></li>
             </ul>
         </div>
+
         <!-- Volume control -->
         <div class="col-md-2 hidden-xs hidden-sm">
             <ul class="player-controls volume">
@@ -77,25 +78,28 @@
         <!-- Current playing -->
         <div class="col-md-6 col-xs-6">
             <?php echo $this->Html->image("no-cover.png", array('class' => "song-cover hidden-xs")); ?>
-            <div class="song-infos truncated-name">
-                <span class="song-name"></span>
-                -
-                <span class="song-artist"></span>
+            <div class="song-infos truncated-name hidden-xs">
+                <span class="song-artist truncated"></span> - <span class="song-name truncated"></span>
             </div>
-            <ul class="timebar">
-                <li><span class="badge badge-timer currentTime"></span></li>
+            <div class="song-infos truncated-name hidden-sm hidden-md hidden-lg">
+                <div class="song-artist truncated"></div>
+                <div class="song-name truncated"></div>
+            </div>
+            <ul class="timebar hidden-xs">
+                <li class=""><span class="badge badge-timer currentTime"></span></li>
                 <li class="bar"><div id="timebar"></div></li>
                 <li><span class="badge badge-timer totalTime"></span></li>
             </ul>
         </div>
-        <!-- Playlist management -->
-        <div class="col-md-2 col-xs-2">
+        <!-- Play/Pause buttons -->
+        <div class="col-md-2 col-xs-5">
             <ul class="player-controls">
-                <li><span class="glyphicon glyphicon-th-list" id="queue-button"></span></li>
-                <li><span class="glyphicon glyphicon-repeat" id="queue-repeat"></span></li>
-                <li><span class="glyphicon glyphicon-random" id="queue-shuffle"></span></li>
+                <li><span class="glyphicon glyphicon-step-backward" id="backward"></span></li>
+                <li class="play"><span class="glyphicon glyphicon-play" id="play"></span></li>
+                <li><span class="glyphicon glyphicon-step-forward" id="forward"></span></li>
             </ul>
         </div>
+
     </div>
 </div>
 

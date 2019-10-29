@@ -15,7 +15,7 @@
         </p>
         </div>
         <div class="col-xs-2">
-            <h3 class="text-right">
+            <h3 class="text-right hidden-xs">
                 <small>
                     <span class="glyphicon glyphicon-play song-controls action-play-artist" title="<?php echo __('Play all albums'); ?>"></span>
                     <span class="glyphicon glyphicon-random song-controls action-shuffle-artist" title="<?php echo __('Shuffle this artist'); ?>"></span>
@@ -56,7 +56,7 @@
                             <small class="album-year">
                                 <?php echo h($album['year']); ?>
                             </small>
-                            <small>
+                            <small class="hidden-xs">
                                 <span class="glyphicon glyphicon-play song-controls action-play-album" title="<?php echo __('Play all tracks'); ?>"></span>
                                 <span class="glyphicon glyphicon-random song-controls action-shuffle-album" title="<?php echo __('Shuffle this album'); ?>"></span>
                                 <span class="dropdown">
