@@ -12,6 +12,7 @@
                                 <li role="presentation"><a role="menuitem" tabindex="-1" href="#" class="action-album-play-next"><?php echo __('Play Next'); ?></a></li>
                                 <li role="presentation"><a role="menuitem" tabindex="-1" href="#" class="action-add-album-to-up-next"><?php echo __('Add to Up Next'); ?></a></li>
                                 <li role="presentation"><a role="menuitem" tabindex="-1" href="#" data-toggle="modal" data-type="album" data-target="#add-to" ><?php echo __('Add to...'); ?></a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" class="action-download-album"><?php echo __('Download'); ?></a></li>
                             </ul>
                         </span>
                     </small>

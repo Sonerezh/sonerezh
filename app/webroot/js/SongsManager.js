@@ -105,6 +105,18 @@ function SongsManager(baseurl, version) {
         return playlist;
     };
 
+    this.getPlaylistSongs = function(playlist) {
+      var playlistSongs = [];
+      for(var i = 0; i < songs.length; i++) {
+          for(var j = 0; j < songs[i].playlists.length; j++) {
+            if(songs[i].playlists[j] == playlist) {
+              playlistSongs.push(songs[i]);
+            }
+          }
+      }
+      return playlistSongs;
+    };
+
     this.getBandSongs = function(band) {
         var bands = [];
         for(var i = 0; i < songs.length; i++) {

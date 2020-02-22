@@ -88,6 +88,7 @@
                             <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownAlbum">
                                 <li role="presentation"><a role="menuitem" tabindex="-1" href="#" class="action-playlist-play-next"><?php echo __('Play Next'); ?></a></li>
                                 <li role="presentation"><a role="menuitem" tabindex="-1" href="#" class="action-add-playlist-to-up-next"><?php echo __('Add to Up Next'); ?></a></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="#" class="action-download-playlist"><?php echo __('Download'); ?></a></li>
                             </ul>
                         </span>
                     </small>

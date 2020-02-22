@@ -31,6 +31,8 @@ var playAlbum = '.action-play-album';
 var playTitleNext = '.action-play-next';
 var playBandNext = '.action-artist-play-next';
 var playAlbumNext = '.action-album-play-next';
+var downloadAlbum = '.action-download-album';
+var downloadPlaylist = '.action-download-playlist';
 var playPlaylistNext = '.action-playlist-play-next';
 var playTitleAfter = '.action-add-to-up-next';
 var playBandAfter = '.action-add-artist-to-up-next';
@@ -235,6 +237,21 @@ function init() {
         var band = $(this).parents('[data-band]').attr('data-band');
         var album = $(this).parents('[data-album]').attr('data-album');
         player.addAll(songsManager.getAlbumSongs(band, album));
+    });
+
+    $('#content').on('click', downloadAlbum, function(e) {
+        e.preventDefault();
+        var band  = $(this).parents('[data-band]').attr('data-band');
+        var album = $(this).parents('[data-album]').attr('data-album');
+        var songs = songsManager.getAlbumSongs(band, album);
+        downloadAll(songs.map(song => baseurl + song.url));
+    });
+
+    $('#content').on('click', downloadPlaylist, function(e) {
+        e.preventDefault();
+        var playlist = $(this).parents('[data-playlist]').attr('data-playlist');
+        var songs = songsManager.getPlaylistSongs(playlist);
+        downloadAll(songs.map(song => baseurl + song.url));
     });
 
     $('#content').on('click', shuffleAlbum, function(e) {
@@ -523,6 +540,28 @@ function toggleQueueList() {
         $queue.addClass('queue-open');
         $queueButton.parent().addClass('active');
     }
+}
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function downloadAll(urls) {
+  var link = document.createElement('a');
+
+  link.setAttribute('download', null);
+  link.style.display = 'none';
+  link.classList.add("no-ajax");
+
+  document.body.appendChild(link);
+
+  for (var i = 0; i < urls.length; i++) {
+    link.setAttribute('href', urls[i]);
+    link.click();
+    await sleep(500);
+  }
+
+  document.body.removeChild(link);
 }
 
 var test = [];
