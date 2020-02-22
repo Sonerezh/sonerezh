@@ -558,7 +558,7 @@ async function downloadAll(urls) {
   for (var i = 0; i < urls.length; i++) {
     link.setAttribute('href', urls[i]);
     link.click();
-    await sleep(100);
+    await sleep(500);
   }
 
   document.body.removeChild(link);
