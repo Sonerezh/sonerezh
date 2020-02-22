@@ -249,11 +249,16 @@ class SongsController extends AppController {
         $this->viewClass = 'Json';
         $this->SortComponent = $this->Components->load('Sort');
 
-        $songs = $this->Song->find("all", array('fields' => array('id', 'album', 'artist', 'band', 'cover', 'title', 'disc', 'track_number', 'playtime'), 'order' => 'title'));
+        $songs = $this->Song->find("all", array(
+          'fields' => array('id', 'album', 'artist', 'band', 'cover', 'title', 'disc', 'track_number', 'playtime'),
+          'contain' => 'PlaylistMembership.playlist_id',
+          'order' => 'title')
+        );
         $songs = $this->SortComponent->sortByBand($songs);
         foreach ($songs as $k => &$song) {
             $song['Song']['url'] = $this->request->base . '/songs/download/' . $song['Song']['id'];
             $song['Song']['cover'] = $this->request->base.'/'.IMAGES_URL.(empty($song['Song']['cover']) ? "no-cover.png" : THUMBNAILS_DIR.'/'.$song['Song']['cover']);
+            $song['Song']['playlists'] = array_map(function ($e) { return intval($e['playlist_id']); }, $song['PlaylistMembership']);
         }
         $songs = Hash::extract($songs, '{n}.Song');
 

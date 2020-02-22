@@ -32,6 +32,7 @@ var playTitleNext = '.action-play-next';
 var playBandNext = '.action-artist-play-next';
 var playAlbumNext = '.action-album-play-next';
 var downloadAlbum = '.action-download-album';
+var downloadPlaylist = '.action-download-playlist';
 var playPlaylistNext = '.action-playlist-play-next';
 var playTitleAfter = '.action-add-to-up-next';
 var playBandAfter = '.action-add-artist-to-up-next';
@@ -243,6 +244,13 @@ function init() {
         var band  = $(this).parents('[data-band]').attr('data-band');
         var album = $(this).parents('[data-album]').attr('data-album');
         var songs = songsManager.getAlbumSongs(band, album);
+        downloadAll(songs.map(song => baseurl + song.url));
+    });
+
+    $('#content').on('click', downloadPlaylist, function(e) {
+        e.preventDefault();
+        var playlist = $(this).parents('[data-playlist]').attr('data-playlist');
+        var songs = songsManager.getPlaylistSongs(playlist);
         downloadAll(songs.map(song => baseurl + song.url));
     });
 
