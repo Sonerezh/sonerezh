@@ -68,7 +68,9 @@ class SongManager {
 
         // Song track number
         if (!empty($file_infos['comments']['track'])) {              // MP3 Tag
-            $metadata['track_number'] = (string)end($file_infos['comments']['track']);
+            // Some tags look like '1/10'
+            $track = explode('/', (string)end($file_infos['comments']['track']));
+            $metadata['track_number'] = intval($track[0]);
         } elseif (!empty($file_infos['comments']['track_number'])) { // MP3 Tag
             // Some tags look like '1/10'
             $track_number = explode('/', (string)end($file_infos['comments']['track_number']));
