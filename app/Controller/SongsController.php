@@ -330,9 +330,16 @@ class SongsController extends AppController {
         ));
 
         $latests = array();
+        $rands = array();
         // Is this the first page requested?
         $page = isset($this->request->params['named']['page']) ? $this->request->params['named']['page'] : 1;
         $db = $this->Song->getDataSource();
+
+        if ($db->config['datasource'] == 'Database/Mysql') {
+            $random_order_by_method = 'RAND()';
+        } else {
+            $random_order_by_method = 'RANDOM()';
+        }
 
         $this->Song->virtualFields['cover'] = 'MIN(Song.cover)';
 
@@ -341,6 +348,12 @@ class SongsController extends AppController {
                 'fields' => array('Song.band', 'Song.album', 'cover'),
                 'group' => array('Song.album', 'Song.band'),
                 'order' => 'MAX(Song.created) DESC',
+                'limit' => 6
+            ));
+            $rands = $this->Song->find('all', array(
+                'fields' => array('Song.id', 'Song.band', 'Song.album', 'Song.cover'),
+                'group' => 'Song.album',
+                'order' => $random_order_by_method,
                 'limit' => 6
             ));
         }
@@ -364,11 +377,15 @@ class SongsController extends AppController {
             $latest['Song']['cover'] = empty($latest['Song']['cover']) ? "no-cover.png" : THUMBNAILS_DIR.'/'.$latest['Song']['cover'];
         }
 
+        foreach ($rands as &$r) {
+            $r['Song']['cover'] = empty($r['Song']['cover']) ? "no-cover.png" : THUMBNAILS_DIR.'/'.$r['Song']['cover'];
+        }
+
         if (empty($songs)) {
             $this->Flash->info(__('Oops! The database is empty...'));
         }
 
-        $this->set(compact('songs', 'playlists', 'latests'));
+        $this->set(compact('songs', 'playlists', 'latests', 'rands'));
     }
 
     /**

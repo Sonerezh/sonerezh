@@ -27,6 +27,18 @@ class Setting extends AppModel {
                 'rule'				=> array('boolean'),
                 'message'			=> 'Something went wrong!'
             )
+        ),
+        'enable_random'        => array(
+            'boolean'                  => array(
+                'rule'                         => array('boolean'),
+                'message'                      => 'Something went wrong!'
+            )
+        ),
+        'enable_recent'        => array(
+            'boolean'                  => array(
+                'rule'                         => array('boolean'),
+                'message'                      => 'Something went wrong!'
+            )
         )
     );
 
