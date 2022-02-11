@@ -3,7 +3,7 @@
   "description": "A self-hosted, web-based application to stream your music, everywhere.",
   "type": "project",
   "require": {
-    "cakephp/cakephp": "2.10.*",
+    "cakephp/cakephp": "4.0.*",
     "james-heinrich/getid3": "1.9.*"
   },
   "license": "AGPL-3.0-or-later",
